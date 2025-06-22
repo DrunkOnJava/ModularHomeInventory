@@ -1,0 +1,73 @@
+name: HomeInventoryModular
+options:
+  bundleIdPrefix: com.homeinventory
+  deploymentTarget:
+    iOS: 17.0
+  createIntermediateGroups: true
+  groupSortPosition: bottom
+  generateEmptyDirectories: true
+
+settings:
+  base:
+    MARKETING_VERSION: 1.0.0
+    CURRENT_PROJECT_VERSION: 1
+    DEVELOPMENT_TEAM: "2VXBQV4XC9"
+    SWIFT_VERSION: 5.9  # ⚠️ MUST use Swift 5.9 - DO NOT change to 6.0
+    IPHONEOS_DEPLOYMENT_TARGET: 17.0
+    ENABLE_PREVIEWS: YES
+    CODE_SIGN_STYLE: Automatic
+    SWIFT_STRICT_CONCURRENCY: minimal
+    SWIFT_UPCOMING_FEATURE_EXISTENTIAL_ANY: NO
+
+packages:
+  Core:
+    path: Modules/Core
+  SharedUI:
+    path: Modules/SharedUI
+  Items:
+    path: Modules/Items
+  Scanner:
+    path: Modules/Scanner
+  Settings:
+    path: Modules/Settings
+  Receipts:
+    path: Modules/Receipts
+  Sync:
+    path: Modules/Sync
+  Premium:
+    path: Modules/Premium
+  Onboarding:
+    path: Modules/Onboarding
+
+targets:
+  HomeInventoryModular:
+    type: application
+    platform: iOS
+    deploymentTarget: 17.0
+    sources:
+      - HomeInventoryModular
+    dependencies:
+      - package: Core
+      - package: SharedUI
+      - package: Items
+      - package: Scanner
+      - package: Settings
+      - package: Receipts
+      - package: Sync
+      - package: Premium
+      - package: Onboarding
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.homeinventory.modular
+        DEVELOPMENT_TEAM: "2VXBQV4XC9"
+        CODE_SIGN_STYLE: Automatic
+        GENERATE_INFOPLIST_FILE: YES
+        INFOPLIST_KEY_UIApplicationSceneManifest_Generation: YES
+        INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents: YES
+        INFOPLIST_KEY_UILaunchScreen_Generation: YES
+        INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad: "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight"
+        INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone: "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight"
+        INFOPLIST_KEY_CFBundleDisplayName: "Home Inventory"
+        INFOPLIST_KEY_NSCameraUsageDescription: "Camera access is needed to scan barcodes and take photos of your items"
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME: AccentColor

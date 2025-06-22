@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(make:*)",
+      "Bash(xcodebuild:*)",
+      "Bash(rm:*)",
+      "Bash(xcrun simctl launch:*)"
+    ],
+    "deny": []
+  }
+}
