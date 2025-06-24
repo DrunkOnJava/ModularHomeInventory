@@ -3,7 +3,7 @@
 
 # Enable auto-commit after successful builds
 # Set to true to automatically stage, commit, and push after builds
-AUTO_COMMIT=false
+AUTO_COMMIT=true
 
 # Custom simulator settings (optional)
 # SIMULATOR_ID=your-simulator-id

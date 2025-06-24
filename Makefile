@@ -11,8 +11,8 @@ SIMULATOR_ID ?= DD192264-DFAA-4582-B2FE-D6FC444C9DDF
 SIMULATOR_NAME ?= iPhone 16 Pro Max
 APP_BUNDLE_ID = com.homeinventory.modular
 
-# Auto-commit feature (default: off)
-AUTO_COMMIT ?= false
+# Auto-commit feature (default: on)
+AUTO_COMMIT ?= true
 
 help: ## Show this help message
 	@echo 'Usage: make [target]'

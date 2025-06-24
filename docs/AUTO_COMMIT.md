@@ -1,28 +1,38 @@
 # Auto-Commit Feature
 
-This project supports automatic git commits after successful builds.
+This project automatically commits and pushes changes to GitHub after successful builds.
 
-## Quick Start
+## Default Behavior
 
-### One-time use:
+**Auto-commit is enabled by default!** Every successful `make build` will:
+1. Stage all changes
+2. Create a commit with a descriptive message
+3. Push to GitHub
+
+## Quick Commands
+
+### Build with auto-commit (default):
 ```bash
-make build-commit
+make build
 # or shorthand
-make bc
+make b
 ```
 
-### Enable permanently:
-1. Copy the configuration template:
+### Build WITHOUT auto-commit:
+```bash
+make build AUTO_COMMIT=false
+```
+
+### Disable permanently:
+1. Create a local configuration:
    ```bash
    cp .makerc .makerc.local
    ```
 
 2. Edit `.makerc.local` and set:
    ```bash
-   AUTO_COMMIT=true
+   AUTO_COMMIT=false
    ```
-
-3. Now every `make build` will auto-commit on success!
 
 ## How it Works
 
@@ -50,7 +60,7 @@ Co-Authored-By: Claude <noreply@anthropic.com>
 ## Configuration
 
 ### Environment Variables
-- `AUTO_COMMIT`: Set to `true` to enable (default: `false`)
+- `AUTO_COMMIT`: Set to `false` to disable (default: `true`)
 - `SIMULATOR_ID`: Custom simulator UUID
 - `SIMULATOR_NAME`: Custom simulator name
 
@@ -78,6 +88,6 @@ make build AUTO_COMMIT=false
 ## Disable
 
 To disable auto-commit:
-1. Edit `.makerc.local` and set `AUTO_COMMIT=false`
-2. Or delete `.makerc.local`
-3. Or use `make build` instead of `make build-commit`
+1. Create/edit `.makerc.local` and set `AUTO_COMMIT=false`
+2. Or use `make build AUTO_COMMIT=false` for one-time disable
+3. Or manually commit with `git add` and `git commit`
