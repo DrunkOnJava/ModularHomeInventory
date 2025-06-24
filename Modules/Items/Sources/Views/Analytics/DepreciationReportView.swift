@@ -21,8 +21,7 @@ struct DepreciationReportView: View {
     }
     
     var body: some View {
-        NavigationView {
-            ScrollView {
+        ScrollView {
                 VStack(spacing: 24) {
                     // Summary Card
                     summaryCard
@@ -132,7 +131,6 @@ struct DepreciationReportView: View {
                 await viewModel.generateReport(method: selectedMethod)
             }
         }
-    }
     
     // MARK: - Components
     

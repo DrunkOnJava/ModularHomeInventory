@@ -28,8 +28,7 @@ struct BudgetDashboardView: View {
     }
     
     var body: some View {
-        NavigationView {
-            ScrollView {
+        ScrollView {
                 VStack(spacing: 24) {
                     // Summary Card
                     if viewModel.isLoading {
@@ -95,7 +94,6 @@ struct BudgetDashboardView: View {
                 await viewModel.loadBudgets()
             }
         }
-    }
     
     // MARK: - Components
     
