@@ -6,6 +6,7 @@ import SharedUI
 /// Provides a collapsible sidebar with all main navigation options
 struct iPadSidebarView: View {
     @StateObject private var navigationState = iPadNavigationState()
+    @EnvironmentObject var coordinator: AppCoordinator
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     @State private var columnVisibility = NavigationSplitViewVisibility.all
     
@@ -99,6 +100,7 @@ struct iPadSidebarView: View {
         .navigationSplitViewColumnWidth(min: 250, ideal: 300, max: 400)
         .sheet(isPresented: $navigationState.showAddItem) {
             AddItemSheet()
+                .environmentObject(coordinator)
         }
     }
     
@@ -106,29 +108,40 @@ struct iPadSidebarView: View {
     private var detailView: some View {
         Group {
             switch navigationState.selectedTab {
-        case .items:
-            ItemsNavigationView()
-        case .collections:
-            CollectionsNavigationView()
-        case .locations:
-            LocationsNavigationView()
-        case .categories:
-            CategoriesNavigationView()
-        case .analytics:
-            AnalyticsNavigationView()
-        case .reports:
-            ReportsNavigationView()
-        case .budget:
-            BudgetNavigationView()
-        case .scanner:
-            ScannerNavigationView()
-        case .search:
-            SearchNavigationView()
-        case .importExport:
-            ImportExportNavigationView()
-        case .settings:
-            SettingsNavigationView()
-        }
+            case .items:
+                ItemsNavigationView()
+                    .environmentObject(coordinator)
+            case .collections:
+                CollectionsNavigationView()
+                    .environmentObject(coordinator)
+            case .locations:
+                LocationsNavigationView()
+                    .environmentObject(coordinator)
+            case .categories:
+                CategoriesNavigationView()
+                    .environmentObject(coordinator)
+            case .analytics:
+                AnalyticsNavigationView()
+                    .environmentObject(coordinator)
+            case .reports:
+                ReportsNavigationView()
+                    .environmentObject(coordinator)
+            case .budget:
+                BudgetNavigationView()
+                    .environmentObject(coordinator)
+            case .scanner:
+                ScannerNavigationView()
+                    .environmentObject(coordinator)
+            case .search:
+                SearchNavigationView()
+                    .environmentObject(coordinator)
+            case .importExport:
+                ImportExportNavigationView()
+                    .environmentObject(coordinator)
+            case .settings:
+                SettingsNavigationView()
+                    .environmentObject(coordinator)
+            }
         }
         .toolbar {
             ToolbarItem(placement: .primaryAction) {
