@@ -1,0 +1,20 @@
+# For more information about the Appfile, see:
+#     https://docs.fastlane.tools/advanced/#appfile
+
+# The bundle identifier of your app
+app_identifier("com.homeinventory.modular")
+
+# Your Apple email address
+apple_id("griffinradcliffe@gmail.com")
+
+# Developer Portal Team ID
+team_id("2VXBQV4XC9")
+
+# You can uncomment the lines below and add your own
+# team selection in case you're in multiple teams
+# itc_team_name("Company Name")
+# itc_team_id("18742801")
+
+# To select a team for App Store Connect use
+# itc_team_name("Company Name")
+# itc_team_id("18742801")
