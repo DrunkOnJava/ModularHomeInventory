@@ -304,7 +304,7 @@ public final class BudgetService {
         // Analyze performance
         if performance.timesExceeded > performance.monthsAnalyzed / 2 {
             insights.append("This budget is exceeded more than 50% of the time")
-            let percentageIncrease = Int((performance.averageSpending - budget.amount) / budget.amount * 100)
+            let percentageIncrease = NSDecimalNumber(decimal: (performance.averageSpending - budget.amount) / budget.amount * 100).intValue
             recommendations.append("Consider increasing your budget by \(percentageIncrease)%")
         }
         
