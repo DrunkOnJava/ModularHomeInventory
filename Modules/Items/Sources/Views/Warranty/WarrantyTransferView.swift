@@ -474,7 +474,7 @@ struct WarrantyInfoCard: View {
                 Spacer()
                 
                 // Show warranty status
-                Text(warranty.status.rawValue.capitalized)
+                Text(warranty.status == .active ? "Active" : "Inactive")
                     .textStyle(.labelSmall)
                     .foregroundStyle(warranty.status == .active ? AppColors.success : AppColors.textSecondary)
                     .padding(.horizontal, AppSpacing.sm)

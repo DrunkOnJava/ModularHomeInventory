@@ -260,24 +260,20 @@ final class ClaimAssistanceViewModel: ObservableObject {
         let personalInfo = (name: "User Name", phone: nil as String?, email: nil as String?, address: incidentLocation)
         
         // Generate claim email content
-        var emailContent = """
-Subject: Insurance Claim - \(template.title)
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateStyle = .medium
         
-        To: \(policy.contactInfo.claimsEmail ?? "claims@insurance.com")
-        
-        Policy Number: \(policy.policyNumber)
-        Claim Date: \(Date().formatted())
-        Date of Loss: \(incidentDate.formatted())
-        
-        Dear Claims Department,
-        
-        I am filing a claim for \(template.type.displayName.lowercased()) under policy \(policy.policyNumber).
-        
-        Incident Details:
-        Date: \(incidentDate.formatted())
-        Location: \(incidentLocation)
-        Description: \(incidentDescription)
-        """
+        var emailContent = "Subject: Insurance Claim - \(template.title)\n\n"
+        emailContent += "To: \(policy.contactInfo.claimsEmail ?? "claims@insurance.com")\n\n"
+        emailContent += "Policy Number: \(policy.policyNumber)\n"
+        emailContent += "Claim Date: \(dateFormatter.string(from: Date()))\n"
+        emailContent += "Date of Loss: \(dateFormatter.string(from: incidentDate))\n\n"
+        emailContent += "Dear Claims Department,\n\n"
+        emailContent += "I am filing a claim for \(template.type.displayName.lowercased()) under policy \(policy.policyNumber).\n\n"
+        emailContent += "Incident Details:\n"
+        emailContent += "Date: \(dateFormatter.string(from: incidentDate))\n"
+        emailContent += "Location: \(incidentLocation)\n"
+        emailContent += "Description: \(incidentDescription)\n"
         
         if hasPoliceReport {
             emailContent += "\n\nPolice Report Number: \(policeReportNumber)"

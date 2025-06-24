@@ -78,7 +78,7 @@ final class WarrantyTransferViewModel: ObservableObject {
         isCheckingEligibility = true
         
         // Get warranty provider info
-        let provider = WarrantyProviderDatabase.providers.first { 
+        _ = WarrantyProviderDatabase.providers.first { 
             $0.name.lowercased() == warranty.provider.lowercased() 
         }
         
@@ -165,7 +165,18 @@ final class WarrantyTransferViewModel: ObservableObject {
             transfer: transfer,
             warranty: warranty,
             item: item,
-            provider: nil // Provider info not available
+            provider: WarrantyProvider(
+                name: warranty.provider,
+                supportPhone: nil,
+                supportEmail: nil,
+                website: nil,
+                claimsPhone: nil,
+                claimsEmail: nil,
+                claimsWebsite: nil,
+                address: nil,
+                transferPolicy: nil,
+                commonIssues: []
+            )
         )
         
         // In a real app, this would save the document and allow sharing
