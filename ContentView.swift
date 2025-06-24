@@ -1,8 +1,8 @@
 import SwiftUI
 import SharedUI
 import Items
-import Scanner
-import Settings
+import BarcodeScanner
+import AppSettings
 import Receipts
 import Core
 
