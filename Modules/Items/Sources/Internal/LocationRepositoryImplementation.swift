@@ -7,15 +7,8 @@ final class LocationRepositoryImplementation: LocationRepository {
     private let queue = DispatchQueue(label: "com.homeinventory.locations", attributes: .concurrent)
     
     init() {
-        // Initialize with sample locations
-        self.locations = [
-            Location(name: "Living Room", icon: "sofa"),
-            Location(name: "Bedroom", icon: "bed.double"),
-            Location(name: "Kitchen", icon: "fork.knife"),
-            Location(name: "Garage", icon: "car"),
-            Location(name: "Office", icon: "desktopcomputer"),
-            Location(name: "Basement", icon: "stairs.beneathhouse")
-        ]
+        // Initialize with comprehensive mock locations
+        self.locations = MockDataService.locations
     }
     
     // MARK: - Repository Protocol

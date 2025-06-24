@@ -34,4 +34,63 @@ platform :ios do
     screenshots
     frame
   end
+
+  desc "Build and upload to TestFlight"
+  lane :beta do
+    # Ensure we're on a clean git status
+    ensure_git_status_clean
+    
+    # Increment build number
+    increment_build_number(
+      build_number: latest_testflight_build_number + 1,
+      xcodeproj: "HomeInventoryModular.xcodeproj"
+    )
+    
+    # Build the app
+    build_app(
+      scheme: "HomeInventoryModular",
+      export_method: "app-store",
+      export_options: {
+        provisioningProfiles: {
+          "com.homeinventory.modular" => "match AppStore com.homeinventory.modular"
+        }
+      }
+    )
+    
+    # Upload to TestFlight
+    upload_to_testflight(
+      skip_waiting_for_build_processing: true,
+      changelog: "Bug fixes and improvements"
+    )
+    
+    # Commit the version bump
+    commit_version_bump(
+      message: "Bump build number for TestFlight release",
+      xcodeproj: "HomeInventoryModular.xcodeproj"
+    )
+    
+    # Push to git
+    push_to_git_remote
+  end
+
+  desc "Release to App Store"
+  lane :release do
+    # Ensure we're on a clean git status
+    ensure_git_status_clean
+    
+    # Build the app
+    build_app(
+      scheme: "HomeInventoryModular",
+      export_method: "app-store"
+    )
+    
+    # Upload to App Store
+    upload_to_app_store(
+      force: true,
+      submit_for_review: false,
+      automatic_release: false,
+      skip_screenshots: false,
+      skip_metadata: false
+    )
+  end
 end
