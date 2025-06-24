@@ -354,17 +354,8 @@ struct AddItemSheet: View {
     @EnvironmentObject var coordinator: AppCoordinator
     
     var body: some View {
-        NavigationView {
-            coordinator.itemsModule.makeAddItemView { newItem in
-                dismiss()
-            }
-            .toolbar {
-                ToolbarItem(placement: .cancellationAction) {
-                    Button("Cancel") {
-                        dismiss()
-                    }
-                }
-            }
+        coordinator.itemsModule.makeAddItemView { newItem in
+            dismiss()
         }
     }
 }
