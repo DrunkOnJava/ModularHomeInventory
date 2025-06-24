@@ -107,7 +107,6 @@ public final class ComprehensiveMockDataFactory {
     // MARK: - Storage Units Generation
     private func generateStorageUnits() {
         let homeLocation = generatedLocations.first { $0.name == "Home" }!
-        let officeLocation = generatedLocations.first { $0.name == "Office" }!
         
         generatedStorageUnits = [
             StorageUnit(
@@ -505,7 +504,7 @@ public final class ComprehensiveMockDataFactory {
                 generatedItems[index].warrantyId = warranty.id
                 
                 // Some items might have extended warranties
-                if item.purchasePrice > 1000 && Bool.random() {
+                if (item.purchasePrice ?? 0) > 1000 && Bool.random() {
                     let extendedWarranty = createExtendedWarranty(for: item, baseWarranty: warranty)
                     generatedWarranties.append(extendedWarranty)
                 }
@@ -522,27 +521,18 @@ public final class ComprehensiveMockDataFactory {
         ]
         
         let months = warrantyLengths[item.category] ?? 12
-        let startDate = item.purchaseDate
+        let startDate = item.purchaseDate ?? Date()
         let endDate = Calendar.current.date(byAdding: .month, value: months, to: startDate)!
         
         return Warranty(
             itemId: item.id,
-            warrantyType: .manufacturer,
+            type: .manufacturer,
             provider: item.brand ?? "Manufacturer",
             startDate: startDate,
             endDate: endDate,
             coverageDetails: "Standard manufacturer warranty covering defects in materials and workmanship",
-            registrationNumber: "WR-\(item.serialNumber ?? UUID().uuidString.prefix(8))",
-            registrationDate: startDate,
-            extendedWarrantyAvailable: item.purchasePrice > 500,
-            documents: [],
-            notes: nil,
-            notificationSettings: WarrantyNotificationSettings(
-                enableNotifications: true,
-                daysBefore: [30, 7, 1]
-            ),
-            transferable: true,
-            remainingTransfers: item.category == .electronics ? 1 : nil
+            registrationNumber: "WR-\(item.serialNumber ?? String(UUID().uuidString.prefix(8)))",
+            isExtended: false
         )
     }
     
@@ -550,24 +540,19 @@ public final class ComprehensiveMockDataFactory {
         let extendedMonths = item.category == .electronics ? 24 : 36
         let startDate = baseWarranty.endDate
         let endDate = Calendar.current.date(byAdding: .month, value: extendedMonths, to: startDate)!
-        let cost = item.purchasePrice * 0.15 // 15% of item price
+        let cost = (item.purchasePrice ?? 0) * 0.15 // 15% of item price
         
         return Warranty(
             itemId: item.id,
-            warrantyType: .extended,
+            type: .extended,
             provider: "SquareTrade",
             startDate: startDate,
             endDate: endDate,
             coverageDetails: "Extended protection plan covering accidental damage and mechanical failures",
             cost: cost,
-            registrationNumber: "SQ-\(UUID().uuidString.prefix(10))",
-            registrationDate: item.purchaseDate,
-            extendedWarrantyAvailable: false,
-            documents: [],
-            claimHistory: [],
-            maxClaimAmount: item.purchasePrice,
-            deductible: 99.00,
-            transferable: false
+            registrationNumber: "SQ-\(String(UUID().uuidString.prefix(10)))",
+            isExtended: true,
+            cost: cost
         )
     }
     
@@ -576,7 +561,7 @@ public final class ComprehensiveMockDataFactory {
         // Group items by purchase date and create receipts
         let calendar = Calendar.current
         let itemsByPurchaseDate = Dictionary(grouping: generatedItems) { item in
-            calendar.startOfDay(for: item.purchaseDate)
+            calendar.startOfDay(for: item.purchaseDate ?? Date())
         }
         
         for (date, items) in itemsByPurchaseDate {
@@ -696,7 +681,7 @@ public final class ComprehensiveMockDataFactory {
         }
         
         // Valuable items policy for high-value items
-        let highValueItems = generatedItems.filter { $0.purchasePrice > 2000 }
+        let highValueItems = generatedItems.filter { ($0.purchasePrice ?? 0) > 2000 }
         if !highValueItems.isEmpty {
             let valuablesPolicy = InsurancePolicy(
                 policyNumber: "VAL-2024-789012",
@@ -724,7 +709,7 @@ public final class ComprehensiveMockDataFactory {
         
         // Electronics protection for specific items
         let electronicsToInsure = generatedItems.filter { 
-            $0.category == .electronics && $0.purchasePrice > 500 && $0.purchaseDate > Date().addingTimeInterval(-365 * 24 * 60 * 60)
+            $0.category == .electronics && ($0.purchasePrice ?? 0) > 500 && ($0.purchaseDate ?? Date()) > Date().addingTimeInterval(-365 * 24 * 60 * 60)
         }
         
         if !electronicsToInsure.isEmpty {
@@ -755,7 +740,6 @@ public final class ComprehensiveMockDataFactory {
                         claimAmount: 399,
                         approvedAmount: 250,
                         paidAmount: 250,
-                        status: .paid
                     )
                 ]
             )
@@ -779,32 +763,29 @@ public final class ComprehensiveMockDataFactory {
                     type: .maintenance,
                     date: Date().addingTimeInterval(-30 * 24 * 60 * 60),
                     provider: "\(item.brand ?? "Authorized") Service Center",
-                    cost: 0, // Covered under warranty
+                    technician: "John Smith",
                     description: "Annual maintenance and cleaning",
-                    technicianName: "John Smith",
-                    serviceOrderNumber: "SVC-\(Int.random(in: 100000...999999))",
-                    partsReplaced: ["Filter", "Seals"],
-                    nextServiceDate: Date().addingTimeInterval(335 * 24 * 60 * 60),
-                    underWarranty: true
+                    notes: "Parts replaced: Filter, Seals. Service Order: SVC-\(Int.random(in: 100000...999999))",
+                    cost: 0, // Covered under warranty
+                    wasUnderWarranty: true,
+                    nextServiceDate: Date().addingTimeInterval(335 * 24 * 60 * 60)
                 )
                 generatedServiceRecords.append(serviceRecord)
             }
             
             // Repairs for some items
-            if item.purchaseDate < Date().addingTimeInterval(-180 * 24 * 60 * 60) && Bool.random() {
+            if (item.purchaseDate ?? Date()) < Date().addingTimeInterval(-180 * 24 * 60 * 60) && Bool.random() {
                 let repairRecord = ServiceRecord(
                     itemId: item.id,
                     warrantyId: generatedWarranties.first { $0.itemId == item.id }?.id,
                     type: .repair,
                     date: Date().addingTimeInterval(-60 * 24 * 60 * 60),
                     provider: "TechFix Solutions",
-                    cost: item.category == .electronics ? 149.99 : 89.99,
+                    technician: "Maria Garcia",
                     description: item.category == .electronics ? "Power supply replacement" : "Motor bearing replacement",
-                    technicianName: "Maria Garcia",
-                    serviceOrderNumber: "REP-\(Int.random(in: 100000...999999))",
-                    partsReplaced: item.category == .electronics ? ["Power Supply Unit"] : ["Motor Bearing", "Belt"],
-                    underWarranty: false,
-                    invoiceNumber: "INV-\(Int.random(in: 10000...99999))"
+                    notes: "Parts replaced: \(item.category == .electronics ? "Power Supply Unit" : "Motor Bearing, Belt"). Service Order: REP-\(Int.random(in: 100000...999999)). Invoice: INV-\(Int.random(in: 10000...99999))",
+                    cost: item.category == .electronics ? 149.99 : 89.99,
+                    wasUnderWarranty: false
                 )
                 generatedServiceRecords.append(repairRecord)
             }
@@ -819,24 +800,11 @@ public final class ComprehensiveMockDataFactory {
         // Annual budget
         let annualBudget = Budget(
             name: "\(currentYear) Home Inventory Budget",
-            period: .annual,
             amount: 15000,
-            categories: [
-                .electronics: 5000,
-                .appliances: 3000,
-                .furniture: 3000,
-                .tools: 1000,
-                .collectibles: 2000,
-                .other: 1000
-            ],
+            period: .yearly,
+            category: nil, // All categories
             startDate: Calendar.current.date(from: DateComponents(year: currentYear, month: 1, day: 1))!,
-            endDate: Calendar.current.date(from: DateComponents(year: currentYear, month: 12, day: 31))!,
-            alerts: BudgetAlerts(
-                enableAlerts: true,
-                thresholds: [50, 75, 90, 100]
-            ),
-            rolloverUnused: true,
-            notes: "Annual budget for all home inventory purchases"
+            endDate: Calendar.current.date(from: DateComponents(year: currentYear, month: 12, day: 31))!
         )
         generatedBudgets.append(annualBudget)
         
@@ -844,21 +812,11 @@ public final class ComprehensiveMockDataFactory {
         for month in 1...currentMonth {
             let monthlyBudget = Budget(
                 name: "\(Calendar.current.monthSymbols[month-1]) \(currentYear) Budget",
-                period: .monthly,
                 amount: 1250,
-                categories: [
-                    .electronics: 500,
-                    .appliances: 300,
-                    .furniture: 200,
-                    .other: 250
-                ],
+                period: .monthly,
+                category: nil, // All categories
                 startDate: Calendar.current.date(from: DateComponents(year: currentYear, month: month, day: 1))!,
-                endDate: Calendar.current.date(from: DateComponents(year: currentYear, month: month, day: Calendar.current.range(of: .day, in: .month, for: Date())!.upperBound - 1))!,
-                alerts: BudgetAlerts(
-                    enableAlerts: true,
-                    thresholds: [75, 90, 100]
-                ),
-                parentBudgetId: annualBudget.id
+                endDate: Calendar.current.date(from: DateComponents(year: currentYear, month: month, day: Calendar.current.range(of: .day, in: .month, for: Date())!.upperBound - 1))!
             )
             generatedBudgets.append(monthlyBudget)
         }
@@ -866,13 +824,12 @@ public final class ComprehensiveMockDataFactory {
         // Category-specific budgets
         let electronicsBudget = Budget(
             name: "Electronics Budget \(currentYear)",
-            period: .annual,
+            description: "Dedicated budget for electronics and gadgets",
             amount: 5000,
-            categories: [.electronics: 5000],
+            period: .yearly,
+            category: .electronics,
             startDate: Calendar.current.date(from: DateComponents(year: currentYear, month: 1, day: 1))!,
-            endDate: Calendar.current.date(from: DateComponents(year: currentYear, month: 12, day: 31))!,
-            alerts: BudgetAlerts(enableAlerts: true, thresholds: [80, 100]),
-            notes: "Dedicated budget for electronics and gadgets"
+            endDate: Calendar.current.date(from: DateComponents(year: currentYear, month: 12, day: 31))!
         )
         generatedBudgets.append(electronicsBudget)
     }
