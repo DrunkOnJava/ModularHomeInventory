@@ -9,6 +9,7 @@ final class SpendingDashboardViewModel: ObservableObject {
     // Dependencies
     let itemRepository: any ItemRepository
     let receiptRepository: (any ReceiptRepository)?
+    let budgetRepository: (any BudgetRepository)?
     
     // Published properties
     @Published var totalSpent: Decimal = 0
@@ -23,9 +24,10 @@ final class SpendingDashboardViewModel: ObservableObject {
     
     let currency = "USD"
     
-    init(itemRepository: any ItemRepository, receiptRepository: (any ReceiptRepository)? = nil) {
+    init(itemRepository: any ItemRepository, receiptRepository: (any ReceiptRepository)? = nil, budgetRepository: (any BudgetRepository)? = nil) {
         self.itemRepository = itemRepository
         self.receiptRepository = receiptRepository
+        self.budgetRepository = budgetRepository
     }
     
     func loadData(for timeRange: SpendingDashboardView.TimeRange) async {

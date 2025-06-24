@@ -79,7 +79,8 @@ public final class ItemsModule: ItemsModuleAPI {
     public func makeSpendingDashboardView() -> AnyView {
         let viewModel = SpendingDashboardViewModel(
             itemRepository: dependencies.itemRepository,
-            receiptRepository: dependencies.receiptRepository
+            receiptRepository: dependencies.receiptRepository,
+            budgetRepository: dependencies.budgetRepository
         )
         return AnyView(
             NavigationView {
@@ -195,6 +196,19 @@ public final class ItemsModule: ItemsModuleAPI {
     public func makePurchasePatternsView() -> AnyView {
         return AnyView(
             PurchasePatternsView(
+                itemRepository: dependencies.itemRepository
+            )
+        )
+    }
+    
+    public func makeBudgetDashboardView() -> AnyView {
+        guard let budgetRepository = dependencies.budgetRepository else {
+            return AnyView(Text("Budget tracking not available"))
+        }
+        
+        return AnyView(
+            BudgetDashboardView(
+                budgetRepository: budgetRepository,
                 itemRepository: dependencies.itemRepository
             )
         )

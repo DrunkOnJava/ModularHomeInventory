@@ -59,6 +59,9 @@ public protocol ItemsModuleAPI: AnyObject {
     
     /// Creates the purchase patterns view
     func makePurchasePatternsView() -> AnyView
+    
+    /// Creates the budget dashboard view
+    func makeBudgetDashboardView() -> AnyView
 }
 
 /// Dependencies required by the Items module
@@ -81,6 +84,7 @@ public struct ItemsModuleDependencies {
     public let receiptRepository: (any ReceiptRepository)?
     public let scannerModule: (any ScannerModuleAPI)?
     public let receiptsModule: (any ReceiptsModuleAPI)?
+    public let budgetRepository: (any BudgetRepository)?
     
     public init(
         itemRepository: any ItemRepository,
@@ -100,7 +104,8 @@ public struct ItemsModuleDependencies {
         // categoryRepository: (any CategoryRepository)? = nil,
         receiptRepository: (any ReceiptRepository)? = nil,
         scannerModule: (any ScannerModuleAPI)? = nil,
-        receiptsModule: (any ReceiptsModuleAPI)? = nil
+        receiptsModule: (any ReceiptsModuleAPI)? = nil,
+        budgetRepository: (any BudgetRepository)? = nil
     ) {
         self.itemRepository = itemRepository
         self.locationRepository = locationRepository
@@ -120,5 +125,6 @@ public struct ItemsModuleDependencies {
         self.receiptRepository = receiptRepository
         self.scannerModule = scannerModule
         self.receiptsModule = receiptsModule
+        self.budgetRepository = budgetRepository
     }
 }

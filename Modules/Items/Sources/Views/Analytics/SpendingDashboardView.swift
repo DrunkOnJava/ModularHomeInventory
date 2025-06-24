@@ -57,6 +57,9 @@ struct SpendingDashboardView: View {
                 
                 // Purchase patterns link
                 purchasePatternsLink
+                
+                // Budget tracking link
+                budgetTrackingLink
             }
             .padding(AppSpacing.md)
         }
@@ -418,6 +421,43 @@ struct SpendingDashboardView: View {
             .cornerRadius(AppCornerRadius.large)
         }
         .buttonStyle(PlainButtonStyle())
+    }
+    
+    @ViewBuilder
+    private var budgetTrackingLink: some View {
+        if let budgetRepository = viewModel.budgetRepository {
+            NavigationLink(destination: BudgetDashboardView(
+                budgetRepository: budgetRepository,
+                itemRepository: viewModel.itemRepository
+            )) {
+            HStack(spacing: AppSpacing.md) {
+                Image(systemName: "chart.pie.fill")
+                    .font(.system(size: 44))
+                    .foregroundStyle(AppColors.primary)
+                
+                VStack(alignment: .leading, spacing: AppSpacing.xs) {
+                    Text("Budget Tracking")
+                        .textStyle(.headlineMedium)
+                        .foregroundStyle(AppColors.textPrimary)
+                    
+                    Text("Set and monitor spending budgets")
+                        .textStyle(.bodyMedium)
+                        .foregroundStyle(AppColors.textSecondary)
+                }
+                
+                Spacer()
+                
+                Image(systemName: "chevron.right")
+                    .font(.system(size: 16))
+                    .foregroundStyle(AppColors.textTertiary)
+            }
+            .padding(AppSpacing.lg)
+            .background(AppColors.surface)
+            .cornerRadius(AppCornerRadius.large)
+        }
+        .buttonStyle(PlainButtonStyle())
+            }
+        }
     }
 }
 
