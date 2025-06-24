@@ -53,8 +53,10 @@ struct ItemsListView: View {
                 } else {
                     // Receipts view
                     if let receiptsView = viewModel.makeReceiptsListView() {
-                        receiptsView
-                            .background(AppColors.background)
+                        NavigationView {
+                            receiptsView
+                                .background(AppColors.background)
+                        }
                     }
                 }
             }
