@@ -148,7 +148,7 @@ struct DepreciationReportView: View {
                         .foregroundStyle(.secondary)
                     
                     if let report = viewModel.currentReport {
-                        Text("$\(report.totalCurrentValue.formatted())")
+                        Text(report.totalCurrentValue, format: .currency(code: "USD").precision(.fractionLength(2)))
                             .font(.system(size: 32, weight: .bold, design: .rounded))
                         
                         HStack(spacing: 4) {
@@ -178,14 +178,14 @@ struct DepreciationReportView: View {
                 HStack(spacing: 16) {
                     MetricBox(
                         label: "Original Value",
-                        value: "$\(report.totalOriginalValue.formatted())",
+                        value: report.totalOriginalValue.asCurrency(),
                         icon: "dollarsign.circle",
                         color: .blue
                     )
                     
                     MetricBox(
                         label: "Depreciation",
-                        value: "$\(report.totalDepreciation.formatted())",
+                        value: report.totalDepreciation.asCurrency(),
                         icon: "chart.line.downtrend.xyaxis",
                         color: .red
                     )
@@ -427,7 +427,7 @@ struct TopDepreciatingItemsCard: View {
                         Spacer()
                         
                         VStack(alignment: .trailing, spacing: 2) {
-                            Text("-$\(item.depreciationAmount.formatted())")
+                            Text("-\(item.depreciationAmount.asCurrency())")
                                 .font(.system(size: 14, weight: .semibold))
                                 .foregroundStyle(.red)
                             Text("\(Int(item.depreciationPercentage))% depreciated")
@@ -469,7 +469,7 @@ struct CategoryDepreciationCard: View {
                     Text("Original")
                         .font(.caption)
                         .foregroundStyle(.secondary)
-                    Text("$\(summary.totalOriginalValue.formatted())")
+                    Text(summary.totalOriginalValue, format: .currency(code: "USD").precision(.fractionLength(2)))
                         .font(.system(size: 14, weight: .semibold))
                 }
                 
@@ -481,7 +481,7 @@ struct CategoryDepreciationCard: View {
                     Text("Current")
                         .font(.caption)
                         .foregroundStyle(.secondary)
-                    Text("$\(summary.totalCurrentValue.formatted())")
+                    Text(summary.totalCurrentValue, format: .currency(code: "USD").precision(.fractionLength(2)))
                         .font(.system(size: 14, weight: .semibold))
                 }
                 
@@ -526,7 +526,7 @@ struct ItemDepreciationRow: View {
             Spacer()
             
             VStack(alignment: .trailing, spacing: 2) {
-                Text("$\(item.currentValue.formatted())")
+                Text(item.currentValue, format: .currency(code: "USD").precision(.fractionLength(2)))
                     .font(.system(size: 15, weight: .semibold))
                     .foregroundStyle(.primary)
                 
@@ -620,11 +620,11 @@ struct DepreciationScheduleTable: View {
                         HStack(spacing: 0) {
                             Text("\(entry.year)")
                                 .frame(width: 60, alignment: .leading)
-                            Text("$\(entry.depreciationAmount.formatted())")
+                            Text(entry.depreciationAmount, format: .currency(code: "USD").precision(.fractionLength(2)))
                                 .frame(width: 100, alignment: .trailing)
-                            Text("$\(entry.accumulatedDepreciation.formatted())")
+                            Text(entry.accumulatedDepreciation, format: .currency(code: "USD").precision(.fractionLength(2)))
                                 .frame(width: 100, alignment: .trailing)
-                            Text("$\(entry.bookValue.formatted())")
+                            Text(entry.bookValue, format: .currency(code: "USD").precision(.fractionLength(2)))
                                 .frame(width: 100, alignment: .trailing)
                                 .foregroundStyle(AppColors.primary)
                                 .fontWeight(.medium)
@@ -676,9 +676,9 @@ struct ItemDepreciationDetailView: View {
                     
                     // Value Summary
                     VStack(spacing: 16) {
-                        ValueRow(label: "Purchase Price", value: "$\(item.purchasePrice.formatted())")
-                        ValueRow(label: "Current Value", value: "$\(item.currentValue.formatted())", valueColor: AppColors.primary)
-                        ValueRow(label: "Total Depreciation", value: "-$\(item.depreciationAmount.formatted())", valueColor: .red)
+                        ValueRow(label: "Purchase Price", value: item.purchasePrice.asCurrency())
+                        ValueRow(label: "Current Value", value: item.currentValue.asCurrency(), valueColor: AppColors.primary)
+                        ValueRow(label: "Total Depreciation", value: "-\(item.depreciationAmount.asCurrency())", valueColor: .red)
                         ValueRow(label: "Depreciation Rate", value: "\(Int(item.depreciationPercentage))%")
                         
                         Divider()
@@ -692,7 +692,7 @@ struct ItemDepreciationDetailView: View {
                         }
                         
                         if let salvageValue = item.salvageValue {
-                            ValueRow(label: "Salvage Value", value: "$\(salvageValue.formatted())")
+                            ValueRow(label: "Salvage Value", value: salvageValue.asCurrency())
                         }
                     }
                     .padding()
@@ -849,7 +849,25 @@ final class DepreciationReportViewModel: ObservableObject {
     }
     
     func exportReport() async {
-        // TODO: Implement report export functionality
-        print("Export depreciation report not yet implemented")
+        guard let report = currentReport else { return }
+        
+        do {
+            let data = try await Core.AnalyticsExportService.shared.exportDepreciationReport(
+                report,
+                format: .csv
+            )
+            
+            let filename = "DepreciationReport_\(Date().formatted(date: .numeric, time: .omitted).replacingOccurrences(of: "/", with: "-"))"
+            let fileURL = try Core.AnalyticsExportService.shared.saveToFile(
+                data: data,
+                filename: filename,
+                format: .csv
+            )
+            
+            print("Report exported to: \(fileURL)")
+            // In a real app, would present share sheet or show success message
+        } catch {
+            print("Export failed: \(error)")
+        }
     }
 }

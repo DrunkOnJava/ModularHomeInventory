@@ -195,7 +195,7 @@ public final class BudgetService {
             budgetId: budget.id,
             type: .exceeded,
             title: "Budget Exceeded",
-            message: "You've exceeded your \(budget.name) budget by \((status.spent - budget.amount).formatted())",
+            message: "You've exceeded your \(budget.name) budget by \((status.spent - budget.amount).asCurrency())",
             percentageUsed: status.percentageUsed,
             amountSpent: status.spent,
             amountRemaining: status.remaining
@@ -209,7 +209,7 @@ public final class BudgetService {
             budgetId: budget.id,
             type: .projected,
             title: "Projected to Exceed Budget",
-            message: "At current spending rate, you'll exceed your \(budget.name) budget by \((projected - budget.amount).formatted())",
+            message: "At current spending rate, you'll exceed your \(budget.name) budget by \((projected - budget.amount).asCurrency())",
             percentageUsed: status.percentageUsed,
             amountSpent: status.spent,
             amountRemaining: status.remaining

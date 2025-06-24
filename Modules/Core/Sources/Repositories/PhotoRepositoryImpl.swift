@@ -11,9 +11,9 @@ public final class PhotoRepositoryImpl: PhotoRepository {
         self.storage = storage
     }
     
-    public func savePhoto(_ photo: Photo, image: UIImage) async throws {
+    public func savePhoto(_ photo: Photo, imageData: Data) async throws {
         // Save image to storage
-        _ = try await storage.savePhoto(image, for: photo.id)
+        _ = try await storage.savePhoto(imageData, for: photo.id)
         
         // Cache the photo metadata
         cacheQueue.async(flags: .barrier) {
@@ -33,8 +33,8 @@ public final class PhotoRepositoryImpl: PhotoRepository {
         // Load images for each photo
         for i in 0..<photos.count {
             do {
-                let image = try await storage.loadPhoto(for: photos[i].id)
-                photos[i].image = image
+                let imageData = try await storage.loadPhoto(for: photos[i].id)
+                photos[i].imageData = imageData
             } catch {
                 print("Failed to load image for photo \(photos[i].id): \(error)")
             }
@@ -51,8 +51,8 @@ public final class PhotoRepositoryImpl: PhotoRepository {
         if photo != nil {
             // Load the actual image
             do {
-                let image = try await storage.loadPhoto(for: id)
-                photo?.image = image
+                let imageData = try await storage.loadPhoto(for: id)
+                photo?.imageData = imageData
             } catch {
                 print("Failed to load image for photo \(id): \(error)")
             }
@@ -118,30 +118,26 @@ public final class FilePhotoStorage: PhotoStorageProtocol {
         try FileManager.default.createDirectory(at: thumbnailsDirectory, withIntermediateDirectories: true)
     }
     
-    public func savePhoto(_ image: UIImage, for photoId: UUID) async throws -> URL {
+    public func savePhoto(_ imageData: Data, for photoId: UUID) async throws -> URL {
         let photoURL = photosDirectory.appendingPathComponent("\(photoId.uuidString).jpg")
         
-        // Compress and save the image
-        guard let imageData = image.jpegData(compressionQuality: 0.8) else {
-            throw PhotoStorageError.compressionFailed
-        }
-        
+        // Save the image data
         try imageData.write(to: photoURL)
         
         // Generate and save thumbnail
-        let thumbnail = try await generateThumbnail(image, size: CGSize(width: 200, height: 200))
-        let thumbnailURL = thumbnailsDirectory.appendingPathComponent("\(photoId.uuidString).jpg")
-        
-        guard let thumbnailData = thumbnail.jpegData(compressionQuality: 0.7) else {
-            throw PhotoStorageError.compressionFailed
+        guard let image = UIImage(data: imageData) else {
+            throw PhotoStorageError.invalidImageData
         }
+        
+        let thumbnailData = try await generateThumbnail(imageData, size: CGSize(width: 200, height: 200))
+        let thumbnailURL = thumbnailsDirectory.appendingPathComponent("\(photoId.uuidString).jpg")
         
         try thumbnailData.write(to: thumbnailURL)
         
         return photoURL
     }
     
-    public func loadPhoto(for photoId: UUID) async throws -> UIImage {
+    public func loadPhoto(for photoId: UUID) async throws -> Data {
         let photoURL = photosDirectory.appendingPathComponent("\(photoId.uuidString).jpg")
         
         guard FileManager.default.fileExists(atPath: photoURL.path) else {
@@ -149,12 +145,7 @@ public final class FilePhotoStorage: PhotoStorageProtocol {
         }
         
         let imageData = try Data(contentsOf: photoURL)
-        
-        guard let image = UIImage(data: imageData) else {
-            throw PhotoStorageError.invalidImageData
-        }
-        
-        return image
+        return imageData
     }
     
     public func deletePhoto(for photoId: UUID) async throws {
@@ -170,14 +161,25 @@ public final class FilePhotoStorage: PhotoStorageProtocol {
         }
     }
     
-    public func generateThumbnail(_ image: UIImage, size: CGSize) async throws -> UIImage {
-        return await withCheckedContinuation { continuation in
+    public func generateThumbnail(_ imageData: Data, size: CGSize) async throws -> Data {
+        return try await withCheckedThrowingContinuation { continuation in
             DispatchQueue.global(qos: .userInitiated).async {
+                guard let image = UIImage(data: imageData) else {
+                    continuation.resume(throwing: PhotoStorageError.invalidImageData)
+                    return
+                }
+                
                 let renderer = UIGraphicsImageRenderer(size: size)
                 let thumbnail = renderer.image { context in
                     image.draw(in: CGRect(origin: .zero, size: size))
                 }
-                continuation.resume(returning: thumbnail)
+                
+                guard let thumbnailData = thumbnail.jpegData(compressionQuality: 0.7) else {
+                    continuation.resume(throwing: PhotoStorageError.compressionFailed)
+                    return
+                }
+                
+                continuation.resume(returning: thumbnailData)
             }
         }
     }

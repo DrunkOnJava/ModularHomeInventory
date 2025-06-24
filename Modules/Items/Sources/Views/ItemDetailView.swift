@@ -661,7 +661,8 @@ private struct PhotoThumbnailButton: View {
     
     var body: some View {
         Button(action: action) {
-            if let image = photo.image {
+            if let imageData = photo.imageData,
+               let image = UIImage(data: imageData) {
                 Image(uiImage: image)
                     .resizable()
                     .aspectRatio(contentMode: .fill)
@@ -852,7 +853,10 @@ final class ItemDetailViewModel: ObservableObject {
                     caption: "Photo \(index + 1)",
                     sortOrder: index
                 )
-                photo.image = UIImage(systemName: "photo")?.withTintColor(.systemGray3, renderingMode: .alwaysOriginal)
+                if let placeholderImage = UIImage(systemName: "photo")?.withTintColor(.systemGray3, renderingMode: .alwaysOriginal),
+                   let imageData = placeholderImage.pngData() {
+                    photo.imageData = imageData
+                }
                 return photo
             }
         }

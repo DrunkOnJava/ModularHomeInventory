@@ -549,7 +549,6 @@ public final class ComprehensiveMockDataFactory {
             startDate: startDate,
             endDate: endDate,
             coverageDetails: "Extended protection plan covering accidental damage and mechanical failures",
-            cost: cost,
             registrationNumber: "SQ-\(String(UUID().uuidString.prefix(10)))",
             isExtended: true,
             cost: cost
@@ -688,7 +687,9 @@ public final class ComprehensiveMockDataFactory {
                 provider: "Chubb",
                 type: .valuable,
                 itemIds: Set(highValueItems.map { $0.id }),
-                coverageAmount: highValueItems.reduce(Decimal(0)) { $0 + $1.currentValue },
+                coverageAmount: highValueItems.reduce(into: Decimal(0)) { result, item in
+                    result += item.value ?? Decimal(0)
+                },
                 deductible: 500,
                 premium: PremiumDetails(
                     amount: 600,

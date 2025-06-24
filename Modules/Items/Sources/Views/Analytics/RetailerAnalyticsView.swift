@@ -288,7 +288,7 @@ struct TopStoresChart: View {
                     AxisGridLine()
                     AxisValueLabel {
                         if let amount = value.as(Double.self) {
-                            Text("$\(Int(amount))")
+                            Text(Int(amount), format: .currency(code: "USD").precision(.fractionLength(0)))
                                 .font(.caption)
                         }
                     }
@@ -382,7 +382,7 @@ struct RankingsList: View {
     func formattedValue(_ value: Decimal, metric: Core.RankingMetric) -> String {
         switch metric {
         case .totalSpent, .averageTransaction:
-            return "$\(value.formatted())"
+            return value.asCurrency()
         case .itemCount:
             return "\(Int(truncating: NSDecimalNumber(decimal: value))) items"
         case .frequency:
@@ -445,7 +445,7 @@ struct CategoryLeaderCard: View {
                     .foregroundStyle(.secondary)
             }
             
-            Text("~$\(leader.averagePrice.formatted())")
+            Text("~\(leader.averagePrice.asCurrency())")
                 .font(.caption)
                 .foregroundStyle(.secondary)
         }

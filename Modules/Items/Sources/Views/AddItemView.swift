@@ -501,7 +501,10 @@ final class AddItemViewModel: ObservableObject {
                     itemId: newItem.id,
                     sortOrder: index
                 )
-                try await photoRepository.savePhoto(photoModel, image: photo)
+                guard let imageData = photo.jpegData(compressionQuality: 0.8) else {
+                    throw NSError(domain: "AddItemView", code: 1, userInfo: [NSLocalizedDescriptionKey: "Failed to convert image to data"])
+                }
+                try await photoRepository.savePhoto(photoModel, imageData: imageData)
             }
             
             await MainActor.run {

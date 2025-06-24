@@ -243,7 +243,7 @@ struct MonthlySpendingChart: View {
                     AxisGridLine()
                     AxisValueLabel {
                         if let amount = value.as(Double.self) {
-                            Text("$\(Int(amount))")
+                            Text(Int(amount), format: .currency(code: "USD").precision(.fractionLength(0)))
                                 .font(.caption)
                         }
                     }
@@ -335,7 +335,7 @@ struct StoreCategoryRow: View {
                 
                 // Amount and Percentage
                 VStack(alignment: .trailing, spacing: 2) {
-                    Text("$\(category.totalSpent.formatted())")
+                    Text(category.totalSpent, format: .currency(code: "USD").precision(.fractionLength(2)))
                         .font(.system(size: 14, weight: .medium, design: .rounded))
                     
                     Text("\(Int(category.percentage))%")
@@ -401,7 +401,7 @@ struct RecentItemCard: View {
             
             // Price
             if let price = item.purchasePrice {
-                Text("$\(price.formatted())")
+                Text(price, format: .currency(code: "USD").precision(.fractionLength(2)))
                     .font(.system(size: 13, weight: .semibold, design: .rounded))
                     .foregroundStyle(AppColors.primary)
             }
@@ -447,7 +447,7 @@ struct StoreStatsGrid: View {
                     
                     StatCard(
                         title: "Avg Monthly",
-                        value: "$\(Int(avgMonthly))",
+                        value: Int(avgMonthly).asCurrency(),
                         icon: "chart.line.uptrend.xyaxis",
                         color: .blue
                     )

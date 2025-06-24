@@ -62,7 +62,7 @@ struct PurchasePatternsView: View {
                         }
                         
                         Button(action: {
-                            // Export functionality
+                            Task { await viewModel.exportPatterns() }
                         }) {
                             Label("Export Report", systemImage: "square.and.arrow.up")
                         }
@@ -646,35 +646,676 @@ final class PurchasePatternsViewModel: ObservableObject {
             await analyzePatterns(days: 365)
         }
     }
+    
+    func exportPatterns() async {
+        guard let pattern = currentPattern else { return }
+        
+        do {
+            let data = try await Core.AnalyticsExportService.shared.exportPurchasePatterns(
+                pattern,
+                format: .csv
+            )
+            
+            let filename = "PurchasePatterns_\(Date().formatted(date: .numeric, time: .omitted).replacingOccurrences(of: "/", with: "-"))"
+            let fileURL = try Core.AnalyticsExportService.shared.saveToFile(
+                data: data,
+                filename: filename,
+                format: .csv
+            )
+            
+            print("Patterns exported to: \(fileURL)")
+            // In a real app, would present share sheet or show success message
+        } catch {
+            print("Export failed: \(error)")
+        }
+    }
 }
 
 // Placeholder implementations for other detail views
 struct CategoryPreferenceDetail: View {
     let pattern: Core.CategoryPreference
-    var body: some View { Text("Category Preference Details") }
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 16) {
+            // Header
+            HStack {
+                Image(systemName: pattern.category.icon)
+                    .font(.largeTitle)
+                    .foregroundStyle(Color(hex: pattern.category.color))
+                
+                VStack(alignment: .leading, spacing: 4) {
+                    Text(pattern.category.rawValue)
+                        .font(.title2)
+                        .fontWeight(.semibold)
+                    
+                    Text("\(Int(pattern.percentageOfTotal))% of total spending")
+                        .font(.subheadline)
+                        .foregroundStyle(.secondary)
+                }
+                
+                Spacer()
+            }
+            
+            // Key Metrics
+            VStack(alignment: .leading, spacing: 12) {
+                DetailRow(label: "Total Items", value: "\(pattern.purchaseCount)")
+                DetailRow(label: "Total Spent", value: pattern.totalSpent.asCurrency())
+                DetailRow(label: "Average Item Price", value: pattern.averagePrice.asCurrency())
+                DetailRow(label: "Purchase Frequency", value: pattern.frequency.rawValue)
+            }
+            .padding()
+            .background(Color(.systemGray6))
+            .cornerRadius(12)
+            
+            // Top Brands in Category
+            if !pattern.topBrands.isEmpty {
+                VStack(alignment: .leading, spacing: 12) {
+                    Text("Preferred Brands")
+                        .font(.headline)
+                    
+                    ForEach(pattern.topBrands, id: \.self) { brand in
+                        HStack {
+                            Label(brand, systemImage: "star.fill")
+                                .font(.system(size: 15))
+                                .foregroundStyle(.yellow)
+                            Spacer()
+                        }
+                        .padding(.vertical, 4)
+                    }
+                }
+                .padding()
+                .background(Color(.systemGray6))
+                .cornerRadius(12)
+            }
+            
+            // Growth Trend
+            if pattern.growthTrend != .stable {
+                HStack {
+                    Image(systemName: pattern.growthTrend.icon)
+                        .foregroundStyle(Color(hex: pattern.growthTrend.color))
+                    Text("Spending in this category is \\(pattern.growthTrend.rawValue.lowercased())")
+                        .font(.system(size: 14, weight: .medium))
+                }
+                .padding()
+                .background(Color(hex: pattern.growthTrend.color).opacity(0.1))
+                .cornerRadius(12)
+            }
+        }
+    }
 }
 
 struct BrandLoyaltyDetail: View {
     let pattern: Core.BrandLoyalty
-    var body: some View { Text("Brand Loyalty Details") }
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 16) {
+            // Header
+            VStack(alignment: .leading, spacing: 8) {
+                Text(pattern.brand)
+                    .font(.title2)
+                    .fontWeight(.semibold)
+                
+                HStack {
+                    // Loyalty Score Badge
+                    HStack(spacing: 4) {
+                        Image(systemName: "star.fill")
+                            .font(.system(size: 14))
+                        Text("\(Int(pattern.loyaltyScore * 100))% Loyalty")
+                            .font(.system(size: 14, weight: .medium))
+                    }
+                    .padding(.horizontal, 12)
+                    .padding(.vertical, 6)
+                    .background(loyaltyColor(pattern.loyaltyScore))
+                    .foregroundStyle(.white)
+                    .cornerRadius(20)
+                    
+                    Spacer()
+                }
+            }
+            
+            // Statistics
+            VStack(alignment: .leading, spacing: 12) {
+                DetailRow(label: "Total Purchases", value: "\(pattern.purchaseCount)")
+                DetailRow(label: "Total Spent", value: pattern.totalSpent.asCurrency())
+                DetailRow(label: "Average Price", value: pattern.averagePrice.asCurrency())
+                DetailRow(label: "Last Purchase", value: pattern.lastPurchaseDate.formatted(date: .abbreviated, time: .omitted))
+            }
+            .padding()
+            .background(Color(.systemGray6))
+            .cornerRadius(12)
+            
+            // Categories Purchased
+            if !pattern.categories.isEmpty {
+                VStack(alignment: .leading, spacing: 12) {
+                    Text("Categories")
+                        .font(.headline)
+                    
+                    LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 8) {
+                        ForEach(pattern.categories, id: \.self) { category in
+                            HStack {
+                                Image(systemName: category.icon)
+                                    .font(.system(size: 16))
+                                    .foregroundStyle(Color(hex: category.color))
+                                Text(category.rawValue)
+                                    .font(.system(size: 14))
+                                    .lineLimit(1)
+                            }
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .padding(8)
+                            .background(Color(.systemGray5))
+                            .cornerRadius(8)
+                        }
+                    }
+                }
+            }
+            
+            // Alternative Brands
+            if !pattern.alternativeBrands.isEmpty {
+                VStack(alignment: .leading, spacing: 12) {
+                    Text("Also Purchased")
+                        .font(.headline)
+                    
+                    ForEach(pattern.alternativeBrands, id: \.self) { brand in
+                        Text(brand)
+                            .font(.system(size: 14))
+                            .padding(.vertical, 2)
+                    }
+                }
+                .padding()
+                .background(Color(.systemGray6))
+                .cornerRadius(12)
+            }
+        }
+    }
+    
+    func loyaltyColor(_ score: Double) -> Color {
+        switch score {
+        case 0.8...1.0: return .green
+        case 0.6..<0.8: return .blue
+        case 0.4..<0.6: return .orange
+        default: return .red
+        }
+    }
 }
 
 struct PriceRangeDetail: View {
     let pattern: Core.PriceRangePattern
-    var body: some View { Text("Price Range Details") }
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 16) {
+            // Header
+            VStack(alignment: .leading, spacing: 8) {
+                HStack {
+                    Image(systemName: pattern.category.icon)
+                        .font(.largeTitle)
+                        .foregroundStyle(Color(hex: pattern.category.color))
+                    
+                    Text(pattern.category.rawValue)
+                        .font(.title2)
+                        .fontWeight(.semibold)
+                }
+                
+                Text("Price Range Analysis")
+                    .font(.subheadline)
+                    .foregroundStyle(.secondary)
+            }
+            
+            // Price Range Visual
+            VStack(alignment: .leading, spacing: 8) {
+                HStack {
+                    VStack(alignment: .leading) {
+                        Text("Min")
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+                        Text(pattern.minPrice.asCurrency())
+                            .font(.system(size: 16, weight: .semibold))
+                    }
+                    
+                    Spacer()
+                    
+                    VStack(alignment: .center) {
+                        Text("Sweet Spot")
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+                        Text(pattern.sweetSpot.asCurrency())
+                            .font(.system(size: 20, weight: .bold))
+                            .foregroundStyle(AppColors.primary)
+                    }
+                    
+                    Spacer()
+                    
+                    VStack(alignment: .trailing) {
+                        Text("Max")
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+                        Text(pattern.maxPrice.asCurrency())
+                            .font(.system(size: 16, weight: .semibold))
+                    }
+                }
+                .padding()
+                
+                // Visual bar showing distribution
+                GeometryReader { geometry in
+                    ZStack(alignment: .leading) {
+                        Rectangle()
+                            .fill(Color(.systemGray5))
+                            .frame(height: 8)
+                            .cornerRadius(4)
+                        
+                        Rectangle()
+                            .fill(AppColors.primary)
+                            .frame(
+                                width: geometry.size.width * sweetSpotPosition(pattern),
+                                height: 8
+                            )
+                            .cornerRadius(4)
+                        
+                        Circle()
+                            .fill(AppColors.primary)
+                            .frame(width: 16, height: 16)
+                            .offset(x: geometry.size.width * sweetSpotPosition(pattern) - 8)
+                    }
+                }
+                .frame(height: 16)
+            }
+            .padding()
+            .background(Color(.systemGray6))
+            .cornerRadius(12)
+            
+            // Distribution Stats
+            VStack(alignment: .leading, spacing: 12) {
+                DetailRow(label: "Items in Range", value: "\(pattern.itemCount)")
+                DetailRow(label: "Average Price", value: pattern.averagePrice.asCurrency())
+                DetailRow(label: "Price Sensitivity", value: pattern.sensitivity.rawValue)
+            }
+            .padding()
+            .background(Color(.systemGray6))
+            .cornerRadius(12)
+            
+            // Distribution Breakdown
+            if pattern.distribution.count > 0 {
+                VStack(alignment: .leading, spacing: 12) {
+                    Text("Price Distribution")
+                        .font(.headline)
+                    
+                    ForEach(Array(pattern.distribution.sorted(by: { $0.key < $1.key })), id: \.key) { range, percentage in
+                        HStack {
+                            Text(range)
+                                .font(.system(size: 14))
+                            Spacer()
+                            Text("\(Int(percentage))%")
+                                .font(.system(size: 14, weight: .medium))
+                                .foregroundStyle(.secondary)
+                        }
+                    }
+                }
+                .padding()
+                .background(Color(.systemGray6))
+                .cornerRadius(12)
+            }
+        }
+    }
+    
+    func sweetSpotPosition(_ pattern: Core.PriceRangePattern) -> Double {
+        let range = NSDecimalNumber(decimal: pattern.maxPrice - pattern.minPrice).doubleValue
+        let position = NSDecimalNumber(decimal: pattern.sweetSpot - pattern.minPrice).doubleValue
+        return range > 0 ? position / range : 0.5
+    }
 }
 
 struct ShoppingTimeDetail: View {
     let pattern: Core.ShoppingTimePattern
-    var body: some View { Text("Shopping Time Details") }
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 16) {
+            // Header
+            VStack(alignment: .leading, spacing: 8) {
+                HStack {
+                    Image(systemName: "clock.fill")
+                        .font(.largeTitle)
+                        .foregroundStyle(.indigo)
+                    
+                    VStack(alignment: .leading) {
+                        Text("Shopping Time Patterns")
+                            .font(.title2)
+                            .fontWeight(.semibold)
+                        
+                        Text("\(pattern.preferredDayOfWeek)s • \(pattern.preferredTimeOfDay.rawValue)")
+                            .font(.subheadline)
+                            .foregroundStyle(.secondary)
+                    }
+                }
+            }
+            
+            // Time Preferences
+            VStack(alignment: .leading, spacing: 12) {
+                DetailRow(label: "Preferred Day", value: pattern.preferredDayOfWeek)
+                DetailRow(label: "Preferred Time", value: pattern.preferredTimeOfDay.rawValue)
+                DetailRow(label: "Shopping Style", value: pattern.weekendVsWeekday.rawValue)
+                DetailRow(label: "Total Purchases", value: "\(pattern.purchaseCount)")
+            }
+            .padding()
+            .background(Color(.systemGray6))
+            .cornerRadius(12)
+            
+            // Time Distribution Chart
+            VStack(alignment: .leading, spacing: 12) {
+                Text("Shopping Activity by Hour")
+                    .font(.headline)
+                
+                // Simple bar chart for hourly distribution
+                if let hourlyData = pattern.hourlyDistribution {
+                    VStack(spacing: 4) {
+                        ForEach(Array(hourlyData.sorted(by: { $0.key < $1.key })).prefix(5), id: \.key) { hour, count in
+                            HStack {
+                                Text(formatHour(hour))
+                                    .font(.caption)
+                                    .frame(width: 60, alignment: .trailing)
+                                
+                                GeometryReader { geometry in
+                                    Rectangle()
+                                        .fill(AppColors.primary)
+                                        .frame(
+                                            width: geometry.size.width * (Double(count) / Double(hourlyData.values.max() ?? 1)),
+                                            height: 20
+                                        )
+                                        .cornerRadius(4)
+                                }
+                                .frame(height: 20)
+                                
+                                Text("\(count)")
+                                    .font(.caption)
+                                    .foregroundStyle(.secondary)
+                            }
+                        }
+                    }
+                }
+            }
+            .padding()
+            .background(Color(.systemGray6))
+            .cornerRadius(12)
+            
+            // Insights
+            VStack(alignment: .leading, spacing: 12) {
+                Text("Insights")
+                    .font(.headline)
+                
+                if pattern.isConsistent {
+                    Label("You have consistent shopping habits", systemImage: "checkmark.circle.fill")
+                        .font(.system(size: 14))
+                        .foregroundStyle(.green)
+                }
+                
+                if pattern.weekendVsWeekday == .weekend {
+                    Label("You prefer weekend shopping trips", systemImage: "calendar.badge.clock")
+                        .font(.system(size: 14))
+                        .foregroundStyle(.blue)
+                }
+                
+                if let peakHour = pattern.peakShoppingHour {
+                    Label("Peak shopping hour: \(formatHour(peakHour))", systemImage: "flame.fill")
+                        .font(.system(size: 14))
+                        .foregroundStyle(.orange)
+                }
+            }
+            .padding()
+            .background(Color(.systemGray6))
+            .cornerRadius(12)
+        }
+    }
+    
+    func formatHour(_ hour: Int) -> String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "ha"
+        let date = Calendar.current.date(from: DateComponents(hour: hour)) ?? Date()
+        return formatter.string(from: date)
+    }
 }
 
 struct RetailerPreferenceDetail: View {
     let pattern: Core.RetailerPreference
-    var body: some View { Text("Retailer Preference Details") }
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 16) {
+            // Header
+            VStack(alignment: .leading, spacing: 8) {
+                HStack {
+                    Image(systemName: "storefront.fill")
+                        .font(.largeTitle)
+                        .foregroundStyle(.pink)
+                    
+                    VStack(alignment: .leading) {
+                        Text(pattern.retailer)
+                            .font(.title2)
+                            .fontWeight(.semibold)
+                        
+                        HStack {
+                            Image(systemName: "number.circle.fill")
+                                .font(.system(size: 14))
+                            Text("#\(pattern.loyaltyRank) Preferred Store")
+                                .font(.system(size: 14, weight: .medium))
+                        }
+                        .foregroundStyle(.secondary)
+                    }
+                }
+            }
+            
+            // Key Metrics
+            LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 12) {
+                MetricCard(
+                    title: "Visits",
+                    value: "\(pattern.visitCount)",
+                    icon: "cart.fill",
+                    color: .blue
+                )
+                
+                MetricCard(
+                    title: "Total Spent",
+                    value: pattern.totalSpent.asCurrency(),
+                    icon: "dollarsign.circle.fill",
+                    color: .green
+                )
+                
+                MetricCard(
+                    title: "Avg Basket",
+                    value: pattern.averageBasketSize.asCurrency(),
+                    icon: "bag.fill",
+                    color: .orange
+                )
+                
+                MetricCard(
+                    title: "Frequency",
+                    value: pattern.frequency.rawValue,
+                    icon: "calendar",
+                    color: .purple
+                )
+            }
+            
+            // Categories at this Store
+            if !pattern.categoriesPurchased.isEmpty {
+                VStack(alignment: .leading, spacing: 12) {
+                    Text("What You Buy Here")
+                        .font(.headline)
+                    
+                    ScrollView(.horizontal, showsIndicators: false) {
+                        HStack(spacing: 8) {
+                            ForEach(pattern.categoriesPurchased, id: \.self) { category in
+                                HStack {
+                                    Image(systemName: category.icon)
+                                        .font(.system(size: 14))
+                                    Text(category.rawValue)
+                                        .font(.system(size: 13))
+                                }
+                                .padding(.horizontal, 12)
+                                .padding(.vertical, 6)
+                                .background(Color(hex: category.color).opacity(0.2))
+                                .foregroundStyle(Color(hex: category.color))
+                                .cornerRadius(16)
+                            }
+                        }
+                    }
+                }
+            }
+            
+            // Visit Timeline
+            VStack(alignment: .leading, spacing: 12) {
+                Text("Recent Visits")
+                    .font(.headline)
+                
+                if let lastVisit = pattern.lastVisitDate {
+                    DetailRow(
+                        label: "Last Visit",
+                        value: lastVisit.formatted(date: .abbreviated, time: .omitted)
+                    )
+                }
+                
+                if let firstVisit = pattern.firstVisitDate {
+                    DetailRow(
+                        label: "Customer Since",
+                        value: firstVisit.formatted(date: .abbreviated, time: .omitted)
+                    )
+                }
+            }
+            .padding()
+            .background(Color(.systemGray6))
+            .cornerRadius(12)
+        }
+    }
+    
+    struct MetricCard: View {
+        let title: String
+        let value: String
+        let icon: String
+        let color: Color
+        
+        var body: some View {
+            VStack(spacing: 8) {
+                Image(systemName: icon)
+                    .font(.system(size: 24))
+                    .foregroundStyle(color)
+                
+                Text(value)
+                    .font(.system(size: 16, weight: .semibold))
+                
+                Text(title)
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+            }
+            .frame(maxWidth: .infinity)
+            .padding()
+            .background(Color(.systemGray6))
+            .cornerRadius(12)
+        }
+    }
 }
 
 struct BulkBuyingDetail: View {
     let pattern: Core.BulkBuyingPattern
-    var body: some View { Text("Bulk Buying Details") }
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 16) {
+            // Header
+            VStack(alignment: .leading, spacing: 8) {
+                HStack {
+                    Image(systemName: "shippingbox.fill")
+                        .font(.largeTitle)
+                        .foregroundStyle(.brown)
+                    
+                    VStack(alignment: .leading) {
+                        Text("Bulk Buying: \(pattern.itemType)")
+                            .font(.title2)
+                            .fontWeight(.semibold)
+                        
+                        Text("Average quantity: \(pattern.averageQuantity) units")
+                            .font(.subheadline)
+                            .foregroundStyle(.secondary)
+                    }
+                }
+            }
+            
+            // Savings Summary
+            HStack {
+                VStack(alignment: .leading, spacing: 4) {
+                    Text("Total Savings")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                    Text(pattern.bulkSavings.asCurrency())
+                        .font(.system(size: 24, weight: .bold))
+                        .foregroundStyle(.green)
+                }
+                
+                Spacer()
+                
+                Image(systemName: "chart.line.uptrend.xyaxis")
+                    .font(.system(size: 40))
+                    .foregroundStyle(.green.opacity(0.3))
+            }
+            .padding()
+            .background(Color.green.opacity(0.1))
+            .cornerRadius(12)
+            
+            // Purchase Details
+            VStack(alignment: .leading, spacing: 12) {
+                DetailRow(label: "Purchase Frequency", value: pattern.frequency.rawValue)
+                DetailRow(label: "Avg Quantity", value: "\(pattern.averageQuantity) units")
+                DetailRow(label: "Avg Unit Price", value: pattern.unitPrice.asCurrency())
+                DetailRow(label: "Times Purchased", value: "\(pattern.occurrences)")
+            }
+            .padding()
+            .background(Color(.systemGray6))
+            .cornerRadius(12)
+            
+            // Savings Breakdown
+            VStack(alignment: .leading, spacing: 12) {
+                Text("Savings Analysis")
+                    .font(.headline)
+                
+                HStack {
+                    Text("Savings per purchase")
+                        .font(.system(size: 14))
+                        .foregroundStyle(.secondary)
+                    Spacer()
+                    Text(pattern.savingsPerPurchase.asCurrency())
+                        .font(.system(size: 14, weight: .medium))
+                        .foregroundStyle(.green)
+                }
+                
+                HStack {
+                    Text("Discount percentage")
+                        .font(.system(size: 14))
+                        .foregroundStyle(.secondary)
+                    Spacer()
+                    Text("\(Int(pattern.discountPercentage))%")
+                        .font(.system(size: 14, weight: .medium))
+                        .foregroundStyle(.green)
+                }
+            }
+            .padding()
+            .background(Color(.systemGray6))
+            .cornerRadius(12)
+            
+            // Best Retailers for Bulk
+            if !pattern.preferredRetailers.isEmpty {
+                VStack(alignment: .leading, spacing: 12) {
+                    Text("Best Stores for Bulk")
+                        .font(.headline)
+                    
+                    ForEach(pattern.preferredRetailers, id: \.self) { retailer in
+                        HStack {
+                            Image(systemName: "storefront")
+                                .font(.system(size: 14))
+                                .foregroundStyle(.secondary)
+                            Text(retailer)
+                                .font(.system(size: 15))
+                            Spacer()
+                        }
+                        .padding(.vertical, 4)
+                    }
+                }
+                .padding()
+                .background(Color(.systemGray6))
+                .cornerRadius(12)
+            }
+        }
+    }
 }

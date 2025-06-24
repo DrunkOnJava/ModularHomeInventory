@@ -103,7 +103,8 @@ struct PhotoDetailView: View {
     var body: some View {
         GeometryReader { geometry in
             ZStack {
-                if let image = photo.image {
+                if let imageData = photo.imageData,
+                   let image = UIImage(data: imageData) {
                     Image(uiImage: image)
                         .resizable()
                         .aspectRatio(contentMode: .fit)

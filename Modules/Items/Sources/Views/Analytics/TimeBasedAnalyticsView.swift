@@ -186,7 +186,7 @@ struct MetricsOverviewCard: View {
                         .font(.caption)
                         .foregroundStyle(.secondary)
                     
-                    Text("$\(metrics.totalSpent.formatted())")
+                    Text(metrics.totalSpent, format: .currency(code: "USD").precision(.fractionLength(2)))
                         .font(.system(size: 28, weight: .bold, design: .rounded))
                     
                     if let comparison = comparison {
@@ -217,7 +217,7 @@ struct MetricsOverviewCard: View {
                 
                 MetricCard(
                     title: "Avg Value",
-                    value: "$\(metrics.averageItemValue.formatted())",
+                    value: metrics.averageItemValue.asCurrency(),
                     icon: "chart.line.uptrend.xyaxis",
                     color: .green
                 )
@@ -226,7 +226,7 @@ struct MetricsOverviewCard: View {
                     MetricCard(
                         title: "Most Expensive",
                         value: mostExpensive.name,
-                        subtitle: "$\(mostExpensive.purchasePrice?.formatted() ?? "0")",
+                        subtitle: mostExpensive.purchasePrice.asCurrency(),
                         icon: "crown.fill",
                         color: .orange
                     )
@@ -405,7 +405,7 @@ struct TrendSummaryRow: View {
     var body: some View {
         HStack {
             VStack(alignment: .leading, spacing: 2) {
-                Text("Start: $\(first.value.formatted())")
+                Text("Start: \(first.value.asCurrency())")
                     .font(.caption)
                 Text(first.label)
                     .font(.caption2)
@@ -421,7 +421,7 @@ struct TrendSummaryRow: View {
             Spacer()
             
             VStack(alignment: .trailing, spacing: 2) {
-                Text("Current: $\(last.value.formatted())")
+                Text("Current: \(last.value.asCurrency())")
                     .font(.caption)
                 Text(last.label)
                     .font(.caption2)
@@ -486,7 +486,7 @@ struct CategoryTimeRow: View {
             Spacer()
             
             VStack(alignment: .trailing, spacing: 2) {
-                Text("$\(category.totalSpent.formatted())")
+                Text(category.totalSpent, format: .currency(code: "USD").precision(.fractionLength(2)))
                     .font(.system(size: 13, weight: .semibold, design: .rounded))
                 
                 Text("\(Int(category.percentageOfTotal))% • \(category.itemCount) items")
@@ -534,7 +534,7 @@ struct StoreTimeBar: View {
                 
                 Spacer()
                 
-                Text("$\(store.totalSpent.formatted())")
+                Text(store.totalSpent, format: .currency(code: "USD").precision(.fractionLength(2)))
                     .font(.system(size: 13, weight: .semibold, design: .rounded))
             }
             
@@ -719,7 +719,7 @@ struct SeasonCard: View {
             }
             
             VStack(alignment: .leading, spacing: 4) {
-                Text("Avg: $\(pattern.averageSpending.formatted())")
+                Text("Avg: \(pattern.averageSpending.asCurrency())")
                     .font(.system(size: 14, weight: .medium))
                 
                 Text("Peak: \(pattern.peakMonth)")
@@ -947,7 +947,25 @@ final class TimeBasedAnalyticsViewModel: ObservableObject {
     }
     
     func exportData() async {
-        // TODO: Implement data export functionality
-        print("Export data not yet implemented")
+        guard let analytics = currentAnalytics else { return }
+        
+        do {
+            let data = try await Core.AnalyticsExportService.shared.exportTimeBasedAnalytics(
+                analytics,
+                format: .csv
+            )
+            
+            let filename = "TimeAnalytics_\(Date().formatted(date: .numeric, time: .omitted).replacingOccurrences(of: "/", with: "-"))"
+            let fileURL = try Core.AnalyticsExportService.shared.saveToFile(
+                data: data,
+                filename: filename,
+                format: .csv
+            )
+            
+            print("Analytics exported to: \(fileURL)")
+            // In a real app, would present share sheet or show success message
+        } catch {
+            print("Export failed: \(error)")
+        }
     }
 }
