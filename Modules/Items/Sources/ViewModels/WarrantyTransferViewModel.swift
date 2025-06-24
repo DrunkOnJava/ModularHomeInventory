@@ -33,7 +33,7 @@ final class WarrantyTransferViewModel: ObservableObject {
     private var cancellables = Set<AnyCancellable>()
     
     // MARK: - Computed Properties
-    var canProceedFromStep(_ step: Int) -> Bool {
+    func canProceedFromStep(_ step: Int) -> Bool {
         switch step {
         case 0: // Eligibility
             return transferability?.isTransferable == true

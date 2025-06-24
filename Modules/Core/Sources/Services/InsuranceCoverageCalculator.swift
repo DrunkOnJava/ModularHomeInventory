@@ -239,6 +239,32 @@ public struct CoverageAnalysis {
     public let categoryBreakdown: [ItemCategory: CategoryCoverage]
     public let recommendations: [CoverageRecommendation]
     public let highValueUncoveredItems: [Item]
+    
+    public init(
+        totalItemValue: Decimal,
+        coveredValue: Decimal,
+        uncoveredValue: Decimal,
+        coveragePercentage: Double,
+        totalItems: Int,
+        coveredItems: Int,
+        uncoveredItems: Int,
+        totalCoverageLimit: Decimal,
+        categoryBreakdown: [ItemCategory: CategoryCoverage],
+        recommendations: [CoverageRecommendation],
+        highValueUncoveredItems: [Item]
+    ) {
+        self.totalItemValue = totalItemValue
+        self.coveredValue = coveredValue
+        self.uncoveredValue = uncoveredValue
+        self.coveragePercentage = coveragePercentage
+        self.totalItems = totalItems
+        self.coveredItems = coveredItems
+        self.uncoveredItems = uncoveredItems
+        self.totalCoverageLimit = totalCoverageLimit
+        self.categoryBreakdown = categoryBreakdown
+        self.recommendations = recommendations
+        self.highValueUncoveredItems = highValueUncoveredItems
+    }
 }
 
 public struct CategoryCoverage {
@@ -262,6 +288,18 @@ public struct PremiumAnalysis {
     public let monthlyAverage: Decimal
     public let premiumByType: [InsuranceType: Decimal]
     public let activePolicyCount: Int
+    
+    public init(
+        totalAnnualPremium: Decimal,
+        monthlyAverage: Decimal,
+        premiumByType: [InsuranceType: Decimal],
+        activePolicyCount: Int
+    ) {
+        self.totalAnnualPremium = totalAnnualPremium
+        self.monthlyAverage = monthlyAverage
+        self.premiumByType = premiumByType
+        self.activePolicyCount = activePolicyCount
+    }
 }
 
 public struct ClaimAnalysis {
@@ -272,6 +310,24 @@ public struct ClaimAnalysis {
     public let averageClaimAmount: Decimal
     public let claimsByStatus: [ClaimStatus: Int]
     public let approvalRate: Double
+    
+    public init(
+        totalClaims: Int,
+        totalClaimAmount: Decimal,
+        totalPaidAmount: Decimal,
+        totalDeductibles: Decimal,
+        averageClaimAmount: Decimal,
+        claimsByStatus: [ClaimStatus: Int],
+        approvalRate: Double
+    ) {
+        self.totalClaims = totalClaims
+        self.totalClaimAmount = totalClaimAmount
+        self.totalPaidAmount = totalPaidAmount
+        self.totalDeductibles = totalDeductibles
+        self.averageClaimAmount = averageClaimAmount
+        self.claimsByStatus = claimsByStatus
+        self.approvalRate = approvalRate
+    }
 }
 
 public struct CoverageRecommendation {
