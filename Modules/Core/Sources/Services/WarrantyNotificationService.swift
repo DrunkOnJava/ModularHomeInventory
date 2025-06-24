@@ -19,7 +19,7 @@ public final class WarrantyNotificationService: ObservableObject {
     @Published public var notificationDays = [30, 7, 1] // Days before expiration to notify
     
     private init() {
-        requestNotificationPermission()
+        // Don't request permission automatically - let user control this
         loadSettings()
     }
     
