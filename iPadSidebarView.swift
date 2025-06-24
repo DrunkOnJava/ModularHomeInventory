@@ -338,16 +338,113 @@ struct AddItemSheet: View {
 
 struct ImportExportDashboard: View {
     @EnvironmentObject var coordinator: AppCoordinator
+    @State private var showingImport = false
+    @State private var showingExport = false
     
     var body: some View {
-        VStack(spacing: AppSpacing.lg) {
-            coordinator.itemsModule.makeCSVImportView { result in
-                print("Import completed with \(result.successfulImports) items")
+        VStack(spacing: AppSpacing.xl) {
+            Text("Import & Export")
+                .font(.largeTitle)
+                .bold()
+                .frame(maxWidth: .infinity, alignment: .leading)
+            
+            HStack(spacing: AppSpacing.xl) {
+                // Import Card
+                VStack(spacing: AppSpacing.md) {
+                    Image(systemName: "square.and.arrow.down")
+                        .font(.system(size: 60))
+                        .foregroundColor(AppColors.primary)
+                    
+                    Text("Import from CSV")
+                        .font(.title2)
+                        .bold()
+                    
+                    Text("Import your inventory data from a CSV file")
+                        .font(.body)
+                        .foregroundColor(AppColors.textSecondary)
+                        .multilineTextAlignment(.center)
+                        .fixedSize(horizontal: false, vertical: true)
+                    
+                    Button(action: { showingImport = true }) {
+                        Text("Import Data")
+                            .font(.headline)
+                            .foregroundColor(.white)
+                            .frame(width: 200, height: 50)
+                            .background(AppColors.primary)
+                            .cornerRadius(AppCornerRadius.medium)
+                    }
+                }
+                .frame(maxWidth: .infinity)
+                .padding(AppSpacing.xl)
+                .background(AppColors.surface)
+                .cornerRadius(AppCornerRadius.large)
+                
+                // Export Card
+                VStack(spacing: AppSpacing.md) {
+                    Image(systemName: "square.and.arrow.up")
+                        .font(.system(size: 60))
+                        .foregroundColor(AppColors.primary)
+                    
+                    Text("Export to CSV")
+                        .font(.title2)
+                        .bold()
+                    
+                    Text("Export your inventory data to a CSV file")
+                        .font(.body)
+                        .foregroundColor(AppColors.textSecondary)
+                        .multilineTextAlignment(.center)
+                        .fixedSize(horizontal: false, vertical: true)
+                    
+                    Button(action: { showingExport = true }) {
+                        Text("Export Data")
+                            .font(.headline)
+                            .foregroundColor(.white)
+                            .frame(width: 200, height: 50)
+                            .background(AppColors.primary)
+                            .cornerRadius(AppCornerRadius.medium)
+                    }
+                }
+                .frame(maxWidth: .infinity)
+                .padding(AppSpacing.xl)
+                .background(AppColors.surface)
+                .cornerRadius(AppCornerRadius.large)
             }
-            Divider()
-            coordinator.itemsModule.makeCSVExportView(items: nil)
+            
+            Spacer()
         }
-        .padding()
+        .padding(AppSpacing.xl)
+        .navigationTitle("Import & Export")
+        .sheet(isPresented: $showingImport) {
+            NavigationView {
+                coordinator.itemsModule.makeCSVImportView { result in
+                    showingImport = false
+                    print("Import completed with \(result.successfulImports) items")
+                }
+                .navigationTitle("Import from CSV")
+                .navigationBarTitleDisplayMode(.inline)
+                .toolbar {
+                    ToolbarItem(placement: .cancellationAction) {
+                        Button("Cancel") {
+                            showingImport = false
+                        }
+                    }
+                }
+            }
+        }
+        .sheet(isPresented: $showingExport) {
+            NavigationView {
+                coordinator.itemsModule.makeCSVExportView(items: nil)
+                    .navigationTitle("Export to CSV")
+                    .navigationBarTitleDisplayMode(.inline)
+                    .toolbar {
+                        ToolbarItem(placement: .cancellationAction) {
+                            Button("Cancel") {
+                                showingExport = false
+                            }
+                        }
+                    }
+            }
+        }
     }
 }
 

@@ -98,6 +98,9 @@ final class AppCoordinator: ObservableObject {
         )
         receiptsModule = Receipts.ReceiptsModule(dependencies: receiptsDependencies)
         
+        // Create budget repository
+        let budgetRepository = Core.DefaultBudgetRepository()
+        
         // Initialize Items module with scanner and receipts dependencies
         let itemsDependencies = Items.ItemsModuleDependencies(
             itemRepository: itemRepository,
@@ -116,7 +119,8 @@ final class AppCoordinator: ObservableObject {
             savedSearchRepository: nil,
             receiptRepository: receiptRepository,
             scannerModule: scannerModule,
-            receiptsModule: receiptsModule
+            receiptsModule: receiptsModule,
+            budgetRepository: budgetRepository
         )
         itemsModule = Items.ItemsModule(dependencies: itemsDependencies)
         
@@ -148,7 +152,7 @@ final class AppCoordinator: ObservableObject {
         Core.NotificationTriggerService.shared.startMonitoring(
             itemRepository: itemRepository,
             warrantyRepository: warrantyRepository,
-            budgetRepository: nil  // Will be added when budget repository is available
+            budgetRepository: budgetRepository
         )
         
         // Configure Spotlight integration

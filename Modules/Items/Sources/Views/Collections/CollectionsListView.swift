@@ -26,117 +26,159 @@ public struct CollectionsListView: View {
     }
     
     public var body: some View {
-        List {
-            if !viewModel.activeCollections.isEmpty {
-                Section {
-                    ForEach(viewModel.activeCollections) { collection in
-                        CollectionRow(
-                            collection: collection,
-                            itemCount: viewModel.itemCounts[collection.id] ?? 0,
-                            onTap: {
-                                viewModel.selectCollection(collection)
-                            },
-                            onEdit: {
-                                selectedCollection = collection
-                            },
-                            onArchive: {
-                                viewModel.archiveCollection(collection)
-                            },
-                            onDelete: {
-                                collectionToDelete = collection
-                                showingDeleteAlert = true
-                            }
-                        )
-                    }
-                } header: {
-                    Text("Active Collections")
+        if viewModel.activeCollections.isEmpty && viewModel.archivedCollections.isEmpty && !viewModel.isLoading {
+            // Empty state
+            VStack(spacing: AppSpacing.lg) {
+                Image(systemName: "folder")
+                    .font(.system(size: 80))
+                    .foregroundStyle(AppColors.textSecondary)
+                
+                VStack(spacing: AppSpacing.sm) {
+                    Text("No Collections Yet")
+                        .textStyle(.headlineLarge)
+                        .foregroundStyle(AppColors.textPrimary)
+                    
+                    Text("Create collections to organize your items")
+                        .textStyle(.bodyMedium)
+                        .foregroundStyle(AppColors.textSecondary)
+                        .multilineTextAlignment(.center)
                 }
-            }
-            
-            if !viewModel.archivedCollections.isEmpty {
-                Section {
-                    ForEach(viewModel.archivedCollections) { collection in
-                        CollectionRow(
-                            collection: collection,
-                            itemCount: viewModel.itemCounts[collection.id] ?? 0,
-                            isArchived: true,
-                            onTap: {
-                                viewModel.selectCollection(collection)
-                            },
-                            onEdit: {
-                                selectedCollection = collection
-                            },
-                            onUnarchive: {
-                                viewModel.unarchiveCollection(collection)
-                            },
-                            onDelete: {
-                                collectionToDelete = collection
-                                showingDeleteAlert = true
-                            }
-                        )
-                    }
-                } header: {
-                    Text("Archived Collections")
-                }
-            }
-            
-            if viewModel.isLoading {
-                Section {
-                    HStack {
-                        ProgressView()
-                        Text("Loading collections...")
-                            .foregroundStyle(AppColors.textSecondary)
-                    }
-                }
-            } else if viewModel.activeCollections.isEmpty && viewModel.archivedCollections.isEmpty {
-                Section {
-                    ContentUnavailableView(
-                        "No Collections",
-                        systemImage: "folder",
-                        description: Text("Create collections to group related items together")
-                    )
-                }
-            }
-        }
-        .navigationTitle("Collections")
-        .toolbar {
-            ToolbarItem(placement: .navigationBarTrailing) {
+                
                 Button(action: { showingAddCollection = true }) {
-                    Image(systemName: "plus")
+                    HStack {
+                        Image(systemName: "plus")
+                        Text("Create First Collection")
+                    }
+                    .font(.headline)
+                    .foregroundColor(.white)
+                    .frame(width: 250, height: 50)
+                    .background(AppColors.primary)
+                    .cornerRadius(AppCornerRadius.medium)
                 }
             }
-        }
-        .sheet(isPresented: $showingAddCollection) {
-            AddEditCollectionView(
-                collectionRepository: viewModel.collectionRepository,
-                onComplete: { _ in
-                    viewModel.loadCollections()
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .background(AppColors.background)
+            .navigationTitle("Collections")
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button(action: { showingAddCollection = true }) {
+                        Image(systemName: "plus")
+                    }
                 }
-            )
-        }
-        .sheet(item: $selectedCollection) { collection in
-            AddEditCollectionView(
-                collection: collection,
-                collectionRepository: viewModel.collectionRepository,
-                onComplete: { _ in
-                    viewModel.loadCollections()
+            }
+            .sheet(isPresented: $showingAddCollection) {
+                AddEditCollectionView(
+                    collectionRepository: viewModel.collectionRepository,
+                    onComplete: { _ in
+                        viewModel.loadCollections()
+                    }
+                )
+            }
+        } else {
+            List {
+                if !viewModel.activeCollections.isEmpty {
+                    Section {
+                        ForEach(viewModel.activeCollections) { collection in
+                            CollectionRow(
+                                collection: collection,
+                                itemCount: viewModel.itemCounts[collection.id] ?? 0,
+                                onTap: {
+                                    viewModel.selectCollection(collection)
+                                },
+                                onEdit: {
+                                    selectedCollection = collection
+                                },
+                                onArchive: {
+                                    viewModel.archiveCollection(collection)
+                                },
+                                onDelete: {
+                                    collectionToDelete = collection
+                                    showingDeleteAlert = true
+                                }
+                            )
+                        }
+                    } header: {
+                        Text("Active Collections")
+                    }
                 }
-            )
-        }
-        .alert("Delete Collection?", isPresented: $showingDeleteAlert) {
-            Button("Cancel", role: .cancel) { }
-            Button("Delete", role: .destructive) {
+                
+                if !viewModel.archivedCollections.isEmpty {
+                    Section {
+                        ForEach(viewModel.archivedCollections) { collection in
+                            CollectionRow(
+                                collection: collection,
+                                itemCount: viewModel.itemCounts[collection.id] ?? 0,
+                                isArchived: true,
+                                onTap: {
+                                    viewModel.selectCollection(collection)
+                                },
+                                onEdit: {
+                                    selectedCollection = collection
+                                },
+                                onUnarchive: {
+                                    viewModel.unarchiveCollection(collection)
+                                },
+                                onDelete: {
+                                    collectionToDelete = collection
+                                    showingDeleteAlert = true
+                                }
+                            )
+                        }
+                    } header: {
+                        Text("Archived Collections")
+                    }
+                }
+                
+                if viewModel.isLoading {
+                    Section {
+                        HStack {
+                            ProgressView()
+                            Text("Loading collections...")
+                                .foregroundStyle(AppColors.textSecondary)
+                        }
+                    }
+                }
+            }
+            .navigationTitle("Collections")
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button(action: { showingAddCollection = true }) {
+                        Image(systemName: "plus")
+                    }
+                }
+            }
+            .sheet(isPresented: $showingAddCollection) {
+                AddEditCollectionView(
+                    collectionRepository: viewModel.collectionRepository,
+                    onComplete: { _ in
+                        viewModel.loadCollections()
+                    }
+                )
+            }
+            .sheet(item: $selectedCollection) { collection in
+                AddEditCollectionView(
+                    collection: collection,
+                    collectionRepository: viewModel.collectionRepository,
+                    onComplete: { _ in
+                        viewModel.loadCollections()
+                    }
+                )
+            }
+            .alert("Delete Collection?", isPresented: $showingDeleteAlert) {
+                Button("Cancel", role: .cancel) { }
+                Button("Delete", role: .destructive) {
+                    if let collection = collectionToDelete {
+                        viewModel.deleteCollection(collection)
+                    }
+                }
+            } message: {
                 if let collection = collectionToDelete {
-                    viewModel.deleteCollection(collection)
+                    Text("Are you sure you want to delete '\(collection.name)'? This action cannot be undone.")
                 }
             }
-        } message: {
-            if let collection = collectionToDelete {
-                Text("Are you sure you want to delete '\(collection.name)'? This action cannot be undone.")
+            .onAppear {
+                viewModel.loadCollections()
             }
-        }
-        .onAppear {
-            viewModel.loadCollections()
         }
     }
 }
