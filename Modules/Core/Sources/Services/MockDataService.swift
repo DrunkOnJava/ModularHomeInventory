@@ -445,17 +445,481 @@ public final class MockDataService {
     public static func generateReceipts() -> [Receipt] {
         let items = generateComprehensiveItems()
         var receipts: [Receipt] = []
+        let now = Date()
         
-        // Create receipts for various stores
+        // Apple Store Receipt - Electronics
         let appleItems = items.filter { $0.storeName == "Apple Store" }
         if !appleItems.isEmpty {
             receipts.append(Receipt(
                 storeName: "Apple Store",
-                date: appleItems[0].purchaseDate ?? Date(),
-                totalAmount: appleItems.reduce(0) { $0 + ($1.purchasePrice ?? 0) },
+                date: appleItems[0].purchaseDate ?? now.addingTimeInterval(-30 * 24 * 60 * 60),
+                totalAmount: 5217.83,
                 itemIds: appleItems.map { $0.id },
-                rawText: "APPLE STORE\n#R123456789\n\nMacBook Pro 16\" - $3,499.00\niPad Pro 12.9\" - $1,299.00\n\nSubtotal: $4,798.00\nTax: $419.83\nTotal: $5,217.83"
+                rawText: """
+                        APPLE STORE
+                        One Apple Park Way
+                        Cupertino, CA 95014
+                        (408) 996-1010
+                        
+                        Receipt #R123456789
+                        Date: \(formatDate(appleItems[0].purchaseDate ?? now))
+                        
+                        SALE
+                        ================================
+                        MacBook Pro 16" M3 Max
+                        Space Gray - 64GB/2TB
+                        S/N: C02XG2JGH7JY            $3,499.00
+                        
+                        iPad Pro 12.9" (6th Gen)
+                        Wi-Fi + Cellular 512GB
+                        S/N: DMPVG2J7JFH9            $1,299.00
+                        ================================
+                        
+                        Subtotal:                    $4,798.00
+                        CA Tax (8.75%):                $419.83
+                        --------------------------------
+                        TOTAL:                       $5,217.83
+                        
+                        Payment: Apple Card ****1234
+                        Auth: 782341
+                        
+                        Thank you for shopping at Apple!
+                        """,
+                metadata: [
+                    "paymentMethod": "Apple Card",
+                    "cashier": "Sarah M.",
+                    "storeNumber": "R238"
+                ],
+                confidence: 0.98
             ))
+        }
+        
+        // Best Buy Receipt - Mixed Electronics
+        let bestBuyItems = items.filter { $0.storeName == "Best Buy" }
+        if !bestBuyItems.isEmpty {
+            receipts.append(Receipt(
+                storeName: "Best Buy",
+                date: now.addingTimeInterval(-15 * 24 * 60 * 60),
+                totalAmount: 399.98,
+                itemIds: [bestBuyItems[0].id], // Sony WH-1000XM5
+                rawText: """
+                        BEST BUY #1178
+                        1717 Harrison St
+                        San Francisco, CA 94103
+                        (415) 626-9893
+                        
+                        Transaction: 1178-094-3847293
+                        \(formatDate(now.addingTimeInterval(-15 * 24 * 60 * 60)))
+                        
+                        CUSTOMER RECEIPT
+                        =====================================
+                        8374629  SONY WH-1000XM5
+                                 WIRELESS HEADPHONES    349.99
+                        
+                        GEEK SQUAD PROTECTION
+                        2-YEAR ACCIDENTAL DAMAGE        39.99
+                        =====================================
+                        
+                        SUBTOTAL                       389.98
+                        TAX                             10.00
+                        -------------------------------------
+                        TOTAL                          399.98
+                        
+                        VISA DEBIT ************3945    399.98
+                        
+                        MEMBER ID: ***********7823
+                        Points Earned: 400
+                        
+                        Return Policy: 15 days with receipt
+                        Extended through 1/31/24 for holidays
+                        """,
+                metadata: [
+                    "memberID": "***********7823",
+                    "pointsEarned": "400",
+                    "transactionType": "in-store"
+                ],
+                confidence: 0.95
+            ))
+        }
+        
+        // Home Depot Receipt - Tools & Home
+        let homeDepotItems = items.filter { $0.storeName == "Home Depot" }
+        if !homeDepotItems.isEmpty {
+            receipts.append(Receipt(
+                storeName: "Home Depot",
+                date: now.addingTimeInterval(-7 * 24 * 60 * 60),
+                totalAmount: 487.65,
+                itemIds: homeDepotItems.map { $0.id },
+                rawText: """
+                        THE HOME DEPOT #0619
+                        2 Colma Blvd
+                        Colma, CA 94014
+                        650-755-0035
+                        
+                        INVOICE
+                        Sale ID: 619-382-847392
+                        \(formatDate(now.addingTimeInterval(-7 * 24 * 60 * 60)))
+                        
+                        <CUSTOMER COPY>
+                        
+                        204738492 DEWALT DRILL SET
+                          20V MAX CORDLESS          199.00
+                          
+                        983742834 MILWAUKEE TOOL BAG
+                          HEAVY DUTY CONTRACTOR      79.99
+                          
+                        374829347 LED WORK LIGHT
+                          1500 LUMEN TRIPOD         129.99
+                        
+                        SUB-TOTAL:                 408.97
+                        SALES TAX:                  35.78
+                        PRO DISCOUNT:              -15.00
+                        ===================================
+                        TOTAL:                     429.75
+                        
+                        MASTERCARD ****8923        429.75
+                        APPROVAL: 294873
+                        
+                        PRO XTRA MEMBER: ****3847
+                        Visit homedepot.com/survey
+                        ID: 619-382-847392
+                        """,
+                metadata: [
+                    "proMember": "true",
+                    "discount": "15.00",
+                    "surveyCode": "619-382-847392"
+                ],
+                confidence: 0.97
+            ))
+        }
+        
+        // Costco Wholesale Receipt
+        let costcoItems = items.filter { $0.storeName == "Costco" }
+        if !costcoItems.isEmpty {
+            receipts.append(Receipt(
+                storeName: "Costco Wholesale",
+                date: now.addingTimeInterval(-21 * 24 * 60 * 60),
+                totalAmount: 1847.93,
+                itemIds: costcoItems.map { $0.id },
+                rawText: """
+                        COSTCO WHOLESALE #487
+                        1600 El Camino Real
+                        South San Francisco, CA 94080
+                        
+                        MEMBER: ****8293
+                        \(formatDate(now.addingTimeInterval(-21 * 24 * 60 * 60)))
+                        TERMINAL: 023  TRANS: 8473
+                        
+                        ITEMS SOLD
+                        ==========================================
+                        847362 LG OLED TV 55"
+                               C3 SERIES 4K            999.99 A
+                               
+                        738291 DYSON V15 DETECT
+                               CORDLESS VACUUM         549.99 A
+                               
+                        927364 VITAMIX BLENDER
+                               PROFESSIONAL 750        389.99 A
+                        
+                        SUBTOTAL                     1,939.97
+                        TAX @ 8.75%                    169.75
+                        BOTTLE DEPOSIT                   0.24
+                        ==========================================
+                        TOTAL                        2,109.96
+                        
+                        DEBIT CARD ****4729          2,109.96
+                        
+                        MEMBER SAVINGS THIS VISIT:     262.03
+                        
+                        A = TAXABLE ITEM
+                        THANK YOU FOR SHOPPING AT COSTCO
+                        """,
+                metadata: [
+                    "memberNumber": "****8293",
+                    "savings": "262.03",
+                    "warehouse": "487"
+                ],
+                confidence: 0.96
+            ))
+        }
+        
+        // Amazon Receipt - Online Order
+        let amazonItems = items.filter { $0.storeName == "Amazon" }
+        if !amazonItems.isEmpty {
+            receipts.append(Receipt(
+                storeName: "Amazon.com",
+                date: now.addingTimeInterval(-3 * 24 * 60 * 60),
+                totalAmount: 159.99,
+                itemIds: [amazonItems[0].id], // Echo Show
+                rawText: """
+                        Amazon.com
+                        Order Number: 114-8392847-2938472
+                        Order Date: \(formatDate(now.addingTimeInterval(-3 * 24 * 60 * 60)))
+                        
+                        SHIP TO:
+                        Home Inventory User
+                        123 Main Street
+                        San Francisco, CA 94105
+                        
+                        ORDER DETAILS
+                        ==========================================
+                        Echo Show 8 (2nd Gen, 2021)
+                        Charcoal - HD Smart Display
+                        with Alexa
+                        Qty: 1                         $129.99
+                        
+                        Shipping & Handling:             $0.00
+                        (Prime FREE One-Day)
+                        
+                        Subtotal:                      $129.99
+                        Estimated Tax:                  $11.37
+                        ==========================================
+                        Order Total:                   $141.36
+                        
+                        Payment Method:
+                        Amazon Prime Rewards Visa ****8234
+                        
+                        Delivered: \(formatDate(now.addingTimeInterval(-1 * 24 * 60 * 60)))
+                        """,
+                metadata: [
+                    "orderType": "online",
+                    "shipping": "Prime One-Day",
+                    "orderNumber": "114-8392847-2938472"
+                ],
+                confidence: 0.99
+            ))
+        }
+        
+        // Williams Sonoma Receipt - Kitchen
+        let williamsSonomaItems = items.filter { $0.storeName == "Williams Sonoma" }
+        if !williamsSonomaItems.isEmpty {
+            receipts.append(Receipt(
+                storeName: "Williams Sonoma",
+                date: now.addingTimeInterval(-45 * 24 * 60 * 60),
+                totalAmount: 656.78,
+                itemIds: williamsSonomaItems.map { $0.id },
+                rawText: """
+                        WILLIAMS SONOMA
+                        Stanford Shopping Center
+                        Palo Alto, CA 94304
+                        (650) 321-3486
+                        
+                        Sale Receipt
+                        Trans: 3847-293-84
+                        Date: \(formatDate(now.addingTimeInterval(-45 * 24 * 60 * 60)))
+                        Associate: Jennifer
+                        
+                        MERCHANDISE
+                        ==========================================
+                        738492834  LE CREUSET DUTCH OVEN
+                                   5.5 QT CERISE         349.95
+                                   
+                        829374823  SHUN CLASSIC KNIFE
+                                   8" CHEF'S KNIFE       149.95
+                                   
+                        293847234  KITCHEN TOWELS S/4
+                                   WILLIAMS SONOMA        39.95
+                                   
+                        384729384  OLIVEWOOD BOARD
+                                   LARGE SERVING          89.95
+                        
+                        MERCHANDISE TOTAL:             629.80
+                        CA TAX 8.75%:                  55.11
+                        ==========================================
+                        TOTAL:                         684.91
+                        
+                        AMEX ****1006                  684.91
+                        
+                        REWARDS MEMBER: ****8234
+                        Points Earned: 685
+                        Current Balance: 3,421
+                        
+                        Return within 30 days with receipt
+                        """,
+                metadata: [
+                    "associate": "Jennifer",
+                    "rewardsPoints": "685",
+                    "location": "Stanford Shopping Center"
+                ],
+                confidence: 0.94
+            ))
+        }
+        
+        // Nike Store Receipt - Clothing
+        let nikeItems = items.filter { $0.storeName == "Nike Store" }
+        if !nikeItems.isEmpty {
+            receipts.append(Receipt(
+                storeName: "Nike San Francisco",
+                date: now.addingTimeInterval(-12 * 24 * 60 * 60),
+                totalAmount: 189.97,
+                itemIds: nikeItems.map { $0.id },
+                rawText: """
+                        NIKE SAN FRANCISCO
+                        278 Post Street
+                        San Francisco, CA 94108
+                        
+                        \(formatDate(now.addingTimeInterval(-12 * 24 * 60 * 60)))
+                        Receipt: NSF-394827
+                        
+                        ==========================================
+                        NIKE AIR ZOOM PEGASUS 40
+                        Men's Size 10.5
+                        Style: DH2920-001               129.99
+                        
+                        NIKE DRI-FIT TEE
+                        Men's Large
+                        Style: AR6029-010                34.99
+                        
+                        NIKE EVERYDAY CUSHION
+                        Crew Socks (3 Pack)              19.99
+                        ==========================================
+                        
+                        Subtotal:                       184.97
+                        Tax:                             16.19
+                        ------------------------------------------
+                        Total:                          201.16
+                        
+                        Nike Member Discount (10%):     -18.50
+                        ------------------------------------------
+                        You Pay:                        182.66
+                        
+                        VISA ****7823                   182.66
+                        
+                        NIKE MEMBER: ****9283
+                        Thank you for being a Nike Member!
+                        
+                        Easy 60-day returns at any Nike Store
+                        """,
+                metadata: [
+                    "memberDiscount": "18.50",
+                    "memberNumber": "****9283",
+                    "returnPolicy": "60 days"
+                ],
+                confidence: 0.96
+            ))
+        }
+        
+        // B&H Photo Receipt - Camera Equipment
+        let bhItems = items.filter { $0.storeName == "B&H Photo" }
+        if !bhItems.isEmpty {
+            receipts.append(Receipt(
+                storeName: "B&H Photo Video",
+                date: now.addingTimeInterval(-60 * 24 * 60 * 60),
+                totalAmount: 2847.95,
+                itemIds: bhItems.map { $0.id },
+                rawText: """
+                        B&H PHOTO VIDEO PRO AUDIO
+                        420 9th Avenue
+                        New York, NY 10001
+                        Order: W293847283
+                        
+                        \(formatDate(now.addingTimeInterval(-60 * 24 * 60 * 60)))
+                        
+                        INVOICE
+                        ==========================================
+                        CANON EOS R5
+                        Mirrorless Camera Body
+                        SKU: CAR5                    2,399.00
+                        
+                        CANON RF 24-70MM
+                        f/2.8L IS USM Lens
+                        SKU: CARF247028              2,299.00
+                        
+                        SANDISK EXTREME PRO
+                        128GB CFexpress Card
+                        SKU: SACFX128                  179.99
+                        
+                        Subtotal:                    4,877.99
+                        NYC Tax (8.875%):              433.02
+                        Shipping (Overnight):           49.00
+                        ==========================================
+                        Order Total:                 5,360.01
+                        
+                        Payment: PayBrite Finance
+                        12 Month 0% Financing
+                        Monthly Payment: $446.67
+                        
+                        Payboo Card Savings:          -433.02
+                        ==========================================
+                        Final Total:                 4,926.99
+                        
+                        Thank you for your business!
+                        Track: bhphotovideo.com/track
+                        """,
+                metadata: [
+                    "financing": "12 months 0%",
+                    "shipping": "Overnight",
+                    "taxSavings": "433.02"
+                ],
+                confidence: 0.98
+            ))
+        }
+        
+        // GameStop Receipt - Gaming
+        let gameStopItems = items.filter { $0.storeName == "GameStop" }
+        if !gameStopItems.isEmpty {
+            receipts.append(Receipt(
+                storeName: "GameStop",
+                date: now.addingTimeInterval(-5 * 24 * 60 * 60),
+                totalAmount: 579.94,
+                itemIds: gameStopItems.map { $0.id },
+                rawText: """
+                        GAMESTOP #3748
+                        Westfield San Francisco Centre
+                        San Francisco, CA 94103
+                        (415) 512-6770
+                        
+                        \(formatDate(now.addingTimeInterval(-5 * 24 * 60 * 60)))
+                        Trans #: 3748-192837
+                        
+                        PURCHASE
+                        ==========================================
+                        892734  NINTENDO SWITCH OLED
+                                ZELDA EDITION          359.99
+                                
+                        738492  PRO CONTROLLER
+                                NINTENDO SWITCH         69.99
+                                
+                        384729  ZELDA: TOTK
+                                NINTENDO SWITCH         69.99
+                                
+                        928374  POKEMON SCARLET
+                                NINTENDO SWITCH         59.99
+                        ==========================================
+                        
+                        SUBTOTAL:                      559.96
+                        TAX:                            49.00
+                        ------------------------------------------
+                        TOTAL:                         608.96
+                        
+                        PRO MEMBER DISCOUNT:           -29.00
+                        ------------------------------------------
+                        FINAL TOTAL:                   579.96
+                        
+                        DEBIT ****8234                 579.96
+                        
+                        PowerUp Pro Member: ****7823
+                        Points Earned: 580
+                        Total Points: 4,720
+                        
+                        Return Policy: 7 days new, 48hrs used
+                        Receipt required for all returns
+                        """,
+                metadata: [
+                    "proMember": "true",
+                    "pointsEarned": "580",
+                    "storeLocation": "Westfield SF"
+                ],
+                confidence: 0.93
+            ))
+        }
+        
+        // Format helper function
+        func formatDate(_ date: Date) -> String {
+            let formatter = DateFormatter()
+            formatter.dateStyle = .medium
+            formatter.timeStyle = .short
+            return formatter.string(from: date)
         }
         
         return receipts
