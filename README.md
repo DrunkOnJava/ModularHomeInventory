@@ -2,6 +2,15 @@
 
 A modern iOS app for managing your home inventory with a modular architecture.
 
+## 🔒 Privacy First
+
+Your privacy is our priority. **All data stays on your device** or in your personal iCloud account.
+
+- ✅ **No data collection** - We don't have servers
+- ✅ **No tracking** - No analytics or advertising
+- ✅ **You own your data** - Export or delete anytime
+- 📄 [Privacy Policy](PRIVACY_POLICY.md) | [Simple Summary](PRIVACY_POLICY_SUMMARY.md)
+
 ## Features
 
 - 📦 **Item Management**: Track all your belongings with photos, receipts, and warranties
