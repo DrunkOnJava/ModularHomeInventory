@@ -7,9 +7,10 @@ import SharedUI
 struct iPadSidebarView: View {
     @StateObject private var navigationState = iPadNavigationState()
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
+    @State private var columnVisibility = NavigationSplitViewVisibility.all
     
     var body: some View {
-        NavigationSplitView {
+        NavigationSplitView(columnVisibility: $columnVisibility) {
             // Sidebar
             List {
                 Section("Inventory") {
@@ -95,7 +96,7 @@ struct iPadSidebarView: View {
                 .id(navigationState.selectedTab)
         }
         .navigationSplitViewStyle(.balanced)
-        .navigationSplitViewColumnWidth(ideal: 300)
+        .navigationSplitViewColumnWidth(min: 250, ideal: 300, max: 400)
         .sheet(isPresented: $navigationState.showAddItem) {
             AddItemSheet()
         }
