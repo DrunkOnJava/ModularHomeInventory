@@ -59,7 +59,9 @@ struct ContentView: View {
                 .tag(3)
             
             // Settings Tab - Now using the Settings module!
-            coordinator.settingsModule.makeSettingsView()
+            NavigationView {
+                coordinator.settingsModule.makeSettingsView()
+            }
             .tabItem {
                 Label("Settings", systemImage: "gear")
             }

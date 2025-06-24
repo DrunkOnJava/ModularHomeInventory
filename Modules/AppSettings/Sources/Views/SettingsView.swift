@@ -25,104 +25,102 @@ struct SettingsView: View {
     }
     
     var body: some View {
-        NavigationView {
-            List {
-                // General Section
-                generalSection
-                
-                // Privacy & Security Section
-                privacySection
-                
-                // Data & Storage Section
-                dataSection
-                
-                // Offline & Sync Section
-                offlineSection
-                
-                // About Section
-                aboutSection
-            }
-            .navigationTitle("Settings")
-            .sheet(isPresented: $showingAbout) {
-                AboutView()
-            }
-            .sheet(isPresented: $showingPrivacyPolicy) {
-                PrivacyPolicyView()
-            }
-            .sheet(isPresented: $showingTermsOfService) {
-                TermsOfServiceView()
-            }
-            .sheet(isPresented: $showingExportData) {
-                ExportDataView()
-            }
-            .sheet(isPresented: $showingClearCache) {
-                ClearCacheView()
-            }
-            .sheet(isPresented: $showingRateApp) {
-                RateAppView()
-            }
-            .sheet(isPresented: $showingShareApp) {
-                ShareAppView()
-            }
-            .sheet(isPresented: $showingOfflineData) {
-                NavigationView {
-                    OfflineDataView()
-                        .navigationTitle("Offline Data")
-                        .navigationBarTitleDisplayMode(.inline)
-                        .toolbar {
-                            ToolbarItem(placement: .navigationBarTrailing) {
-                                Button("Done") {
-                                    showingOfflineData = false
-                                }
-                            }
-                        }
-                }
-            }
-            .sheet(isPresented: $showingSyncStatus) {
-                NavigationView {
-                    VStack(spacing: AppSpacing.lg) {
-                        SyncStatusView()
-                        Spacer()
-                    }
-                    .padding(AppSpacing.lg)
-                    .navigationTitle("Sync Status")
+        List {
+            // General Section
+            generalSection
+            
+            // Privacy & Security Section
+            privacySection
+            
+            // Data & Storage Section
+            dataSection
+            
+            // Offline & Sync Section
+            offlineSection
+            
+            // About Section
+            aboutSection
+        }
+        .navigationTitle("Settings")
+        .sheet(isPresented: $showingAbout) {
+            AboutView()
+        }
+        .sheet(isPresented: $showingPrivacyPolicy) {
+            PrivacyPolicyView()
+        }
+        .sheet(isPresented: $showingTermsOfService) {
+            TermsOfServiceView()
+        }
+        .sheet(isPresented: $showingExportData) {
+            ExportDataView()
+        }
+        .sheet(isPresented: $showingClearCache) {
+            ClearCacheView()
+        }
+        .sheet(isPresented: $showingRateApp) {
+            RateAppView()
+        }
+        .sheet(isPresented: $showingShareApp) {
+            ShareAppView()
+        }
+        .sheet(isPresented: $showingOfflineData) {
+            NavigationView {
+                OfflineDataView()
+                    .navigationTitle("Offline Data")
                     .navigationBarTitleDisplayMode(.inline)
                     .toolbar {
                         ToolbarItem(placement: .navigationBarTrailing) {
                             Button("Done") {
-                                showingSyncStatus = false
+                                showingOfflineData = false
                             }
+                        }
+                    }
+            }
+        }
+        .sheet(isPresented: $showingSyncStatus) {
+            NavigationView {
+                VStack(spacing: AppSpacing.lg) {
+                    SyncStatusView()
+                    Spacer()
+                }
+                .padding(AppSpacing.lg)
+                .navigationTitle("Sync Status")
+                .navigationBarTitleDisplayMode(.inline)
+                .toolbar {
+                    ToolbarItem(placement: .navigationBarTrailing) {
+                        Button("Done") {
+                            showingSyncStatus = false
                         }
                     }
                 }
             }
-            .sheet(isPresented: $showingCategoryManagement) {
-                // Note: We need to pass the categoryRepository here
-                // For now, we'll use a placeholder
-                Text("Category Management View")
-            }
-            .sheet(isPresented: $showingScannerSettings) {
-                ScannerSettingsView(settings: $viewModel.settings, viewModel: viewModel)
-            }
-            .sheet(isPresented: $showingConflictResolution) {
-                // Note: We'll need to pass the repositories here
-                if let itemRepo = viewModel.itemRepository,
-                   let receiptRepo = viewModel.receiptRepository,
-                   let locationRepo = viewModel.locationRepository {
-                    ConflictResolutionView(
-                        conflictService: ConflictResolutionService(
-                            itemRepository: itemRepo,
-                            receiptRepository: receiptRepo,
-                            locationRepository: locationRepo
-                        ),
+        }
+        .sheet(isPresented: $showingCategoryManagement) {
+            // Note: We need to pass the categoryRepository here
+            // For now, we'll use a placeholder
+            Text("Category Management View")
+        }
+        .sheet(isPresented: $showingScannerSettings) {
+            ScannerSettingsView(settings: $viewModel.settings, viewModel: viewModel)
+        }
+        .sheet(isPresented: $showingConflictResolution) {
+            // Note: We'll need to pass the repositories here
+            if let itemRepo = viewModel.itemRepository,
+               let receiptRepo = viewModel.receiptRepository,
+               let locationRepo = viewModel.locationRepository {
+                ConflictResolutionView(
+                    conflictService: ConflictResolutionService(
                         itemRepository: itemRepo,
                         receiptRepository: receiptRepo,
                         locationRepository: locationRepo
-                    )
-                }
+                    ),
+                    itemRepository: itemRepo,
+                    receiptRepository: receiptRepo,
+                    locationRepository: locationRepo
+                )
             }
         }
-        }
+    }
     
     // MARK: - Sections
     
