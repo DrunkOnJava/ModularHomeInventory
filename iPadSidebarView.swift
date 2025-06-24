@@ -69,6 +69,7 @@ struct iPadSidebarView: View {
                 .id(navigationState.selectedTab)
         }
         .navigationSplitViewStyle(.balanced)
+        .navigationSplitViewColumnWidth(ideal: 300)
         .sheet(isPresented: $navigationState.showAddItem) {
             AddItemSheet()
         }
@@ -152,7 +153,7 @@ struct CollectionsNavigationView: View {
         NavigationStack {
             coordinator.itemsModule.makeCollectionsListView()
                 .navigationTitle("Collections")
-                .navigationBarTitleDisplayMode(.large)
+                .navigationBarTitleDisplayMode(.automatic)
         }
     }
 }
@@ -162,7 +163,7 @@ struct LocationsNavigationView: View {
         NavigationStack {
             LocationsListView()
                 .navigationTitle("Locations")
-                .navigationBarTitleDisplayMode(.large)
+                .navigationBarTitleDisplayMode(.automatic)
         }
     }
 }
@@ -172,9 +173,12 @@ struct CategoriesNavigationView: View {
     
     var body: some View {
         NavigationStack {
-            coordinator.settingsModule.makeCategoryManagementView()
+            // Category management view
+            Text("Category Management")
+                .font(.largeTitle)
+                .padding()
                 .navigationTitle("Categories")
-                .navigationBarTitleDisplayMode(.large)
+                .navigationBarTitleDisplayMode(.automatic)
         }
     }
 }
@@ -184,7 +188,7 @@ struct AnalyticsNavigationView: View {
         NavigationStack {
             AnalyticsDashboardView()
                 .navigationTitle("Analytics")
-                .navigationBarTitleDisplayMode(.large)
+                .navigationBarTitleDisplayMode(.automatic)
         }
     }
 }
@@ -194,7 +198,7 @@ struct ReportsNavigationView: View {
         NavigationStack {
             ReportsDashboardView()
                 .navigationTitle("Reports")
-                .navigationBarTitleDisplayMode(.large)
+                .navigationBarTitleDisplayMode(.automatic)
         }
     }
 }
@@ -206,7 +210,7 @@ struct BudgetNavigationView: View {
         NavigationStack {
             coordinator.itemsModule.makeBudgetDashboardView()
                 .navigationTitle("Budget")
-                .navigationBarTitleDisplayMode(.large)
+                .navigationBarTitleDisplayMode(.automatic)
         }
     }
 }
@@ -218,7 +222,7 @@ struct ScannerNavigationView: View {
         NavigationStack {
             coordinator.scannerModule.makeScannerView()
                 .navigationTitle("Scanner")
-                .navigationBarTitleDisplayMode(.large)
+                .navigationBarTitleDisplayMode(.automatic)
         }
     }
 }
@@ -228,7 +232,7 @@ struct SearchNavigationView: View {
         NavigationStack {
             AdvancedSearchView()
                 .navigationTitle("Search")
-                .navigationBarTitleDisplayMode(.large)
+                .navigationBarTitleDisplayMode(.automatic)
         }
     }
 }
@@ -238,7 +242,7 @@ struct ImportExportNavigationView: View {
         NavigationStack {
             ImportExportDashboardView()
                 .navigationTitle("Import/Export")
-                .navigationBarTitleDisplayMode(.large)
+                .navigationBarTitleDisplayMode(.automatic)
         }
     }
 }
@@ -250,7 +254,7 @@ struct SettingsNavigationView: View {
         NavigationStack {
             coordinator.settingsModule.makeSettingsView()
                 .navigationTitle("Settings")
-                .navigationBarTitleDisplayMode(.large)
+                .navigationBarTitleDisplayMode(.automatic)
         }
     }
 }
@@ -294,7 +298,10 @@ struct ImportExportDashboardView: View {
     
     var body: some View {
         VStack(spacing: AppSpacing.lg) {
-            coordinator.itemsModule.makeCSVImportView()
+            coordinator.itemsModule.makeCSVImportView { result in
+                // Handle import completion
+                print("Import completed with \(result.importedCount) items")
+            }
             Divider()
             coordinator.itemsModule.makeCSVExportView()
         }
@@ -308,7 +315,11 @@ struct AddItemSheet: View {
     
     var body: some View {
         NavigationView {
-            coordinator.itemsModule.makeAddItemView()
+            coordinator.itemsModule.makeAddItemView { newItem in
+                // Handle new item creation
+                navigationState.selectedItem = newItem
+                navigationState.showAddItem = false
+            }
                 .toolbar {
                     ToolbarItem(placement: .cancellationAction) {
                         Button("Cancel") {

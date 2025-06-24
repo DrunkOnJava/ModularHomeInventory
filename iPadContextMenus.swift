@@ -390,7 +390,7 @@ extension View {
 // MARK: - Multi-Selection Context Menu
 
 struct MultiSelectionContextMenu: View {
-    let selectedItems: Set<Item>
+    let selectedItems: Set<UUID>
     let onDelete: () -> Void
     let onMove: () -> Void
     let onAddToCollection: () -> Void

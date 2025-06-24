@@ -14,167 +14,152 @@ struct iPadKeyboardShortcuts: ViewModifier {
                 // Register for keyboard shortcuts
                 setupKeyCommands()
             }
-            .keyboardShortcut("n", modifiers: .command) {
-                // New item
-                navigationState.showAddItem = true
+            // Navigation shortcuts
+            .keyboardShortcut("n", modifiers: .command)
+            .keyboardShortcut("f", modifiers: .command)
+            .keyboardShortcut("1", modifiers: .command)
+            .keyboardShortcut("2", modifiers: .command)
+            .keyboardShortcut("3", modifiers: .command)
+            .keyboardShortcut("4", modifiers: .command)
+            .keyboardShortcut(",", modifiers: .command)
+            .keyboardShortcut("r", modifiers: .command)
+            .keyboardShortcut("e", modifiers: .command)
+            .keyboardShortcut("i", modifiers: [.command, .shift])
+            .keyboardShortcut("d", modifiers: .command)
+            .keyboardShortcut(.delete, modifiers: .command)
+            .keyboardShortcut(.escape)
+            .keyboardShortcut(.space)
+            .onChange(of: navigationState.selectedTab) { _, newTab in
+                handleTabChange(newTab)
             }
-            .keyboardShortcut("f", modifiers: .command) {
-                // Find/Search
-                navigationState.selectedTab = .search
-                isSearchFocused = true
-            }
-            .keyboardShortcut("1", modifiers: .command) {
-                // Jump to Items
-                navigationState.selectedTab = .items
-            }
-            .keyboardShortcut("2", modifiers: .command) {
-                // Jump to Collections
-                navigationState.selectedTab = .collections
-            }
-            .keyboardShortcut("3", modifiers: .command) {
-                // Jump to Analytics
-                navigationState.selectedTab = .analytics
-            }
-            .keyboardShortcut("4", modifiers: .command) {
-                // Jump to Scanner
-                navigationState.selectedTab = .scanner
-            }
-            .keyboardShortcut(",", modifiers: .command) {
-                // Settings
-                navigationState.selectedTab = .settings
-            }
-            .keyboardShortcut("r", modifiers: .command) {
-                // Refresh
-                NotificationCenter.default.post(name: .refreshData, object: nil)
-            }
-            .keyboardShortcut("e", modifiers: .command) {
-                // Export
-                navigationState.selectedTab = .importExport
-            }
-            .keyboardShortcut("i", modifiers: [.command, .shift]) {
-                // Import
-                navigationState.selectedTab = .importExport
-            }
-            .keyboardShortcut("d", modifiers: .command) {
-                // Duplicate selected item
-                if let item = navigationState.selectedItem {
-                    NotificationCenter.default.post(
-                        name: .duplicateItem,
-                        object: nil,
-                        userInfo: ["item": item]
-                    )
-                }
-            }
-            .keyboardShortcut(.delete, modifiers: .command) {
-                // Delete selected item
-                if let item = navigationState.selectedItem {
-                    NotificationCenter.default.post(
-                        name: .deleteItem,
-                        object: nil,
-                        userInfo: ["item": item]
-                    )
-                }
-            }
-            .keyboardShortcut(.escape) {
-                // Dismiss sheets/close detail
-                navigationState.showAddItem = false
-                navigationState.selectedItem = nil
-            }
-            .keyboardShortcut(.space) {
-                // Quick look selected item
-                if let item = navigationState.selectedItem {
-                    NotificationCenter.default.post(
-                        name: .quickLookItem,
-                        object: nil,
-                        userInfo: ["item": item]
-                    )
+            .onReceive(NotificationCenter.default.publisher(for: .keyboardShortcutTriggered)) { notification in
+                if let shortcut = notification.object as? String {
+                    handleKeyboardShortcut(shortcut)
                 }
             }
     }
     
     private func setupKeyCommands() {
-        // Additional setup if needed
+        // This will be handled by the app's key command system
+    }
+    
+    private func handleTabChange(_ tab: iPadTab) {
+        // Handle tab changes
+    }
+    
+    private func handleKeyboardShortcut(_ shortcut: String) {
+        switch shortcut {
+        case "cmd+n":
+            navigationState.showAddItem = true
+        case "cmd+f":
+            navigationState.selectedTab = .search
+            isSearchFocused = true
+        case "cmd+1":
+            navigationState.selectedTab = .items
+        case "cmd+2":
+            navigationState.selectedTab = .collections
+        case "cmd+3":
+            navigationState.selectedTab = .analytics
+        case "cmd+4":
+            navigationState.selectedTab = .scanner
+        case "cmd+,":
+            navigationState.selectedTab = .settings
+        case "cmd+r":
+            NotificationCenter.default.post(name: .refreshData, object: nil)
+        case "cmd+e":
+            navigationState.showExport = true
+        case "cmd+shift+i":
+            navigationState.showImport = true
+        case "cmd+d":
+            if navigationState.selectedItem != nil {
+                navigationState.showDuplicate = true
+            }
+        case "cmd+delete":
+            if navigationState.selectedItem != nil {
+                navigationState.showDeleteConfirmation = true
+            }
+        case "escape":
+            navigationState.selectedItem = nil
+            navigationState.selectedCollection = nil
+            navigationState.selectedLocation = nil
+            isSearchFocused = false
+        case "space":
+            if navigationState.selectedItem != nil {
+                navigationState.showQuickLook = true
+            }
+        default:
+            break
+        }
     }
 }
 
-// MARK: - Keyboard Command Builder
+// MARK: - Keyboard Commands
 
-struct KeyboardCommandBuilder {
+extension iPadKeyboardShortcuts {
     static func buildCommands() -> some Commands {
-        CommandGroup(after: .newItem) {
-            Button("New Item") {
-                NotificationCenter.default.post(name: .createNewItem, object: nil)
+        Group {
+            CommandGroup(after: .newItem) {
+                Button("New Item") {
+                    NotificationCenter.default.post(
+                        name: .keyboardShortcutTriggered,
+                        object: "cmd+n"
+                    )
+                }
+                .keyboardShortcut("n", modifiers: .command)
+                
+                Button("Duplicate Item") {
+                    NotificationCenter.default.post(
+                        name: .keyboardShortcutTriggered,
+                        object: "cmd+d"
+                    )
+                }
+                .keyboardShortcut("d", modifiers: .command)
+                .disabled(true) // Will be enabled when item is selected
             }
-            .keyboardShortcut("n", modifiers: .command)
             
-            Button("Duplicate Item") {
-                NotificationCenter.default.post(name: .duplicateSelectedItem, object: nil)
+            CommandGroup(replacing: .sidebar) {
+                Button("Toggle Sidebar") {
+                    NotificationCenter.default.post(
+                        name: .keyboardShortcutTriggered,
+                        object: "cmd+ctrl+s"
+                    )
+                }
+                .keyboardShortcut("s", modifiers: [.command, .control])
             }
-            .keyboardShortcut("d", modifiers: .command)
             
-            Divider()
-            
-            Button("Import...") {
-                NotificationCenter.default.post(name: .showImport, object: nil)
+            CommandMenu("Navigate") {
+                Button("Items") {
+                    NotificationCenter.default.post(
+                        name: .keyboardShortcutTriggered,
+                        object: "cmd+1"
+                    )
+                }
+                .keyboardShortcut("1", modifiers: .command)
+                
+                Button("Collections") {
+                    NotificationCenter.default.post(
+                        name: .keyboardShortcutTriggered,
+                        object: "cmd+2"
+                    )
+                }
+                .keyboardShortcut("2", modifiers: .command)
+                
+                Button("Analytics") {
+                    NotificationCenter.default.post(
+                        name: .keyboardShortcutTriggered,
+                        object: "cmd+3"
+                    )
+                }
+                .keyboardShortcut("3", modifiers: .command)
+                
+                Button("Scanner") {
+                    NotificationCenter.default.post(
+                        name: .keyboardShortcutTriggered,
+                        object: "cmd+4"
+                    )
+                }
+                .keyboardShortcut("4", modifiers: .command)
             }
-            .keyboardShortcut("i", modifiers: [.command, .shift])
-            
-            Button("Export...") {
-                NotificationCenter.default.post(name: .showExport, object: nil)
-            }
-            .keyboardShortcut("e", modifiers: .command)
-        }
-        
-        CommandGroup(replacing: .sidebar) {
-            Button("Toggle Sidebar") {
-                NotificationCenter.default.post(name: .toggleSidebar, object: nil)
-            }
-            .keyboardShortcut("s", modifiers: [.command, .control])
-        }
-        
-        CommandMenu("Navigate") {
-            Button("Items") {
-                NotificationCenter.default.post(
-                    name: .navigateToTab,
-                    object: nil,
-                    userInfo: ["tab": iPadTab.items]
-                )
-            }
-            .keyboardShortcut("1", modifiers: .command)
-            
-            Button("Collections") {
-                NotificationCenter.default.post(
-                    name: .navigateToTab,
-                    object: nil,
-                    userInfo: ["tab": iPadTab.collections]
-                )
-            }
-            .keyboardShortcut("2", modifiers: .command)
-            
-            Button("Analytics") {
-                NotificationCenter.default.post(
-                    name: .navigateToTab,
-                    object: nil,
-                    userInfo: ["tab": iPadTab.analytics]
-                )
-            }
-            .keyboardShortcut("3", modifiers: .command)
-            
-            Button("Scanner") {
-                NotificationCenter.default.post(
-                    name: .navigateToTab,
-                    object: nil,
-                    userInfo: ["tab": iPadTab.scanner]
-                )
-            }
-            .keyboardShortcut("4", modifiers: .command)
-            
-            Divider()
-            
-            Button("Search") {
-                NotificationCenter.default.post(name: .focusSearch, object: nil)
-            }
-            .keyboardShortcut("f", modifiers: .command)
         }
     }
 }
@@ -182,57 +167,65 @@ struct KeyboardCommandBuilder {
 // MARK: - Keyboard Navigation
 
 struct KeyboardNavigationModifier: ViewModifier {
-    @FocusState private var focusedField: FocusableField?
-    
     enum FocusableField: Hashable {
-        case search
-        case itemName
-        case itemDescription
-        case itemPrice
+        case searchField
+        case nameField
+        case priceField
+        case quantityField
+        case notesField
     }
+    
+    @FocusState private var focusedField: FocusableField?
     
     func body(content: Content) -> some View {
         content
-            .focused($focusedField)
-            .onKeyPress(.tab) {
-                // Custom tab navigation
-                advanceFocus()
+            .focused($focusedField, equals: .searchField)
+            .onKeyPress(.tab) { press in
+                handleTabNavigation(forward: true)
                 return .handled
             }
-            .onKeyPress(.tab, modifiers: .shift) {
-                // Reverse tab navigation
-                reverseFocus()
+            .onKeyPress(.tab, phases: .down) { press in
+                if press.modifiers.contains(.shift) {
+                    handleTabNavigation(forward: false)
+                    return .handled
+                }
+                return .ignored
+            }
+            .onKeyPress(.return) { press in
+                handleReturnKey()
                 return .handled
             }
     }
     
-    private func advanceFocus() {
-        switch focusedField {
-        case .search:
-            focusedField = .itemName
-        case .itemName:
-            focusedField = .itemDescription
-        case .itemDescription:
-            focusedField = .itemPrice
-        case .itemPrice:
-            focusedField = .search
-        case .none:
-            focusedField = .search
+    private func handleTabNavigation(forward: Bool) {
+        let fields: [FocusableField] = [.searchField, .nameField, .priceField, .quantityField, .notesField]
+        
+        guard let currentIndex = fields.firstIndex(where: { $0 == focusedField }) else {
+            focusedField = forward ? fields.first : fields.last
+            return
+        }
+        
+        if forward {
+            let nextIndex = (currentIndex + 1) % fields.count
+            focusedField = fields[nextIndex]
+        } else {
+            let previousIndex = currentIndex == 0 ? fields.count - 1 : currentIndex - 1
+            focusedField = fields[previousIndex]
         }
     }
     
-    private func reverseFocus() {
+    private func handleReturnKey() {
+        // Submit form or move to next field
         switch focusedField {
-        case .search:
-            focusedField = .itemPrice
-        case .itemName:
-            focusedField = .search
-        case .itemDescription:
-            focusedField = .itemName
-        case .itemPrice:
-            focusedField = .itemDescription
-        case .none:
-            focusedField = .itemPrice
+        case .searchField:
+            // Trigger search
+            break
+        case .notesField:
+            // Allow multiline in notes
+            break
+        default:
+            // Move to next field
+            handleTabNavigation(forward: true)
         }
     }
 }
@@ -246,10 +239,10 @@ struct KeyboardShortcutHelpView: View {
         NavigationView {
             List {
                 Section("Navigation") {
-                    ShortcutRow(key: "⌘1", description: "Go to Items")
-                    ShortcutRow(key: "⌘2", description: "Go to Collections")
-                    ShortcutRow(key: "⌘3", description: "Go to Analytics")
-                    ShortcutRow(key: "⌘4", description: "Go to Scanner")
+                    ShortcutRow(key: "⌘1", description: "Jump to Items")
+                    ShortcutRow(key: "⌘2", description: "Jump to Collections")
+                    ShortcutRow(key: "⌘3", description: "Jump to Analytics")
+                    ShortcutRow(key: "⌘4", description: "Jump to Scanner")
                     ShortcutRow(key: "⌘,", description: "Open Settings")
                 }
                 
@@ -262,8 +255,7 @@ struct KeyboardShortcutHelpView: View {
                 
                 Section("Search & Filter") {
                     ShortcutRow(key: "⌘F", description: "Search")
-                    ShortcutRow(key: "⌘K", description: "Quick Find")
-                    ShortcutRow(key: "Esc", description: "Clear Search")
+                    ShortcutRow(key: "Esc", description: "Clear Search/Dismiss")
                 }
                 
                 Section("Import/Export") {
@@ -274,20 +266,13 @@ struct KeyboardShortcutHelpView: View {
                 Section("View Controls") {
                     ShortcutRow(key: "⌘R", description: "Refresh")
                     ShortcutRow(key: "⌘^S", description: "Toggle Sidebar")
-                    ShortcutRow(key: "⌘+", description: "Increase Text Size")
-                    ShortcutRow(key: "⌘-", description: "Decrease Text Size")
-                }
-                
-                Section("Selection") {
-                    ShortcutRow(key: "↑/↓", description: "Navigate List")
-                    ShortcutRow(key: "⌘A", description: "Select All")
-                    ShortcutRow(key: "⇧Click", description: "Multi-select")
+                    ShortcutRow(key: "⌘/", description: "Show This Help")
                 }
             }
             .navigationTitle("Keyboard Shortcuts")
-            .navigationBarTitleDisplayMode(.large)
+            .navigationBarTitleDisplayMode(.inline)
             .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
+                ToolbarItem(placement: .confirmationAction) {
                     Button("Done") {
                         dismiss()
                     }
@@ -305,35 +290,18 @@ struct ShortcutRow: View {
         HStack {
             Text(key)
                 .font(.system(.body, design: .monospaced))
-                .foregroundStyle(AppColors.primary)
-                .frame(width: 80, alignment: .leading)
+                .foregroundStyle(.blue)
+                .frame(minWidth: 80, alignment: .leading)
             
             Text(description)
-                .foregroundStyle(AppColors.textPrimary)
+                .foregroundStyle(.primary)
             
             Spacer()
         }
-        .padding(.vertical, 4)
     }
 }
 
-// MARK: - Notification Names
-
-extension Notification.Name {
-    static let refreshData = Notification.Name("refreshData")
-    static let createNewItem = Notification.Name("createNewItem")
-    static let duplicateItem = Notification.Name("duplicateItem")
-    static let deleteItem = Notification.Name("deleteItem")
-    static let quickLookItem = Notification.Name("quickLookItem")
-    static let duplicateSelectedItem = Notification.Name("duplicateSelectedItem")
-    static let showImport = Notification.Name("showImport")
-    static let showExport = Notification.Name("showExport")
-    static let toggleSidebar = Notification.Name("toggleSidebar")
-    static let navigateToTab = Notification.Name("navigateToTab")
-    static let focusSearch = Notification.Name("focusSearch")
-}
-
-// MARK: - View Extension
+// MARK: - Extensions
 
 extension View {
     func iPadKeyboardShortcuts(navigationState: iPadNavigationState) -> some View {
@@ -343,4 +311,9 @@ extension View {
     func keyboardNavigation() -> some View {
         self.modifier(KeyboardNavigationModifier())
     }
+}
+
+extension Notification.Name {
+    static let keyboardShortcutTriggered = Notification.Name("keyboardShortcutTriggered")
+    static let refreshData = Notification.Name("refreshData")
 }

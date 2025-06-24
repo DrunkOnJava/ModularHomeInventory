@@ -131,7 +131,7 @@ struct WindowAccessor: UIViewRepresentable {
             if let window = view.window {
                 // Configure window for multitasking
                 window.windowScene?.sizeRestrictions?.minimumSize = CGSize(width: 768, height: 768)
-                window.windowScene?.sizeRestrictions?.maximumSize = CGSize(width: .infinity, height: .infinity)
+                window.windowScene?.sizeRestrictions?.maximumSize = CGSize(width: 4096, height: 4096)
             }
         }
         return view
@@ -149,9 +149,7 @@ struct iPadSceneDelegate: App {
         WindowGroup {
             iPadApp()
                 .environmentObject(coordinator)
-                .commands {
-                    KeyboardCommandBuilder.buildCommands()
-                }
+                // Commands are added at the scene level
         }
         .commands {
             // File menu additions
@@ -185,7 +183,7 @@ struct iPadSceneDelegate: App {
         
         #if os(iOS)
         Settings {
-            SettingsView()
+            coordinator.settingsModule.makeSettingsView()
         }
         #endif
     }
@@ -214,7 +212,7 @@ struct SlideOverPanel: View {
     var body: some View {
         VStack {
             // Quick access content
-            BarcodeScannerView()
+            coordinator.scannerModule.makeScannerView()
         }
         .frame(width: width)
         .background(AppColors.background)

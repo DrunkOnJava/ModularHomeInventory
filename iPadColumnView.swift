@@ -1,25 +1,24 @@
 import SwiftUI
 import Core
 import SharedUI
-import Items
 
-/// iPad-optimized column view for master-detail-detail layout
-/// Provides a three-column interface for browsing items
+/// Three-column layout for iPad Pro
+/// Provides master-detail-inspector interface
 struct iPadColumnView: View {
-    @StateObject private var viewModel = iPadColumnViewModel()
+    @StateObject private var viewModel = ColumnViewModel()
+    @EnvironmentObject var coordinator: AppCoordinator
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     
     var body: some View {
         GeometryReader { geometry in
-            if horizontalSizeClass == .regular && geometry.size.width > 1000 {
-                // Three column layout for large iPads
-                threeColumnLayout
-            } else if horizontalSizeClass == .regular {
-                // Two column layout for standard iPads
-                twoColumnLayout
-            } else {
-                // Single column for compact width
-                singleColumnLayout
+            Group {
+                if geometry.size.width > 1200 {
+                    threeColumnLayout
+                } else if geometry.size.width > 768 {
+                    twoColumnLayout
+                } else {
+                    singleColumnLayout
+                }
             }
         }
     }
@@ -28,57 +27,43 @@ struct iPadColumnView: View {
     
     private var threeColumnLayout: some View {
         HStack(spacing: 0) {
-            // Master column - Categories/Collections
+            // Master column (categories/collections/locations)
             masterColumn
                 .frame(width: 280)
-                .background(AppColors.surface)
+                .background(Color(.systemGroupedBackground))
             
             Divider()
             
-            // Middle column - Items list
+            // Middle column (items list)
             middleColumn
-                .frame(width: 380)
-                .background(AppColors.background)
+                .frame(minWidth: 320, maxWidth: 400)
             
             Divider()
             
-            // Detail column - Item details
+            // Detail column (item detail)
             detailColumn
                 .frame(maxWidth: .infinity)
-                .background(AppColors.background)
         }
     }
     
     // MARK: - Two Column Layout
     
     private var twoColumnLayout: some View {
-        NavigationSplitView {
+        HStack(spacing: 0) {
             // Combined master/middle column
             VStack(spacing: 0) {
-                Picker("View", selection: $viewModel.masterViewMode) {
-                    Text("Categories").tag(MasterViewMode.categories)
-                    Text("Collections").tag(MasterViewMode.collections)
-                    Text("Locations").tag(MasterViewMode.locations)
-                }
-                .pickerStyle(.segmented)
-                .padding()
-                
+                masterColumn
                 Divider()
-                
-                masterContent
+                middleColumn
             }
-            .navigationTitle("Browse")
-        } detail: {
-            if let selectedItem = viewModel.selectedItem {
-                ItemDetailPlaceholder(item: selectedItem)
-                    .id(selectedItem.id)
-            } else {
-                ContentUnavailableView(
-                    "Select an Item",
-                    systemImage: "shippingbox",
-                    description: Text("Choose an item from the list to view its details")
-                )
-            }
+            .frame(width: 320)
+            .background(Color(.systemGroupedBackground))
+            
+            Divider()
+            
+            // Detail column
+            detailColumn
+                .frame(maxWidth: .infinity)
         }
     }
     
@@ -86,7 +71,14 @@ struct iPadColumnView: View {
     
     private var singleColumnLayout: some View {
         NavigationStack {
-            ItemsListView(selectedItem: $viewModel.selectedItem)
+            coordinator.itemsModule.makeItemsListView(
+                onSearchTapped: {
+                    viewModel.showSearch = true
+                },
+                onBarcodeSearchTapped: {
+                    viewModel.showBarcodeSearch = true
+                }
+            )
         }
     }
     
@@ -116,39 +108,26 @@ struct iPadColumnView: View {
             LazyVStack(spacing: 0) {
                 switch viewModel.masterViewMode {
                 case .categories:
-                    ForEach(viewModel.categories) { category in
+                    ForEach(ItemCategory.allCases, id: \.self) { category in
                         CategoryRow(
                             category: category,
-                            isSelected: viewModel.selectedCategory?.id == category.id,
-                            itemCount: viewModel.itemCounts[category.id] ?? 0
+                            isSelected: viewModel.selectedCategoryEnum == category,
+                            itemCount: 0 // Would be calculated from items
                         )
                         .onTapGesture {
-                            viewModel.selectCategory(category)
+                            viewModel.selectedCategoryEnum = category
                         }
                     }
-                    
                 case .collections:
-                    ForEach(viewModel.collections) { collection in
-                        CollectionRow(
-                            collection: collection,
-                            isSelected: viewModel.selectedCollection?.id == collection.id
-                        )
-                        .onTapGesture {
-                            viewModel.selectCollection(collection)
-                        }
-                    }
-                    
+                    // Collections list would go here
+                    Text("Collections")
+                        .foregroundStyle(.secondary)
+                        .padding()
                 case .locations:
-                    ForEach(viewModel.locations) { location in
-                        LocationRow(
-                            location: location,
-                            isSelected: viewModel.selectedLocation?.id == location.id,
-                            itemCount: viewModel.locationItemCounts[location.id] ?? 0
-                        )
-                        .onTapGesture {
-                            viewModel.selectLocation(location)
-                        }
-                    }
+                    // Locations list would go here
+                    Text("Locations")
+                        .foregroundStyle(.secondary)
+                        .padding()
                 }
             }
         }
@@ -159,28 +138,37 @@ struct iPadColumnView: View {
             // Header
             HStack {
                 Text(viewModel.middleColumnTitle)
-                    .textStyle(.headlineMedium)
-                
+                    .font(.headline)
                 Spacer()
-                
-                Text("\(viewModel.filteredItems.count) items")
-                    .textStyle(.labelMedium)
-                    .foregroundStyle(AppColors.textSecondary)
+                Button {
+                    viewModel.showAddItem = true
+                } label: {
+                    Image(systemName: "plus.circle.fill")
+                        .font(.title2)
+                }
             }
             .padding()
             
             Divider()
             
             // Items list
-            ScrollView {
-                LazyVStack(spacing: 0) {
-                    ForEach(viewModel.filteredItems) { item in
-                        ItemCompactRow(
-                            item: item,
-                            isSelected: viewModel.selectedItem?.id == item.id
-                        )
-                        .onTapGesture {
-                            viewModel.selectItem(item)
+            if viewModel.filteredItems.isEmpty {
+                ContentUnavailableView(
+                    "No Items",
+                    systemImage: "square.grid.2x2",
+                    description: Text("Add items to get started")
+                )
+            } else {
+                ScrollView {
+                    LazyVStack(spacing: 1) {
+                        ForEach(viewModel.filteredItems) { item in
+                            ItemRow(
+                                item: item,
+                                isSelected: viewModel.selectedItem?.id == item.id
+                            )
+                            .onTapGesture {
+                                viewModel.selectedItem = item
+                            }
                         }
                     }
                 }
@@ -190,85 +178,82 @@ struct iPadColumnView: View {
     
     private var detailColumn: some View {
         Group {
-            if let selectedItem = viewModel.selectedItem {
-                ItemDetailPlaceholder(item: selectedItem)
-                    .id(selectedItem.id)
+            if let item = viewModel.selectedItem {
+                // Item detail view
+                ItemDetailPlaceholder(item: item)
             } else {
                 ContentUnavailableView(
                     "Select an Item",
-                    systemImage: "shippingbox",
-                    description: Text("Choose an item from the list to view its details")
+                    systemImage: "square.grid.2x2",
+                    description: Text("Choose an item from the list to view details")
                 )
             }
+        }
+    }
+    
+    // MARK: - Computed Properties
+    
+    private var middleColumnTitle: String {
+        switch viewModel.masterViewMode {
+        case .categories:
+            return viewModel.selectedCategoryEnum?.displayName ?? "All Items"
+        case .collections:
+            return "Collection Items"
+        case .locations:
+            return "Location Items"
         }
     }
 }
 
 // MARK: - View Model
 
-class iPadColumnViewModel: ObservableObject {
-    @Published var masterViewMode: MasterViewMode = .categories
-    @Published var categories: [ItemCategory] = []
-    @Published var collections: [Collection] = []
-    @Published var locations: [Location] = []
-    @Published var selectedCategory: ItemCategory?
-    @Published var selectedCollection: Collection?
-    @Published var selectedLocation: Location?
-    @Published var filteredItems: [Item] = []
+class ColumnViewModel: ObservableObject {
+    @Published var masterViewMode = MasterViewMode.categories
+    @Published var selectedCategoryEnum: ItemCategory?
+    @Published var selectedCollection: UUID?
+    @Published var selectedLocation: UUID?
     @Published var selectedItem: Item?
-    @Published var itemCounts: [UUID: Int] = [:]
-    @Published var locationItemCounts: [UUID: Int] = [:]
+    @Published var showSearch = false
+    @Published var showBarcodeSearch = false
+    @Published var showAddItem = false
+    @Published var searchText = ""
+    
+    // Mock data for now
+    @Published var items: [Item] = Item.previewItems
+    @Published var collections: [UUID] = []
+    @Published var locations: [UUID] = []
+    
+    var filteredItems: [Item] {
+        items.filter { item in
+            // Filter by category
+            if let category = selectedCategoryEnum, item.category != category {
+                return false
+            }
+            
+            // Filter by search
+            if !searchText.isEmpty {
+                return item.name.localizedCaseInsensitiveContains(searchText) ||
+                       item.brand?.localizedCaseInsensitiveContains(searchText) == true ||
+                       item.model?.localizedCaseInsensitiveContains(searchText) == true
+            }
+            
+            return true
+        }
+    }
     
     var middleColumnTitle: String {
         switch masterViewMode {
         case .categories:
-            return selectedCategory?.name ?? "All Items"
+            return selectedCategoryEnum?.displayName ?? "All Items"
         case .collections:
-            return selectedCollection?.name ?? "Select Collection"
+            return "Collection Items"
         case .locations:
-            return selectedLocation?.name ?? "Select Location"
+            return "Location Items"
         }
     }
-    
-    init() {
-        loadData()
-    }
-    
-    func loadData() {
-        // Load categories, collections, locations
-        categories = ItemCategory.allCases
-        // TODO: Load collections and locations from repositories
-    }
-    
-    func selectCategory(_ category: ItemCategory) {
-        selectedCategory = category
-        selectedCollection = nil
-        selectedLocation = nil
-        filterItems()
-    }
-    
-    func selectCollection(_ collection: Collection) {
-        selectedCollection = collection
-        selectedCategory = nil
-        selectedLocation = nil
-        filterItems()
-    }
-    
-    func selectLocation(_ location: Location) {
-        selectedLocation = location
-        selectedCategory = nil
-        selectedCollection = nil
-        filterItems()
-    }
-    
-    func selectItem(_ item: Item) {
-        selectedItem = item
-    }
-    
-    private func filterItems() {
-        // TODO: Filter items based on selection
-    }
 }
+
+// MARK: - Supporting Types
 
 enum MasterViewMode {
     case categories
@@ -276,7 +261,7 @@ enum MasterViewMode {
     case locations
 }
 
-// MARK: - Row Components
+// MARK: - Row Views
 
 struct CategoryRow: View {
     let category: ItemCategory
@@ -284,170 +269,85 @@ struct CategoryRow: View {
     let itemCount: Int
     
     var body: some View {
-        HStack {
+        HStack(spacing: 12) {
             Image(systemName: category.icon)
                 .font(.title3)
-                .foregroundStyle(isSelected ? AppColors.primary : AppColors.textSecondary)
-                .frame(width: 30)
+                .foregroundStyle(.white)
+                .frame(width: 32, height: 32)
+                .background(Color(category.color))
+                .clipShape(RoundedRectangle(cornerRadius: 6))
             
-            VStack(alignment: .leading, spacing: 2) {
-                Text(category.displayName)
-                    .textStyle(.bodyLarge)
-                    .foregroundStyle(isSelected ? AppColors.primary : AppColors.textPrimary)
-                
-                Text("\(itemCount) items")
-                    .textStyle(.labelMedium)
-                    .foregroundStyle(AppColors.textSecondary)
-            }
+            Text(category.displayName)
+                .font(.body)
             
             Spacer()
             
-            if isSelected {
-                Image(systemName: "chevron.right")
+            if itemCount > 0 {
+                Text("\(itemCount)")
                     .font(.caption)
-                    .foregroundStyle(AppColors.primary)
+                    .foregroundStyle(.secondary)
             }
+            
+            Image(systemName: "chevron.right")
+                .font(.caption)
+                .foregroundStyle(.tertiary)
         }
         .padding(.horizontal)
-        .padding(.vertical, 12)
-        .background(isSelected ? AppColors.primary.opacity(0.1) : Color.clear)
+        .padding(.vertical, 8)
+        .background(isSelected ? Color.accentColor.opacity(0.1) : Color.clear)
+        .contentShape(Rectangle())
     }
 }
 
-struct CollectionRow: View {
-    let collection: Collection
-    let isSelected: Bool
-    
-    var body: some View {
-        HStack {
-            Image(systemName: "folder.fill")
-                .font(.title3)
-                .foregroundStyle(isSelected ? AppColors.primary : AppColors.textSecondary)
-                .frame(width: 30)
-            
-            VStack(alignment: .leading, spacing: 2) {
-                Text(collection.name)
-                    .textStyle(.bodyLarge)
-                    .foregroundStyle(isSelected ? AppColors.primary : AppColors.textPrimary)
-                
-                if let description = collection.description {
-                    Text(description)
-                        .textStyle(.labelMedium)
-                        .foregroundStyle(AppColors.textSecondary)
-                        .lineLimit(1)
-                }
-            }
-            
-            Spacer()
-            
-            if isSelected {
-                Image(systemName: "chevron.right")
-                    .font(.caption)
-                    .foregroundStyle(AppColors.primary)
-            }
-        }
-        .padding(.horizontal)
-        .padding(.vertical, 12)
-        .background(isSelected ? AppColors.primary.opacity(0.1) : Color.clear)
-    }
-}
-
-struct LocationRow: View {
-    let location: Location
-    let isSelected: Bool
-    let itemCount: Int
-    
-    var body: some View {
-        HStack {
-            Image(systemName: location.icon ?? "location.fill")
-                .font(.title3)
-                .foregroundStyle(isSelected ? AppColors.primary : AppColors.textSecondary)
-                .frame(width: 30)
-            
-            VStack(alignment: .leading, spacing: 2) {
-                Text(location.name)
-                    .textStyle(.bodyLarge)
-                    .foregroundStyle(isSelected ? AppColors.primary : AppColors.textPrimary)
-                
-                Text("\(itemCount) items")
-                    .textStyle(.labelMedium)
-                    .foregroundStyle(AppColors.textSecondary)
-            }
-            
-            Spacer()
-            
-            if isSelected {
-                Image(systemName: "chevron.right")
-                    .font(.caption)
-                    .foregroundStyle(AppColors.primary)
-            }
-        }
-        .padding(.horizontal)
-        .padding(.vertical, 12)
-        .background(isSelected ? AppColors.primary.opacity(0.1) : Color.clear)
-    }
-}
-
-struct ItemCompactRow: View {
+struct ItemRow: View {
     let item: Item
     let isSelected: Bool
     
     var body: some View {
-        HStack {
-            // Thumbnail
-            if let firstPhoto = item.photos.first {
-                AsyncImage(url: URL(string: firstPhoto)) { image in
-                    image
-                        .resizable()
-                        .aspectRatio(contentMode: .fill)
-                } placeholder: {
-                    Rectangle()
-                        .fill(AppColors.surface)
-                }
-                .frame(width: 50, height: 50)
-                .clipShape(RoundedRectangle(cornerRadius: AppCornerRadius.small))
-            } else {
-                RoundedRectangle(cornerRadius: AppCornerRadius.small)
-                    .fill(AppColors.surface)
-                    .frame(width: 50, height: 50)
-                    .overlay(
-                        Image(systemName: "photo")
-                            .foregroundStyle(AppColors.textTertiary)
-                    )
-            }
+        HStack(spacing: 12) {
+            // Item icon
+            Image(systemName: item.category.icon)
+                .font(.title3)
+                .foregroundStyle(.white)
+                .frame(width: 40, height: 40)
+                .background(Color(item.category.color))
+                .clipShape(RoundedRectangle(cornerRadius: 8))
             
-            VStack(alignment: .leading, spacing: 2) {
+            // Item info
+            VStack(alignment: .leading, spacing: 4) {
                 Text(item.name)
-                    .textStyle(.bodyLarge)
-                    .foregroundStyle(isSelected ? AppColors.primary : AppColors.textPrimary)
+                    .font(.headline)
                     .lineLimit(1)
                 
                 HStack {
                     if let brand = item.brand {
                         Text(brand)
-                            .textStyle(.labelMedium)
-                            .foregroundStyle(AppColors.textSecondary)
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
                     }
                     
-                    if let price = item.purchasePrice {
-                        Text(price, format: .currency(code: item.currency))
-                            .textStyle(.labelMedium)
-                            .foregroundStyle(AppColors.textSecondary)
+                    if let model = item.model {
+                        Text("• \(model)")
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
                     }
                 }
+                .lineLimit(1)
             }
             
             Spacer()
             
-            if isSelected {
-                Image(systemName: "chevron.right")
-                    .font(.caption)
-                    .foregroundStyle(AppColors.primary)
+            // Price
+            if let price = item.purchasePrice {
+                Text("$\(price)")
+                    .font(.subheadline)
+                    .foregroundStyle(.secondary)
             }
         }
         .padding(.horizontal)
-        .padding(.vertical, 12)
-        .background(isSelected ? AppColors.primary.opacity(0.1) : Color.clear)
+        .padding(.vertical, 8)
+        .background(isSelected ? Color.accentColor.opacity(0.1) : Color.clear)
+        .contentShape(Rectangle())
     }
 }
 
@@ -458,73 +358,50 @@ struct ItemDetailPlaceholder: View {
     
     var body: some View {
         ScrollView {
-            VStack(alignment: .leading, spacing: AppSpacing.lg) {
+            VStack(alignment: .leading, spacing: 20) {
                 // Header
-                Text(item.name)
-                    .textStyle(.displayMedium)
-                
-                // Basic info
                 HStack {
-                    if let brand = item.brand {
-                        Label(brand, systemImage: "tag")
-                    }
-                    if let model = item.model {
-                        Label(model, systemImage: "number")
-                    }
-                }
-                .textStyle(.bodyMedium)
-                .foregroundStyle(AppColors.textSecondary)
-                
-                // Photos
-                if !item.photos.isEmpty {
-                    ScrollView(.horizontal, showsIndicators: false) {
-                        HStack {
-                            ForEach(item.photos, id: \.self) { photo in
-                                if let url = URL(string: photo) {
-                                    AsyncImage(url: url) { image in
-                                        image
-                                            .resizable()
-                                            .aspectRatio(contentMode: .fit)
-                                    } placeholder: {
-                                        Rectangle()
-                                            .fill(AppColors.surface)
-                                    }
-                                    .frame(height: 200)
-                                    .cornerRadius(AppCornerRadius.medium)
-                                }
-                            }
+                    Image(systemName: item.category.icon)
+                        .font(.largeTitle)
+                        .foregroundStyle(.white)
+                        .frame(width: 80, height: 80)
+                        .background(Color(item.category.color))
+                        .clipShape(RoundedRectangle(cornerRadius: 16))
+                    
+                    VStack(alignment: .leading, spacing: 8) {
+                        Text(item.name)
+                            .font(.largeTitle)
+                            .fontWeight(.semibold)
+                        
+                        if let brand = item.brand {
+                            Text(brand)
+                                .font(.title3)
+                                .foregroundStyle(.secondary)
                         }
                     }
+                    
+                    Spacer()
                 }
                 
                 // Details
-                VStack(alignment: .leading, spacing: AppSpacing.md) {
-                    if let price = item.purchasePrice {
-                        HStack {
-                            Text("Purchase Price")
-                                .foregroundStyle(AppColors.textSecondary)
-                            Spacer()
-                            Text(price, format: .currency(code: item.currency))
-                        }
-                    }
-                    
-                    if let location = item.location {
-                        HStack {
-                            Text("Location")
-                                .foregroundStyle(AppColors.textSecondary)
-                            Spacer()
-                            Text(location.name)
-                        }
-                    }
-                    
-                    HStack {
-                        Text("Category")
-                            .foregroundStyle(AppColors.textSecondary)
-                        Spacer()
-                        Text(item.category.displayName)
+                GroupBox("Details") {
+                    LazyVGrid(columns: [
+                        GridItem(.flexible()),
+                        GridItem(.flexible())
+                    ], spacing: 16) {
+                        DetailRow(label: "Model", value: item.model ?? "—")
+                        DetailRow(label: "Quantity", value: "\(item.quantity)")
+                        DetailRow(label: "Condition", value: item.condition.displayName)
+                        DetailRow(label: "Purchase Price", value: item.purchasePrice.map { "$\($0)" } ?? "—")
                     }
                 }
-                .textStyle(.bodyMedium)
+                
+                if let notes = item.notes, !notes.isEmpty {
+                    GroupBox("Notes") {
+                        Text(notes)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                    }
+                }
                 
                 Spacer()
             }
@@ -535,17 +412,18 @@ struct ItemDetailPlaceholder: View {
     }
 }
 
-struct ItemsListPlaceholder: View {
-    @Binding var selectedItem: Item?
+struct DetailRow: View {
+    let label: String
+    let value: String
     
     var body: some View {
-        List {
-            Text("Items list placeholder")
-                .foregroundStyle(AppColors.textSecondary)
+        VStack(alignment: .leading, spacing: 4) {
+            Text(label)
+                .font(.caption)
+                .foregroundStyle(.secondary)
+            Text(value)
+                .font(.body)
         }
+        .frame(maxWidth: .infinity, alignment: .leading)
     }
-}
-
-#Preview {
-    iPadColumnView()
 }
