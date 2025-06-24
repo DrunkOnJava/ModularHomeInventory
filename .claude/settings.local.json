@@ -19,7 +19,8 @@
       "Bash(git commit:*)",
       "Bash(git push:*)",
       "Bash(ls:*)",
-      "Bash(mv:*)"
+      "Bash(mv:*)",
+      "Bash(xcrun simctl get_app_container:*)"
     ],
     "deny": []
   }
