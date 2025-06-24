@@ -81,7 +81,7 @@ public struct TagInputView: View {
     private func colorForTag(_ tagName: String) -> Color {
         // Try to find a matching tag in available tags
         if let tag = availableTags.first(where: { $0.name == tagName }) {
-            return tag.color
+            return Color.named(tag.color)
         }
         // Generate a consistent color based on the tag name
         let hash = tagName.hashValue
@@ -182,7 +182,7 @@ struct TagPickerRow: View {
                             .foregroundStyle(.white)
                             .font(.caption)
                             .frame(width: 24, height: 24)
-                            .background(tag.color)
+                            .background(Color.named(tag.color))
                             .cornerRadius(6)
                     }
                     

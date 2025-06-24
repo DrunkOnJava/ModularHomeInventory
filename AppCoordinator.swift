@@ -8,6 +8,7 @@ import Receipts
 import Sync
 import Premium
 import Onboarding
+import Combine
 
 @MainActor
 final class AppCoordinator: ObservableObject {
@@ -33,30 +34,58 @@ final class AppCoordinator: ObservableObject {
     }
     
     private func setupModules() {
-        // Initialize Scanner module first
-        let scannerDependencies = ScannerModuleDependencies(
-            itemRepository: itemRepository,
-            itemTemplateRepository: itemTemplateRepository
-        )
-        scannerModule = ScannerModule(dependencies: scannerDependencies)
-        
-        // Initialize Items module with scanner dependency
-        let itemsDependencies = ItemsModuleDependencies(
-            itemRepository: itemRepository,
-            locationRepository: locationRepository,
-            itemTemplateRepository: itemTemplateRepository,
-            scannerModule: scannerModule
-        )
-        itemsModule = ItemsModule(dependencies: itemsDependencies)
-        
-        // Initialize Settings module
+        // Initialize Settings module first to get settings storage
         let settingsStorage = UserDefaultsSettingsStorage()
         let settingsDependencies = SettingsModuleDependencies(
             settingsStorage: settingsStorage
         )
         settingsModule = SettingsModule(dependencies: settingsDependencies)
         
-        // Initialize Receipts module
+        // Create scan history repository
+        let scanHistoryRepository = Core.DefaultScanHistoryRepository()
+        
+        // Create offline scan queue repository
+        let offlineScanQueueRepository = Core.DefaultOfflineScanQueueRepository()
+        
+        // Create network monitor
+        let networkMonitor = NetworkMonitor.shared
+        
+        // Create barcode lookup service (moved up from below)
+        let barcodeLookupService = DefaultBarcodeLookupService()
+        
+        // Initialize Scanner module with settings storage
+        let scannerDependencies = ScannerModuleDependencies(
+            itemRepository: itemRepository,
+            itemTemplateRepository: itemTemplateRepository,
+            settingsStorage: settingsStorage,
+            scanHistoryRepository: scanHistoryRepository,
+            offlineScanQueueRepository: offlineScanQueueRepository,
+            barcodeLookupService: barcodeLookupService,
+            networkMonitor: networkMonitor
+        )
+        scannerModule = ScannerModule(dependencies: scannerDependencies)
+        
+        // Create photo repository
+        let photoRepository = try! CoreModule.makePhotoRepository()
+        
+        // Create collection repository
+        let collectionRepository = DefaultCollectionRepository()
+        
+        // Create tag repository
+        let tagRepository = Core.DefaultTagRepository()
+        
+        // Create storage unit repository
+        let storageUnitRepository = Core.DefaultStorageUnitRepository()
+        
+        // Create warranty repository
+        let warrantyRepository = MockWarrantyRepository()
+        
+        // Create document repository and storage
+        let documentRepository = Core.DefaultDocumentRepository()
+        let documentStorage = try! FileDocumentStorage()
+        let cloudStorage: CloudDocumentStorageProtocol? = nil // TODO: Add cloud storage when available
+        
+        // Initialize Receipts module first
         let receiptsDependencies = ReceiptsModuleDependencies(
             receiptRepository: receiptRepository,
             itemRepository: itemRepository,
@@ -64,6 +93,28 @@ final class AppCoordinator: ObservableObject {
             ocrService: ocrService
         )
         receiptsModule = ReceiptsModule(dependencies: receiptsDependencies)
+        
+        // Initialize Items module with scanner and receipts dependencies
+        let itemsDependencies = ItemsModuleDependencies(
+            itemRepository: itemRepository,
+            locationRepository: locationRepository,
+            itemTemplateRepository: itemTemplateRepository,
+            photoRepository: photoRepository,
+            barcodeLookupService: barcodeLookupService,
+            collectionRepository: collectionRepository,
+            tagRepository: tagRepository,
+            storageUnitRepository: storageUnitRepository,
+            warrantyRepository: warrantyRepository,
+            documentRepository: documentRepository,
+            documentStorage: documentStorage,
+            cloudStorage: cloudStorage,
+            searchHistoryRepository: nil,
+            savedSearchRepository: nil,
+            receiptRepository: receiptRepository,
+            scannerModule: scannerModule,
+            receiptsModule: receiptsModule
+        )
+        itemsModule = ItemsModule(dependencies: itemsDependencies)
         
         // Initialize Sync module
         let cloudService = MockCloudService()
@@ -132,8 +183,17 @@ final class MockItemRepository: ItemRepository {
         }
     }
     
+    func fuzzySearch(query: String, threshold: Double = 0.6) async throws -> [Item] {
+        let fuzzyService = Core.FuzzySearchService()
+        return items.fuzzySearch(query: query, fuzzyService: fuzzyService)
+    }
+    
     func fetchByCategory(_ category: ItemCategory) async throws -> [Item] {
         items.filter { $0.category == category }
+    }
+    
+    func fetchByCategoryId(_ categoryId: UUID) async throws -> [Item] {
+        items.filter { $0.categoryId == categoryId }
     }
     
     func fetchByLocation(_ locationId: UUID) async throws -> [Item] {
@@ -142,6 +202,44 @@ final class MockItemRepository: ItemRepository {
     
     func fetchByBarcode(_ barcode: String) async throws -> Item? {
         items.first { $0.barcode == barcode }
+    }
+    
+    func searchWithCriteria(_ criteria: ItemSearchCriteria) async throws -> [Item] {
+        var results = items
+        
+        // Filter by search text
+        if let searchText = criteria.searchText, !searchText.isEmpty {
+            let lowercased = searchText.lowercased()
+            results = results.filter { item in
+                item.name.lowercased().contains(lowercased) ||
+                (item.brand?.lowercased().contains(lowercased) ?? false) ||
+                (item.model?.lowercased().contains(lowercased) ?? false)
+            }
+        }
+        
+        // Filter by categories
+        if !criteria.categories.isEmpty {
+            results = results.filter { criteria.categories.contains($0.category) }
+        }
+        
+        // Add other filters as needed
+        
+        return results
+    }
+    
+    func fetchItemsUnderWarranty() async throws -> [Item] {
+        // In a real implementation, would check warranty dates
+        items.filter { $0.warrantyId != nil }
+    }
+    
+    func fetchFavoriteItems() async throws -> [Item] {
+        // Mock implementation - return empty array
+        []
+    }
+    
+    func fetchRecentlyAdded(days: Int) async throws -> [Item] {
+        let cutoffDate = Date().addingTimeInterval(-Double(days) * 24 * 60 * 60)
+        return items.filter { $0.createdAt > cutoffDate }
     }
 }
 
@@ -285,6 +383,58 @@ final class MockOCRService: OCRServiceProtocol {
         )
     }
     #endif
+}
+
+// MARK: - Mock Warranty Repository
+
+final class MockWarrantyRepository: WarrantyRepository {
+    private var warranties: [Warranty] = []
+    @Published private var warrantiesSubject: [Warranty] = []
+    
+    var warrantiesPublisher: AnyPublisher<[Warranty], Never> {
+        $warrantiesSubject.eraseToAnyPublisher()
+    }
+    
+    func fetchAll() async throws -> [Warranty] {
+        warranties
+    }
+    
+    func fetch(by id: UUID) async throws -> Warranty? {
+        warranties.first { $0.id == id }
+    }
+    
+    func fetch(id: UUID) async throws -> Warranty? {
+        warranties.first { $0.id == id }
+    }
+    
+    func fetchWarranties(for itemId: UUID) async throws -> [Warranty] {
+        warranties.filter { $0.itemId == itemId }
+    }
+    
+    func save(_ entity: Warranty) async throws {
+        if let index = warranties.firstIndex(where: { $0.id == entity.id }) {
+            warranties[index] = entity
+        } else {
+            warranties.append(entity)
+        }
+        warrantiesSubject = warranties
+    }
+    
+    func saveAll(_ entities: [Warranty]) async throws {
+        for entity in entities {
+            try await save(entity)
+        }
+    }
+    
+    func delete(_ entity: Warranty) async throws {
+        warranties.removeAll { $0.id == entity.id }
+        warrantiesSubject = warranties
+    }
+    
+    func delete(id: UUID) async throws {
+        warranties.removeAll { $0.id == id }
+        warrantiesSubject = warranties
+    }
 }
 
 // MARK: - Mock Cloud Service

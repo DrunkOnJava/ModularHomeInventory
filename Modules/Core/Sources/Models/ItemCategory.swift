@@ -51,4 +51,29 @@ public enum ItemCategory: String, Codable, CaseIterable {
     public var displayName: String {
         self.rawValue
     }
+    
+    public var color: String {
+        switch self {
+        case .electronics: return "#3B82F6"
+        case .furniture: return "#92400E"
+        case .clothing: return "#9333EA"
+        case .books: return "#F97316"
+        case .kitchen: return "#EF4444"
+        case .tools: return "#6B7280"
+        case .sports: return "#10B981"
+        case .toys: return "#EC4899"
+        case .jewelry: return "#F59E0B"
+        case .art: return "#6366F1"
+        case .collectibles: return "#14B8A6"
+        case .appliances: return "#06B6D4"
+        case .outdoor: return "#059669"
+        case .office: return "#1E3A8A"
+        case .automotive: return "#7F1D1D"
+        case .health: return "#10B981"
+        case .beauty: return "#F43F5E"
+        case .home: return "#D97706"
+        case .garden: return "#84CC16"
+        case .other: return "#6B7280"
+        }
+    }
 }

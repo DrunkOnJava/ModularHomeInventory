@@ -4,7 +4,18 @@
       "Bash(make:*)",
       "Bash(xcodebuild:*)",
       "Bash(rm:*)",
-      "Bash(xcrun simctl launch:*)"
+      "Bash(xcrun simctl launch:*)",
+      "Bash(fd:*)",
+      "Bash(grep:*)",
+      "Bash(cat:*)",
+      "Bash(xcrun simctl boot:*)",
+      "Bash(true)",
+      "Bash(xcrun simctl install:*)",
+      "Bash(defaults read:*)",
+      "Bash(/usr/libexec/PlistBuddy:*)",
+      "Bash(find:*)",
+      "Bash(rg:*)",
+      "Bash(git add:*)"
     ],
     "deny": []
   }

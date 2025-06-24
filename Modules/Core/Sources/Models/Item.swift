@@ -6,7 +6,8 @@ public struct Item: Identifiable, Codable, Equatable {
     public var name: String
     public var brand: String?
     public var model: String?
-    public var category: ItemCategory
+    public var category: ItemCategory // Deprecated - use categoryId
+    public var categoryId: UUID
     public var condition: ItemCondition
     public var quantity: Int
     public var value: Decimal?
@@ -18,7 +19,9 @@ public struct Item: Identifiable, Codable, Equatable {
     public var tags: [String]
     public var imageIds: [UUID]
     public var locationId: UUID?
+    public var storageUnitId: UUID?
     public var warrantyId: UUID?
+    public var storeName: String?
     public var createdAt: Date
     public var updatedAt: Date
     
@@ -28,6 +31,7 @@ public struct Item: Identifiable, Codable, Equatable {
         brand: String? = nil,
         model: String? = nil,
         category: ItemCategory = .other,
+        categoryId: UUID? = nil,
         condition: ItemCondition = .good,
         quantity: Int = 1,
         value: Decimal? = nil,
@@ -39,7 +43,9 @@ public struct Item: Identifiable, Codable, Equatable {
         tags: [String] = [],
         imageIds: [UUID] = [],
         locationId: UUID? = nil,
+        storageUnitId: UUID? = nil,
         warrantyId: UUID? = nil,
+        storeName: String? = nil,
         createdAt: Date = Date(),
         updatedAt: Date = Date()
     ) {
@@ -48,6 +54,7 @@ public struct Item: Identifiable, Codable, Equatable {
         self.brand = brand
         self.model = model
         self.category = category
+        self.categoryId = categoryId ?? ItemCategoryModel.fromItemCategory(category)
         self.condition = condition
         self.quantity = quantity
         self.value = value
@@ -59,7 +66,9 @@ public struct Item: Identifiable, Codable, Equatable {
         self.tags = tags
         self.imageIds = imageIds
         self.locationId = locationId
+        self.storageUnitId = storageUnitId
         self.warrantyId = warrantyId
+        self.storeName = storeName
         self.createdAt = createdAt
         self.updatedAt = updatedAt
     }
@@ -77,7 +86,8 @@ public extension Item {
         purchasePrice: 999.00,
         purchaseDate: Date(),
         notes: "256GB Space Black",
-        tags: ["phone", "work"]
+        tags: ["phone", "work"],
+        storeName: "Apple Store"
     )
     
     static let previews: [Item] = [
@@ -89,7 +99,8 @@ public extension Item {
             category: .furniture,
             condition: .good,
             value: 1200.00,
-            tags: ["office", "furniture"]
+            tags: ["office", "furniture"],
+            storeName: "Herman Miller Store"
         ),
         Item(
             name: "Running Shoes",
@@ -99,7 +110,8 @@ public extension Item {
             condition: .fair,
             quantity: 1,
             value: 120.00,
-            tags: ["sports", "shoes"]
+            tags: ["sports", "shoes"],
+            storeName: "Nike Store"
         )
     ]
 }

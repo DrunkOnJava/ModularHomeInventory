@@ -1,13 +1,32 @@
 import SwiftUI
+import UIKit
+import Core
 import SharedUI
+import Settings
 
 /// Main scanner tab view with options for barcode and document scanning
 /// Swift 5.9 - No Swift 6 features
-struct ScannerTabView: View {
+public struct ScannerTabView: View {
     @State private var scanMode: ScanMode = .barcode
     @State private var showingScanner = false
+    @State private var showingHistory = false
+    @State private var showingOfflineQueue = false
     @State private var lastScannedCode: String?
     @State private var lastScannedImage: UIImage?
+    
+    private let scanHistoryRepository: any ScanHistoryRepository
+    private let itemRepository: any ItemRepository
+    private let offlineScanService: OfflineScanService?
+    
+    public init(
+        scanHistoryRepository: any ScanHistoryRepository,
+        itemRepository: any ItemRepository,
+        offlineScanService: OfflineScanService? = nil
+    ) {
+        self.scanHistoryRepository = scanHistoryRepository
+        self.itemRepository = itemRepository
+        self.offlineScanService = offlineScanService
+    }
     
     enum ScanMode: String, CaseIterable {
         case barcode = "Barcode"
@@ -28,7 +47,7 @@ struct ScannerTabView: View {
         }
     }
     
-    var body: some View {
+    public var body: some View {
         NavigationView {
             VStack(spacing: AppSpacing.lg) {
                 // Mode selector
@@ -70,8 +89,39 @@ struct ScannerTabView: View {
                 Spacer()
             }
             .navigationTitle("Scanner")
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Menu {
+                        Button(action: { showingHistory = true }) {
+                            Label("Scan History", systemImage: "clock.arrow.circlepath")
+                        }
+                        
+                        if offlineScanService != nil {
+                            Button(action: { showingOfflineQueue = true }) {
+                                Label("Offline Queue", systemImage: "wifi.slash")
+                                if let count = offlineScanService?.pendingCount, count > 0 {
+                                    Text("\(count)")
+                                }
+                            }
+                        }
+                    } label: {
+                        Image(systemName: "ellipsis.circle")
+                    }
+                }
+            }
             .sheet(isPresented: $showingScanner) {
                 scannerSheet
+            }
+            .sheet(isPresented: $showingHistory) {
+                ScanHistoryView(
+                    scanHistoryRepository: scanHistoryRepository,
+                    itemRepository: itemRepository
+                )
+            }
+            .sheet(isPresented: $showingOfflineQueue) {
+                if let offlineScanService = offlineScanService {
+                    OfflineScanQueueView(offlineScanService: offlineScanService)
+                }
             }
         }
     }
@@ -80,10 +130,15 @@ struct ScannerTabView: View {
     private var scannerSheet: some View {
         switch scanMode {
         case .barcode:
-            BarcodeScannerView(viewModel: BarcodeScannerViewModel { code in
-                lastScannedCode = code
-                showingScanner = false
-            })
+            BarcodeScannerView(viewModel: BarcodeScannerViewModel(
+                soundService: SoundFeedbackService(settingsStorage: UserDefaultsSettingsStorage()),
+                settingsStorage: UserDefaultsSettingsStorage(),
+                scanHistoryRepository: scanHistoryRepository,
+                completion: { code in
+                    lastScannedCode = code
+                    showingScanner = false
+                }
+            ))
         case .document:
             // For now, show a placeholder
             DocumentScannerPlaceholder { image in

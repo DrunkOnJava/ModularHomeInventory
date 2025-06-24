@@ -7,36 +7,80 @@ struct ItemsListView: View {
     @State private var showingAddItem = false
     @State private var selectedItem: Item?
     @State private var showingItemDetail = false
+    @State private var selectedSegment = 0 // 0 = Items, 1 = Receipts
     
-    init(viewModel: ItemsListViewModel) {
+    private let onSearchTapped: (() -> Void)?
+    private let onBarcodeSearchTapped: (() -> Void)?
+    
+    init(viewModel: ItemsListViewModel, onSearchTapped: (() -> Void)? = nil, onBarcodeSearchTapped: (() -> Void)? = nil) {
         self._viewModel = StateObject(wrappedValue: viewModel)
+        self.onSearchTapped = onSearchTapped
+        self.onBarcodeSearchTapped = onBarcodeSearchTapped
     }
     
     var body: some View {
         NavigationView {
-            ZStack {
-                if viewModel.items.isEmpty && !viewModel.isLoading {
-                    emptyStateView
-                } else {
-                    itemsListContent
+            VStack(spacing: 0) {
+                // Segmented Control
+                Picker("View", selection: $selectedSegment) {
+                    Text("Items").tag(0)
+                    Text("Receipts").tag(1)
                 }
+                .pickerStyle(SegmentedPickerStyle())
+                .appPadding()
+                .background(AppColors.secondaryBackground)
                 
-                if viewModel.isLoading {
-                    ProgressView()
-                        .scaleEffect(1.5)
-                        .frame(maxWidth: .infinity, maxHeight: .infinity)
-                        .background(Color.black.opacity(0.3))
+                // Content based on selection
+                if selectedSegment == 0 {
+                    // Items view
+                    ZStack {
+                        if viewModel.items.isEmpty && !viewModel.isLoading {
+                            emptyStateView
+                        } else {
+                            itemsListContent
+                        }
+                        
+                        if viewModel.isLoading {
+                            ProgressView()
+                                .scaleEffect(1.5)
+                                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                                .background(Color.black.opacity(0.3))
+                        }
+                    }
+                } else {
+                    // Receipts view
+                    if let receiptsView = viewModel.makeReceiptsListView() {
+                        receiptsView
+                            .background(AppColors.background)
+                    }
                 }
             }
-            .navigationTitle("Items")
+            .navigationTitle(selectedSegment == 0 ? "Items" : "Receipts")
             .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button(action: { showingAddItem = true }) {
+                ToolbarItemGroup(placement: .navigationBarTrailing) {
+                    if let onBarcodeSearchTapped = onBarcodeSearchTapped {
+                        Button(action: onBarcodeSearchTapped) {
+                            Image(systemName: "barcode.viewfinder")
+                        }
+                    }
+                    
+                    if let onSearchTapped = onSearchTapped {
+                        Button(action: onSearchTapped) {
+                            Image(systemName: "magnifyingglass")
+                        }
+                    }
+                    
+                    Button(action: { 
+                        if selectedSegment == 0 {
+                            showingAddItem = true
+                        } else {
+                            viewModel.showingAddReceipt = true
+                        }
+                    }) {
                         Image(systemName: "plus")
                     }
                 }
             }
-            .searchable(text: $viewModel.searchText, prompt: "Search items...")
             .sheet(isPresented: $showingAddItem) {
                 if let addView = viewModel.makeAddItemView() {
                     addView
@@ -95,6 +139,9 @@ struct ItemsListView: View {
             List {
                 ForEach(viewModel.filteredItems) { item in
                     ItemRowView(item: item)
+                        .listRowBackground(AppColors.surface)
+                        .listRowSeparator(.visible)
+                        .listRowInsets(EdgeInsets(top: 4, leading: 16, bottom: 4, trailing: 16))
                         .contentShape(Rectangle())
                         .onTapGesture {
                             selectedItem = item
@@ -119,7 +166,9 @@ struct ItemsListView: View {
                         }
                 }
             }
-            .listStyle(.plain)
+            .listStyle(.insetGrouped)
+            .scrollContentBackground(.hidden)
+            .background(AppColors.background)
             .refreshable {
                 await viewModel.refresh()
             }
@@ -207,8 +256,8 @@ struct ItemRowView: View {
                 .font(.title2)
                 .foregroundStyle(AppColors.primary)
                 .frame(width: 44, height: 44)
-                .background(AppColors.primary.opacity(0.1))
-                .cornerRadius(8)
+                .background(AppColors.primaryMuted)
+                .cornerRadius(AppCornerRadius.small)
             
             // Details
             VStack(alignment: .leading, spacing: AppSpacing.xxs) {

@@ -13,29 +13,19 @@ struct ReceiptsListView: View {
     }
     
     var body: some View {
-        NavigationView {
-            Group {
-                if viewModel.isLoading && viewModel.receipts.isEmpty {
-                    ProgressView("Loading receipts...")
-                        .frame(maxWidth: .infinity, maxHeight: .infinity)
-                } else if viewModel.receipts.isEmpty {
-                    emptyStateView
-                } else {
-                    receiptsList
-                }
+        Group {
+            if viewModel.isLoading && viewModel.receipts.isEmpty {
+                ProgressView("Loading receipts...")
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+            } else if viewModel.receipts.isEmpty {
+                emptyStateView
+            } else {
+                receiptsList
             }
-            .navigationTitle("Receipts")
-            .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button(action: { showingImport = true }) {
-                        Image(systemName: "plus")
-                    }
-                }
-            }
-            .sheet(isPresented: $showingImport) {
-                if let addView = viewModel.makeAddReceiptView() {
-                    addView
-                }
+        }
+        .sheet(isPresented: $showingImport) {
+            if let addView = viewModel.makeAddReceiptView() {
+                addView
             }
         }
         .task {

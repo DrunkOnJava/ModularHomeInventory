@@ -17,6 +17,7 @@ final class ItemsListViewModel: ObservableObject {
     @Published var error: Error?
     @Published var activeFilters = ItemFilters.empty
     @Published var showingAdvancedFilters = false
+    @Published var showingAddReceipt = false
     
     // MARK: - Computed Properties
     var totalValue: Decimal {
@@ -32,7 +33,7 @@ final class ItemsListViewModel: ObservableObject {
     var locations: [Location] = []
     
     // MARK: - Dependencies
-    private let itemRepository: any ItemRepository
+    let itemRepository: any ItemRepository
     private let locationRepository: any LocationRepository
     weak var itemsModule: ItemsModuleAPI?
     private var cancellables = Set<AnyCancellable>()
@@ -64,8 +65,8 @@ final class ItemsListViewModel: ObservableObject {
     
     // MARK: - Setup
     private func setupBindings() {
-        // Search and filter changes
-        Publishers.CombineLatest3($searchText, $selectedCategory, $selectedLocation)
+        // Filter changes (search removed - using natural language search instead)
+        Publishers.CombineLatest($selectedCategory, $selectedLocation)
             .debounce(for: .milliseconds(300), scheduler: RunLoop.main)
             .sink { [weak self] _ in
                 self?.applyFilters()
@@ -111,15 +112,7 @@ final class ItemsListViewModel: ObservableObject {
             filtered = applyAdvancedFilters(to: filtered)
         } else {
             // Fall back to simple filters
-            // Search filter
-            if !searchText.isEmpty {
-                filtered = filtered.filter { item in
-                    item.name.localizedCaseInsensitiveContains(searchText) ||
-                    (item.brand?.localizedCaseInsensitiveContains(searchText) ?? false) ||
-                    (item.notes?.localizedCaseInsensitiveContains(searchText) ?? false) ||
-                    item.tags.contains { $0.localizedCaseInsensitiveContains(searchText) }
-                }
-            }
+            // Search removed - using natural language search instead
             
             // Category filter
             if let category = selectedCategory {
@@ -336,5 +329,9 @@ final class ItemsListViewModel: ObservableObject {
     func makeBatchScannerView() -> AnyView? {
         // This will be handled differently to avoid circular dependency
         return nil
+    }
+    
+    func makeReceiptsListView() -> AnyView? {
+        itemsModule?.makeReceiptsListView()
     }
 }

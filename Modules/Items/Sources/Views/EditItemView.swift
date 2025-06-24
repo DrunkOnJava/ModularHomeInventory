@@ -36,10 +36,42 @@ struct EditItemView: View {
                 
                 // Category & Condition Section
                 Section {
-                    Picker("Category", selection: $viewModel.category) {
-                        ForEach(ItemCategory.allCases, id: \.self) { category in
-                            Label(category.displayName, systemImage: category.icon)
-                                .tag(category)
+                    VStack(alignment: .leading, spacing: AppSpacing.sm) {
+                        Picker("Category", selection: $viewModel.category) {
+                            ForEach(ItemCategory.allCases, id: \.self) { category in
+                                Label(category.displayName, systemImage: category.icon)
+                                    .tag(category)
+                            }
+                        }
+                        
+                        // Smart category suggestion
+                        if viewModel.showCategorySuggestion {
+                            HStack {
+                                Image(systemName: "sparkles")
+                                    .foregroundColor(AppColors.primary)
+                                    .font(.caption)
+                                
+                                Text("Suggested: \(viewModel.suggestedCategory.displayName)")
+                                    .font(.caption)
+                                    .foregroundColor(AppColors.primary)
+                                
+                                Text("(\(Int(viewModel.suggestionConfidence * 100))% match)")
+                                    .font(.caption)
+                                    .foregroundColor(AppColors.textSecondary)
+                                
+                                Spacer()
+                                
+                                Button("Use") {
+                                    viewModel.acceptCategorySuggestion()
+                                }
+                                .font(.caption)
+                                .buttonStyle(.bordered)
+                                .controlSize(.mini)
+                            }
+                            .padding(.vertical, 4)
+                            .padding(.horizontal, 8)
+                            .background(AppColors.primary.opacity(0.1))
+                            .cornerRadius(AppCornerRadius.small)
                         }
                     }
                     
@@ -241,9 +273,21 @@ final class EditItemViewModel: ObservableObject {
     weak var scannerModule: ScannerModuleAPI?
     
     // Form fields
-    @Published var name: String
-    @Published var brand: String
-    @Published var model: String
+    @Published var name: String {
+        didSet {
+            updateCategorySuggestion()
+        }
+    }
+    @Published var brand: String {
+        didSet {
+            updateCategorySuggestion()
+        }
+    }
+    @Published var model: String {
+        didSet {
+            updateCategorySuggestion()
+        }
+    }
     @Published var category: ItemCategory
     @Published var condition: ItemCondition
     @Published var quantity: Int
@@ -253,7 +297,11 @@ final class EditItemViewModel: ObservableObject {
     @Published var serialNumber: String
     @Published var barcode: String
     @Published var selectedLocationId: UUID?
-    @Published var notes: String
+    @Published var notes: String {
+        didSet {
+            updateCategorySuggestion()
+        }
+    }
     @Published var tags: [String]
     @Published var photoCount: Int
     
@@ -265,6 +313,12 @@ final class EditItemViewModel: ObservableObject {
     @Published var showBarcodeScanner = false
     @Published var showPhotoOptions = false
     @Published var photoSource: PhotoSource?
+    
+    // Smart Category State
+    @Published var showCategorySuggestion = false
+    @Published var suggestedCategory: ItemCategory = .other
+    @Published var suggestionConfidence: Double = 0
+    private var originalCategory: ItemCategory
     
     enum PhotoSource {
         case camera, library
@@ -318,6 +372,7 @@ final class EditItemViewModel: ObservableObject {
         self.notes = item.notes ?? ""
         self.tags = item.tags
         self.photoCount = item.imageIds.count
+        self.originalCategory = item.category
         
         loadLocations()
     }
@@ -372,5 +427,48 @@ final class EditItemViewModel: ObservableObject {
                 self?.showBarcodeScanner = false
             }
         }
+    }
+    
+    // MARK: - Smart Category Methods
+    
+    private func updateCategorySuggestion() {
+        guard !name.isEmpty else {
+            showCategorySuggestion = false
+            return
+        }
+        
+        // Only suggest if user hasn't changed the category from the original
+        guard category == originalCategory else {
+            showCategorySuggestion = false
+            return
+        }
+        
+        let result = SmartCategoryService.shared.suggestCategory(
+            name: name,
+            brand: brand.isEmpty ? nil : brand,
+            model: model.isEmpty ? nil : model,
+            description: notes.isEmpty ? nil : notes
+        )
+        
+        // Only show suggestion if confidence is above threshold and different from current
+        if result.confidence > 0.3 && result.category != category && result.category != .other {
+            suggestedCategory = result.category
+            suggestionConfidence = result.confidence
+            showCategorySuggestion = true
+        } else {
+            showCategorySuggestion = false
+        }
+    }
+    
+    func acceptCategorySuggestion() {
+        category = suggestedCategory
+        showCategorySuggestion = false
+        
+        // Learn from the acceptance
+        SmartCategoryService.shared.learnFromCorrection(
+            name: name,
+            brand: brand.isEmpty ? nil : brand,
+            correctCategory: suggestedCategory
+        )
     }
 }

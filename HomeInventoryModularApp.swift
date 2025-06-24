@@ -1,4 +1,5 @@
 import SwiftUI
+import SharedUI
 
 @main
 struct HomeInventoryModularApp: App {
@@ -13,6 +14,7 @@ struct HomeInventoryModularApp: App {
         WindowGroup {
             ContentView()
                 .environmentObject(coordinator)
+                .themedView()
         }
     }
 }

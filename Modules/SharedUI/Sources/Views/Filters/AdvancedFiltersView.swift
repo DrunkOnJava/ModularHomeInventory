@@ -370,7 +370,7 @@ struct TagCloudView: View {
                     }
                     .appPadding(.horizontal, AppSpacing.sm)
                     .appPadding(.vertical, AppSpacing.xxs)
-                    .background(selectedTags.contains(tag.id) ? tag.color : AppColors.surface)
+                    .background(selectedTags.contains(tag.id) ? Color.named(tag.color) : AppColors.surface)
                     .cornerRadius(12)
                     .overlay(
                         RoundedRectangle(cornerRadius: 12)

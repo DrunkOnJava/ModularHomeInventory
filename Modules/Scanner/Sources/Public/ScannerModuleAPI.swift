@@ -1,5 +1,6 @@
 import SwiftUI
 import Core
+import Settings
 
 /// Public API for the Scanner module
 /// Swift 5.9 - No Swift 6 features
@@ -16,6 +17,15 @@ public protocol ScannerModuleAPI: AnyObject {
     
     /// Creates a document scanner view
     func makeDocumentScannerView(completion: @escaping (UIImage) -> Void) -> AnyView
+    
+    /// Creates the scan history view
+    func makeScanHistoryView() -> AnyView
+    
+    /// Creates the offline scan queue view
+    func makeOfflineScanQueueView() -> AnyView
+    
+    /// Get the offline scan service for monitoring queue status
+    var offlineScanService: OfflineScanService { get }
 }
 
 /// Scanner result types
@@ -29,12 +39,27 @@ public enum ScanResult {
 public struct ScannerModuleDependencies {
     public let itemRepository: any ItemRepository
     public let itemTemplateRepository: any ItemTemplateRepository
+    public let settingsStorage: SettingsStorageProtocol
+    public let scanHistoryRepository: any ScanHistoryRepository
+    public let offlineScanQueueRepository: any OfflineScanQueueRepository
+    public let barcodeLookupService: BarcodeLookupService
+    public let networkMonitor: NetworkMonitor
     
     public init(
         itemRepository: any ItemRepository,
-        itemTemplateRepository: any ItemTemplateRepository
+        itemTemplateRepository: any ItemTemplateRepository,
+        settingsStorage: SettingsStorageProtocol,
+        scanHistoryRepository: any ScanHistoryRepository,
+        offlineScanQueueRepository: any OfflineScanQueueRepository,
+        barcodeLookupService: BarcodeLookupService,
+        networkMonitor: NetworkMonitor
     ) {
         self.itemRepository = itemRepository
         self.itemTemplateRepository = itemTemplateRepository
+        self.settingsStorage = settingsStorage
+        self.scanHistoryRepository = scanHistoryRepository
+        self.offlineScanQueueRepository = offlineScanQueueRepository
+        self.barcodeLookupService = barcodeLookupService
+        self.networkMonitor = networkMonitor
     }
 }

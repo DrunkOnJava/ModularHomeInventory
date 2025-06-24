@@ -1,6 +1,9 @@
 import SwiftUI
+import UIKit
 import AVFoundation
+import Core
 import SharedUI
+import Settings
 
 /// Barcode scanner view
 /// Swift 5.9 - No Swift 6 features
@@ -151,8 +154,20 @@ final class BarcodeScannerViewModel: NSObject, ObservableObject {
     private let metadataOutput = AVCaptureMetadataOutput()
     private var videoDevice: AVCaptureDevice?
     private let completion: (String) -> Void
+    private let soundService: SoundFeedbackService?
+    private let settingsStorage: SettingsStorageProtocol?
+    private let scanHistoryRepository: (any ScanHistoryRepository)?
+    private var lastScanTime: Date = Date()
     
-    init(completion: @escaping (String) -> Void) {
+    init(
+        soundService: SoundFeedbackService? = nil,
+        settingsStorage: SettingsStorageProtocol? = nil,
+        scanHistoryRepository: (any ScanHistoryRepository)? = nil,
+        completion: @escaping (String) -> Void
+    ) {
+        self.soundService = soundService
+        self.settingsStorage = settingsStorage
+        self.scanHistoryRepository = scanHistoryRepository
         self.completion = completion
         super.init()
         setupCaptureSession()
@@ -196,23 +211,35 @@ final class BarcodeScannerViewModel: NSObject, ObservableObject {
                 captureSession.addOutput(metadataOutput)
                 
                 metadataOutput.setMetadataObjectsDelegate(self, queue: DispatchQueue.main)
-                metadataOutput.metadataObjectTypes = [
-                    .qr,
-                    .ean13,
-                    .ean8,
-                    .upce,
-                    .code128,
-                    .code39,
-                    .aztec,
-                    .pdf417,
-                    .interleaved2of5,
-                    .itf14,
-                    .dataMatrix
-                ]
+                
+                // Get enabled formats from settings
+                let settings = settingsStorage?.loadSettings() ?? AppSettings()
+                let enabledTypes = settings.enabledBarcodeFormats.compactMap { formatString in
+                    AVMetadataObject.ObjectType(rawValue: formatString)
+                }
+                
+                // Use enabled formats or fall back to all formats
+                metadataOutput.metadataObjectTypes = enabledTypes.isEmpty ? 
+                    BarcodeFormat.allMetadataTypes : enabledTypes
+                
+                // Configure focus area based on sensitivity
+                configureFocusArea()
             }
         } catch {
             print("Failed to setup capture session: \(error)")
         }
+    }
+    
+    private func configureFocusArea() {
+        let settings = settingsStorage?.loadSettings() ?? AppSettings()
+        let scale = settings.scannerSensitivity.focusAreaScale
+        
+        // Set the rect of interest (centered)
+        let x = (1.0 - scale) / 2.0
+        let y = (1.0 - scale) / 2.0
+        
+        // Note: rectOfInterest is in landscape orientation (y,x,height,width)
+        metadataOutput.rectOfInterest = CGRect(x: y, y: x, width: scale, height: scale)
     }
     
     func startScanning() {
@@ -252,14 +279,29 @@ final class BarcodeScannerViewModel: NSObject, ObservableObject {
         // Prevent duplicate scans
         guard code != lastScannedCode else { return }
         
+        // Check scan interval based on sensitivity
+        let settings = settingsStorage?.loadSettings() ?? AppSettings()
+        let scanInterval = settings.scannerSensitivity.scanInterval
+        let timeSinceLastScan = Date().timeIntervalSince(lastScanTime)
+        
+        guard timeSinceLastScan >= scanInterval else { return }
+        
         lastScannedCode = code
+        lastScanTime = Date()
         
-        // Haptic feedback
-        let impactFeedback = UIImpactFeedbackGenerator(style: .medium)
-        impactFeedback.impactOccurred()
+        // Play sound if enabled (will also include haptic feedback)
+        soundService?.playSuccessSound()
         
-        // Play sound if enabled
-        AudioServicesPlaySystemSound(SystemSoundID(kSystemSoundID_Vibrate))
+        // Save to scan history
+        if let scanHistoryRepository = scanHistoryRepository {
+            Task {
+                let entry = ScanHistoryEntry(
+                    barcode: code,
+                    scanType: .single
+                )
+                try? await scanHistoryRepository.save(entry)
+            }
+        }
         
         completion(code)
     }

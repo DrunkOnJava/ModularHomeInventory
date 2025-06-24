@@ -28,14 +28,32 @@ public protocol ItemRepository: Repository where Entity == Item {
     /// Search items by query
     func search(query: String) async throws -> [Item]
     
+    /// Search items with fuzzy matching
+    func fuzzySearch(query: String, threshold: Double) async throws -> [Item]
+    
+    /// Search items with advanced criteria
+    func searchWithCriteria(_ criteria: ItemSearchCriteria) async throws -> [Item]
+    
     /// Fetch items by category
     func fetchByCategory(_ category: ItemCategory) async throws -> [Item]
+    
+    /// Fetch items by category ID
+    func fetchByCategoryId(_ categoryId: UUID) async throws -> [Item]
     
     /// Fetch items by location
     func fetchByLocation(_ locationId: UUID) async throws -> [Item]
     
     /// Fetch items by barcode
     func fetchByBarcode(_ barcode: String) async throws -> Item?
+    
+    /// Fetch items under warranty
+    func fetchItemsUnderWarranty() async throws -> [Item]
+    
+    /// Fetch favorite items
+    func fetchFavoriteItems() async throws -> [Item]
+    
+    /// Fetch recently added items
+    func fetchRecentlyAdded(days: Int) async throws -> [Item]
 }
 
 /// Location-specific repository protocol  

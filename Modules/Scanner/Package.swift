@@ -13,12 +13,13 @@ let package = Package(
     ],
     dependencies: [
         .package(path: "../Core"),
-        .package(path: "../SharedUI")
+        .package(path: "../SharedUI"),
+        .package(path: "../Settings")
     ],
     targets: [
         .target(
             name: "Scanner",
-            dependencies: ["Core", "SharedUI"],
+            dependencies: ["Core", "SharedUI", "Settings"],
             path: "Sources"
         ),
         .testTarget(

@@ -90,10 +90,29 @@ final class ItemRepositoryImplementation: ItemRepository {
         }
     }
     
+    func fuzzySearch(query: String, threshold: Double = 0.6) async throws -> [Item] {
+        return await withCheckedContinuation { continuation in
+            queue.async {
+                let fuzzyService = Core.FuzzySearchService()
+                let results = self.items.fuzzySearch(query: query, fuzzyService: fuzzyService)
+                continuation.resume(returning: results)
+            }
+        }
+    }
+    
     func fetchByCategory(_ category: ItemCategory) async throws -> [Item] {
         return await withCheckedContinuation { continuation in
             queue.async {
                 let results = self.items.filter { $0.category == category }
+                continuation.resume(returning: results)
+            }
+        }
+    }
+    
+    func fetchByCategoryId(_ categoryId: UUID) async throws -> [Item] {
+        return await withCheckedContinuation { continuation in
+            queue.async {
+                let results = self.items.filter { $0.categoryId == categoryId }
                 continuation.resume(returning: results)
             }
         }
@@ -113,6 +132,134 @@ final class ItemRepositoryImplementation: ItemRepository {
             queue.async {
                 let item = self.items.first { $0.barcode == barcode }
                 continuation.resume(returning: item)
+            }
+        }
+    }
+    
+    func searchWithCriteria(_ criteria: ItemSearchCriteria) async throws -> [Item] {
+        return await withCheckedContinuation { continuation in
+            queue.async { [weak self] in
+                guard let self = self else {
+                    continuation.resume(returning: [])
+                    return
+                }
+                var results = self.items
+                
+                // Filter by search text
+                if let searchText = criteria.searchText, !searchText.isEmpty {
+                    let lowercased = searchText.lowercased()
+                    results = results.filter { item in
+                        item.name.lowercased().contains(lowercased) ||
+                        (item.brand?.lowercased().contains(lowercased) ?? false) ||
+                        (item.model?.lowercased().contains(lowercased) ?? false) ||
+                        (item.notes?.lowercased().contains(lowercased) ?? false) ||
+                        item.tags.contains { $0.lowercased().contains(lowercased) }
+                    }
+                }
+                
+                // Filter by categories
+                if !criteria.categories.isEmpty {
+                    results = results.filter { criteria.categories.contains($0.category) }
+                }
+                
+                // Filter by location names
+                if !criteria.locationNames.isEmpty {
+                    // In a real implementation, this would query location repository
+                    // For now, we'll skip location filtering
+                }
+                
+                // Filter by brands
+                if !criteria.brands.isEmpty {
+                    results = results.filter { item in
+                        guard let brand = item.brand else { return false }
+                        return criteria.brands.contains { brand.lowercased().contains($0.lowercased()) }
+                    }
+                }
+                
+                // Filter by purchase date range
+                if criteria.purchaseDateStart != nil || criteria.purchaseDateEnd != nil {
+                    results = results.filter { item in
+                        guard let purchaseDate = item.purchaseDate else { return false }
+                        if let start = criteria.purchaseDateStart, purchaseDate < start {
+                            return false
+                        }
+                        if let end = criteria.purchaseDateEnd, purchaseDate > end {
+                            return false
+                        }
+                        return true
+                    }
+                }
+                
+                // Filter by price range
+                if criteria.minPrice != nil || criteria.maxPrice != nil {
+                    results = results.filter { item in
+                        guard let price = item.purchasePrice else { return false }
+                        if let min = criteria.minPrice, Decimal(min) > price {
+                            return false
+                        }
+                        if let max = criteria.maxPrice, Decimal(max) < price {
+                            return false
+                        }
+                        return true
+                    }
+                }
+                
+                // Filter by conditions
+                if !criteria.conditions.isEmpty {
+                    results = results.filter { criteria.conditions.contains($0.condition) }
+                }
+                
+                // Filter by warranty status
+                if let underWarranty = criteria.underWarranty, underWarranty {
+                    // In a real implementation, this would check against warranty repository
+                    // For now, filter by items that have a warrantyId
+                    results = results.filter { $0.warrantyId != nil }
+                }
+                
+                // Filter by favorite status - removed as Item doesn't have isFavorite property
+                
+                // Filter by recently added
+                if let recentlyAdded = criteria.recentlyAdded, recentlyAdded {
+                    let thirtyDaysAgo = Date().addingTimeInterval(-30 * 24 * 60 * 60)
+                    results = results.filter { $0.createdAt > thirtyDaysAgo }
+                }
+                
+                continuation.resume(returning: results)
+            }
+        }
+    }
+    
+    func fetchItemsUnderWarranty() async throws -> [Item] {
+        return await withCheckedContinuation { continuation in
+            queue.async { [weak self] in
+                guard let self = self else {
+                    continuation.resume(returning: [])
+                    return
+                }
+                // In a real implementation, this would check warranty expiry dates
+                // For now, return items that have a warrantyId
+                let results = self.items.filter { $0.warrantyId != nil }
+                continuation.resume(returning: results)
+            }
+        }
+    }
+    
+    func fetchFavoriteItems() async throws -> [Item] {
+        return await withCheckedContinuation { continuation in
+            queue.async {
+                // Item doesn't have isFavorite property, return empty array
+                let results: [Item] = []
+                continuation.resume(returning: results)
+            }
+        }
+    }
+    
+    func fetchRecentlyAdded(days: Int) async throws -> [Item] {
+        return await withCheckedContinuation { continuation in
+            queue.async {
+                let cutoffDate = Date().addingTimeInterval(-Double(days) * 24 * 60 * 60)
+                let results = self.items.filter { $0.createdAt > cutoffDate }
+                continuation.resume(returning: results)
             }
         }
     }

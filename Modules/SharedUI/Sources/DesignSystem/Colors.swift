@@ -25,8 +25,8 @@ public struct AppColors {
     public static let textQuaternary = Color(.quaternaryLabel)
     
     // MARK: - Surface Colors
-    public static let surface = Color(.systemGray6)
-    public static let surfaceSecondary = Color(.systemGray5)
+    public static let surface = Color(.secondarySystemBackground)
+    public static let surfaceSecondary = Color(.tertiarySystemBackground)
     
     // MARK: - Border Colors
     public static let border = Color(.separator)

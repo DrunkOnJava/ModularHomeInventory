@@ -2,6 +2,7 @@ import SwiftUI
 import AVFoundation
 import SharedUI
 import Core
+import Settings
 
 /// Batch scanner view for scanning multiple items consecutively
 /// Swift 5.9 - No Swift 6 features
@@ -231,17 +232,26 @@ final class BatchScannerViewModel: NSObject, ObservableObject {
     private let itemRepository: any ItemRepository
     private let itemTemplateRepository: any ItemTemplateRepository
     private let createItemView: ((String) -> AnyView)?
+    private let soundService: SoundFeedbackService?
+    private let settingsStorage: SettingsStorageProtocol?
+    private let scanHistoryRepository: (any ScanHistoryRepository)?
     
     // MARK: - Initialization
     init(
         itemRepository: any ItemRepository,
         itemTemplateRepository: any ItemTemplateRepository,
         createItemView: ((String) -> AnyView)? = nil,
+        soundService: SoundFeedbackService? = nil,
+        settingsStorage: SettingsStorageProtocol? = nil,
+        scanHistoryRepository: (any ScanHistoryRepository)? = nil,
         completion: @escaping ([Item]) -> Void
     ) {
         self.itemRepository = itemRepository
         self.itemTemplateRepository = itemTemplateRepository
         self.createItemView = createItemView
+        self.soundService = soundService
+        self.settingsStorage = settingsStorage
+        self.scanHistoryRepository = scanHistoryRepository
         self.completion = completion
         super.init()
         setupCaptureSession()
@@ -363,15 +373,22 @@ final class BatchScannerViewModel: NSObject, ObservableObject {
             recentScans.removeLast()
         }
         
-        // Haptic feedback
-        let impactFeedback = UIImpactFeedbackGenerator(style: .medium)
-        impactFeedback.impactOccurred()
-        
-        // Play sound
-        AudioServicesPlaySystemSound(SystemSoundID(kSystemSoundID_Vibrate))
+        // Play sound if enabled (will also include haptic feedback)
+        soundService?.playSuccessSound()
         
         let scannedItem = ScannedItem(barcode: code, timestamp: Date())
         scannedItems.append(scannedItem)
+        
+        // Save to scan history
+        if let scanHistoryRepository = scanHistoryRepository {
+            Task {
+                let entry = ScanHistoryEntry(
+                    barcode: code,
+                    scanType: isContinuousMode ? .continuous : .batch
+                )
+                try? await scanHistoryRepository.save(entry)
+            }
+        }
         
         switch scanMode {
         case .manual:
@@ -386,8 +403,10 @@ final class BatchScannerViewModel: NSObject, ObservableObject {
             Task {
                 await createItemWithDefaults(barcode: code)
                 
-                // Resume scanning after a short delay
-                try? await Task.sleep(nanoseconds: 1_000_000_000) // 1 second
+                // Resume scanning after delay based on settings
+                let settings = settingsStorage?.loadSettings() ?? AppSettings()
+                let delayNanoseconds = UInt64(settings.continuousScanDelay * 1_000_000_000)
+                try? await Task.sleep(nanoseconds: delayNanoseconds)
                 await MainActor.run {
                     self.scanCooldown = false
                 }

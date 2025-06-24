@@ -41,4 +41,8 @@ final class SettingsViewModel: ObservableObject {
         // TODO: Implement cache clearing
         print("Clear cache requested")
     }
+    
+    func saveSettings() {
+        settingsStorage.saveSettings(settings)
+    }
 }

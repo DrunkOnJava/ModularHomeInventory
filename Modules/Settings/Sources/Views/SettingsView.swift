@@ -12,6 +12,10 @@ struct SettingsView: View {
     @State private var showingClearCache = false
     @State private var showingRateApp = false
     @State private var showingShareApp = false
+    @State private var showingOfflineData = false
+    @State private var showingSyncStatus = false
+    @State private var showingCategoryManagement = false
+    @State private var showingScannerSettings = false
     
     init(viewModel: SettingsViewModel) {
         self._viewModel = StateObject(wrappedValue: viewModel)
@@ -28,6 +32,9 @@ struct SettingsView: View {
                 
                 // Data & Storage Section
                 dataSection
+                
+                // Offline & Sync Section
+                offlineSection
                 
                 // About Section
                 aboutSection
@@ -54,6 +61,46 @@ struct SettingsView: View {
             .sheet(isPresented: $showingShareApp) {
                 ShareAppView()
             }
+            .sheet(isPresented: $showingOfflineData) {
+                NavigationView {
+                    OfflineDataView()
+                        .navigationTitle("Offline Data")
+                        .navigationBarTitleDisplayMode(.inline)
+                        .toolbar {
+                            ToolbarItem(placement: .navigationBarTrailing) {
+                                Button("Done") {
+                                    showingOfflineData = false
+                                }
+                            }
+                        }
+                }
+            }
+            .sheet(isPresented: $showingSyncStatus) {
+                NavigationView {
+                    VStack(spacing: AppSpacing.lg) {
+                        SyncStatusView()
+                        Spacer()
+                    }
+                    .padding(AppSpacing.lg)
+                    .navigationTitle("Sync Status")
+                    .navigationBarTitleDisplayMode(.inline)
+                    .toolbar {
+                        ToolbarItem(placement: .navigationBarTrailing) {
+                            Button("Done") {
+                                showingSyncStatus = false
+                            }
+                        }
+                    }
+                }
+            }
+            .sheet(isPresented: $showingCategoryManagement) {
+                // Note: We need to pass the categoryRepository here
+                // For now, we'll use a placeholder
+                Text("Category Management View")
+            }
+            .sheet(isPresented: $showingScannerSettings) {
+                ScannerSettingsView(settings: $viewModel.settings, viewModel: viewModel)
+            }
         }
     }
     
@@ -67,7 +114,13 @@ struct SettingsView: View {
             }
             
             // Dark Mode
-            Toggle(isOn: $viewModel.settings.darkModeEnabled) {
+            Toggle(isOn: Binding(
+                get: { ThemeManager.shared.isDarkMode },
+                set: { isDark in
+                    ThemeManager.shared.useSystemTheme = false
+                    ThemeManager.shared.setDarkMode(isDark)
+                }
+            )) {
                 Label("Dark Mode", systemImage: "moon")
             }
             
@@ -82,6 +135,22 @@ struct SettingsView: View {
                     Text("JPY").tag("JPY")
                 }
                 .pickerStyle(.menu)
+            }
+            
+            // Scanner Settings
+            Button(action: {
+                showingScannerSettings = true
+            }) {
+                Label("Scanner Settings", systemImage: "barcode.viewfinder")
+                    .foregroundColor(AppColors.textPrimary)
+            }
+            
+            // Category Management
+            Button(action: {
+                showingCategoryManagement = true
+            }) {
+                Label("Manage Categories", systemImage: "folder")
+                    .foregroundColor(AppColors.textPrimary)
             }
         } header: {
             Text("General")
@@ -141,6 +210,48 @@ struct SettingsView: View {
             Text("Data & Storage")
         } footer: {
             Text("Auto backup saves your data to iCloud daily")
+                .textStyle(.labelSmall)
+        }
+    }
+    
+    private var offlineSection: some View {
+        Section {
+            // Offline Mode Toggle
+            Toggle(isOn: $viewModel.settings.offlineModeEnabled) {
+                Label("Enable Offline Mode", systemImage: "wifi.slash")
+            }
+            
+            // Sync Status
+            Button(action: {
+                showingSyncStatus = true
+            }) {
+                HStack {
+                    Label("Sync Status", systemImage: "arrow.triangle.2.circlepath")
+                        .foregroundColor(AppColors.textPrimary)
+                    Spacer()
+                    // Simplified sync status
+                    Text("Synced")
+                        .textStyle(.labelSmall)
+                        .foregroundStyle(AppColors.textSecondary)
+                }
+            }
+            
+            // Offline Data Management
+            Button(action: {
+                showingOfflineData = true
+            }) {
+                Label("Manage Offline Data", systemImage: "internaldrive")
+                    .foregroundColor(AppColors.textPrimary)
+            }
+            
+            // Auto-sync on WiFi
+            Toggle(isOn: $viewModel.settings.autoSyncOnWiFi) {
+                Label("Auto-sync on Wi-Fi", systemImage: "wifi")
+            }
+        } header: {
+            Text("Offline & Sync")
+        } footer: {
+            Text("Offline mode allows you to use the app without an internet connection. Changes will sync when you're back online.")
                 .textStyle(.labelSmall)
         }
     }
