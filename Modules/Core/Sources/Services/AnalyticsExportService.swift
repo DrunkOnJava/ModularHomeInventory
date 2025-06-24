@@ -1,4 +1,7 @@
 import Foundation
+#if canImport(UIKit)
+import UIKit
+#endif
 
 /// Service for exporting analytics data to various formats
 /// Swift 5.9 - No Swift 6 features
@@ -216,8 +219,6 @@ public final class AnalyticsExportService {
     // MARK: - Share Sheet Support
     
     #if canImport(UIKit)
-    import UIKit
-    
     public func presentShareSheet(
         for data: Data,
         filename: String,
