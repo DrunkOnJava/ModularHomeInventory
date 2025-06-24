@@ -13,13 +13,17 @@ public final class SettingsModule: SettingsModuleAPI {
     
     public func makeSettingsView() -> AnyView {
         print("SettingsModule: Creating EnhancedSettingsView")
+        print("SettingsModule: dependencies.settingsStorage = \(dependencies.settingsStorage)")
         let viewModel = SettingsViewModel(
             settingsStorage: dependencies.settingsStorage,
             itemRepository: dependencies.itemRepository,
             receiptRepository: dependencies.receiptRepository,
             locationRepository: dependencies.locationRepository
         )
-        return AnyView(EnhancedSettingsView(viewModel: viewModel))
+        print("SettingsModule: Created viewModel = \(viewModel)")
+        let view = EnhancedSettingsView(viewModel: viewModel)
+        print("SettingsModule: Created EnhancedSettingsView")
+        return AnyView(view)
     }
     
     public func makeAboutView() -> AnyView {

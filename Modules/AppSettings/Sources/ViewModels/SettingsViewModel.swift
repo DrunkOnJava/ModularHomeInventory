@@ -5,20 +5,20 @@ import Core
 /// View model for managing settings state
 /// Swift 5.9 - No Swift 6 features
 @MainActor
-final class SettingsViewModel: ObservableObject {
-    @Published var settings: AppSettings
-    @Published var hasConflicts = false
-    @Published var conflictCount = 0
+public final class SettingsViewModel: ObservableObject {
+    @Published public var settings: AppSettings
+    @Published public var hasConflicts = false
+    @Published public var conflictCount = 0
     
-    let settingsStorage: SettingsStorageProtocol
+    public let settingsStorage: SettingsStorageProtocol
     private var cancellables = Set<AnyCancellable>()
     
     // Repository references for conflict resolution
-    var itemRepository: (any ItemRepository)?
-    var receiptRepository: (any ReceiptRepository)?
-    var locationRepository: (any LocationRepository)?
+    public var itemRepository: (any ItemRepository)?
+    public var receiptRepository: (any ReceiptRepository)?
+    public var locationRepository: (any LocationRepository)?
     
-    init(
+    public init(
         settingsStorage: SettingsStorageProtocol,
         itemRepository: (any ItemRepository)? = nil,
         receiptRepository: (any ReceiptRepository)? = nil,

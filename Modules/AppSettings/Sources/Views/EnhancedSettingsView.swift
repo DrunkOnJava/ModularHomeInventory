@@ -15,10 +15,13 @@ public struct EnhancedSettingsView: View {
     @State private var isSearching = false
     
     public init(viewModel: SettingsViewModel) {
+        print("EnhancedSettingsView.init called")
+        print("Stack trace: \(Thread.callStackSymbols)")
         self._viewModel = StateObject(wrappedValue: viewModel)
     }
     
     public var body: some View {
+        let _ = print("EnhancedSettingsView: Rendering body")
         ZStack {
             // Background
             SettingsBackgroundView()
