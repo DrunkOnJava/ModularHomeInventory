@@ -1,11 +1,18 @@
 # Makefile for HomeInventory Modular App
 
-.PHONY: help build run clean xcode test all
+# Include local configuration if it exists
+-include .makerc.local
+-include .makerc
+
+.PHONY: help build run clean xcode test all build-commit
 
 # Default simulator
-SIMULATOR_ID = DD192264-DFAA-4582-B2FE-D6FC444C9DDF
-SIMULATOR_NAME = iPhone 16 Pro Max
+SIMULATOR_ID ?= DD192264-DFAA-4582-B2FE-D6FC444C9DDF
+SIMULATOR_NAME ?= iPhone 16 Pro Max
 APP_BUNDLE_ID = com.homeinventory.modular
+
+# Auto-commit feature (default: off)
+AUTO_COMMIT ?= false
 
 help: ## Show this help message
 	@echo 'Usage: make [target]'
@@ -17,14 +24,22 @@ all: clean build run ## Clean, build and run the app
 
 build: ## Build the app for simulator
 	@echo "🏗️ Building HomeInventory..."
-	@xcodebuild \
+	@if xcodebuild \
 		-project HomeInventoryModular.xcodeproj \
 		-scheme HomeInventoryModular \
 		-sdk iphonesimulator \
 		-configuration Debug \
 		-destination "platform=iOS Simulator,id=$(SIMULATOR_ID)" \
 		-derivedDataPath build \
-		build | xcbeautify
+		build | xcbeautify; then \
+		echo "✅ Build succeeded!"; \
+		if [ "$(AUTO_COMMIT)" = "true" ]; then \
+			./scripts/auto-commit.sh; \
+		fi; \
+	else \
+		echo "❌ Build failed!"; \
+		exit 1; \
+	fi
 
 run: ## Run the app in simulator (requires successful build)
 	@echo "🚀 Launching app in $(SIMULATOR_NAME)..."
@@ -78,3 +93,9 @@ b: build ## Shortcut for build
 r: run ## Shortcut for run
 br: build run ## Build and run
 c: clean ## Shortcut for clean
+
+# Build with auto-commit
+build-commit: ## Build and auto-commit on success
+	@$(MAKE) build AUTO_COMMIT=true
+
+bc: build-commit ## Shortcut for build-commit

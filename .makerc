@@ -1,0 +1,10 @@
+# Makefile configuration
+# Copy this file to .makerc.local and customize
+
+# Enable auto-commit after successful builds
+# Set to true to automatically stage, commit, and push after builds
+AUTO_COMMIT=false
+
+# Custom simulator settings (optional)
+# SIMULATOR_ID=your-simulator-id
+# SIMULATOR_NAME=iPhone 15 Pro

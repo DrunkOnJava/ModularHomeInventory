@@ -94,6 +94,9 @@ iOSInjectionProject/
 .AppleDouble
 .LSOverride
 
+# Local configuration
+.makerc.local
+
 # Icon must end with two \r
 Icon
 
