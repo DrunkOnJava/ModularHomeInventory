@@ -176,14 +176,10 @@ struct ItemsNavigationView: View {
     @EnvironmentObject var coordinator: AppCoordinator
     
     var body: some View {
-        NavigationStack {
-            coordinator.itemsModule.makeItemsListView(
-                onSearchTapped: {},
-                onBarcodeSearchTapped: {}
-            )
-            .navigationTitle("Items")
-            .navigationBarTitleDisplayMode(.large)
-        }
+        coordinator.itemsModule.makeItemsListView(
+            onSearchTapped: {},
+            onBarcodeSearchTapped: {}
+        )
     }
 }
 
@@ -191,11 +187,7 @@ struct CollectionsNavigationView: View {
     @EnvironmentObject var coordinator: AppCoordinator
     
     var body: some View {
-        NavigationStack {
-            coordinator.itemsModule.makeCollectionsListView()
-                .navigationTitle("Collections")
-                .navigationBarTitleDisplayMode(.automatic)
-        }
+        coordinator.itemsModule.makeCollectionsListView()
     }
 }
 
@@ -203,11 +195,7 @@ struct LocationsNavigationView: View {
     @EnvironmentObject var coordinator: AppCoordinator
     
     var body: some View {
-        NavigationStack {
-            coordinator.itemsModule.makeStorageUnitsListView()
-                .navigationTitle("Locations")
-                .navigationBarTitleDisplayMode(.automatic)
-        }
+        coordinator.itemsModule.makeStorageUnitsListView()
     }
 }
 
@@ -215,11 +203,7 @@ struct CategoriesNavigationView: View {
     @EnvironmentObject var coordinator: AppCoordinator
     
     var body: some View {
-        NavigationStack {
-            coordinator.itemsModule.makeTagsManagementView()
-                .navigationTitle("Categories")
-                .navigationBarTitleDisplayMode(.automatic)
-        }
+        coordinator.itemsModule.makeTagsManagementView()
     }
 }
 
@@ -227,11 +211,7 @@ struct AnalyticsNavigationView: View {
     @EnvironmentObject var coordinator: AppCoordinator
     
     var body: some View {
-        NavigationStack {
-            coordinator.itemsModule.makeSpendingDashboardView()
-                .navigationTitle("Analytics")
-                .navigationBarTitleDisplayMode(.automatic)
-        }
+        coordinator.itemsModule.makeSpendingDashboardView()
     }
 }
 
@@ -239,11 +219,7 @@ struct ReportsNavigationView: View {
     @EnvironmentObject var coordinator: AppCoordinator
     
     var body: some View {
-        NavigationStack {
-            coordinator.itemsModule.makeDepreciationReportView()
-                .navigationTitle("Reports")
-                .navigationBarTitleDisplayMode(.automatic)
-        }
+        coordinator.itemsModule.makeDepreciationReportView()
     }
 }
 
@@ -251,11 +227,7 @@ struct BudgetNavigationView: View {
     @EnvironmentObject var coordinator: AppCoordinator
     
     var body: some View {
-        NavigationStack {
-            coordinator.itemsModule.makeBudgetDashboardView()
-                .navigationTitle("Budget")
-                .navigationBarTitleDisplayMode(.automatic)
-        }
+        coordinator.itemsModule.makeBudgetDashboardView()
     }
 }
 
@@ -263,11 +235,7 @@ struct ScannerNavigationView: View {
     @EnvironmentObject var coordinator: AppCoordinator
     
     var body: some View {
-        NavigationStack {
-            coordinator.scannerModule.makeScannerView()
-                .navigationTitle("Scanner")
-                .navigationBarTitleDisplayMode(.automatic)
-        }
+        coordinator.scannerModule.makeScannerView()
     }
 }
 
@@ -275,11 +243,7 @@ struct SearchNavigationView: View {
     @EnvironmentObject var coordinator: AppCoordinator
     
     var body: some View {
-        NavigationStack {
-            coordinator.itemsModule.makeNaturalLanguageSearchView()
-                .navigationTitle("Search")
-                .navigationBarTitleDisplayMode(.automatic)
-        }
+        coordinator.itemsModule.makeNaturalLanguageSearchView()
     }
 }
 
@@ -287,12 +251,8 @@ struct ImportExportNavigationView: View {
     @EnvironmentObject var coordinator: AppCoordinator
     
     var body: some View {
-        NavigationStack {
-            ImportExportDashboard()
-                .environmentObject(coordinator)
-                .navigationTitle("Import/Export")
-                .navigationBarTitleDisplayMode(.automatic)
-        }
+        ImportExportDashboard()
+            .environmentObject(coordinator)
     }
 }
 
@@ -300,11 +260,7 @@ struct SettingsNavigationView: View {
     @EnvironmentObject var coordinator: AppCoordinator
     
     var body: some View {
-        NavigationStack {
-            coordinator.settingsModule.makeSettingsView()
-                .navigationTitle("Settings")
-                .navigationBarTitleDisplayMode(.automatic)
-        }
+        coordinator.settingsModule.makeSettingsView()
     }
 }
 
