@@ -31,9 +31,6 @@ struct SpendingDashboardView: View {
                 // Time range selector
                 timeRangePicker
                 
-                // Total spending card
-                totalSpendingCard
-                
                 // Quick insights cards
                 if viewModel.hasEnoughDataForInsights {
                     quickInsightsCards
