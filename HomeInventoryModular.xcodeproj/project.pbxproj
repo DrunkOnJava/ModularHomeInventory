@@ -12,17 +12,23 @@
 		2510550944C84AB6FD3FA538 /* Core in Frameworks */ = {isa = PBXBuildFile; productRef = 6D324B07EA3BF79F03E20042 /* Core */; };
 		300A0DF86743646A925A2F87 /* Receipts in Frameworks */ = {isa = PBXBuildFile; productRef = 4DAE3E8FC6151A00266EE46D /* Receipts */; };
 		3C715FDB1CC41FEAB5C2810F /* BarcodeScanner in Frameworks */ = {isa = PBXBuildFile; productRef = E20F9C66CD8A1E76D5DA4ACF /* BarcodeScanner */; };
+		41C9D2044C2317715D80F8E4 /* iPadDragDrop.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64C55026838DBE9D3BEB425A /* iPadDragDrop.swift */; };
 		4E63BE4249C407C6AF4CAF0E /* Premium in Frameworks */ = {isa = PBXBuildFile; productRef = EC690A20521570D346B1DF95 /* Premium */; };
 		69FC7331598F2E7FA98B3E26 /* Onboarding in Frameworks */ = {isa = PBXBuildFile; productRef = 1B5D7269FC9C97F1936D0193 /* Onboarding */; };
+		8EB76248EC9A1857A2219A25 /* iPadColumnView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27DF185E835D6523D6D07BD3 /* iPadColumnView.swift */; };
 		9506FEA0E51000A89D505F1C /* SnapshotHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FA9E85F9D0016AF30814111 /* SnapshotHelper.swift */; };
 		9551587D0423723462A2C745 /* Sync in Frameworks */ = {isa = PBXBuildFile; productRef = FFDB5BBF0F128AC119F36F3A /* Sync */; };
+		976C1724B866429FE43744CA /* iPadContextMenus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CE4BF045FF5D80EF3DC10AB /* iPadContextMenus.swift */; };
 		9D27D58DFC7C878E4B18584A /* HomeInventoryModularApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 926E4CA42BFEA653635F2364 /* HomeInventoryModularApp.swift */; };
 		ACF691C75D3CE2A0368D350E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 362A5252C4DF6A3EB2576072 /* Assets.xcassets */; };
 		BB0DD5FF03285CB7996948EB /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EF2F55CB9E0C0D2E0A2AC96 /* ContentView.swift */; };
 		C4F37384ED723E64ACAAF5C5 /* HomeInventoryModularUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 851ADC8B8F9E673AC19166A0 /* HomeInventoryModularUITests.swift */; };
 		D11C17DFC3910E7BFCA63187 /* ScreenshotDebug.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05127C77BA29A74CDD30F8E6 /* ScreenshotDebug.swift */; };
+		DDAE61C8217EA5D290B623B6 /* iPadApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77EED492389F7B8DF125B072 /* iPadApp.swift */; };
 		F110E061FDBC925483D96631 /* SharedUI in Frameworks */ = {isa = PBXBuildFile; productRef = 1E4ABB9448702E1172AD1D5B /* SharedUI */; };
+		F6DA7A52D063BEB679B070FA /* iPadKeyboardShortcuts.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF02F009DB186920EDAECF34 /* iPadKeyboardShortcuts.swift */; };
 		FA3C772C8BC354A93E204D0C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7CCD81CB60BE20EC61ED398 /* AppDelegate.swift */; };
+		FB4AC041DEECF4A36CA1A46A /* iPadSidebarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB6FDB51AC121A07EA6CB8B6 /* iPadSidebarView.swift */; };
 		FD938184E545CCEB3567B64E /* Items in Frameworks */ = {isa = PBXBuildFile; productRef = 11065E0B954F8B47091C5898 /* Items */; };
 /* End PBXBuildFile section */
 
@@ -40,13 +46,17 @@
 		0356A52527E14766531C3817 /* Premium */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Premium; path = Modules/Premium; sourceTree = SOURCE_ROOT; };
 		05127C77BA29A74CDD30F8E6 /* ScreenshotDebug.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenshotDebug.swift; sourceTree = "<group>"; };
 		1EF2F55CB9E0C0D2E0A2AC96 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		27DF185E835D6523D6D07BD3 /* iPadColumnView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iPadColumnView.swift; sourceTree = "<group>"; };
+		2CE4BF045FF5D80EF3DC10AB /* iPadContextMenus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iPadContextMenus.swift; sourceTree = "<group>"; };
 		362A5252C4DF6A3EB2576072 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		3A1CEB3468DA9FAF5C65DC34 /* AppSettings */ = {isa = PBXFileReference; lastKnownFileType = folder; name = AppSettings; path = Modules/AppSettings; sourceTree = SOURCE_ROOT; };
 		3AE0C7854F2B950F4BCC3A9C /* SharedUI */ = {isa = PBXFileReference; lastKnownFileType = folder; name = SharedUI; path = Modules/SharedUI; sourceTree = SOURCE_ROOT; };
 		3F46D3FE17D78B8D9DF66A01 /* HomeInventoryModularUITests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = HomeInventoryModularUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		45BEF81177E158AC63FCA13F /* HomeInventoryModular.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = HomeInventoryModular.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		64C55026838DBE9D3BEB425A /* iPadDragDrop.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iPadDragDrop.swift; sourceTree = "<group>"; };
 		6FA9E85F9D0016AF30814111 /* SnapshotHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnapshotHelper.swift; sourceTree = "<group>"; };
 		73E0D1EAA4C9CDEBD48AD8AF /* Core */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Core; path = Modules/Core; sourceTree = SOURCE_ROOT; };
+		77EED492389F7B8DF125B072 /* iPadApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iPadApp.swift; sourceTree = "<group>"; };
 		7E5AAB84E88E9A6638891341 /* BarcodeScanner */ = {isa = PBXFileReference; lastKnownFileType = folder; name = BarcodeScanner; path = Modules/BarcodeScanner; sourceTree = SOURCE_ROOT; };
 		851ADC8B8F9E673AC19166A0 /* HomeInventoryModularUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeInventoryModularUITests.swift; sourceTree = "<group>"; };
 		91D08070EA57AC1909DB4D64 /* Sync */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Sync; path = Modules/Sync; sourceTree = SOURCE_ROOT; };
@@ -54,7 +64,9 @@
 		9B19AF6DD7A4B31661D6BEA9 /* AppCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppCoordinator.swift; sourceTree = "<group>"; };
 		B4AB90697101976F63CC3B1B /* Onboarding */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Onboarding; path = Modules/Onboarding; sourceTree = SOURCE_ROOT; };
 		B7CCD81CB60BE20EC61ED398 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		BB6FDB51AC121A07EA6CB8B6 /* iPadSidebarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iPadSidebarView.swift; sourceTree = "<group>"; };
 		BC2DF36FD3B9183FE991865A /* Receipts */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Receipts; path = Modules/Receipts; sourceTree = SOURCE_ROOT; };
+		CF02F009DB186920EDAECF34 /* iPadKeyboardShortcuts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iPadKeyboardShortcuts.swift; sourceTree = "<group>"; };
 		F1AE5605C98FF2E462CC4F56 /* Items */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Items; path = Modules/Items; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
@@ -86,6 +98,12 @@
 				362A5252C4DF6A3EB2576072 /* Assets.xcassets */,
 				1EF2F55CB9E0C0D2E0A2AC96 /* ContentView.swift */,
 				926E4CA42BFEA653635F2364 /* HomeInventoryModularApp.swift */,
+				77EED492389F7B8DF125B072 /* iPadApp.swift */,
+				27DF185E835D6523D6D07BD3 /* iPadColumnView.swift */,
+				2CE4BF045FF5D80EF3DC10AB /* iPadContextMenus.swift */,
+				64C55026838DBE9D3BEB425A /* iPadDragDrop.swift */,
+				CF02F009DB186920EDAECF34 /* iPadKeyboardShortcuts.swift */,
+				BB6FDB51AC121A07EA6CB8B6 /* iPadSidebarView.swift */,
 				B9D33E0982FFC2A3A08ADEBC /* HomeInventoryModularUITests */,
 				656A14CE8B6FFD57E9E48DA2 /* Packages */,
 				E61D147BB59AF782EA912E0C /* Products */,
@@ -247,6 +265,12 @@
 				FA3C772C8BC354A93E204D0C /* AppDelegate.swift in Sources */,
 				BB0DD5FF03285CB7996948EB /* ContentView.swift in Sources */,
 				9D27D58DFC7C878E4B18584A /* HomeInventoryModularApp.swift in Sources */,
+				DDAE61C8217EA5D290B623B6 /* iPadApp.swift in Sources */,
+				8EB76248EC9A1857A2219A25 /* iPadColumnView.swift in Sources */,
+				976C1724B866429FE43744CA /* iPadContextMenus.swift in Sources */,
+				41C9D2044C2317715D80F8E4 /* iPadDragDrop.swift in Sources */,
+				F6DA7A52D063BEB679B070FA /* iPadKeyboardShortcuts.swift in Sources */,
+				FB4AC041DEECF4A36CA1A46A /* iPadSidebarView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

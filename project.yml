@@ -49,6 +49,12 @@ targets:
       - AppDelegate.swift
       - AppCoordinator.swift
       - ContentView.swift
+      - iPadApp.swift
+      - iPadSidebarView.swift
+      - iPadColumnView.swift
+      - iPadKeyboardShortcuts.swift
+      - iPadContextMenus.swift
+      - iPadDragDrop.swift
       - Assets.xcassets
     dependencies:
       - package: Core

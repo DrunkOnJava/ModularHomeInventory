@@ -4,11 +4,16 @@
 -include .makerc.local
 -include .makerc
 
-.PHONY: help build run clean xcode test all build-commit
+.PHONY: help build run clean xcode test all build-commit build-ipad run-ipad all-ipad
 
 # Default simulator
 SIMULATOR_ID ?= DD192264-DFAA-4582-B2FE-D6FC444C9DDF
 SIMULATOR_NAME ?= iPhone 16 Pro Max
+
+# iPad simulator
+IPAD_SIMULATOR_ID ?= CE6D038C-840B-4BDB-AA63-D61FA0755C4A
+IPAD_SIMULATOR_NAME ?= iPad Pro 13-inch (M4)
+
 APP_BUNDLE_ID = com.homeinventory.modular
 
 # Auto-commit feature (default: on)
@@ -41,6 +46,25 @@ build: ## Build the app for simulator
 		exit 1; \
 	fi
 
+build-ipad: ## Build the app for iPad simulator
+	@echo "🏗️ Building HomeInventory for iPad..."
+	@if xcodebuild \
+		-project HomeInventoryModular.xcodeproj \
+		-scheme HomeInventoryModular \
+		-sdk iphonesimulator \
+		-configuration Debug \
+		-destination "platform=iOS Simulator,id=$(IPAD_SIMULATOR_ID)" \
+		-derivedDataPath build \
+		build | xcbeautify; then \
+		echo "✅ iPad build succeeded!"; \
+		if [ "$(AUTO_COMMIT)" = "true" ]; then \
+			./scripts/auto-commit.sh; \
+		fi; \
+	else \
+		echo "❌ iPad build failed!"; \
+		exit 1; \
+	fi
+
 run: ## Run the app in simulator (requires successful build)
 	@echo "🚀 Launching app in $(SIMULATOR_NAME)..."
 	@# Boot simulator if needed
@@ -56,6 +80,24 @@ run: ## Run the app in simulator (requires successful build)
 		echo "❌ No app found. Run 'make build' first."; \
 		exit 1; \
 	fi
+
+run-ipad: ## Run the app in iPad simulator (requires successful build)
+	@echo "🚀 Launching app in $(IPAD_SIMULATOR_NAME)..."
+	@# Boot simulator if needed
+	@xcrun simctl boot $(IPAD_SIMULATOR_ID) 2>/dev/null || true
+	@open -a Simulator
+	@# Install and launch
+	@APP_PATH=$$(find build/Build/Products -name "*.app" -type d | head -1); \
+	if [ -n "$$APP_PATH" ]; then \
+		xcrun simctl install $(IPAD_SIMULATOR_ID) "$$APP_PATH" && \
+		xcrun simctl launch $(IPAD_SIMULATOR_ID) $(APP_BUNDLE_ID); \
+		echo "✅ App launched on iPad!"; \
+	else \
+		echo "❌ No app found. Run 'make build-ipad' first."; \
+		exit 1; \
+	fi
+
+all-ipad: clean build-ipad run-ipad ## Clean, build and run the app on iPad
 
 clean: ## Clean build artifacts
 	@echo "🧹 Cleaning..."
@@ -93,6 +135,12 @@ b: build ## Shortcut for build
 r: run ## Shortcut for run
 br: build run ## Build and run
 c: clean ## Shortcut for clean
+
+# iPad shortcuts
+bi: build-ipad ## Shortcut for build-ipad
+ri: run-ipad ## Shortcut for run-ipad
+bri: build-ipad run-ipad ## Build and run on iPad
+ai: all-ipad ## Shortcut for all-ipad
 
 # Build with auto-commit
 build-commit: ## Build and auto-commit on success
