@@ -57,7 +57,7 @@ struct iPadKeyboardShortcutsModifier: ViewModifier {
         case "cmd+1":
             navigationState.selectedTab = .items
         case "cmd+2":
-            navigationState.selectedTab = .collections
+            navigationState.selectedTab = .insurance
         case "cmd+3":
             navigationState.selectedTab = .analytics
         case "cmd+4":
@@ -80,7 +80,7 @@ struct iPadKeyboardShortcutsModifier: ViewModifier {
             }
         case "escape":
             navigationState.selectedItem = nil
-            navigationState.selectedCollection = nil
+            navigationState.selectedInsurancePolicy = nil
             navigationState.selectedLocation = nil
             isSearchFocused = false
         case "space":
