@@ -260,8 +260,8 @@ final class ClaimAssistanceViewModel: ObservableObject {
         let personalInfo = (name: "User Name", phone: nil as String?, email: nil as String?, address: incidentLocation)
         
         // Generate claim email content
-        var emailContent = """        
-        Subject: Insurance Claim - \(template.title)
+        var emailContent = """
+Subject: Insurance Claim - \(template.title)
         
         To: \(policy.contactInfo.claimsEmail ?? "claims@insurance.com")
         

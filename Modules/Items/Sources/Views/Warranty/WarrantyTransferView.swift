@@ -10,7 +10,7 @@ public struct WarrantyTransferView: View {
     public init(
         warranty: Warranty,
         item: Item,
-        warrantyRepository: WarrantyRepository
+        warrantyRepository: any WarrantyRepository
     ) {
         self._viewModel = StateObject(wrappedValue: WarrantyTransferViewModel(
             warranty: warranty,
@@ -248,7 +248,7 @@ public struct WarrantyTransferView: View {
                     
                     TextEditor(text: $viewModel.transferNotes)
                         .frame(minHeight: 100)
-                        .appPadding(AppSpacing.sm)
+                        .padding(AppSpacing.sm)
                         .background(AppColors.surface)
                         .cornerRadius(AppCornerRadius.small)
                 }
@@ -304,7 +304,8 @@ public struct WarrantyTransferView: View {
                     } label: {
                         Label("Generate Transfer Agreement", systemImage: "doc.text")
                     }
-                    .buttonStyle(SecondaryButtonStyle())
+                    .buttonStyle(.borderedProminent)
+                    .tint(AppColors.textSecondary)
                     
                     if let conditions = viewModel.transferability?.transferConditions,
                        conditions.requiresNotification {
@@ -313,7 +314,8 @@ public struct WarrantyTransferView: View {
                         } label: {
                             Label("Generate Provider Notification", systemImage: "envelope")
                         }
-                        .buttonStyle(SecondaryButtonStyle())
+                        .buttonStyle(.borderedProminent)
+                    .tint(AppColors.textSecondary)
                     }
                 }
             }
@@ -377,11 +379,13 @@ public struct WarrantyTransferView: View {
     private var navigationButtons: some View {
         HStack(spacing: AppSpacing.md) {
             if currentStep > 0 {
-                SecondaryButton(title: "Previous") {
+                Button("Previous") {
                     withAnimation {
                         currentStep -= 1
                     }
                 }
+                .buttonStyle(.borderedProminent)
+                .tint(AppColors.textSecondary)
             }
             
             Spacer()
@@ -469,7 +473,14 @@ struct WarrantyInfoCard: View {
                 
                 Spacer()
                 
-                StatusBadge(status: warranty.status)
+                // Show warranty status
+                Text(warranty.status.rawValue.capitalized)
+                    .textStyle(.labelSmall)
+                    .foregroundStyle(warranty.status == .active ? AppColors.success : AppColors.textSecondary)
+                    .padding(.horizontal, AppSpacing.sm)
+                    .padding(.vertical, AppSpacing.xxs)
+                    .background(warranty.status == .active ? AppColors.successMuted : AppColors.surface)
+                    .cornerRadius(AppCornerRadius.small)
             }
             
             Divider()
@@ -569,7 +580,7 @@ struct TransferConditionsCard: View {
                 if conditions.requiresFee, let fee = conditions.feeAmount {
                     ConditionRow(
                         icon: "dollarsign.circle",
-                        text: "Transfer fee: \(fee, format: .currency(code: "USD"))"
+                        text: "Transfer fee: \(fee.formatted(.currency(code: "USD")))"
                     )
                 }
                 
@@ -599,7 +610,7 @@ struct TransferConditionsCard: View {
                             .foregroundStyle(AppColors.textPrimary)
                             .fixedSize(horizontal: false, vertical: true)
                     }
-                    .appPadding(AppSpacing.sm)
+                    .padding(AppSpacing.sm)
                     .background(AppColors.secondaryBackground)
                     .cornerRadius(AppCornerRadius.small)
                 }

@@ -117,11 +117,13 @@ public struct ClaimAssistanceView: View {
             // Navigation buttons
             HStack(spacing: AppSpacing.md) {
                 if currentStep > 0 {
-                    SecondaryButton(title: "Previous") {
+                    Button("Previous") {
                         withAnimation {
                             currentStep -= 1
                         }
                     }
+                    .buttonStyle(.borderedProminent)
+                    .tint(AppColors.textSecondary)
                 }
                 
                 Spacer()
@@ -396,7 +398,7 @@ struct IncidentDetailsView: View {
                 
                 TextEditor(text: $viewModel.incidentDescription)
                     .frame(minHeight: 100)
-                    .appPadding(AppSpacing.sm)
+                    .padding(AppSpacing.sm)
                     .background(AppColors.surface)
                     .cornerRadius(AppCornerRadius.small)
             }
@@ -525,10 +527,10 @@ struct ClaimReviewView: View {
             
             ReviewSection(title: "Incident Details") {
                 VStack(alignment: .leading, spacing: AppSpacing.sm) {
-                    LabeledText("Date", value: viewModel.incidentDate.formatted(date: .abbreviated, time: .omitted))
-                    LabeledText("Location", value: viewModel.incidentLocation)
+                    LabeledText(label: "Date", value: viewModel.incidentDate.formatted(date: .abbreviated, time: .omitted))
+                    LabeledText(label: "Location", value: viewModel.incidentLocation)
                     if viewModel.hasPoliceReport {
-                        LabeledText("Police Report", value: viewModel.policeReportNumber)
+                        LabeledText(label: "Police Report", value: viewModel.policeReportNumber)
                     }
                 }
                 .appPadding()
@@ -543,14 +545,16 @@ struct ClaimReviewView: View {
                 } label: {
                     Label("Generate Claim Email", systemImage: "envelope")
                 }
-                .buttonStyle(SecondaryButtonStyle())
+                .buttonStyle(.borderedProminent)
+                .tint(AppColors.textSecondary)
                 
                 Button {
                     viewModel.exportClaimSummary()
                 } label: {
                     Label("Export Summary", systemImage: "square.and.arrow.up")
                 }
-                .buttonStyle(SecondaryButtonStyle())
+                .buttonStyle(.borderedProminent)
+                .tint(AppColors.textSecondary)
             }
         }
         .sheet(isPresented: $showingEmail) {
@@ -684,7 +688,7 @@ struct DocumentChecklistRow: View {
                             .foregroundStyle(AppColors.textSecondary)
                             .fixedSize(horizontal: false, vertical: true)
                     }
-                    .appPadding(AppSpacing.sm)
+                    .padding(AppSpacing.sm)
                     .background(AppColors.warningMuted)
                     .cornerRadius(AppCornerRadius.small)
                 }

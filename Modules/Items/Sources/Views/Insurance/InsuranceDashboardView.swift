@@ -69,27 +69,35 @@ public struct InsuranceDashboardView: View {
         }
         .sheet(isPresented: $showingAddPolicy) {
             NavigationView {
-                AddInsurancePolicyView(
-                    itemRepository: viewModel.itemRepository,
-                    insuranceRepository: viewModel.insuranceRepository
-                )
+                // Add Insurance Policy View would go here
+                Text("Add Insurance Policy")
+                    .navigationTitle("Add Policy")
             }
         }
         .sheet(item: $selectedPolicy) { policy in
             NavigationView {
-                InsurancePolicyDetailView(
-                    policy: policy,
-                    itemRepository: viewModel.itemRepository,
-                    insuranceRepository: viewModel.insuranceRepository
-                )
+                // Insurance Policy Detail View would go here
+                VStack {
+                    Text("Policy Details")
+                    Text(policy.provider)
+                        .font(.headline)
+                    Text(policy.policyNumber)
+                        .font(.subheadline)
+                }
+                .navigationTitle("Policy Details")
             }
         }
         .sheet(isPresented: $showingCoverageAnalysis) {
             NavigationView {
-                CoverageAnalysisView(
-                    analysis: viewModel.coverageAnalysis,
-                    itemRepository: viewModel.itemRepository
-                )
+                // Coverage Analysis View would go here
+                VStack {
+                    Text("Coverage Analysis")
+                        .font(.title2)
+                    if let analysis = viewModel.coverageAnalysis {
+                        Text("Total Coverage: \(analysis.coveragePercentage, format: .percent)")
+                    }
+                }
+                .navigationTitle("Coverage Analysis")
             }
         }
         .task {
@@ -101,7 +109,9 @@ public struct InsuranceDashboardView: View {
     
     private var coverageOverviewSection: some View {
         VStack(spacing: AppSpacing.md) {
-            SectionHeader(title: "Coverage Overview")
+            Text("Coverage Overview")
+                .textStyle(.headlineSmall)
+                .foregroundStyle(AppColors.textPrimary)
             
             VStack(spacing: AppSpacing.sm) {
                 // Coverage percentage indicator
@@ -169,7 +179,9 @@ public struct InsuranceDashboardView: View {
     
     private var premiumSummarySection: some View {
         VStack(spacing: AppSpacing.md) {
-            SectionHeader(title: "Premium Summary")
+            Text("Premium Summary")
+                .textStyle(.headlineSmall)
+                .foregroundStyle(AppColors.textPrimary)
             
             HStack {
                 VStack(alignment: .leading, spacing: AppSpacing.xs) {
@@ -201,7 +213,9 @@ public struct InsuranceDashboardView: View {
     private var activePoliciesSection: some View {
         VStack(spacing: AppSpacing.md) {
             HStack {
-                SectionHeader(title: "Active Policies")
+                Text("Active Policies")
+                    .textStyle(.headlineSmall)
+                    .foregroundStyle(AppColors.textPrimary)
                 Spacer()
                 Text("\(viewModel.activePolicies.count)")
                     .textStyle(.labelMedium)
@@ -220,7 +234,9 @@ public struct InsuranceDashboardView: View {
     
     private var coverageByCategoryChart: some View {
         VStack(spacing: AppSpacing.md) {
-            SectionHeader(title: "Coverage by Category")
+            Text("Coverage by Category")
+                .textStyle(.headlineSmall)
+                .foregroundStyle(AppColors.textPrimary)
             
             Chart(viewModel.categoryBreakdown) { item in
                 BarMark(
@@ -245,7 +261,9 @@ public struct InsuranceDashboardView: View {
     
     private var recommendationsSection: some View {
         VStack(spacing: AppSpacing.md) {
-            SectionHeader(title: "Recommendations")
+            Text("Recommendations")
+                .textStyle(.headlineSmall)
+                .foregroundStyle(AppColors.textPrimary)
             
             ForEach(viewModel.recommendations.prefix(3), id: \.title) { recommendation in
                 RecommendationCard(recommendation: recommendation)
@@ -255,14 +273,17 @@ public struct InsuranceDashboardView: View {
                 Button("View All Recommendations") {
                     showingCoverageAnalysis = true
                 }
-                .buttonStyle(SecondaryButtonStyle())
+                .buttonStyle(.borderedProminent)
+                .tint(AppColors.textSecondary)
             }
         }
     }
     
     private var claimsSummarySection: some View {
         VStack(spacing: AppSpacing.md) {
-            SectionHeader(title: "Claims History")
+            Text("Claims History")
+                .textStyle(.headlineSmall)
+                .foregroundStyle(AppColors.textPrimary)
             
             VStack(spacing: AppSpacing.sm) {
                 HStack {
@@ -331,7 +352,9 @@ struct InsurancePolicyRow: View {
                 Text(policy.premium.amount, format: .currency(code: "USD"))
                     .textStyle(.bodySmall)
                     .foregroundStyle(AppColors.textSecondary)
-                + Text("/\(policy.premium.frequency.displayName.lowercased())")
+                Text(" /\(policy.premium.frequency.displayName.lowercased())")
+                    .textStyle(.bodySmall)
+                    .foregroundStyle(AppColors.textSecondary)
                     .textStyle(.labelSmall)
                     .foregroundStyle(AppColors.textTertiary)
             }
