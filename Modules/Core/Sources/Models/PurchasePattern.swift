@@ -315,7 +315,7 @@ public struct BulkBuyingPattern: Codable, Identifiable {
         category: ItemCategory,
         averageQuantity: Int,
         bulkSavings: Decimal,
-        frequency: PurchaseFrequency
+        frequency: PatternFrequency
     ) {
         self.id = id
         self.itemType = itemType
