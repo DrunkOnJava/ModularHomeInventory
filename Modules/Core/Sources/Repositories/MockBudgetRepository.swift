@@ -78,7 +78,9 @@ public class MockBudgetRepository: BudgetRepository {
     
     public func markAlertAsRead(_ alertId: UUID) async throws {
         if let index = alerts.firstIndex(where: { $0.id == alertId }) {
-            alerts[index].isRead = true
+            var alert = alerts[index]
+            alert.isRead = true
+            alerts[index] = alert
         }
     }
     
@@ -134,7 +136,9 @@ public class MockBudgetRepository: BudgetRepository {
     
     public func getBudgetPerformance(for budgetId: UUID) async throws -> BudgetPerformance {
         let budget = budgets[budgetId]
-        let spending = try await calculateSpending(for: budgetId, in: nil)
+        let now = Date()
+        let oneYearAgo = Calendar.current.date(byAdding: .year, value: -1, to: now) ?? now
+        let spending = try await calculateSpending(for: budgetId, in: DateInterval(start: oneYearAgo, end: now))
         let avgSpending = try await getAverageSpending(for: budgetId, periods: 12)
         
         return BudgetPerformance(
