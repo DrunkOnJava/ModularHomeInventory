@@ -151,7 +151,14 @@ struct ColumnMappingView: View {
         mapping.tags = selectedMappings[.tags]
         mapping.notes = selectedMappings[.notes]
         
-        configuration.columnMapping = mapping
+        configuration = Core.CSVImportConfiguration(
+            delimiter: configuration.delimiter,
+            hasHeaders: configuration.hasHeaders,
+            encoding: configuration.encoding,
+            dateFormat: configuration.dateFormat,
+            currencySymbol: configuration.currencySymbol,
+            columnMapping: mapping
+        )
     }
     
     private func autoDetectMappings() {

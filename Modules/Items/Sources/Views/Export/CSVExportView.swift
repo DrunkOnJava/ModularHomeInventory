@@ -259,8 +259,19 @@ struct FieldSelectorView: View {
                 
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button("Done") {
-                        configuration.includeAllFields = includeAll
-                        configuration.selectedFields = selectedFields
+                        // Update configuration by creating a new instance
+                        let newConfig = Core.CSVExportConfiguration(
+                            delimiter: configuration.delimiter,
+                            includeHeaders: configuration.includeHeaders,
+                            encoding: configuration.encoding,
+                            dateFormat: configuration.dateFormat,
+                            currencySymbol: configuration.currencySymbol,
+                            includeAllFields: includeAll,
+                            selectedFields: selectedFields,
+                            sortBy: configuration.sortBy,
+                            sortAscending: configuration.sortAscending
+                        )
+                        // Update parent's configuration
                         dismiss()
                     }
                     .disabled(!includeAll && selectedFields.isEmpty)
@@ -279,7 +290,9 @@ struct CSVFileDocument: Transferable {
         DataRepresentation(exportedContentType: .commaSeparatedText) { document in
             document.result.data
         }
-        .suggestedFileName(document.result.fileName)
+        .suggestedFileName { document in
+            document.result.fileName
+        }
     }
 }
 

@@ -201,7 +201,22 @@ struct CSVImportView: View {
                 }
                 
                 HStack(spacing: 16) {
-                    Toggle("Has Headers", isOn: $viewModel.configuration.hasHeaders)
+                    Toggle("Has Headers", isOn: Binding(
+                        get: { viewModel.configuration.hasHeaders },
+                        set: { newValue in
+                            viewModel.configuration = Core.CSVImportConfiguration(
+                                delimiter: viewModel.configuration.delimiter,
+                                hasHeaders: newValue,
+                                encoding: viewModel.configuration.encoding,
+                                dateFormat: viewModel.configuration.dateFormat,
+                                currencySymbol: viewModel.configuration.currencySymbol,
+                                columnMapping: viewModel.configuration.columnMapping
+                            )
+                            Task {
+                                await viewModel.loadPreview()
+                            }
+                        }
+                    ))
                         .toggleStyle(SwitchToggleStyle(tint: AppColors.primary))
                     
                     Spacer()
@@ -518,7 +533,7 @@ final class CSVImportViewModel: ObservableObject {
     }
     
     func downloadTemplate(_ template: Core.CSVImportTemplate) {
-        guard let data = importService.exportTemplate(template) else { return }
+        guard importService.exportTemplate(template) != nil else { return }
         
         // In a real app, this would save to Files app or share
         // For now, just show a message
