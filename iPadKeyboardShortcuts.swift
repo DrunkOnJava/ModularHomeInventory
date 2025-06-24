@@ -3,7 +3,7 @@ import UIKit
 
 /// Keyboard shortcuts for iPad
 /// Provides comprehensive keyboard navigation and shortcuts
-struct iPadKeyboardShortcuts: ViewModifier {
+struct iPadKeyboardShortcutsModifier: ViewModifier {
     @ObservedObject var navigationState: iPadNavigationState
     @State private var searchText = ""
     @FocusState private var isSearchFocused: Bool
@@ -95,7 +95,7 @@ struct iPadKeyboardShortcuts: ViewModifier {
 
 // MARK: - Keyboard Commands
 
-extension iPadKeyboardShortcuts {
+extension iPadKeyboardShortcutsModifier {
     static func buildCommands() -> some Commands {
         Group {
             CommandGroup(after: .newItem) {
@@ -304,8 +304,8 @@ struct ShortcutRow: View {
 // MARK: - Extensions
 
 extension View {
-    func iPadKeyboardShortcuts(navigationState: iPadNavigationState) -> ModifiedContent<Self, iPadKeyboardShortcuts> {
-        self.modifier(iPadKeyboardShortcuts(navigationState: navigationState))
+    func iPadKeyboardShortcuts(navigationState: iPadNavigationState) -> ModifiedContent<Self, iPadKeyboardShortcutsModifier> {
+        self.modifier(iPadKeyboardShortcutsModifier(navigationState: navigationState))
     }
     
     func keyboardNavigation() -> ModifiedContent<Self, KeyboardNavigationModifier> {

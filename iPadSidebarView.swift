@@ -56,13 +56,6 @@ struct iPadSidebarView: View {
             .listStyle(SidebarListStyle())
             .navigationTitle("Home Inventory")
             .navigationBarTitleDisplayMode(.large)
-            .toolbar(content: {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button(action: { navigationState.showAddItem = true }) {
-                        Image(systemName: "plus")
-                    }
-                }
-            })
         } detail: {
             // Detail view based on selection
             detailView
@@ -70,6 +63,13 @@ struct iPadSidebarView: View {
         }
         .navigationSplitViewStyle(.balanced)
         .navigationSplitViewColumnWidth(ideal: 300)
+        .toolbar {
+            ToolbarItem(placement: .primaryAction) {
+                Button(action: { navigationState.showAddItem = true }) {
+                    Image(systemName: "plus")
+                }
+            }
+        }
         .sheet(isPresented: $navigationState.showAddItem) {
             AddItemSheet()
         }

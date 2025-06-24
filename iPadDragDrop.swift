@@ -47,7 +47,7 @@ struct iPadDragDropModifier: ViewModifier {
 
 // MARK: - Drop Destination
 
-struct iPadDropDestination: ViewModifier {
+struct iPadDropDestinationModifier: ViewModifier {
     let supportedTypes: [UTType]
     let onDrop: ([NSItemProvider]) -> Bool
     @State private var isTargeted = false
@@ -113,8 +113,8 @@ extension View {
     func iPadDropDestination(
         supportedTypes: [UTType] = [.json, .plainText, .commaSeparatedText],
         onDrop: @escaping ([NSItemProvider]) -> Bool
-    ) -> ModifiedContent<Self, iPadDropDestination> {
-        self.modifier(iPadDropDestination(supportedTypes: supportedTypes, onDrop: onDrop))
+    ) -> ModifiedContent<Self, iPadDropDestinationModifier> {
+        self.modifier(iPadDropDestinationModifier(supportedTypes: supportedTypes, onDrop: onDrop))
     }
 }
 
