@@ -22,8 +22,13 @@ final class SpendingDashboardViewModel: ObservableObject {
     @Published var recentPurchases: [Item] = []
     @Published var topRetailers: [RetailerSpendingData] = []
     @Published var isLoading = false
+    @Published var spendingTrend: Double = 0
     
     let currency = "USD"
+    
+    var hasEnoughDataForInsights: Bool {
+        itemCount > 0 && (topCategories.count > 0 || topRetailers.count > 0)
+    }
     
     init(itemRepository: any ItemRepository, receiptRepository: (any ReceiptRepository)? = nil, budgetRepository: (any BudgetRepository)? = nil, warrantyRepository: any WarrantyRepository) {
         self.itemRepository = itemRepository
@@ -56,6 +61,9 @@ final class SpendingDashboardViewModel: ObservableObject {
             
             // Calculate top retailers (using brand as proxy for now)
             calculateTopRetailers(from: filteredItems)
+            
+            // Calculate spending trend if possible
+            await calculateSpendingTrend(currentItems: filteredItems, timeRange: timeRange)
             
         } catch {
             print("Error loading spending data: \(error)")
@@ -191,6 +199,63 @@ final class SpendingDashboardViewModel: ObservableObject {
             )
         }
         .sorted { $0.totalSpent > $1.totalSpent }
+    }
+    
+    private func calculateSpendingTrend(currentItems: [Item], timeRange: SpendingDashboardView.TimeRange) async {
+        // Calculate spending trend by comparing with previous period
+        let currentTotal = currentItems.reduce(Decimal.zero) { sum, item in
+            sum + (item.purchasePrice ?? 0)
+        }
+        
+        // Get previous period items
+        do {
+            let allItems = try await itemRepository.fetchAll()
+            let previousItems = filterItemsForPreviousPeriod(allItems, currentTimeRange: timeRange)
+            let previousTotal = previousItems.reduce(Decimal.zero) { sum, item in
+                sum + (item.purchasePrice ?? 0)
+            }
+            
+            // Calculate percentage change
+            if previousTotal > 0 {
+                let change = ((currentTotal - previousTotal) / previousTotal) * 100
+                spendingTrend = Double(truncating: change as NSNumber)
+            } else if currentTotal > 0 {
+                spendingTrend = 100 // 100% increase if no previous spending
+            } else {
+                spendingTrend = 0
+            }
+        } catch {
+            spendingTrend = 0
+        }
+    }
+    
+    private func filterItemsForPreviousPeriod(_ items: [Item], currentTimeRange: SpendingDashboardView.TimeRange) -> [Item] {
+        let calendar = Calendar.current
+        let now = Date()
+        var startDate: Date
+        var endDate: Date
+        
+        switch currentTimeRange {
+        case .week:
+            endDate = calendar.date(byAdding: .day, value: -7, to: now) ?? now
+            startDate = calendar.date(byAdding: .day, value: -14, to: now) ?? now
+        case .month:
+            endDate = calendar.date(byAdding: .month, value: -1, to: now) ?? now
+            startDate = calendar.date(byAdding: .month, value: -2, to: now) ?? now
+        case .quarter:
+            endDate = calendar.date(byAdding: .month, value: -3, to: now) ?? now
+            startDate = calendar.date(byAdding: .month, value: -6, to: now) ?? now
+        case .year:
+            endDate = calendar.date(byAdding: .year, value: -1, to: now) ?? now
+            startDate = calendar.date(byAdding: .year, value: -2, to: now) ?? now
+        case .all:
+            return [] // No trend for all time
+        }
+        
+        return items.filter { item in
+            guard let purchaseDate = item.purchaseDate else { return false }
+            return purchaseDate >= startDate && purchaseDate < endDate
+        }
     }
 }
 

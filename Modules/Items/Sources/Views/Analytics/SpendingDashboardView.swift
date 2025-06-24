@@ -34,11 +34,18 @@ struct SpendingDashboardView: View {
                 // Total spending card
                 totalSpendingCard
                 
-                // Spending chart
-                spendingChartCard
+                // Quick insights cards
+                if viewModel.hasEnoughDataForInsights {
+                    quickInsightsCards
+                }
                 
-                // Category breakdown
+                // Category breakdown - moved up for better visibility
                 categoryBreakdownCard
+                
+                // Spending chart - only show if we have enough data points
+                if viewModel.spendingData.count > 2 {
+                    spendingChartCard
+                }
                 
                 // Recent purchases
                 recentPurchasesCard
@@ -46,23 +53,8 @@ struct SpendingDashboardView: View {
                 // Top retailers
                 topRetailersCard
                 
-                // Portfolio value link
-                portfolioValueLink
-                
-                // Time analysis link
-                timeAnalysisLink
-                
-                // Depreciation report link
-                depreciationReportLink
-                
-                // Purchase patterns link
-                purchasePatternsLink
-                
-                // Budget tracking link
-                budgetTrackingLink
-                
-                // Warranty dashboard link
-                warrantyDashboardLink
+                // Analytics navigation links
+                analyticsNavigationSection
             }
             .padding(AppSpacing.md)
         }
@@ -161,14 +153,68 @@ struct SpendingDashboardView: View {
                 .textStyle(.headlineMedium)
                 .foregroundStyle(AppColors.textPrimary)
             
-            Chart(viewModel.spendingData) { dataPoint in
-                BarMark(
-                    x: .value("Date", dataPoint.date),
-                    y: .value("Amount", dataPoint.amount)
-                )
-                .foregroundStyle(AppColors.primary)
+            if viewModel.spendingData.isEmpty {
+                // Empty state
+                VStack(spacing: AppSpacing.sm) {
+                    Image(systemName: "chart.bar.xaxis")
+                        .font(.system(size: 40))
+                        .foregroundStyle(AppColors.textTertiary)
+                    Text("No spending data for this period")
+                        .textStyle(.bodyMedium)
+                        .foregroundStyle(AppColors.textSecondary)
+                }
+                .frame(height: 150)
+                .frame(maxWidth: .infinity)
+            } else {
+                Chart(viewModel.spendingData) { dataPoint in
+                    if viewModel.spendingData.count == 1 {
+                        // Single data point - use a rectangle mark instead
+                        RectangleMark(
+                            x: .value("Date", dataPoint.date),
+                            y: .value("Amount", dataPoint.amount),
+                            width: 40
+                        )
+                        .foregroundStyle(AppColors.primary)
+                        .cornerRadius(AppCornerRadius.small)
+                    } else {
+                        // Multiple data points - use bar or line
+                        if viewModel.spendingData.count > 5 {
+                            LineMark(
+                                x: .value("Date", dataPoint.date),
+                                y: .value("Amount", dataPoint.amount)
+                            )
+                            .foregroundStyle(AppColors.primary)
+                            .lineStyle(StrokeStyle(lineWidth: 2))
+                            
+                            AreaMark(
+                                x: .value("Date", dataPoint.date),
+                                y: .value("Amount", dataPoint.amount)
+                            )
+                            .foregroundStyle(AppColors.primary.opacity(0.1))
+                        } else {
+                            BarMark(
+                                x: .value("Date", dataPoint.date),
+                                y: .value("Amount", dataPoint.amount)
+                            )
+                            .foregroundStyle(AppColors.primary)
+                            .cornerRadius(AppCornerRadius.small)
+                        }
+                    }
+                }
+                .frame(height: 200)
+                .chartXAxis {
+                    AxisMarks { value in
+                        AxisValueLabel()
+                            .font(.caption)
+                    }
+                }
+                .chartYAxis {
+                    AxisMarks { value in
+                        AxisValueLabel()
+                            .font(.caption)
+                    }
+                }
             }
-            .frame(height: 200)
         }
         .padding(AppSpacing.lg)
         .background(AppColors.surface)
@@ -488,9 +534,114 @@ struct SpendingDashboardView: View {
             .cornerRadius(AppCornerRadius.large)
         }
     }
+    
+    // MARK: - New Components
+    
+    private var quickInsightsCards: some View {
+        ScrollView(.horizontal, showsIndicators: false) {
+            HStack(spacing: AppSpacing.md) {
+                // Most expensive category
+                if let topCategory = viewModel.topCategories.first {
+                    InsightCard(
+                        title: "Top Category",
+                        value: topCategory.category.displayName,
+                        subtitle: topCategory.totalSpent.formatted(.currency(code: viewModel.currency)),
+                        icon: topCategory.category.icon,
+                        color: AppColors.primary
+                    )
+                }
+                
+                // Spending trend
+                if viewModel.spendingTrend != 0 {
+                    InsightCard(
+                        title: "Trend",
+                        value: "\(viewModel.spendingTrend > 0 ? "+" : "")\(Int(viewModel.spendingTrend))%",
+                        subtitle: "vs last period",
+                        icon: viewModel.spendingTrend > 0 ? "arrow.up.circle.fill" : "arrow.down.circle.fill",
+                        color: viewModel.spendingTrend > 0 ? AppColors.warning : AppColors.success
+                    )
+                }
+                
+                // Most frequent store
+                if let topRetailer = viewModel.topRetailers.first {
+                    InsightCard(
+                        title: "Favorite Store",
+                        value: topRetailer.name,
+                        subtitle: "\(topRetailer.itemCount) purchases",
+                        icon: "storefront.fill",
+                        color: AppColors.secondary
+                    )
+                }
+            }
+        }
+    }
+    
+    private var analyticsNavigationSection: some View {
+        VStack(alignment: .leading, spacing: AppSpacing.md) {
+            Text("Deep Dive Analytics")
+                .textStyle(.headlineMedium)
+                .foregroundStyle(AppColors.textPrimary)
+                .padding(.horizontal, AppSpacing.lg)
+            
+            VStack(spacing: AppSpacing.sm) {
+                // Portfolio value link
+                portfolioValueLink
+                
+                // Purchase patterns link
+                purchasePatternsLink
+                
+                // Time analysis link
+                timeAnalysisLink
+                
+                // Depreciation report link
+                depreciationReportLink
+                
+                // Budget tracking link
+                budgetTrackingLink
+                
+                // Warranty dashboard link
+                warrantyDashboardLink
+            }
+        }
+    }
 }
 
 // MARK: - Supporting Views
+
+struct InsightCard: View {
+    let title: String
+    let value: String
+    let subtitle: String
+    let icon: String
+    let color: Color
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: AppSpacing.sm) {
+            HStack {
+                Image(systemName: icon)
+                    .font(.title2)
+                    .foregroundStyle(color)
+                Spacer()
+            }
+            
+            Text(title)
+                .textStyle(.labelSmall)
+                .foregroundStyle(AppColors.textSecondary)
+            
+            Text(value)
+                .textStyle(.headlineSmall)
+                .foregroundStyle(AppColors.textPrimary)
+            
+            Text(subtitle)
+                .textStyle(.labelSmall)
+                .foregroundStyle(AppColors.textTertiary)
+        }
+        .frame(width: 140)
+        .padding(AppSpacing.md)
+        .background(AppColors.surface)
+        .cornerRadius(AppCornerRadius.medium)
+    }
+}
 
 private struct SpendingStatItem: View {
     let label: String
