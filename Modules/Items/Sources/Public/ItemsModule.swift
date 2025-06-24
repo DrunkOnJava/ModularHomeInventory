@@ -191,4 +191,12 @@ public final class ItemsModule: ItemsModuleAPI {
             )
         )
     }
+    
+    public func makePurchasePatternsView() -> AnyView {
+        return AnyView(
+            PurchasePatternsView(
+                itemRepository: dependencies.itemRepository
+            )
+        )
+    }
 }

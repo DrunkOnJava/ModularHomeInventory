@@ -54,6 +54,9 @@ struct SpendingDashboardView: View {
                 
                 // Depreciation report link
                 depreciationReportLink
+                
+                // Purchase patterns link
+                purchasePatternsLink
             }
             .padding(AppSpacing.md)
         }
@@ -368,6 +371,38 @@ struct SpendingDashboardView: View {
                         .foregroundStyle(AppColors.textPrimary)
                     
                     Text("Track asset value depreciation")
+                        .textStyle(.bodyMedium)
+                        .foregroundStyle(AppColors.textSecondary)
+                }
+                
+                Spacer()
+                
+                Image(systemName: "chevron.right")
+                    .font(.system(size: 16))
+                    .foregroundStyle(AppColors.textTertiary)
+            }
+            .padding(AppSpacing.lg)
+            .background(AppColors.surface)
+            .cornerRadius(AppCornerRadius.large)
+        }
+        .buttonStyle(PlainButtonStyle())
+    }
+    
+    private var purchasePatternsLink: some View {
+        NavigationLink(destination: PurchasePatternsView(
+            itemRepository: viewModel.itemRepository
+        )) {
+            HStack(spacing: AppSpacing.md) {
+                Image(systemName: "chart.xyaxis.line")
+                    .font(.system(size: 44))
+                    .foregroundStyle(AppColors.primary)
+                
+                VStack(alignment: .leading, spacing: AppSpacing.xs) {
+                    Text("Purchase Patterns")
+                        .textStyle(.headlineMedium)
+                        .foregroundStyle(AppColors.textPrimary)
+                    
+                    Text("Identify buying habits and trends")
                         .textStyle(.bodyMedium)
                         .foregroundStyle(AppColors.textSecondary)
                 }

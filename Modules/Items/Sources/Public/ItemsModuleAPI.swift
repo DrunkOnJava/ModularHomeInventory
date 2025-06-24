@@ -56,6 +56,9 @@ public protocol ItemsModuleAPI: AnyObject {
     
     /// Creates the depreciation report view
     func makeDepreciationReportView() -> AnyView
+    
+    /// Creates the purchase patterns view
+    func makePurchasePatternsView() -> AnyView
 }
 
 /// Dependencies required by the Items module
