@@ -1,7 +1,7 @@
 import Foundation
 
 /// Categories for organizing items
-public enum ItemCategory: String, Codable, CaseIterable {
+public enum ItemCategory: String, Codable, CaseIterable, Hashable {
     case electronics = "Electronics"
     case furniture = "Furniture"
     case clothing = "Clothing"
