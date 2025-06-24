@@ -14,7 +14,7 @@ struct PrivacyPolicyView: View {
                     // Header
                     VStack(alignment: .leading, spacing: AppSpacing.sm) {
                         Text("Privacy Policy")
-                            .textStyle(.title1)
+                            .textStyle(.displayLarge)
                         
                         HStack {
                             Text("Effective: June 24, 2025")
@@ -37,7 +37,7 @@ struct PrivacyPolicyView: View {
                     // Quick Summary Card
                     VStack(alignment: .leading, spacing: AppSpacing.sm) {
                         Label("Your Privacy at a Glance", systemImage: "lock.shield.fill")
-                            .textStyle(.headline)
+                            .textStyle(.headlineMedium)
                             .foregroundStyle(AppColors.success)
                         
                         VStack(alignment: .leading, spacing: AppSpacing.xs) {
@@ -47,7 +47,7 @@ struct PrivacyPolicyView: View {
                             bulletPoint("No ads or tracking")
                             bulletPoint("You can delete everything anytime")
                         }
-                        .textStyle(.body)
+                        .textStyle(.bodyMedium)
                     }
                     .padding()
                     .background(AppColors.success.opacity(0.1))
@@ -247,7 +247,7 @@ struct PrivacyPolicyView: View {
                     .font(.title3)
                 
                 Text(title)
-                    .textStyle(.headline)
+                    .textStyle(.headlineMedium)
                     .foregroundStyle(AppColors.primary)
                 
                 Spacer()
@@ -265,7 +265,7 @@ struct PrivacyPolicyView: View {
             
             if selectedSection == nil || selectedSection == section {
                 Text(.init(content)) // Using .init() to parse markdown
-                    .textStyle(.body)
+                    .textStyle(.bodyMedium)
                     .foregroundStyle(AppColors.textPrimary)
                     .padding(.top, AppSpacing.xs)
                     .transition(.opacity.combined(with: .move(edge: .top)))
