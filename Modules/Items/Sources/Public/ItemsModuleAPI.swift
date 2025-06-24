@@ -101,6 +101,7 @@ public struct ItemsModuleDependencies {
     public let receiptsModule: (any ReceiptsModuleAPI)?
     public let budgetRepository: (any BudgetRepository)?
     public let insuranceRepository: any InsurancePolicyRepository
+    public let serviceRecordRepository: any ServiceRecordRepository
     
     public init(
         itemRepository: any ItemRepository,
@@ -122,7 +123,8 @@ public struct ItemsModuleDependencies {
         scannerModule: (any ScannerModuleAPI)? = nil,
         receiptsModule: (any ReceiptsModuleAPI)? = nil,
         budgetRepository: (any BudgetRepository)? = nil,
-        insuranceRepository: any InsurancePolicyRepository
+        insuranceRepository: any InsurancePolicyRepository,
+        serviceRecordRepository: any ServiceRecordRepository
     ) {
         self.itemRepository = itemRepository
         self.locationRepository = locationRepository
@@ -144,5 +146,6 @@ public struct ItemsModuleDependencies {
         self.receiptsModule = receiptsModule
         self.budgetRepository = budgetRepository
         self.insuranceRepository = insuranceRepository
+        self.serviceRecordRepository = serviceRecordRepository
     }
 }

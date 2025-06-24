@@ -10,76 +10,8 @@ public final class MockInsurancePolicyRepository: InsurancePolicyRepository {
     }
     
     public init() {
-        // Add some preview data
-        self.policies = [
-            InsurancePolicy(
-                policyNumber: "POL-12345",
-                provider: "AllState",
-                type: .homeowners,
-                coverageAmount: 500000,
-                deductible: 1000,
-                premium: PremiumDetails(
-                    amount: 1200,
-                    frequency: .annual,
-                    nextDueDate: Date().addingTimeInterval(60 * 24 * 60 * 60) // 60 days from now
-                ),
-                startDate: Date().addingTimeInterval(-365 * 24 * 60 * 60), // 1 year ago
-                endDate: Date().addingTimeInterval(365 * 24 * 60 * 60), // 1 year from now
-                coverageDetails: "Comprehensive home insurance coverage",
-                contactInfo: InsuranceContact(
-                    claimsPhone: "1-800-CLAIMS",
-                    claimsEmail: "claims@allstate.com"
-                )
-            ),
-            InsurancePolicy(
-                policyNumber: "ELE-98765",
-                provider: "Geico",
-                type: .electronics,
-                coverageAmount: 10000,
-                deductible: 250,
-                premium: PremiumDetails(
-                    amount: 35,
-                    frequency: .monthly,
-                    nextDueDate: Date().addingTimeInterval(15 * 24 * 60 * 60) // 15 days from now
-                ),
-                startDate: Date().addingTimeInterval(-180 * 24 * 60 * 60), // 6 months ago
-                endDate: Date().addingTimeInterval(185 * 24 * 60 * 60), // 6 months from now
-                coverageDetails: "Electronics protection plan",
-                contactInfo: InsuranceContact(
-                    claimsPhone: "1-800-GEICO",
-                    claimsEmail: "claims@geico.com"
-                ),
-                claims: [
-                    InsuranceClaim(
-                        claimNumber: "CLM-001",
-                        dateOfLoss: Date().addingTimeInterval(-30 * 24 * 60 * 60),
-                        description: "MacBook Pro water damage",
-                        claimAmount: 2500,
-                        paidAmount: 2250
-                    )
-                ]
-            ),
-            InsurancePolicy(
-                policyNumber: "VAL-55555",
-                provider: "Chubb",
-                type: .valuable,
-                coverageAmount: 75000,
-                deductible: 500,
-                premium: PremiumDetails(
-                    amount: 600,
-                    frequency: .quarterly,
-                    nextDueDate: Date().addingTimeInterval(45 * 24 * 60 * 60) // 45 days from now
-                ),
-                startDate: Date().addingTimeInterval(-90 * 24 * 60 * 60), // 3 months ago
-                endDate: Date().addingTimeInterval(30 * 24 * 60 * 60), // Expiring in 30 days
-                coverageDetails: "High-value items coverage",
-                contactInfo: InsuranceContact(
-                    agentName: "John Doe",
-                    agentPhone: "(555) 123-4567",
-                    claimsPhone: "1-800-CHUBB"
-                )
-            )
-        ]
+        // Use comprehensive mock data from factory
+        self.policies = MockDataService.generateInsurancePolicies()
         policiesSubject.send(policies)
     }
     

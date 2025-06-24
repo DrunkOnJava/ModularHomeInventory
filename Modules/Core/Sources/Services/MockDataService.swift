@@ -7,8 +7,14 @@ public final class MockDataService {
     
     private init() {}
     
+    // Cached comprehensive mock data set with all properly linked relationships
+    private static let mockDataSet = ComprehensiveMockDataFactory.shared.generateComprehensiveMockData()
+    
     // MARK: - Locations
-    public static let locations: [Location] = [
+    public static let locations: [Location] = mockDataSet.locations
+    
+    // Legacy locations for backward compatibility
+    private static let legacyLocations: [Location] = [
         Location(name: "Living Room", icon: "sofa", notes: "Main living area"),
         Location(name: "Master Bedroom", icon: "bed.double", notes: "Primary bedroom"),
         Location(name: "Kitchen", icon: "fork.knife", notes: "Kitchen and dining area"),
@@ -19,7 +25,10 @@ public final class MockDataService {
     ]
     
     // MARK: - Storage Units
-    public static let storageUnits: [StorageUnit] = [
+    public static let storageUnits: [StorageUnit] = mockDataSet.storageUnits
+    
+    // Legacy storage units for backward compatibility
+    private static let legacyStorageUnits: [StorageUnit] = [
         StorageUnit(name: "TV Stand Cabinet", type: .cabinet, locationId: locations[0].id, notes: "Entertainment center storage"),
         StorageUnit(name: "Closet Shelf A", type: .shelf, locationId: locations[1].id, notes: "Top shelf - seasonal items"),
         StorageUnit(name: "Kitchen Pantry", type: .closet, locationId: locations[2].id, notes: "Food and kitchen supplies"),
@@ -30,6 +39,11 @@ public final class MockDataService {
     
     // MARK: - Comprehensive Items
     public static func generateComprehensiveItems() -> [Item] {
+        return mockDataSet.items
+    }
+    
+    // Legacy items generation - kept for reference
+    private static func generateLegacyItems() -> [Item] {
         var items: [Item] = []
         
         // Electronics Category
@@ -399,6 +413,11 @@ public final class MockDataService {
     
     // MARK: - Warranties
     public static func generateWarranties() -> [Warranty] {
+        return mockDataSet.warranties
+    }
+    
+    // Legacy warranty generation - kept for reference
+    private static func generateLegacyWarranties() -> [Warranty] {
         let now = Date()
         return [
             // Active warranties
@@ -443,6 +462,11 @@ public final class MockDataService {
     
     // MARK: - Receipts
     public static func generateReceipts() -> [Receipt] {
+        return mockDataSet.receipts
+    }
+    
+    // Legacy receipt generation - kept for reference
+    private static func generateLegacyReceipts() -> [Receipt] {
         let items = generateComprehensiveItems()
         var receipts: [Receipt] = []
         let now = Date()
@@ -885,6 +909,11 @@ public final class MockDataService {
     
     // MARK: - Collections
     public static func generateCollections() -> [Collection] {
+        return mockDataSet.collections
+    }
+    
+    // Legacy collection generation - kept for reference
+    private static func generateLegacyCollections() -> [Collection] {
         return [
             Collection(
                 name: "Home Office Setup",
@@ -919,6 +948,26 @@ public final class MockDataService {
     
     // MARK: - Budgets
     public static func generateBudgets() -> [Budget] {
+        return mockDataSet.budgets
+    }
+    
+    // MARK: - Tags
+    public static func generateTags() -> [Tag] {
+        return mockDataSet.tags
+    }
+    
+    // MARK: - Service Records
+    public static func generateServiceRecords() -> [ServiceRecord] {
+        return mockDataSet.serviceRecords
+    }
+    
+    // MARK: - Insurance Policies
+    public static func generateInsurancePolicies() -> [InsurancePolicy] {
+        return mockDataSet.insurancePolicies
+    }
+    
+    // Legacy budget generation - kept for reference
+    private static func generateLegacyBudgets() -> [Budget] {
         let now = Date()
         let startOfMonth = Calendar.current.dateInterval(of: .month, for: now)?.start ?? now
         let startOfYear = Calendar.current.dateInterval(of: .year, for: now)?.start ?? now

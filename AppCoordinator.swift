@@ -84,6 +84,9 @@ final class AppCoordinator: ObservableObject {
         // Create warranty repository
         let warrantyRepository = MockWarrantyRepository()
         
+        // Create service record repository
+        let serviceRecordRepository = Core.MockServiceRecordRepository()
+        
         // Create document repository and storage
         let documentRepository = Core.DefaultDocumentRepository()
         let documentStorage = try! FileDocumentStorage()
@@ -124,7 +127,8 @@ final class AppCoordinator: ObservableObject {
             scannerModule: scannerModule,
             receiptsModule: receiptsModule,
             budgetRepository: budgetRepository,
-            insuranceRepository: insuranceRepository
+            insuranceRepository: insuranceRepository,
+            serviceRecordRepository: serviceRecordRepository
         )
         itemsModule = Items.ItemsModule(dependencies: itemsDependencies)
         
@@ -171,6 +175,7 @@ final class AppCoordinator: ObservableObject {
 
 final class MockItemRepository: ItemRepository {
     private var items: [Item] = MockDataService.generateComprehensiveItems()
+    private let itemsSubject = CurrentValueSubject<[Item], Never>(MockDataService.generateComprehensiveItems())
     
     func fetchAll() async throws -> [Item] {
         // Simulate network delay
@@ -422,6 +427,7 @@ final class MockOCRService: OCRServiceProtocol {
 
 final class MockWarrantyRepository: WarrantyRepository {
     private var warranties: [Warranty] = MockDataService.generateWarranties()
+    private let warrantiesSubjectSource = CurrentValueSubject<[Warranty], Never>(MockDataService.generateWarranties())
     @Published private var warrantiesSubject: [Warranty] = MockDataService.generateWarranties()
     
     var warrantiesPublisher: AnyPublisher<[Warranty], Never> {
