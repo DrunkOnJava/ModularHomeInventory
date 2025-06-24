@@ -1,5 +1,7 @@
 import SwiftUI
 import Core
+import Scanner
+import Receipts
 
 /// Public API for the Items module
 @MainActor
