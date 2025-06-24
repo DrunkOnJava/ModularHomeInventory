@@ -1279,28 +1279,44 @@ struct BulkBuyingDetail: View {
             .background(Color(.systemGray6))
             .cornerRadius(12)
             
-            // Best Retailers for Bulk
-            if !pattern.preferredRetailers.isEmpty {
-                VStack(alignment: .leading, spacing: 12) {
-                    Text("Best Stores for Bulk")
-                        .font(.headline)
-                    
-                    ForEach(pattern.preferredRetailers, id: \.self) { retailer in
-                        HStack {
-                            Image(systemName: "storefront")
-                                .font(.system(size: 14))
-                                .foregroundStyle(.secondary)
-                            Text(retailer)
-                                .font(.system(size: 15))
-                            Spacer()
-                        }
-                        .padding(.vertical, 4)
-                    }
+            // Bulk Buying Tips
+            VStack(alignment: .leading, spacing: 12) {
+                Text("Bulk Buying Tips")
+                    .font(.headline)
+                
+                HStack {
+                    Image(systemName: "checkmark.circle.fill")
+                        .font(.system(size: 14))
+                        .foregroundStyle(.green)
+                    Text("Compare unit prices")
+                        .font(.system(size: 15))
+                    Spacer()
                 }
-                .padding()
-                .background(Color(.systemGray6))
-                .cornerRadius(12)
+                .padding(.vertical, 4)
+                
+                HStack {
+                    Image(systemName: "checkmark.circle.fill")
+                        .font(.system(size: 14))
+                        .foregroundStyle(.green)
+                    Text("Check expiration dates")
+                        .font(.system(size: 15))
+                    Spacer()
+                }
+                .padding(.vertical, 4)
+                
+                HStack {
+                    Image(systemName: "checkmark.circle.fill")
+                        .font(.system(size: 14))
+                        .foregroundStyle(.green)
+                    Text("Consider storage space")
+                        .font(.system(size: 15))
+                    Spacer()
+                }
+                .padding(.vertical, 4)
             }
+            .padding()
+            .background(Color(.systemGray6))
+            .cornerRadius(12)
         }
     }
 }
