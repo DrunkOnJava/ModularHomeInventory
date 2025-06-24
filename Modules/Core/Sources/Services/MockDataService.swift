@@ -447,6 +447,8 @@ public final class MockDataService {
         var receipts: [Receipt] = []
         let now = Date()
         
+        print("MockDataService: Generating receipts for \(items.count) items")
+        
         // Apple Store Receipt - Electronics
         let appleItems = items.filter { $0.storeName == "Apple Store" }
         if !appleItems.isEmpty {
@@ -877,6 +879,7 @@ public final class MockDataService {
             return formatter.string(from: date)
         }
         
+        print("MockDataService: Generated \(receipts.count) receipts total")
         return receipts
     }
     
