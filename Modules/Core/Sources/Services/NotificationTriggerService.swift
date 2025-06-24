@@ -158,7 +158,6 @@ public final class NotificationTriggerService: ObservableObject {
                 // Calculate budget status
                 let spent = try await calculateBudgetSpent(budget: budget, itemRepository: itemRepository)
                 let percentUsed = (spent / budget.amount) * 100
-                let percentUsed = (status.spent / budget.amount) * 100
                 
                 // Alert at 80%, 90%, and 100% usage
                 if NSDecimalNumber(decimal: percentUsed).doubleValue >= 80 && NSDecimalNumber(decimal: percentUsed).doubleValue < 90 {
