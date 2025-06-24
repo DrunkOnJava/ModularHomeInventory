@@ -63,13 +63,6 @@ struct iPadSidebarView: View {
         }
         .navigationSplitViewStyle(.balanced)
         .navigationSplitViewColumnWidth(ideal: 300)
-        .toolbar {
-            ToolbarItem(placement: .primaryAction) {
-                Button(action: { navigationState.showAddItem = true }) {
-                    Image(systemName: "plus")
-                }
-            }
-        }
         .sheet(isPresented: $navigationState.showAddItem) {
             AddItemSheet()
         }
@@ -77,7 +70,8 @@ struct iPadSidebarView: View {
     
     @ViewBuilder
     private var detailView: some View {
-        switch navigationState.selectedTab {
+        Group {
+            switch navigationState.selectedTab {
         case .items:
             ItemsNavigationView()
         case .collections:
@@ -100,6 +94,14 @@ struct iPadSidebarView: View {
             ImportExportNavigationView()
         case .settings:
             SettingsNavigationView()
+        }
+        }
+        .toolbar {
+            ToolbarItem(placement: .primaryAction) {
+                Button(action: { navigationState.showAddItem = true }) {
+                    Image(systemName: "plus")
+                }
+            }
         }
     }
 }
