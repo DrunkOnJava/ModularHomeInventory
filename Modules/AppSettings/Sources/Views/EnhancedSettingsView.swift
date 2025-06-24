@@ -524,7 +524,7 @@ enum SheetContent: Identifiable {
 
 // MARK: - Settings Section Model
 
-struct SettingsSection: Identifiable, Equatable {
+struct SettingsSection: Identifiable {
     let id = UUID()
     let title: String
     let icon: String
@@ -551,7 +551,7 @@ struct SettingsSection: Identifiable, Equatable {
             icon: "lock.shield",
             color: .blue,
             items: [
-                SettingsItem(id: "biometric", title: "Face ID / Touch ID", icon: BiometricAuthService.shared.biometricType.icon, type: .navigation),
+                SettingsItem(id: "biometric", title: "Face ID / Touch ID", icon: "faceid", type: .navigation),
                 SettingsItem(id: "privacy", title: "Privacy Policy", icon: "hand.raised", type: .navigation),
                 SettingsItem(id: "terms", title: "Terms of Service", icon: "doc.text", type: .navigation)
             ]
@@ -676,7 +676,7 @@ struct SettingsSectionCard: View {
 
 struct SettingsItemRow: View {
     let item: SettingsItem
-    let viewModel: SettingsViewModel
+    @ObservedObject var viewModel: SettingsViewModel
     let onTap: () -> Void
     
     var body: some View {
