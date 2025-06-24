@@ -71,8 +71,7 @@ public final class MockServiceRecordRepository: ServiceRecordRepository {
         return serviceRecords.filter { record in
             record.provider.lowercased().contains(lowercasedQuery) ||
             record.description.lowercased().contains(lowercasedQuery) ||
-            (record.technicianName?.lowercased().contains(lowercasedQuery) ?? false) ||
-            (record.serviceOrderNumber?.lowercased().contains(lowercasedQuery) ?? false)
+            (record.notes?.lowercased().contains(lowercasedQuery) ?? false)
         }
     }
 }

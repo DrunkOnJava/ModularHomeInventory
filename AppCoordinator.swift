@@ -85,7 +85,7 @@ final class AppCoordinator: ObservableObject {
         let warrantyRepository = MockWarrantyRepository()
         
         // Create service record repository
-        let serviceRecordRepository = Core.MockServiceRecordRepository()
+        let serviceRecordRepository = MockServiceRecordRepository()
         
         // Create document repository and storage
         let documentRepository = Core.DefaultDocumentRepository()

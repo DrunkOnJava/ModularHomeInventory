@@ -2,7 +2,6 @@ import Foundation
 
 /// A comprehensive mock data factory that generates all entities with proper relationships
 /// This ensures all mock data is interconnected and behaves like real app data
-@MainActor
 public final class ComprehensiveMockDataFactory {
     
     // MARK: - Singleton
@@ -83,20 +82,20 @@ public final class ComprehensiveMockDataFactory {
     
     // MARK: - Locations Generation
     private func generateLocations() {
-        let home = Location(name: "Home", icon: "house.fill", color: "#007AFF")
-        let office = Location(name: "Office", icon: "building.2.fill", color: "#34C759")
-        let storage = Location(name: "Storage Unit", icon: "archivebox.fill", color: "#FF9500")
+        let home = Location(name: "Home", icon: "house.fill")
+        let office = Location(name: "Office", icon: "building.2.fill")
+        let storage = Location(name: "Storage Unit", icon: "archivebox.fill")
         
         // Home sub-locations
-        let livingRoom = Location(name: "Living Room", icon: "sofa.fill", color: "#007AFF", parentId: home.id)
-        let bedroom = Location(name: "Master Bedroom", icon: "bed.double.fill", color: "#007AFF", parentId: home.id)
-        let kitchen = Location(name: "Kitchen", icon: "refrigerator.fill", color: "#007AFF", parentId: home.id)
-        let garage = Location(name: "Garage", icon: "car.fill", color: "#007AFF", parentId: home.id)
-        let homeOffice = Location(name: "Home Office", icon: "desktopcomputer", color: "#007AFF", parentId: home.id)
+        let livingRoom = Location(name: "Living Room", icon: "sofa.fill", parentId: home.id)
+        let bedroom = Location(name: "Master Bedroom", icon: "bed.double.fill", parentId: home.id)
+        let kitchen = Location(name: "Kitchen", icon: "refrigerator.fill", parentId: home.id)
+        let garage = Location(name: "Garage", icon: "car.fill", parentId: home.id)
+        let homeOffice = Location(name: "Home Office", icon: "desktopcomputer", parentId: home.id)
         
         // Office sub-locations
-        let desk = Location(name: "Desk", icon: "desk.fill", color: "#34C759", parentId: office.id)
-        let serverRoom = Location(name: "Server Room", icon: "server.rack", color: "#34C759", parentId: office.id)
+        let desk = Location(name: "Desk", icon: "menucard", parentId: office.id)
+        let serverRoom = Location(name: "Server Room", icon: "server.rack", parentId: office.id)
         
         generatedLocations = [
             home, office, storage,
@@ -113,24 +112,27 @@ public final class ComprehensiveMockDataFactory {
         generatedStorageUnits = [
             StorageUnit(
                 name: "Electronics Cabinet",
+                type: .cabinet,
                 locationId: homeLocation.id,
+                description: "Temperature-controlled cabinet for sensitive electronics",
                 capacity: 20,
-                currentOccupancy: 12,
-                description: "Temperature-controlled cabinet for sensitive electronics"
+                currentItemCount: 12
             ),
             StorageUnit(
                 name: "Tool Chest",
+                type: .drawer,
                 locationId: generatedLocations.first { $0.name == "Garage" }!.id,
+                description: "Large rolling tool chest with multiple drawers",
                 capacity: 50,
-                currentOccupancy: 35,
-                description: "Large rolling tool chest with multiple drawers"
+                currentItemCount: 35
             ),
             StorageUnit(
                 name: "Server Rack",
+                type: .rack,
                 locationId: generatedLocations.first { $0.name == "Server Room" }!.id,
+                description: "Standard 42U server rack",
                 capacity: 42, // 42U rack
-                currentOccupancy: 28,
-                description: "Standard 42U server rack"
+                currentItemCount: 28
             )
         ]
     }
@@ -175,7 +177,6 @@ public final class ComprehensiveMockDataFactory {
             brand: "Apple",
             model: "MK1H3LL/A",
             category: .electronics,
-            subcategory: "Laptop",
             purchaseDate: baseDate.addingTimeInterval(-180 * 24 * 60 * 60), // 6 months ago
             purchasePrice: 3999.00,
             currentValue: 3800.00,
@@ -194,7 +195,6 @@ public final class ComprehensiveMockDataFactory {
             brand: "Apple",
             model: "A2525",
             category: .electronics,
-            subcategory: "Monitor",
             purchaseDate: baseDate.addingTimeInterval(-150 * 24 * 60 * 60), // 5 months ago
             purchasePrice: 1599.00,
             currentValue: 1500.00,
@@ -213,7 +213,6 @@ public final class ComprehensiveMockDataFactory {
             brand: "Herman Miller",
             model: "Aeron Remastered",
             category: .furniture,
-            subcategory: "Office Chair",
             purchaseDate: baseDate.addingTimeInterval(-365 * 24 * 60 * 60), // 1 year ago
             purchasePrice: 1795.00,
             currentValue: 1500.00,
@@ -233,7 +232,6 @@ public final class ComprehensiveMockDataFactory {
             brand: "Sony",
             model: "CFI-1215A",
             category: .electronics,
-            subcategory: "Gaming Console",
             purchaseDate: baseDate.addingTimeInterval(-90 * 24 * 60 * 60), // 3 months ago
             purchasePrice: 499.99,
             currentValue: 450.00,
@@ -253,7 +251,6 @@ public final class ComprehensiveMockDataFactory {
             brand: "Breville",
             model: "BES870XL",
             category: .appliances,
-            subcategory: "Coffee Machine",
             purchaseDate: baseDate.addingTimeInterval(-400 * 24 * 60 * 60), // 13 months ago
             purchasePrice: 699.95,
             currentValue: 500.00,
@@ -272,7 +269,6 @@ public final class ComprehensiveMockDataFactory {
             brand: "Vitamix",
             model: "A3500",
             category: .appliances,
-            subcategory: "Blender",
             purchaseDate: baseDate.addingTimeInterval(-200 * 24 * 60 * 60), // 6.5 months ago
             purchasePrice: 599.95,
             currentValue: 550.00,
@@ -293,7 +289,6 @@ public final class ComprehensiveMockDataFactory {
             brand: "LG",
             model: "OLED65C3PUA",
             category: .electronics,
-            subcategory: "Television",
             purchaseDate: baseDate.addingTimeInterval(-120 * 24 * 60 * 60), // 4 months ago
             purchasePrice: 1996.99,
             currentValue: 1800.00,
@@ -312,7 +307,6 @@ public final class ComprehensiveMockDataFactory {
             brand: "Sonos",
             model: "ARCG1US1BLK",
             category: .electronics,
-            subcategory: "Sound System",
             purchaseDate: baseDate.addingTimeInterval(-120 * 24 * 60 * 60), // 4 months ago
             purchasePrice: 899.00,
             currentValue: 850.00,
@@ -332,7 +326,6 @@ public final class ComprehensiveMockDataFactory {
             brand: "DeWalt",
             model: "DCD791D2",
             category: .tools,
-            subcategory: "Power Tool",
             purchaseDate: baseDate.addingTimeInterval(-500 * 24 * 60 * 60), // 1.5 years ago
             purchasePrice: 169.00,
             currentValue: 120.00,
@@ -352,7 +345,6 @@ public final class ComprehensiveMockDataFactory {
             brand: "Sony",
             model: "ILCE-7M4",
             category: .electronics,
-            subcategory: "Camera",
             purchaseDate: baseDate.addingTimeInterval(-240 * 24 * 60 * 60), // 8 months ago
             purchasePrice: 2498.00,
             currentValue: 2300.00,
@@ -386,7 +378,6 @@ public final class ComprehensiveMockDataFactory {
             brand: "Apple",
             model: "MNXR3LL/A",
             category: .electronics,
-            subcategory: "Tablet",
             purchaseDate: baseDate.addingTimeInterval(-60 * 24 * 60 * 60),
             purchasePrice: 1299.00,
             currentValue: 1200.00,
@@ -406,7 +397,6 @@ public final class ComprehensiveMockDataFactory {
             brand: "West Elm",
             model: "Andes 3-Seater",
             category: .furniture,
-            subcategory: "Sofa",
             purchaseDate: baseDate.addingTimeInterval(-730 * 24 * 60 * 60), // 2 years ago
             purchasePrice: 2099.00,
             currentValue: 1500.00,
@@ -423,7 +413,6 @@ public final class ComprehensiveMockDataFactory {
             brand: "Dyson",
             model: "447922-01",
             category: .appliances,
-            subcategory: "Vacuum",
             purchaseDate: baseDate.addingTimeInterval(-45 * 24 * 60 * 60),
             purchasePrice: 749.99,
             currentValue: 700.00,
@@ -443,7 +432,6 @@ public final class ComprehensiveMockDataFactory {
             brand: "Omega",
             model: "210.30.42.20.01.001",
             category: .collectibles,
-            subcategory: "Watch",
             purchaseDate: baseDate.addingTimeInterval(-1095 * 24 * 60 * 60), // 3 years ago
             purchasePrice: 4550.00,
             currentValue: 5200.00, // Appreciated
@@ -480,33 +468,28 @@ public final class ComprehensiveMockDataFactory {
         warrantyMonths: Int = 12
     ) -> Item {
         let locationId = generatedLocations.first { $0.name == location }?.id ?? generatedLocations[0].id
-        let tagIds = tags.compactMap { tagName in generatedTags.first { $0.name == tagName }?.id }
-        let collectionIds = collections.compactMap { collName in generatedCollections.first { $0.name == collName }?.id }
+        let tagNames = tags  // Convert to simple string array
         
         return Item(
             name: name,
             brand: brand,
             model: model,
-            serialNumber: serialNumber,
-            purchaseDate: purchaseDate,
-            purchasePrice: purchasePrice,
-            currentValue: currentValue ?? purchasePrice * 0.9,
             category: category,
             categoryId: UUID(), // Would be actual category ID
-            subcategory: subcategory,
+            condition: condition,
             quantity: quantity,
+            value: currentValue ?? purchasePrice * 0.9,
+            purchasePrice: purchasePrice,
+            purchaseDate: purchaseDate,
+            notes: notes,
+            barcode: barcode,
+            serialNumber: serialNumber,
+            tags: tagNames,
+            imageIds: [],
             locationId: locationId,
             storageUnitId: storageUnitId,
-            notes: notes,
-            tags: Set(tagIds),
-            customFields: [:],
-            attachments: [],
-            barcode: barcode,
-            qrCode: nil,
-            condition: condition,
-            collectionIds: Set(collectionIds),
             warrantyId: nil, // Will be set after warranty generation
-            mainImageId: nil
+            storeName: nil
         )
     }
     
@@ -641,37 +624,14 @@ public final class ComprehensiveMockDataFactory {
     }
     
     private func createReceipt(storeName: String, date: Date, items: [Item]) -> Receipt {
-        let subtotal = items.reduce(Decimal(0)) { $0 + $1.purchasePrice * Decimal($1.quantity) }
-        let taxRate: Decimal = 0.0875 // 8.75% tax
-        let tax = subtotal * taxRate
-        let total = subtotal + tax
-        
-        let receiptItems = items.map { item in
-            ReceiptItem(
-                name: item.name,
-                quantity: item.quantity,
-                unitPrice: item.purchasePrice,
-                totalPrice: item.purchasePrice * Decimal(item.quantity),
-                category: item.category.rawValue,
-                itemId: item.id
-            )
-        }
+        let total = items.reduce(Decimal(0)) { $0 + ($1.purchasePrice ?? 0) * Decimal($1.quantity) }
         
         return Receipt(
             storeName: storeName,
             date: date,
             totalAmount: total,
-            taxAmount: tax,
-            subtotal: subtotal,
-            items: receiptItems,
-            paymentMethod: .creditCard,
-            last4Digits: String(format: "%04d", Int.random(in: 1000...9999)),
-            receiptNumber: generateReceiptNumber(),
             itemIds: items.map { $0.id },
-            notes: nil,
-            returnByDate: Calendar.current.date(byAdding: .day, value: storeName == "Apple Store" ? 14 : 30, to: date),
-            warrantyInfo: items.contains { $0.purchasePrice > 500 } ? "Extended warranty available" : nil,
-            rawText: generateReceiptText(storeName: storeName, items: receiptItems, subtotal: subtotal, tax: tax, total: total)
+            rawText: generateReceiptText(storeName: storeName, items: items, total: total)
         )
     }
     
@@ -685,18 +645,18 @@ public final class ComprehensiveMockDataFactory {
         return "\(prefix)-\(suffix)"
     }
     
-    private func generateReceiptText(storeName: String, items: [ReceiptItem], subtotal: Decimal, tax: Decimal, total: Decimal) -> String {
+    private func generateReceiptText(storeName: String, items: [Item], total: Decimal) -> String {
         var text = "\(storeName)\n"
-        text += "=" * 30 + "\n"
+        text += String(repeating: "=", count: 30) + "\n"
         
         for item in items {
             text += "\(item.name)\n"
-            text += "  \(item.quantity) x $\(item.unitPrice) = $\(item.totalPrice)\n"
+            if let price = item.purchasePrice {
+                text += "  \(item.quantity) x $\(price) = $\(price * Decimal(item.quantity))\n"
+            }
         }
         
-        text += "-" * 30 + "\n"
-        text += "Subtotal: $\(subtotal)\n"
-        text += "Tax: $\(tax)\n"
+        text += String(repeating: "-", count: 30) + "\n"
         text += "Total: $\(total)\n"
         
         return text

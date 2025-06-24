@@ -20,7 +20,7 @@ public struct ItemsModuleFactory {
         let documentRepository = Core.DefaultDocumentRepository()
         let documentStorage = try! FileDocumentStorage()
         let insuranceRepository = MockInsurancePolicyRepository()
-        let serviceRecordRepository = Core.MockServiceRecordRepository()
+        let serviceRecordRepository = MockServiceRecordRepository()
         
         let dependencies = ItemsModuleDependencies(
             itemRepository: itemRepository,

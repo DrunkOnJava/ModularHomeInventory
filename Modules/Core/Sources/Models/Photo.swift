@@ -1,5 +1,4 @@
 import Foundation
-import UIKit
 
 /// Photo model for item images
 public struct Photo: Identifiable, Codable, Equatable {
@@ -10,8 +9,8 @@ public struct Photo: Identifiable, Codable, Equatable {
     public let createdAt: Date
     public var updatedAt: Date
     
-    /// Transient property for UI display
-    public var image: UIImage?
+    /// Transient property for image data
+    public var imageData: Data?
     
     public init(
         id: UUID = UUID(),
@@ -36,15 +35,15 @@ public struct Photo: Identifiable, Codable, Equatable {
 
 // MARK: - Photo Storage Protocol
 public protocol PhotoStorageProtocol {
-    func savePhoto(_ image: UIImage, for photoId: UUID) async throws -> URL
-    func loadPhoto(for photoId: UUID) async throws -> UIImage
+    func savePhoto(_ imageData: Data, for photoId: UUID) async throws -> URL
+    func loadPhoto(for photoId: UUID) async throws -> Data
     func deletePhoto(for photoId: UUID) async throws
-    func generateThumbnail(_ image: UIImage, size: CGSize) async throws -> UIImage
+    func generateThumbnail(_ imageData: Data, size: CGSize) async throws -> Data
 }
 
 // MARK: - Photo Repository Protocol
 public protocol PhotoRepository {
-    func savePhoto(_ photo: Photo, image: UIImage) async throws
+    func savePhoto(_ photo: Photo, imageData: Data) async throws
     func loadPhotos(for itemId: UUID) async throws -> [Photo]
     func loadPhoto(id: UUID) async throws -> Photo?
     func deletePhoto(id: UUID) async throws

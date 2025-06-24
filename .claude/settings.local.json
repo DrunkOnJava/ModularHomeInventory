@@ -22,7 +22,8 @@
       "Bash(mv:*)",
       "Bash(xcrun simctl get_app_container:*)",
       "WebFetch(domain:docs.fastlane.tools)",
-      "Bash(xcparse:*)"
+      "Bash(xcparse:*)",
+      "Bash(swift build:*)"
     ],
     "deny": []
   }
