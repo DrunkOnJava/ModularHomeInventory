@@ -45,7 +45,11 @@ targets:
     platform: iOS
     deploymentTarget: 17.0
     sources:
-      - HomeInventoryModular
+      - HomeInventoryModularApp.swift
+      - AppDelegate.swift
+      - AppCoordinator.swift
+      - ContentView.swift
+      - Assets.xcassets
     dependencies:
       - package: Core
       - package: SharedUI
