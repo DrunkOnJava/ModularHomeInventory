@@ -1,5 +1,8 @@
 import Foundation
 import OSLog
+#if canImport(UIKit)
+import UIKit
+#endif
 
 /// Crash reporting service for automatic error tracking
 /// Swift 5.9 - No Swift 6 features
@@ -165,7 +168,7 @@ public final class CrashReportingService: ObservableObject {
                 type: .exception,
                 reason: exception.reason ?? "Unknown exception",
                 callStack: exception.callStackSymbols,
-                userInfo: exception.userInfo,
+                userInfo: exception.userInfo as? [String: Any],
                 file: nil,
                 function: nil,
                 line: nil
@@ -182,28 +185,30 @@ public final class CrashReportingService: ObservableObject {
     
     private func installSignalHandlers() {
         // Install signal handlers for common crash signals
-        signal(SIGABRT) { signal in
-            CrashReportingService.handleSignal(signal, name: "SIGABRT")
+        var action = sigaction()
+        action.__sigaction_u.__sa_handler = { signal in
+            CrashReportingService.handleSignal(signal, name: CrashReportingService.signalName(for: signal))
         }
+        sigemptyset(&action.sa_mask)
+        action.sa_flags = 0
         
-        signal(SIGILL) { signal in
-            CrashReportingService.handleSignal(signal, name: "SIGILL")
-        }
-        
-        signal(SIGSEGV) { signal in
-            CrashReportingService.handleSignal(signal, name: "SIGSEGV")
-        }
-        
-        signal(SIGFPE) { signal in
-            CrashReportingService.handleSignal(signal, name: "SIGFPE")
-        }
-        
-        signal(SIGBUS) { signal in
-            CrashReportingService.handleSignal(signal, name: "SIGBUS")
-        }
-        
-        signal(SIGPIPE) { signal in
-            CrashReportingService.handleSignal(signal, name: "SIGPIPE")
+        sigaction(SIGABRT, &action, nil)
+        sigaction(SIGILL, &action, nil)
+        sigaction(SIGSEGV, &action, nil)
+        sigaction(SIGFPE, &action, nil)
+        sigaction(SIGBUS, &action, nil)
+        sigaction(SIGPIPE, &action, nil)
+    }
+    
+    private static func signalName(for signal: Int32) -> String {
+        switch signal {
+        case SIGABRT: return "SIGABRT"
+        case SIGILL: return "SIGILL"
+        case SIGSEGV: return "SIGSEGV"
+        case SIGFPE: return "SIGFPE"
+        case SIGBUS: return "SIGBUS"
+        case SIGPIPE: return "SIGPIPE"
+        default: return "Unknown"
         }
     }
     
@@ -221,7 +226,11 @@ public final class CrashReportingService: ObservableObject {
         CrashReportingService.shared.saveReportSynchronously(report)
         
         // Re-raise the signal to let the default handler run
-        signal(signal, SIG_DFL)
+        var action = sigaction()
+        action.__sigaction_u.__sa_handler = SIG_DFL
+        sigemptyset(&action.sa_mask)
+        action.sa_flags = 0
+        sigaction(signal, &action, nil)
         raise(signal)
     }
     
@@ -397,12 +406,21 @@ public struct DeviceInfo: Codable {
         let isSimulator = false
         #endif
         
+        #if canImport(UIKit)
         return DeviceInfo(
             model: UIDevice.current.model,
             systemName: UIDevice.current.systemName,
             systemVersion: UIDevice.current.systemVersion,
             isSimulator: isSimulator
         )
+        #else
+        return DeviceInfo(
+            model: "Unknown",
+            systemName: "Unknown",
+            systemVersion: "Unknown",
+            isSimulator: isSimulator
+        )
+        #endif
     }
 }
 

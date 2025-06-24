@@ -1,0 +1,29 @@
+# Snapfile configuration for screenshot automation
+
+# A list of devices you want to take the screenshots from
+devices([
+  "iPhone 16 Pro Max"
+])
+
+# Languages to capture
+languages([
+  "en-US"
+])
+
+# The name of the scheme which contains the UI Tests
+scheme("HomeInventoryModularUITests")
+
+# Where should the resulting screenshots be stored?
+output_directory("./fastlane/screenshots")
+
+# Clear all previously generated screenshots before creating new ones
+clear_previous_screenshots(true)
+
+# Remove the '#' to set the status bar to 9:41 AM, full battery, and full cellular bars
+override_status_bar(true)
+
+# Arguments to pass to the app on launch.
+# launch_arguments(["-AppMode Screenshots"])
+
+# For more information about all available options run
+# fastlane action snapshot

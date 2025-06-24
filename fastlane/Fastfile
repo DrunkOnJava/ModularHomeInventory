@@ -1,0 +1,37 @@
+# Fastfile for HomeInventory
+
+default_platform(:ios)
+
+platform :ios do
+  desc "Generate screenshots"
+  lane :screenshots do
+    capture_screenshots(
+      project: "HomeInventoryModular.xcodeproj",
+      scheme: "HomeInventoryModular"
+    )
+  end
+
+  desc "Frame screenshots"
+  lane :frame do
+    frame_screenshots(
+      path: "./fastlane/screenshots"
+    )
+  end
+
+  desc "Upload screenshots to App Store Connect"
+  lane :upload_screenshots do
+    upload_to_app_store(
+      skip_binary_upload: true,
+      skip_metadata: true,
+      skip_app_version_update: true,
+      force: true, # Skip HTML report verification
+      overwrite_screenshots: true
+    )
+  end
+
+  desc "Generate and frame screenshots"
+  lane :screenshots_all do
+    screenshots
+    frame
+  end
+end
