@@ -24,7 +24,7 @@ This TODO list contains 250 development tasks organized by module architecture. 
 - [x] ✅ 14. Category Icons - Visual category identification
 - [x] ✅ 17. Tags - Flexible tagging system with color coding
 - [x] ✅ 18. Locations - Room-based organization
-- [ ] 🟡 19. Storage Units - Track items in specific storage locations
+- [x] ✅ 19. Storage Units - Track items in specific storage locations
 - [ ] 🟡 96. Currency Support - Multi-currency value tracking
 - [ ] 🟡 97. Unit Conversion - Metric/Imperial measurements
 - [ ] 🟡 131. Data Models - Extended warranty information
@@ -61,7 +61,7 @@ This TODO list contains 250 development tasks organized by module architecture. 
 - [ ] 🟡 12. Custom Categories - Create unlimited custom categories
 - [ ] 🟡 13. Subcategories - Hierarchical category structure
 - [ ] 🟢 15. Category Rules - Auto-categorization based on rules
-- [ ] 🟡 16. Collections - Group items into custom collections
+- [x] ✅ 16. Collections - Group items into custom collections
 - [ ] 🟡 103. Smart Collections - Dynamic item grouping
 - [ ] 🟡 104. Collection Sharing - Share with family/friends
 - [ ] 🟡 148. Favorites - Mark frequently accessed items
@@ -85,14 +85,14 @@ This TODO list contains 250 development tasks organized by module architecture. 
 ### Barcode Scanning
 - [x] ✅ 21. Barcode Scanner - High-speed UPC/EAN/QR code scanning
 - [x] ✅ 22. Batch Scanning - Scan multiple items consecutively
-- [ ] 🟡 23. Barcode Database - Online product lookup
+- [x] ✅ 23. Barcode Database - Online product lookup
 - [ ] 🟢 24. Custom Barcodes - Generate barcodes for items
-- [ ] 🟡 25. Scanner Settings - Adjustable scanner sensitivity
-- [ ] 🟡 26. Flash Control - Toggle camera flash while scanning
-- [ ] 🟡 27. Sound Feedback - Audio confirmation of successful scans
-- [ ] 🟡 28. Scan History - Review recently scanned items
-- [ ] 🟡 29. Offline Scanning - Queue scans when offline
-- [ ] 🟡 30. Multi-format Support - All major barcode formats
+- [x] ✅ 25. Scanner Settings - Adjustable scanner sensitivity
+- [x] ✅ 26. Flash Control - Toggle camera flash while scanning
+- [x] ✅ 27. Sound Feedback - Audio confirmation of successful scans
+- [x] ✅ 28. Scan History - Review recently scanned items
+- [x] ✅ 29. Offline Scanning - Queue scans when offline
+- [x] ✅ 30. Multi-format Support - All major barcode formats
 
 ### Document Scanning
 - [x] ✅ 33. Document Scanner - Built-in document scanning
@@ -177,7 +177,7 @@ This TODO list contains 250 development tasks organized by module architecture. 
 - [ ] 🟢 178. Custom Shortcuts - User-defined actions
 
 ### Export & Backup
-- [ ] 🔴 86. Export to CSV - Spreadsheet export
+- [x] ✅ 86. Export to CSV - Spreadsheet export
 - [ ] 🟡 87. Export to PDF - Formatted reports
 - [ ] 🟡 88. Backup to iCloud - Automatic backups
 - [ ] 🟡 89. Backup to Google - Google Drive support
@@ -193,19 +193,19 @@ This TODO list contains 250 development tasks organized by module architecture. 
 
 ### Premium Features
 - [ ] 🟡 9. Custom Fields - Add unlimited custom properties
-- [ ] 🟡 66. Dashboard - Overview of inventory
-- [ ] 🟡 67. Value Trends - Track value over time
-- [ ] 🟡 68. Category Breakdown - Items by category
+- [x] ✅ 66. Dashboard - Overview of inventory
+- [x] ✅ 67. Value Trends - Track value over time
+- [x] ✅ 68. Category Breakdown - Items by category
 - [ ] 🟡 69. Location Heatmap - Items by room
-- [ ] 🟡 70. Purchase Patterns - Spending insights
+- [x] ✅ 70. Purchase Patterns - Spending insights
 - [ ] 🟡 71. Insurance Summary - Coverage overview
-- [ ] 🟡 72. Depreciation Reports - Tax purposes
+- [x] ✅ 72. Depreciation Reports - Tax purposes
 - [ ] 🟡 73. Custom Reports - Build your own
 - [ ] 🟢 74. Report Scheduling - Automated reports
 - [ ] 🟡 75. Report Export - Multiple formats
 
 ### Warranty & Insurance
-- [ ] 🔴 91. Warranty Tracking - Expiration alerts
+- [x] ✅ 91. Warranty Tracking - Expiration alerts
 - [ ] 🟡 92. Insurance Integration - Policy management
 - [ ] 🟡 93. Claim Support - Document claims
 - [ ] 🟡 94. Coverage Gaps - Identify risks
