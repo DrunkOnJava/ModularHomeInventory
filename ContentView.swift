@@ -21,25 +21,31 @@ struct ContentView: View {
         } else {
             TabView(selection: $selectedTab) {
             // Items Tab - Now using the Items module!
-            coordinator.itemsModule.makeItemsListView(onSearchTapped: {
-                showingSearch = true
-            }, onBarcodeSearchTapped: {
-                showingBarcodeSearch = true
-            })
+            NavigationView {
+                coordinator.itemsModule.makeItemsListView(onSearchTapped: {
+                    showingSearch = true
+                }, onBarcodeSearchTapped: {
+                    showingBarcodeSearch = true
+                })
+            }
                 .tabItem {
                     Label("Items", systemImage: "square.grid.2x2")
                 }
                 .tag(0)
             
             // Collections Tab
-            coordinator.itemsModule.makeCollectionsListView()
+            NavigationView {
+                coordinator.itemsModule.makeCollectionsListView()
+            }
                 .tabItem {
                     Label("Collections", systemImage: "folder")
                 }
                 .tag(1)
             
             // Analytics Tab - Spending Dashboard
-            coordinator.itemsModule.makeSpendingDashboardView()
+            NavigationView {
+                coordinator.itemsModule.makeSpendingDashboardView()
+            }
                 .tabItem {
                     Label("Analytics", systemImage: "chart.bar.fill")
                 }
@@ -68,7 +74,6 @@ struct ContentView: View {
             coordinator.itemsModule.makeBarcodeSearchView()
         }
         // Biometric lock would be added here when BiometricLockModifier is available
-        }
     }
 }
 
