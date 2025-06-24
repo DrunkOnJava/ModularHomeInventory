@@ -272,6 +272,13 @@ public struct PersonalInfo {
     public let phone: String?
     public let email: String?
     public let address: String?
+    
+    public init(name: String, phone: String? = nil, email: String? = nil, address: String? = nil) {
+        self.name = name
+        self.phone = phone
+        self.email = email
+        self.address = address
+    }
 }
 
 public struct ClaimValidationResult {
@@ -295,6 +302,12 @@ public struct DocumentChecklist {
     public let claimType: ClaimType
     public let items: [DocumentChecklistItem]
     public let additionalTips: [String]
+    
+    public init(claimType: ClaimType, items: [DocumentChecklistItem], additionalTips: [String]) {
+        self.claimType = claimType
+        self.items = items
+        self.additionalTips = additionalTips
+    }
 }
 
 public struct DocumentChecklistItem: Identifiable {

@@ -198,7 +198,7 @@ struct PurchasePatternsView: View {
             
             VStack(spacing: 12) {
                 ForEach(recommendations) { recommendation in
-                    RecommendationCard(recommendation: recommendation)
+                    PatternRecommendationCard(recommendation: recommendation)
                 }
             }
             .padding(.horizontal)
@@ -328,7 +328,7 @@ struct PatternInsightCard: View {
     }
 }
 
-struct RecommendationCard: View {
+struct PatternRecommendationCard: View {
     let recommendation: Core.PatternRecommendation
     
     var body: some View {

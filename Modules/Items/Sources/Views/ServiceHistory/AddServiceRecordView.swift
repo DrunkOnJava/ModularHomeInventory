@@ -94,9 +94,9 @@ struct AddServiceRecordView: View {
             }
             
             // Vehicle/Equipment specific
-            if viewModel.item.category == .vehicles || viewModel.item.category == .tools {
+            if viewModel.item.category == .automotive || viewModel.item.category == .tools {
                 Section("Additional Info") {
-                    if viewModel.item.category == .vehicles {
+                    if viewModel.item.category == .automotive {
                         TextField("Mileage", value: $viewModel.mileage, format: .number)
                             .keyboardType(.numberPad)
                     }

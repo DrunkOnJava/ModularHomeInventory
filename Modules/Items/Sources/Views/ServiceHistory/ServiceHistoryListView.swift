@@ -133,14 +133,14 @@ public struct ServiceHistoryListView: View {
     private var filterChips: some View {
         ScrollView(.horizontal, showsIndicators: false) {
             HStack(spacing: AppSpacing.sm) {
-                FilterChip(
+                ServiceFilterChip(
                     title: "All",
                     isSelected: filterType == nil,
                     action: { filterType = nil }
                 )
                 
                 ForEach(ServiceType.allCases, id: \.self) { type in
-                    FilterChip(
+                    ServiceFilterChip(
                         title: type.displayName,
                         icon: type.icon,
                         isSelected: filterType == type,
@@ -236,7 +236,7 @@ struct ServiceRecordRow: View {
 
 // MARK: - Filter Chip
 
-struct FilterChip: View {
+struct ServiceFilterChip: View {
     let title: String
     var icon: String? = nil
     let isSelected: Bool

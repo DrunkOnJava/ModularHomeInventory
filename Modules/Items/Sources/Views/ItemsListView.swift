@@ -337,7 +337,7 @@ struct ItemRowView: View {
     }
 }
 
-struct FilterChip: View {
+struct ItemListFilterChip: View {
     let title: String
     let icon: String
     let isSelected: Bool

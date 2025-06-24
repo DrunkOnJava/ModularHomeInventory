@@ -709,3 +709,248 @@ struct ChecklistItemRow: View {
         }
     }
 }
+
+struct TransferSummaryCard: View {
+    let warranty: Warranty
+    let item: Item
+    let transferType: TransferType
+    let transferDate: Date
+    let fromOwner: OwnerInfo
+    let toOwner: OwnerInfo
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: AppSpacing.md) {
+            Text("Transfer Summary")
+                .textStyle(.labelMedium)
+                .foregroundStyle(AppColors.textSecondary)
+            
+            VStack(spacing: AppSpacing.sm) {
+                // Item and warranty
+                HStack {
+                    VStack(alignment: .leading, spacing: AppSpacing.xxs) {
+                        Text("Item")
+                            .textStyle(.labelSmall)
+                            .foregroundStyle(AppColors.textSecondary)
+                        Text(item.name)
+                            .textStyle(.bodyMedium)
+                            .foregroundStyle(AppColors.textPrimary)
+                    }
+                    
+                    Spacer()
+                    
+                    VStack(alignment: .trailing, spacing: AppSpacing.xxs) {
+                        Text("Warranty")
+                            .textStyle(.labelSmall)
+                            .foregroundStyle(AppColors.textSecondary)
+                        Text(warranty.provider)
+                            .textStyle(.bodyMedium)
+                            .foregroundStyle(AppColors.textPrimary)
+                    }
+                }
+                
+                Divider()
+                
+                // Transfer details
+                HStack {
+                    Label(transferType.displayName, systemImage: transferType.icon)
+                        .textStyle(.bodyMedium)
+                        .foregroundStyle(AppColors.primary)
+                    
+                    Spacer()
+                    
+                    Text(transferDate, format: .dateTime.month().day().year())
+                        .textStyle(.bodyMedium)
+                        .foregroundStyle(AppColors.textPrimary)
+                }
+                
+                Divider()
+                
+                // From/To
+                HStack(alignment: .top) {
+                    VStack(alignment: .leading, spacing: AppSpacing.xs) {
+                        Text("From")
+                            .textStyle(.labelSmall)
+                            .foregroundStyle(AppColors.textSecondary)
+                        Text(fromOwner.name)
+                            .textStyle(.bodyMedium)
+                            .foregroundStyle(AppColors.textPrimary)
+                        if let contact = fromOwner.email ?? fromOwner.phone {
+                            Text(contact)
+                                .textStyle(.bodySmall)
+                                .foregroundStyle(AppColors.textSecondary)
+                        }
+                    }
+                    
+                    Image(systemName: "arrow.right")
+                        .foregroundStyle(AppColors.textTertiary)
+                        .frame(maxWidth: .infinity)
+                    
+                    VStack(alignment: .trailing, spacing: AppSpacing.xs) {
+                        Text("To")
+                            .textStyle(.labelSmall)
+                            .foregroundStyle(AppColors.textSecondary)
+                        Text(toOwner.name)
+                            .textStyle(.bodyMedium)
+                            .foregroundStyle(AppColors.textPrimary)
+                        if let contact = toOwner.email ?? toOwner.phone {
+                            Text(contact)
+                                .textStyle(.bodySmall)
+                                .foregroundStyle(AppColors.textSecondary)
+                        }
+                    }
+                }
+            }
+            .appPadding()
+            .background(AppColors.surface)
+            .cornerRadius(AppCornerRadius.medium)
+        }
+    }
+}
+
+struct AdjustedTermsCard: View {
+    let originalEndDate: Date
+    let adjustedEndDate: Date
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: AppSpacing.sm) {
+            HStack {
+                Image(systemName: "exclamationmark.triangle")
+                    .foregroundStyle(AppColors.warning)
+                Text("Adjusted Warranty Terms")
+                    .textStyle(.labelMedium)
+                    .foregroundStyle(AppColors.textPrimary)
+            }
+            
+            VStack(alignment: .leading, spacing: AppSpacing.xs) {
+                HStack {
+                    Text("Original End Date:")
+                        .textStyle(.bodySmall)
+                        .foregroundStyle(AppColors.textSecondary)
+                    Text(originalEndDate, format: .dateTime.month().day().year())
+                        .textStyle(.bodySmall)
+                        .foregroundStyle(AppColors.textPrimary)
+                        .strikethrough()
+                }
+                
+                HStack {
+                    Text("New End Date:")
+                        .textStyle(.bodySmall)
+                        .foregroundStyle(AppColors.textSecondary)
+                    Text(adjustedEndDate, format: .dateTime.month().day().year())
+                        .textStyle(.bodySmall)
+                        .foregroundStyle(AppColors.warning)
+                }
+                
+                let daysReduced = Calendar.current.dateComponents([.day], from: adjustedEndDate, to: originalEndDate).day ?? 0
+                Text("Coverage reduced by \(daysReduced) days")
+                    .textStyle(.labelSmall)
+                    .foregroundStyle(AppColors.textSecondary)
+            }
+        }
+        .appPadding()
+        .background(AppColors.warningMuted)
+        .cornerRadius(AppCornerRadius.medium)
+    }
+}
+
+struct WarningsCard: View {
+    let issues: [TransferValidationIssue]
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: AppSpacing.md) {
+            Label("Warnings", systemImage: "exclamationmark.triangle")
+                .textStyle(.labelMedium)
+                .foregroundStyle(AppColors.warning)
+            
+            ForEach(issues, id: \.message) { issue in
+                HStack(alignment: .top, spacing: AppSpacing.sm) {
+                    Circle()
+                        .fill(AppColors.warning)
+                        .frame(width: 6, height: 6)
+                        .padding(.top, 6)
+                    
+                    Text(issue.message)
+                        .textStyle(.bodySmall)
+                        .foregroundStyle(AppColors.textPrimary)
+                        .fixedSize(horizontal: false, vertical: true)
+                }
+            }
+        }
+        .appPadding()
+        .background(AppColors.warningMuted)
+        .cornerRadius(AppCornerRadius.medium)
+    }
+}
+
+struct TransferFeeCard: View {
+    let amount: Decimal
+    @Binding var isPaid: Bool
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: AppSpacing.md) {
+            HStack {
+                Image(systemName: "dollarsign.circle")
+                    .foregroundStyle(AppColors.primary)
+                Text("Transfer Fee Required")
+                    .textStyle(.labelMedium)
+                    .foregroundStyle(AppColors.textPrimary)
+            }
+            
+            HStack {
+                Text("Amount:")
+                    .textStyle(.bodyMedium)
+                    .foregroundStyle(AppColors.textSecondary)
+                
+                Spacer()
+                
+                Text(amount, format: .currency(code: "USD"))
+                    .textStyle(.bodyLarge)
+                    .foregroundStyle(AppColors.primary)
+            }
+            
+            Toggle("Fee has been paid", isOn: $isPaid)
+                .toggleStyle(SwitchToggleStyle(tint: AppColors.primary))
+        }
+        .appPadding()
+        .background(AppColors.primaryMuted)
+        .cornerRadius(AppCornerRadius.medium)
+    }
+}
+
+struct PreviousTransfersCard: View {
+    let transfers: [WarrantyTransfer]
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: AppSpacing.md) {
+            Text("Transfer History")
+                .textStyle(.labelMedium)
+                .foregroundStyle(AppColors.textSecondary)
+            
+            ForEach(transfers, id: \.id) { transfer in
+                HStack {
+                    VStack(alignment: .leading, spacing: AppSpacing.xxs) {
+                        Text("\(transfer.fromOwner.name) → \(transfer.toOwner.name)")
+                            .textStyle(.bodySmall)
+                            .foregroundStyle(AppColors.textPrimary)
+                        
+                        Text(transfer.transferDate, format: .dateTime.month().day().year())
+                            .textStyle(.labelSmall)
+                            .foregroundStyle(AppColors.textSecondary)
+                    }
+                    
+                    Spacer()
+                    
+                    Image(systemName: transfer.transferType.icon)
+                        .foregroundStyle(AppColors.textTertiary)
+                }
+                
+                if transfer.id != transfers.last?.id {
+                    Divider()
+                }
+            }
+        }
+        .appPadding()
+        .background(AppColors.surface)
+        .cornerRadius(AppCornerRadius.medium)
+    }
+}

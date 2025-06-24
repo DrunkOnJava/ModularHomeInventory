@@ -1,6 +1,7 @@
 import Foundation
 import SwiftUI
 import Core
+import SharedUI
 import Combine
 
 // MARK: - Wizard Step Types
@@ -110,7 +111,11 @@ final class ClaimAssistanceViewModel: ObservableObject {
     var documentChecklist: DocumentChecklist {
         guard let template = selectedTemplate,
               let policy = selectedPolicy else {
-            return DocumentChecklist(claimType: .damage, items: [], additionalTips: [])
+            return ClaimAssistanceService.generateDocumentChecklist(
+                template: ClaimTemplate.defaultTemplates.first { $0.type == .damage }!,
+                policy: InsurancePolicy.preview,
+                items: []
+            )
         }
         
         return ClaimAssistanceService.generateDocumentChecklist(
@@ -246,25 +251,48 @@ final class ClaimAssistanceViewModel: ObservableObject {
             claimNumber: "PENDING-\(UUID().uuidString.prefix(8))",
             dateOfLoss: incidentDate,
             dateReported: Date(),
+            itemIds: selectedItems,
             description: incidentDescription,
-            claimAmount: totalSelectedValue,
-            itemIds: selectedItems
+            claimAmount: totalSelectedValue
         )
         
-        let personalInfo = PersonalInfo(
-            name: "User Name", // Would come from user profile
-            phone: nil,
-            email: nil,
-            address: incidentLocation
-        )
+        // In a real app, this would come from user profile
+        let personalInfo = (name: "User Name", phone: nil as String?, email: nil as String?, address: incidentLocation)
         
-        return ClaimAssistanceService.generateClaimEmail(
-            template: template,
-            claim: claim,
-            policy: policy,
-            items: getSelectedItems(),
-            personalInfo: personalInfo
-        )
+        // Generate claim email content
+        var emailContent = """        
+        Subject: Insurance Claim - \(template.title)
+        
+        To: \(policy.contactInfo.claimsEmail ?? "claims@insurance.com")
+        
+        Policy Number: \(policy.policyNumber)
+        Claim Date: \(Date().formatted())
+        Date of Loss: \(incidentDate.formatted())
+        
+        Dear Claims Department,
+        
+        I am filing a claim for \(template.type.displayName.lowercased()) under policy \(policy.policyNumber).
+        
+        Incident Details:
+        Date: \(incidentDate.formatted())
+        Location: \(incidentLocation)
+        Description: \(incidentDescription)
+        """
+        
+        if hasPoliceReport {
+            emailContent += "\n\nPolice Report Number: \(policeReportNumber)"
+        }
+        
+        emailContent += "\n\nAffected Items:\n"
+        for item in getSelectedItems() {
+            emailContent += "- \(item.name): \(item.value?.formatted(.currency(code: "USD")) ?? "N/A")\n"
+        }
+        
+        emailContent += "\n\nTotal Claim Amount: \(totalSelectedValue.formatted(.currency(code: "USD")))"
+        emailContent += "\n\nPlease contact me at your earliest convenience to process this claim."
+        emailContent += "\n\nSincerely,\n\(personalInfo.name)"
+        
+        return emailContent
     }
     
     func exportClaimSummary() {

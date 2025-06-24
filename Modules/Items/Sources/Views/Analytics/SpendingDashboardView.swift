@@ -130,7 +130,7 @@ struct SpendingDashboardView: View {
             }
             
             HStack(spacing: AppSpacing.xl) {
-                StatItem(
+                SpendingStatItem(
                     label: "Items",
                     value: "\(viewModel.itemCount)",
                     icon: "shippingbox"
@@ -143,7 +143,7 @@ struct SpendingDashboardView: View {
                     isFinancial: true
                 )
                 
-                StatItem(
+                SpendingStatItem(
                     label: "Categories",
                     value: "\(viewModel.categoryCount)",
                     icon: "square.grid.2x2"
@@ -492,7 +492,7 @@ struct SpendingDashboardView: View {
 
 // MARK: - Supporting Views
 
-private struct StatItem: View {
+private struct SpendingStatItem: View {
     let label: String
     let value: String
     let icon: String

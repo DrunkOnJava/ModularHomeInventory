@@ -121,13 +121,15 @@ struct ServiceRecordDetailView: View {
     
     private var providerSection: some View {
         VStack(alignment: .leading, spacing: AppSpacing.md) {
-            SectionHeader(title: "Provider")
+            Text("Provider")
+                .textStyle(.labelMedium)
+                .foregroundStyle(AppColors.textSecondary)
             
             VStack(alignment: .leading, spacing: AppSpacing.sm) {
-                LabeledContent("Company", value: record.provider)
+                ServiceLabeledContent("Company", value: record.provider)
                 
                 if let technician = record.technician {
-                    LabeledContent("Technician", value: technician)
+                    ServiceLabeledContent("Technician", value: technician)
                 }
             }
             .appPadding()
@@ -138,7 +140,9 @@ struct ServiceRecordDetailView: View {
     
     private var detailsSection: some View {
         VStack(alignment: .leading, spacing: AppSpacing.md) {
-            SectionHeader(title: "Details")
+            Text("Details")
+                .textStyle(.labelMedium)
+                .foregroundStyle(AppColors.textSecondary)
             
             VStack(alignment: .leading, spacing: AppSpacing.md) {
                 if let notes = record.notes {
@@ -156,7 +160,9 @@ struct ServiceRecordDetailView: View {
     
     private var costSection: some View {
         VStack(alignment: .leading, spacing: AppSpacing.md) {
-            SectionHeader(title: "Cost")
+            Text("Cost")
+                .textStyle(.labelMedium)
+                .foregroundStyle(AppColors.textSecondary)
             
             VStack(alignment: .leading, spacing: AppSpacing.sm) {
                 if record.wasUnderWarranty {
@@ -170,7 +176,7 @@ struct ServiceRecordDetailView: View {
                 }
                 
                 if let cost = record.cost, cost > 0 {
-                    LabeledContent("Service Cost") {
+                    ServiceLabeledContentView("Service Cost") {
                         Text(cost, format: .currency(code: "USD"))
                             .textStyle(.bodyLarge)
                             .foregroundStyle(AppColors.primary)
@@ -185,15 +191,17 @@ struct ServiceRecordDetailView: View {
     
     private var additionalInfoSection: some View {
         VStack(alignment: .leading, spacing: AppSpacing.md) {
-            SectionHeader(title: "Additional Information")
+            Text("Additional Information")
+                .textStyle(.labelMedium)
+                .foregroundStyle(AppColors.textSecondary)
             
             VStack(alignment: .leading, spacing: AppSpacing.sm) {
                 if let mileage = record.mileage {
-                    LabeledContent("Mileage", value: "\(mileage.formatted()) miles")
+                    ServiceLabeledContent("Mileage", value: "\(mileage.formatted()) miles")
                 }
                 
                 if let hours = record.hoursUsed {
-                    LabeledContent("Hours Used", value: "\(hours.formatted()) hours")
+                    ServiceLabeledContent("Hours Used", value: "\(hours.formatted()) hours")
                 }
             }
             .appPadding()
@@ -204,7 +212,9 @@ struct ServiceRecordDetailView: View {
     
     private func nextServiceSection(_ date: Date) -> some View {
         VStack(alignment: .leading, spacing: AppSpacing.md) {
-            SectionHeader(title: "Next Service")
+            Text("Next Service")
+                .textStyle(.labelMedium)
+                .foregroundStyle(AppColors.textSecondary)
             
             HStack {
                 Image(systemName: "calendar.badge.clock")
@@ -242,7 +252,9 @@ struct ServiceRecordDetailView: View {
     
     private var documentsSection: some View {
         VStack(alignment: .leading, spacing: AppSpacing.md) {
-            SectionHeader(title: "Documents")
+            Text("Documents")
+                .textStyle(.labelMedium)
+                .foregroundStyle(AppColors.textSecondary)
             
             Text("\(record.documentIds.count) attached documents")
                 .textStyle(.bodyMedium)
@@ -256,7 +268,18 @@ struct ServiceRecordDetailView: View {
 
 // MARK: - Supporting Views
 
-private struct LabeledContent: View {
+private struct SectionHeader: View {
+    let title: String
+    
+    var body: some View {
+        Text(title)
+            .textStyle(.labelLarge)
+            .foregroundStyle(AppColors.textSecondary)
+            .textCase(.uppercase)
+    }
+}
+
+private struct ServiceLabeledContent: View {
     let label: String
     let value: String
     
@@ -278,7 +301,7 @@ private struct LabeledContent: View {
     }
 }
 
-private struct LabeledContent<Content: View>: View {
+private struct ServiceLabeledContentView<Content: View>: View {
     let label: String
     let content: () -> Content
     
