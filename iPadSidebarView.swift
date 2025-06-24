@@ -204,7 +204,7 @@ struct LocationsNavigationView: View {
     
     var body: some View {
         NavigationStack {
-            coordinator.itemsModule.makeLocationsListView()
+            coordinator.itemsModule.makeStorageUnitsListView()
                 .navigationTitle("Locations")
                 .navigationBarTitleDisplayMode(.automatic)
         }
@@ -216,7 +216,7 @@ struct CategoriesNavigationView: View {
     
     var body: some View {
         NavigationStack {
-            coordinator.itemsModule.makeCategoryListView()
+            coordinator.itemsModule.makeTagsManagementView()
                 .navigationTitle("Categories")
                 .navigationBarTitleDisplayMode(.automatic)
         }
@@ -240,7 +240,7 @@ struct ReportsNavigationView: View {
     
     var body: some View {
         NavigationStack {
-            coordinator.itemsModule.makeInventoryReportView()
+            coordinator.itemsModule.makeDepreciationReportView()
                 .navigationTitle("Reports")
                 .navigationBarTitleDisplayMode(.automatic)
         }
@@ -276,7 +276,7 @@ struct SearchNavigationView: View {
     
     var body: some View {
         NavigationStack {
-            coordinator.itemsModule.makeAdvancedSearchView()
+            coordinator.itemsModule.makeNaturalLanguageSearchView()
                 .navigationTitle("Search")
                 .navigationBarTitleDisplayMode(.automatic)
         }
