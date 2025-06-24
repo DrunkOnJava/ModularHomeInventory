@@ -1,4 +1,5 @@
 import Foundation
+import Combine
 
 /// Mock implementation of WarrantyRepository for development
 /// Swift 5.9 - No Swift 6 features
@@ -46,7 +47,7 @@ public final class MockWarrantyRepository: WarrantyRepository {
     // MARK: - Repository Protocol Requirements
     
     public func save(_ entity: Warranty) async throws {
-        return try await update(entity)
+        _ = try await update(entity)
     }
     
     public func saveAll(_ entities: [Warranty]) async throws {
@@ -74,6 +75,20 @@ public final class MockWarrantyRepository: WarrantyRepository {
                 continuation.resume(returning: self.warranties[id])
             }
         }
+    }
+    
+    public func fetch(by id: UUID) async throws -> Warranty? {
+        return try await fetch(id: id)
+    }
+    
+    public func fetchWarranties(for itemId: UUID) async throws -> [Warranty] {
+        return try await fetchByItem(itemId)
+    }
+    
+    // Publisher requirement
+    public var warrantiesPublisher: AnyPublisher<[Warranty], Never> {
+        // Simple implementation - in real app would use Combine properly
+        CurrentValueSubject<[Warranty], Never>(Array(warranties.values)).eraseToAnyPublisher()
     }
     
     public func fetchByItem(_ itemId: UUID) async throws -> Warranty? {
