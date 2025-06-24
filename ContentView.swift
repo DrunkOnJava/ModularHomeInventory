@@ -50,14 +50,18 @@ struct ContentView: View {
                 .tag(2)
             
             // Scanner Tab - Now using the Scanner module!
-            coordinator.scannerModule.makeScannerView()
+            NavigationView {
+                coordinator.scannerModule.makeScannerView()
+            }
                 .tabItem {
                     Label("Scanner", systemImage: "barcode.viewfinder")
                 }
                 .tag(3)
             
             // Settings Tab - Now using the Settings module!
-            coordinator.settingsModule.makeSettingsView()
+            NavigationView {
+                coordinator.settingsModule.makeSettingsView()
+            }
             .tabItem {
                 Label("Settings", systemImage: "gear")
             }

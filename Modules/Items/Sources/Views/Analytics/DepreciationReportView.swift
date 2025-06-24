@@ -76,6 +76,11 @@ struct DepreciationReportView: View {
             }
             .navigationTitle("Depreciation Report")
             .navigationBarTitleDisplayMode(.large)
+            .onAppear {
+                Task {
+                    await viewModel.generateReport(method: selectedMethod)
+                }
+            }
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Menu {

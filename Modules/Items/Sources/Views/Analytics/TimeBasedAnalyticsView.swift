@@ -19,8 +19,7 @@ struct TimeBasedAnalyticsView: View {
     }
     
     var body: some View {
-        NavigationView {
-            ScrollView {
+        ScrollView {
                 VStack(spacing: 24) {
                     // Period Selector
                     PeriodSelector(
@@ -139,7 +138,6 @@ struct TimeBasedAnalyticsView: View {
                 await viewModel.loadAnalytics(for: selectedPeriod)
                 await viewModel.loadSeasonalPatterns()
             }
-        }
     }
 }
 

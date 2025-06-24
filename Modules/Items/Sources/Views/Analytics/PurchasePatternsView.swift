@@ -19,8 +19,7 @@ struct PurchasePatternsView: View {
     }
     
     var body: some View {
-        NavigationView {
-            ScrollView {
+        ScrollView {
                 VStack(spacing: 24) {
                     // Time Range Selector
                     timeRangeSelector
