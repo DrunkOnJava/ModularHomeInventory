@@ -3,7 +3,7 @@ import UIKit
 import AVFoundation
 import Core
 import SharedUI
-import Settings
+import AppSettings
 
 /// Barcode scanner view
 /// Swift 5.9 - No Swift 6 features

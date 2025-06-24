@@ -3,28 +3,28 @@
 import PackageDescription
 
 let package = Package(
-    name: "Scanner",
+    name: "BarcodeScanner",
     platforms: [.iOS(.v17)],
     products: [
         .library(
-            name: "Scanner",
-            targets: ["Scanner"]
+            name: "BarcodeScanner",
+            targets: ["BarcodeScanner"]
         ),
     ],
     dependencies: [
         .package(path: "../Core"),
         .package(path: "../SharedUI"),
-        .package(path: "../Settings")
+        .package(path: "../AppSettings")
     ],
     targets: [
         .target(
-            name: "Scanner",
-            dependencies: ["Core", "SharedUI", "Settings"],
+            name: "BarcodeScanner",
+            dependencies: ["Core", "SharedUI", "AppSettings"],
             path: "Sources"
         ),
         .testTarget(
-            name: "ScannerTests",
-            dependencies: ["Scanner"],
+            name: "BarcodeScannerTests",
+            dependencies: ["BarcodeScanner"],
             path: "Tests"
         ),
     ]

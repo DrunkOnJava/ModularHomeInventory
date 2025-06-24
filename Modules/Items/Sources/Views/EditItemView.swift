@@ -1,7 +1,7 @@
 import SwiftUI
 import Core
 import SharedUI
-import Scanner
+import BarcodeScanner
 
 struct EditItemView: View {
     @StateObject private var viewModel: EditItemViewModel

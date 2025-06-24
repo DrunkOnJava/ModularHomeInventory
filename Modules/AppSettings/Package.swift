@@ -3,12 +3,12 @@
 import PackageDescription
 
 let package = Package(
-    name: "Settings",
+    name: "AppSettings",
     platforms: [.iOS(.v17)],
     products: [
         .library(
-            name: "Settings",
-            targets: ["Settings"]
+            name: "AppSettings",
+            targets: ["AppSettings"]
         ),
     ],
     dependencies: [
@@ -18,13 +18,13 @@ let package = Package(
     ],
     targets: [
         .target(
-            name: "Settings",
+            name: "AppSettings",
             dependencies: ["Core", "SharedUI", "Sync"],
             path: "Sources"
         ),
         .testTarget(
-            name: "SettingsTests",
-            dependencies: ["Settings"],
+            name: "AppSettingsTests",
+            dependencies: ["AppSettings"],
             path: "Tests"
         ),
     ]

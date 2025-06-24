@@ -2,24 +2,21 @@ import SwiftUI
 import Core
 import SharedUI
 import Items
-import Scanner
-import Settings
+import BarcodeScanner
+import AppSettings
 import Receipts
 import Sync
 import Premium
 import Onboarding
 import Combine
 
-// Type aliases to avoid conflicts with system types
-typealias ScannerModule = Scanner
-typealias SettingsModule = Settings
 
 @MainActor
 final class AppCoordinator: ObservableObject {
     // Module instances
     private(set) var itemsModule: Items.ItemsModuleAPI!
-    private(set) var scannerModule: ScannerModule.ScannerModuleAPI!
-    private(set) var settingsModule: SettingsModule.SettingsModuleAPI!
+    private(set) var scannerModule: BarcodeScanner.ScannerModuleAPI!
+    private(set) var settingsModule: AppSettings.SettingsModuleAPI!
     private(set) var receiptsModule: Receipts.ReceiptsModuleAPI!
     private(set) var syncModule: Sync.SyncModuleAPI!
     private(set) var premiumModule: Premium.PremiumModuleAPI!
@@ -40,13 +37,13 @@ final class AppCoordinator: ObservableObject {
     private func setupModules() {
         // Initialize Settings module first to get settings storage
         let settingsStorage = Core.UserDefaultsSettingsStorage()
-        let settingsDependencies = SettingsModule.SettingsModuleDependencies(
+        let settingsDependencies = AppSettings.SettingsModuleDependencies(
             settingsStorage: settingsStorage,
             itemRepository: itemRepository,
             receiptRepository: receiptRepository,
             locationRepository: locationRepository
         )
-        settingsModule = SettingsModule.SettingsModule(dependencies: settingsDependencies)
+        settingsModule = AppSettings.SettingsModule(dependencies: settingsDependencies)
         
         // Create scan history repository
         let scanHistoryRepository = Core.DefaultScanHistoryRepository()
@@ -61,7 +58,7 @@ final class AppCoordinator: ObservableObject {
         let barcodeLookupService = DefaultBarcodeLookupService()
         
         // Initialize Scanner module with settings storage
-        let scannerDependencies = ScannerModule.ScannerModuleDependencies(
+        let scannerDependencies = BarcodeScanner.ScannerModuleDependencies(
             itemRepository: itemRepository,
             itemTemplateRepository: itemTemplateRepository,
             settingsStorage: settingsStorage,
@@ -70,7 +67,7 @@ final class AppCoordinator: ObservableObject {
             barcodeLookupService: barcodeLookupService,
             networkMonitor: networkMonitor
         )
-        scannerModule = ScannerModule.ScannerModule(dependencies: scannerDependencies)
+        scannerModule = BarcodeScanner.ScannerModule(dependencies: scannerDependencies)
         
         // Create photo repository
         let photoRepository = try! CoreModule.makePhotoRepository()

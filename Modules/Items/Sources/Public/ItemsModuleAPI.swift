@@ -1,6 +1,6 @@
 import SwiftUI
 import Core
-import Scanner
+import BarcodeScanner
 import Receipts
 
 /// Public API for the Items module

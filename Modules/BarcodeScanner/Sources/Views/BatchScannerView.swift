@@ -2,7 +2,7 @@ import SwiftUI
 import AVFoundation
 import SharedUI
 import Core
-import Settings
+import AppSettings
 
 /// Batch scanner view for scanning multiple items consecutively
 /// Swift 5.9 - No Swift 6 features

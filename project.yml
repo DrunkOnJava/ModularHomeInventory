@@ -26,10 +26,10 @@ packages:
     path: Modules/SharedUI
   Items:
     path: Modules/Items
-  Scanner:
-    path: Modules/Scanner
-  Settings:
-    path: Modules/Settings
+  BarcodeScanner:
+    path: Modules/BarcodeScanner
+  AppSettings:
+    path: Modules/AppSettings
   Receipts:
     path: Modules/Receipts
   Sync:
@@ -54,8 +54,8 @@ targets:
       - package: Core
       - package: SharedUI
       - package: Items
-      - package: Scanner
-      - package: Settings
+      - package: BarcodeScanner
+      - package: AppSettings
       - package: Receipts
       - package: Sync
       - package: Premium

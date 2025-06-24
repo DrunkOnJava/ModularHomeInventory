@@ -1,7 +1,7 @@
 import SwiftUI
 import Core
 import SharedUI
-import Scanner
+import BarcodeScanner
 
 /// Barcode search view that allows finding items by scanning their barcode
 /// Swift 5.9 - No Swift 6 features

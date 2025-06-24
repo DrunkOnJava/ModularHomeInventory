@@ -2,7 +2,7 @@ import SwiftUI
 import UIKit
 import Core
 import SharedUI
-import Settings
+import AppSettings
 
 /// Main scanner tab view with options for barcode and document scanning
 /// Swift 5.9 - No Swift 6 features

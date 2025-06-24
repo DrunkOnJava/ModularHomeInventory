@@ -1,7 +1,7 @@
 import AVFoundation
 import UIKit
 import Core
-import Settings
+import AppSettings
 
 /// Service for playing scanner sound effects
 /// Swift 5.9 - No Swift 6 features

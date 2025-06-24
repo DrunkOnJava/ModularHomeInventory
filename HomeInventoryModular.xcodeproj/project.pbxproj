@@ -8,10 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		20A6C4A4EF0E2EA04CC82CE0 /* AppCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B19AF6DD7A4B31661D6BEA9 /* AppCoordinator.swift */; };
-		23904C1F69777763B698B7A7 /* Settings in Frameworks */ = {isa = PBXBuildFile; productRef = 656B5B0EBC4F54A6BBDBEA8D /* Settings */; };
+		23904C1F69777763B698B7A7 /* AppSettings in Frameworks */ = {isa = PBXBuildFile; productRef = 1BFDCCE1DA30B83CCD323AFA /* AppSettings */; };
 		2510550944C84AB6FD3FA538 /* Core in Frameworks */ = {isa = PBXBuildFile; productRef = 6D324B07EA3BF79F03E20042 /* Core */; };
 		300A0DF86743646A925A2F87 /* Receipts in Frameworks */ = {isa = PBXBuildFile; productRef = 4DAE3E8FC6151A00266EE46D /* Receipts */; };
-		3C715FDB1CC41FEAB5C2810F /* Scanner in Frameworks */ = {isa = PBXBuildFile; productRef = 0480F862FF2CD4832BDF3CF6 /* Scanner */; };
+		3C715FDB1CC41FEAB5C2810F /* BarcodeScanner in Frameworks */ = {isa = PBXBuildFile; productRef = E20F9C66CD8A1E76D5DA4ACF /* BarcodeScanner */; };
 		4E63BE4249C407C6AF4CAF0E /* Premium in Frameworks */ = {isa = PBXBuildFile; productRef = EC690A20521570D346B1DF95 /* Premium */; };
 		69FC7331598F2E7FA98B3E26 /* Onboarding in Frameworks */ = {isa = PBXBuildFile; productRef = 1B5D7269FC9C97F1936D0193 /* Onboarding */; };
 		9506FEA0E51000A89D505F1C /* SnapshotHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FA9E85F9D0016AF30814111 /* SnapshotHelper.swift */; };
@@ -41,12 +41,13 @@
 		05127C77BA29A74CDD30F8E6 /* ScreenshotDebug.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenshotDebug.swift; sourceTree = "<group>"; };
 		1EF2F55CB9E0C0D2E0A2AC96 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		362A5252C4DF6A3EB2576072 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		3A1CEB3468DA9FAF5C65DC34 /* AppSettings */ = {isa = PBXFileReference; lastKnownFileType = folder; name = AppSettings; path = Modules/AppSettings; sourceTree = SOURCE_ROOT; };
 		3AE0C7854F2B950F4BCC3A9C /* SharedUI */ = {isa = PBXFileReference; lastKnownFileType = folder; name = SharedUI; path = Modules/SharedUI; sourceTree = SOURCE_ROOT; };
 		3F46D3FE17D78B8D9DF66A01 /* HomeInventoryModularUITests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = HomeInventoryModularUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		45BEF81177E158AC63FCA13F /* HomeInventoryModular.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = HomeInventoryModular.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		5DC9164E8B1294F0FF843BCF /* Scanner */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Scanner; path = Modules/Scanner; sourceTree = SOURCE_ROOT; };
 		6FA9E85F9D0016AF30814111 /* SnapshotHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnapshotHelper.swift; sourceTree = "<group>"; };
 		73E0D1EAA4C9CDEBD48AD8AF /* Core */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Core; path = Modules/Core; sourceTree = SOURCE_ROOT; };
+		7E5AAB84E88E9A6638891341 /* BarcodeScanner */ = {isa = PBXFileReference; lastKnownFileType = folder; name = BarcodeScanner; path = Modules/BarcodeScanner; sourceTree = SOURCE_ROOT; };
 		851ADC8B8F9E673AC19166A0 /* HomeInventoryModularUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeInventoryModularUITests.swift; sourceTree = "<group>"; };
 		91D08070EA57AC1909DB4D64 /* Sync */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Sync; path = Modules/Sync; sourceTree = SOURCE_ROOT; };
 		926E4CA42BFEA653635F2364 /* HomeInventoryModularApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeInventoryModularApp.swift; sourceTree = "<group>"; };
@@ -54,7 +55,6 @@
 		B4AB90697101976F63CC3B1B /* Onboarding */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Onboarding; path = Modules/Onboarding; sourceTree = SOURCE_ROOT; };
 		B7CCD81CB60BE20EC61ED398 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		BC2DF36FD3B9183FE991865A /* Receipts */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Receipts; path = Modules/Receipts; sourceTree = SOURCE_ROOT; };
-		C786F4AC2A7BCD2A2AB7E3AD /* Settings */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Settings; path = Modules/Settings; sourceTree = SOURCE_ROOT; };
 		F1AE5605C98FF2E462CC4F56 /* Items */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Items; path = Modules/Items; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
@@ -66,8 +66,8 @@
 				2510550944C84AB6FD3FA538 /* Core in Frameworks */,
 				F110E061FDBC925483D96631 /* SharedUI in Frameworks */,
 				FD938184E545CCEB3567B64E /* Items in Frameworks */,
-				3C715FDB1CC41FEAB5C2810F /* Scanner in Frameworks */,
-				23904C1F69777763B698B7A7 /* Settings in Frameworks */,
+				3C715FDB1CC41FEAB5C2810F /* BarcodeScanner in Frameworks */,
+				23904C1F69777763B698B7A7 /* AppSettings in Frameworks */,
 				300A0DF86743646A925A2F87 /* Receipts in Frameworks */,
 				9551587D0423723462A2C745 /* Sync in Frameworks */,
 				4E63BE4249C407C6AF4CAF0E /* Premium in Frameworks */,
@@ -95,13 +95,13 @@
 		656A14CE8B6FFD57E9E48DA2 /* Packages */ = {
 			isa = PBXGroup;
 			children = (
+				3A1CEB3468DA9FAF5C65DC34 /* AppSettings */,
+				7E5AAB84E88E9A6638891341 /* BarcodeScanner */,
 				73E0D1EAA4C9CDEBD48AD8AF /* Core */,
 				F1AE5605C98FF2E462CC4F56 /* Items */,
 				B4AB90697101976F63CC3B1B /* Onboarding */,
 				0356A52527E14766531C3817 /* Premium */,
 				BC2DF36FD3B9183FE991865A /* Receipts */,
-				5DC9164E8B1294F0FF843BCF /* Scanner */,
-				C786F4AC2A7BCD2A2AB7E3AD /* Settings */,
 				3AE0C7854F2B950F4BCC3A9C /* SharedUI */,
 				91D08070EA57AC1909DB4D64 /* Sync */,
 			);
@@ -165,8 +165,8 @@
 				6D324B07EA3BF79F03E20042 /* Core */,
 				1E4ABB9448702E1172AD1D5B /* SharedUI */,
 				11065E0B954F8B47091C5898 /* Items */,
-				0480F862FF2CD4832BDF3CF6 /* Scanner */,
-				656B5B0EBC4F54A6BBDBEA8D /* Settings */,
+				E20F9C66CD8A1E76D5DA4ACF /* BarcodeScanner */,
+				1BFDCCE1DA30B83CCD323AFA /* AppSettings */,
 				4DAE3E8FC6151A00266EE46D /* Receipts */,
 				FFDB5BBF0F128AC119F36F3A /* Sync */,
 				EC690A20521570D346B1DF95 /* Premium */,
@@ -207,13 +207,13 @@
 			mainGroup = 4D256B14F10E6B1FDB76EE04;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
+				A8567266DFF953CA8A18F162 /* XCLocalSwiftPackageReference "Modules/AppSettings" */,
+				1C4DD3D3BCA1FE59B0EDC6FC /* XCLocalSwiftPackageReference "Modules/BarcodeScanner" */,
 				FBE10A76C36BB2B6F3385092 /* XCLocalSwiftPackageReference "Modules/Core" */,
 				BD0C6169C787E9B64F600DDF /* XCLocalSwiftPackageReference "Modules/Items" */,
 				576F0F487BCA364CFE1C86DC /* XCLocalSwiftPackageReference "Modules/Onboarding" */,
 				E8EB40612E5F2E5A9C3DA28D /* XCLocalSwiftPackageReference "Modules/Premium" */,
 				CF03CD87CCA89366BCF7268C /* XCLocalSwiftPackageReference "Modules/Receipts" */,
-				05B42ED38652984ECEF389E3 /* XCLocalSwiftPackageReference "Modules/Scanner" */,
-				064E8F10A8D960A51E82D2F2 /* XCLocalSwiftPackageReference "Modules/Settings" */,
 				B99BC64D551CE8562B6B6E53 /* XCLocalSwiftPackageReference "Modules/SharedUI" */,
 				8C9B55554D3805C4DD883AE0 /* XCLocalSwiftPackageReference "Modules/Sync" */,
 			);
@@ -531,13 +531,9 @@
 /* End XCConfigurationList section */
 
 /* Begin XCLocalSwiftPackageReference section */
-		05B42ED38652984ECEF389E3 /* XCLocalSwiftPackageReference "Modules/Scanner" */ = {
+		1C4DD3D3BCA1FE59B0EDC6FC /* XCLocalSwiftPackageReference "Modules/BarcodeScanner" */ = {
 			isa = XCLocalSwiftPackageReference;
-			relativePath = Modules/Scanner;
-		};
-		064E8F10A8D960A51E82D2F2 /* XCLocalSwiftPackageReference "Modules/Settings" */ = {
-			isa = XCLocalSwiftPackageReference;
-			relativePath = Modules/Settings;
+			relativePath = Modules/BarcodeScanner;
 		};
 		576F0F487BCA364CFE1C86DC /* XCLocalSwiftPackageReference "Modules/Onboarding" */ = {
 			isa = XCLocalSwiftPackageReference;
@@ -546,6 +542,10 @@
 		8C9B55554D3805C4DD883AE0 /* XCLocalSwiftPackageReference "Modules/Sync" */ = {
 			isa = XCLocalSwiftPackageReference;
 			relativePath = Modules/Sync;
+		};
+		A8567266DFF953CA8A18F162 /* XCLocalSwiftPackageReference "Modules/AppSettings" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = Modules/AppSettings;
 		};
 		B99BC64D551CE8562B6B6E53 /* XCLocalSwiftPackageReference "Modules/SharedUI" */ = {
 			isa = XCLocalSwiftPackageReference;
@@ -570,10 +570,6 @@
 /* End XCLocalSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		0480F862FF2CD4832BDF3CF6 /* Scanner */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = Scanner;
-		};
 		11065E0B954F8B47091C5898 /* Items */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = Items;
@@ -581,6 +577,10 @@
 		1B5D7269FC9C97F1936D0193 /* Onboarding */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = Onboarding;
+		};
+		1BFDCCE1DA30B83CCD323AFA /* AppSettings */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = AppSettings;
 		};
 		1E4ABB9448702E1172AD1D5B /* SharedUI */ = {
 			isa = XCSwiftPackageProductDependency;
@@ -590,13 +590,13 @@
 			isa = XCSwiftPackageProductDependency;
 			productName = Receipts;
 		};
-		656B5B0EBC4F54A6BBDBEA8D /* Settings */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = Settings;
-		};
 		6D324B07EA3BF79F03E20042 /* Core */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = Core;
+		};
+		E20F9C66CD8A1E76D5DA4ACF /* BarcodeScanner */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = BarcodeScanner;
 		};
 		EC690A20521570D346B1DF95 /* Premium */ = {
 			isa = XCSwiftPackageProductDependency;
