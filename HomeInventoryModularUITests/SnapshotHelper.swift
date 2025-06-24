@@ -73,8 +73,9 @@ open class Snapshot: NSObject {
             return URL(fileURLWithPath: fastlaneScreenshotsPath)
         }
         
-        // Final fallback: Use home directory
-        let homeScreenshotsPath = FileManager.default.homeDirectoryForCurrentUser
+        // Final fallback: Use NSHomeDirectory
+        let homeDir = URL(fileURLWithPath: NSHomeDirectory())
+        let homeScreenshotsPath = homeDir
             .appendingPathComponent("Library/Caches/tools.fastlane/screenshots")
         
         NSLog("DEBUG: Using home directory screenshots path: \(homeScreenshotsPath.path)")
@@ -177,7 +178,7 @@ open class Snapshot: NSObject {
 
     open class func snapshot(_ name: String, timeWaitingForIdle timeout: TimeInterval = 20) {
         // Debug: Write to a file to verify this function is being called
-        let debugPath = FileManager.default.homeDirectoryForCurrentUser
+        let debugPath = URL(fileURLWithPath: NSHomeDirectory())
             .appendingPathComponent("fastlane_snapshot_debug.txt")
         let debugMessage = "[\(Date())] snapshot() called with name: \(name)\n"
         if let data = debugMessage.data(using: .utf8) {
@@ -232,9 +233,7 @@ open class Snapshot: NSObject {
             let image = screenshot.image
             #endif
 
-            // Setup debug path
-            let debugPath = FileManager.default.homeDirectoryForCurrentUser
-                .appendingPathComponent("fastlane_snapshot_debug.txt")
+            // Use the debug path from earlier in the function
             
             // Debug logging
             NSLog("DEBUG: Checking environment variables...")
@@ -373,9 +372,9 @@ open class Snapshot: NSObject {
                 return cacheDir
             }
             
-            // Fallback: Use the current user's home directory
+            // Fallback: Use NSHomeDirectory
             NSLog("WARNING: SIMULATOR_HOST_HOME not set, using fallback approach")
-            let homeDir = FileManager.default.homeDirectoryForCurrentUser
+            let homeDir = URL(fileURLWithPath: NSHomeDirectory())
             let cacheDir = homeDir.appendingPathComponent(cachePath)
             
             // Create the cache directory if it doesn't exist

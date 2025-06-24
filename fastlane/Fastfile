@@ -7,7 +7,8 @@ platform :ios do
   lane :screenshots do
     capture_screenshots(
       project: "HomeInventoryModular.xcodeproj",
-      scheme: "HomeInventoryModular"
+      scheme: "HomeInventoryModular",
+      derived_data_path: "~/Library/Developer/Xcode/DerivedData/HomeInventoryModular-agdsomhmqdohvobvxvlzndssohrz"
     )
   end
 
