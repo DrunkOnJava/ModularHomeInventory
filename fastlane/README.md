@@ -31,6 +31,14 @@ Build the app for development
 
 Build the app for TestFlight (without upload)
 
+### ios testflight_xcode
+
+```sh
+[bundle exec] fastlane ios testflight_xcode
+```
+
+Build and upload to TestFlight using Xcode archive
+
 ### ios testflight
 
 ```sh

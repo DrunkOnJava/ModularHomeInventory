@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 54;
+	objectVersion = 63;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -51,8 +51,8 @@
 		362A5252C4DF6A3EB2576072 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		3A1CEB3468DA9FAF5C65DC34 /* AppSettings */ = {isa = PBXFileReference; lastKnownFileType = folder; name = AppSettings; path = Modules/AppSettings; sourceTree = SOURCE_ROOT; };
 		3AE0C7854F2B950F4BCC3A9C /* SharedUI */ = {isa = PBXFileReference; lastKnownFileType = folder; name = SharedUI; path = Modules/SharedUI; sourceTree = SOURCE_ROOT; };
-		3F46D3FE17D78B8D9DF66A01 /* HomeInventoryModularUITests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = HomeInventoryModularUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		45BEF81177E158AC63FCA13F /* HomeInventoryModular.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = HomeInventoryModular.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		3F46D3FE17D78B8D9DF66A01 /* HomeInventoryModularUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HomeInventoryModularUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		45BEF81177E158AC63FCA13F /* HomeInventoryModular.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HomeInventoryModular.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		64C55026838DBE9D3BEB425A /* iPadDragDrop.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iPadDragDrop.swift; sourceTree = "<group>"; };
 		6FA9E85F9D0016AF30814111 /* SnapshotHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnapshotHelper.swift; sourceTree = "<group>"; };
 		73E0D1EAA4C9CDEBD48AD8AF /* Core */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Core; path = Modules/Core; sourceTree = SOURCE_ROOT; };
@@ -235,7 +235,6 @@
 				B99BC64D551CE8562B6B6E53 /* XCLocalSwiftPackageReference "Modules/SharedUI" */,
 				8C9B55554D3805C4DD883AE0 /* XCLocalSwiftPackageReference "Modules/Sync" */,
 			);
-			preferredProjectObjectVersion = 54;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
@@ -418,8 +417,8 @@
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.lifestyle";
 				INFOPLIST_KEY_NSCameraUsageDescription = "Camera access is needed to scan barcodes and take photos of your items";
 				INFOPLIST_KEY_NSFaceIDUsageDescription = "Face ID is used to secure access to your inventory data";
-				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Photo library access is needed to add photos to your items";
 				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "This allows the app to save item photos to your photo library";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Photo library access is needed to add photos to your items";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -512,8 +511,8 @@
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.lifestyle";
 				INFOPLIST_KEY_NSCameraUsageDescription = "Camera access is needed to scan barcodes and take photos of your items";
 				INFOPLIST_KEY_NSFaceIDUsageDescription = "Face ID is used to secure access to your inventory data";
-				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Photo library access is needed to add photos to your items";
 				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "This allows the app to save item photos to your photo library";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Photo library access is needed to add photos to your items";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
