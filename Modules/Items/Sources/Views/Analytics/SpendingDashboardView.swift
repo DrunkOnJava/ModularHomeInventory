@@ -493,6 +493,7 @@ struct SpendingDashboardView: View {
         }
         .buttonStyle(PlainButtonStyle())
     }
+}
 
 // MARK: - Supporting Views
 

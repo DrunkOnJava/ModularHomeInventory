@@ -157,21 +157,16 @@ public final class NotificationTriggerService: ObservableObject {
             do {
                 // Calculate budget status
                 let spent = try await calculateBudgetSpent(budget: budget, itemRepository: itemRepository)
-                let status = BudgetStatus(
-                    budgetId: budget.id,
-                    spent: spent,
-                    remaining: budget.amount - spent,
-                    percentage: (spent / budget.amount) * 100
-                )
+                let percentUsed = (spent / budget.amount) * 100
                 let percentUsed = (status.spent / budget.amount) * 100
                 
                 // Alert at 80%, 90%, and 100% usage
-                if percentUsed >= 80 && percentUsed < 90 {
-                    await scheduleBudgetNotification(budget: budget, percentUsed: 80, status: status)
-                } else if percentUsed >= 90 && percentUsed < 100 {
-                    await scheduleBudgetNotification(budget: budget, percentUsed: 90, status: status)
-                } else if percentUsed >= 100 {
-                    await scheduleBudgetNotification(budget: budget, percentUsed: 100, status: status)
+                if NSDecimalNumber(decimal: percentUsed).doubleValue >= 80 && NSDecimalNumber(decimal: percentUsed).doubleValue < 90 {
+                    await scheduleBudgetNotification(budget: budget, percentUsed: 80, spent: spent)
+                } else if NSDecimalNumber(decimal: percentUsed).doubleValue >= 90 && NSDecimalNumber(decimal: percentUsed).doubleValue < 100 {
+                    await scheduleBudgetNotification(budget: budget, percentUsed: 90, spent: spent)
+                } else if NSDecimalNumber(decimal: percentUsed).doubleValue >= 100 {
+                    await scheduleBudgetNotification(budget: budget, percentUsed: 100, spent: spent)
                 }
             } catch {
                 print("Error checking budget status: \(error)")
@@ -179,7 +174,7 @@ public final class NotificationTriggerService: ObservableObject {
         }
     }
     
-    private func scheduleBudgetNotification(budget: Budget, percentUsed: Int, status: BudgetStatus) async {
+    private func scheduleBudgetNotification(budget: Budget, percentUsed: Int, spent: Decimal) async {
         let title: String
         let body: String
         
@@ -207,8 +202,8 @@ public final class NotificationTriggerService: ObservableObject {
             userInfo: [
                 "budgetId": budget.id.uuidString,
                 "percentUsed": percentUsed,
-                "spent": status.spent,
-                "remaining": status.remaining
+                "spent": spent,
+                "remaining": budget.amount - spent
             ]
         )
         
@@ -237,11 +232,9 @@ public final class NotificationTriggerService: ObservableObject {
         do {
             let items = try await itemRepository.fetchAll()
             
-            for item in items {
-                // For now, skip low stock monitoring as items don't have minimumStockLevel
-                // This would be implemented when inventory management is added
-                continue
-            }
+            // For now, skip low stock monitoring as items don't have minimumStockLevel
+            // This would be implemented when inventory management is added
+            return
         } catch {
             print("Error checking low stock items: \(error)")
         }
@@ -435,6 +428,21 @@ private extension NotificationTriggerService {
                   let price = item.purchasePrice else { return false }
             
             switch budget.period {
+            case .daily:
+                let components = Calendar.current.dateComponents([.day], from: budget.startDate, to: now)
+                let daysElapsed = components.day ?? 0
+                let currentPeriodStart = Calendar.current.date(byAdding: .day, value: daysElapsed, to: budget.startDate) ?? budget.startDate
+                let currentPeriodEnd = Calendar.current.date(byAdding: .day, value: 1, to: currentPeriodStart) ?? now
+                return purchaseDate >= currentPeriodStart && purchaseDate < currentPeriodEnd
+                
+            case .biweekly:
+                let components = Calendar.current.dateComponents([.weekOfYear], from: budget.startDate, to: now)
+                let weeksElapsed = components.weekOfYear ?? 0
+                let biweeksElapsed = weeksElapsed / 2
+                let currentPeriodStart = Calendar.current.date(byAdding: .weekOfYear, value: biweeksElapsed * 2, to: budget.startDate) ?? budget.startDate
+                let currentPeriodEnd = Calendar.current.date(byAdding: .weekOfYear, value: 2, to: currentPeriodStart) ?? now
+                return purchaseDate >= currentPeriodStart && purchaseDate < currentPeriodEnd
+                
             case .monthly:
                 let components = Calendar.current.dateComponents([.month], from: budget.startDate, to: now)
                 let monthsElapsed = components.month ?? 0
@@ -471,8 +479,8 @@ private extension NotificationTriggerService {
         
         // Filter by category if specified
         let finalItems: [Item]
-        if let categories = budget.categories, !categories.isEmpty {
-            finalItems = relevantItems.filter { categories.contains($0.category) }
+        if let category = budget.category {
+            finalItems = relevantItems.filter { $0.category == category }
         } else {
             finalItems = relevantItems
         }
