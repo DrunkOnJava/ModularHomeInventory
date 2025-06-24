@@ -113,7 +113,7 @@ extension View {
     func iPadDropDestination(
         supportedTypes: [UTType] = [.json, .plainText, .commaSeparatedText],
         onDrop: @escaping ([NSItemProvider]) -> Bool
-    ) -> some View {
+    ) -> ModifiedContent<Self, iPadDropDestination> {
         self.modifier(iPadDropDestination(supportedTypes: supportedTypes, onDrop: onDrop))
     }
 }

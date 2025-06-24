@@ -181,11 +181,7 @@ struct iPadSceneDelegate: App {
             }
         }
         
-        #if os(iOS)
-        Settings {
-            coordinator.settingsModule.makeSettingsView()
-        }
-        #endif
+        // Settings window is not available on iOS
     }
 }
 

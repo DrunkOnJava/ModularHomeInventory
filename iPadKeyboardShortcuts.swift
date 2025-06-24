@@ -180,7 +180,7 @@ struct KeyboardNavigationModifier: ViewModifier {
     func body(content: Content) -> some View {
         content
             .focused($focusedField, equals: .searchField)
-            .onKeyPress(.tab) { press in
+            .onKeyPress(.tab) {
                 handleTabNavigation(forward: true)
                 return .handled
             }
@@ -191,7 +191,7 @@ struct KeyboardNavigationModifier: ViewModifier {
                 }
                 return .ignored
             }
-            .onKeyPress(.return) { press in
+            .onKeyPress(.return) {
                 handleReturnKey()
                 return .handled
             }
@@ -304,11 +304,11 @@ struct ShortcutRow: View {
 // MARK: - Extensions
 
 extension View {
-    func iPadKeyboardShortcuts(navigationState: iPadNavigationState) -> some View {
+    func iPadKeyboardShortcuts(navigationState: iPadNavigationState) -> ModifiedContent<Self, iPadKeyboardShortcuts> {
         self.modifier(iPadKeyboardShortcuts(navigationState: navigationState))
     }
     
-    func keyboardNavigation() -> some View {
+    func keyboardNavigation() -> ModifiedContent<Self, KeyboardNavigationModifier> {
         self.modifier(KeyboardNavigationModifier())
     }
 }

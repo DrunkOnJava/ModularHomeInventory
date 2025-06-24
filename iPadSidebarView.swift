@@ -56,13 +56,13 @@ struct iPadSidebarView: View {
             .listStyle(SidebarListStyle())
             .navigationTitle("Home Inventory")
             .navigationBarTitleDisplayMode(.large)
-            .toolbar {
+            .toolbar(content: {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button(action: { navigationState.showAddItem = true }) {
                         Image(systemName: "plus")
                     }
                 }
-            }
+            })
         } detail: {
             // Detail view based on selection
             detailView
@@ -308,7 +308,7 @@ struct ImportExportDashboardView: View {
                 print("Import completed with \(result.successfulImports) items")
             }
             Divider()
-            coordinator.itemsModule.makeCSVExportView()
+            coordinator.itemsModule.makeCSVExportView(items: nil)
         }
         .padding()
     }
