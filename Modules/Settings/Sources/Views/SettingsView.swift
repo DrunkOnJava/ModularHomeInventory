@@ -138,6 +138,11 @@ struct SettingsView: View {
                 Label("Spotlight Search", systemImage: "magnifyingglass")
             }
             
+            // Accessibility
+            NavigationLink(destination: AccessibilitySettingsView(settingsStorage: viewModel.settingsStorage)) {
+                Label("Accessibility", systemImage: "accessibility")
+            }
+            
             // Dark Mode
             Toggle(isOn: Binding(
                 get: { ThemeManager.shared.isDarkMode },
@@ -230,6 +235,11 @@ struct SettingsView: View {
             }) {
                 Label("Clear Cache", systemImage: "trash")
                     .foregroundColor(.red)
+            }
+            
+            // Crash Reporting
+            NavigationLink(destination: CrashReportingSettingsView(settingsStorage: viewModel.settingsStorage)) {
+                Label("Crash Reporting", systemImage: "exclamationmark.triangle")
             }
         } header: {
             Text("Data & Storage")

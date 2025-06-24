@@ -92,7 +92,7 @@ public final class SpotlightService: ObservableObject {
     
     // MARK: - Create Searchable Item
     
-    private func createSearchableItem(for item: Item, location: Location?) -> CSSearchableItem {
+    func createSearchableItem(for item: Item, location: Location?) -> CSSearchableItem {
         // Create attribute set
         let attributeSet = CSSearchableItemAttributeSet(contentType: .content)
         
@@ -105,7 +105,8 @@ public final class SpotlightService: ObservableObject {
         
         if let brand = item.brand {
             keywords.append(brand)
-            attributeSet.organizationName = brand
+            // Organization name not available in iOS
+            // attributeSet.organizationName = brand
         }
         
         if let model = item.model {
@@ -270,7 +271,7 @@ public extension SpotlightService {
             )
             
             searchQuery.foundItemsHandler = { items in
-                allItems.append(contentsOf: items)
+                allItems.append(contentsOf: items.map { $0.uniqueIdentifier })
             }
             
             searchQuery.completionHandler = { error in

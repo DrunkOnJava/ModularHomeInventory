@@ -1,73 +1,75 @@
 import SwiftUI
 
 /// Typography system with predefined text styles
+/// Updated to support Dynamic Type
 public struct AppTypography {
     // MARK: - Display
     public static func displayLarge(_ text: String) -> some View {
         Text(text)
-            .font(.system(size: 34, weight: .bold, design: .default))
+            .dynamicTextStyle(.displayLarge)
     }
     
     public static func displayMedium(_ text: String) -> some View {
         Text(text)
-            .font(.system(size: 28, weight: .semibold, design: .default))
+            .dynamicTextStyle(.displayMedium)
     }
     
     public static func displaySmall(_ text: String) -> some View {
         Text(text)
-            .font(.system(size: 22, weight: .semibold, design: .default))
+            .dynamicTextStyle(.displaySmall)
     }
     
     // MARK: - Headline
     public static func headlineLarge(_ text: String) -> some View {
         Text(text)
-            .font(.system(size: 20, weight: .semibold, design: .default))
+            .dynamicTextStyle(.headlineLarge)
     }
     
     public static func headlineMedium(_ text: String) -> some View {
         Text(text)
-            .font(.system(size: 17, weight: .semibold, design: .default))
+            .dynamicTextStyle(.headlineMedium)
     }
     
     public static func headlineSmall(_ text: String) -> some View {
         Text(text)
-            .font(.system(size: 15, weight: .semibold, design: .default))
+            .dynamicTextStyle(.headlineSmall)
     }
     
     // MARK: - Body
     public static func bodyLarge(_ text: String) -> some View {
         Text(text)
-            .font(.system(size: 17, weight: .regular, design: .default))
+            .dynamicTextStyle(.bodyLarge)
     }
     
     public static func bodyMedium(_ text: String) -> some View {
         Text(text)
-            .font(.system(size: 15, weight: .regular, design: .default))
+            .dynamicTextStyle(.bodyMedium)
     }
     
     public static func bodySmall(_ text: String) -> some View {
         Text(text)
-            .font(.system(size: 13, weight: .regular, design: .default))
+            .dynamicTextStyle(.bodySmall)
     }
     
     // MARK: - Label
     public static func labelLarge(_ text: String) -> some View {
         Text(text)
-            .font(.system(size: 13, weight: .medium, design: .default))
+            .dynamicTextStyle(.labelLarge)
     }
     
     public static func labelMedium(_ text: String) -> some View {
         Text(text)
-            .font(.system(size: 11, weight: .medium, design: .default))
+            .dynamicTextStyle(.labelMedium)
     }
     
     public static func labelSmall(_ text: String) -> some View {
         Text(text)
-            .font(.system(size: 10, weight: .medium, design: .default))
+            .dynamicTextStyle(.labelSmall)
     }
 }
 
-// MARK: - Text Style View Modifier
+// MARK: - Text Style View Modifier (Deprecated - Use dynamicTextStyle instead)
+@available(*, deprecated, message: "Use dynamicTextStyle for Dynamic Type support")
 public struct TextStyle: ViewModifier {
     public enum Style {
         case displayLarge, displayMedium, displaySmall
@@ -101,7 +103,14 @@ public struct TextStyle: ViewModifier {
 }
 
 public extension View {
+    /// Legacy text style modifier - use dynamicTextStyle for Dynamic Type support
+    @available(*, deprecated, message: "Use dynamicTextStyle for Dynamic Type support")
     func textStyle(_ style: TextStyle.Style) -> some View {
         modifier(TextStyle(style: style))
+    }
+    
+    /// Apply text style with Dynamic Type support
+    func textStyle(_ style: DynamicTextStyle.Style) -> some View {
+        modifier(DynamicTextStyle(style: style))
     }
 }

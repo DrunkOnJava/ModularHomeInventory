@@ -82,21 +82,16 @@ public struct AppSettings: Codable {
     }
 }
 
-/// Protocol for settings storage
-public protocol SettingsStorageProtocol {
-    func loadSettings() -> AppSettings
-    func saveSettings(_ settings: AppSettings)
-}
 
 /// Dependencies required by the Settings module
 public struct SettingsModuleDependencies {
-    public let settingsStorage: SettingsStorageProtocol
+    public let settingsStorage: any SettingsStorageProtocol
     public let itemRepository: (any ItemRepository)?
     public let receiptRepository: (any ReceiptRepository)?
     public let locationRepository: (any LocationRepository)?
     
     public init(
-        settingsStorage: SettingsStorageProtocol,
+        settingsStorage: any SettingsStorageProtocol,
         itemRepository: (any ItemRepository)? = nil,
         receiptRepository: (any ReceiptRepository)? = nil,
         locationRepository: (any LocationRepository)? = nil

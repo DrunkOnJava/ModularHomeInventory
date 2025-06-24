@@ -4,8 +4,9 @@ import Core
 
 @main
 struct HomeInventoryModularApp: App {
-    // @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate // Temporarily disabled until AppDelegate is properly added to target
+    @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     @StateObject private var coordinator = AppCoordinator()
+    @StateObject private var settingsStorage = Core.UserDefaultsSettingsStorage()
     @State private var selectedItem: Item?
     @State private var showingItem = false
     

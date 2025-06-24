@@ -35,7 +35,7 @@ final class AppCoordinator: ObservableObject {
     
     private func setupModules() {
         // Initialize Settings module first to get settings storage
-        let settingsStorage = UserDefaultsSettingsStorage()
+        let settingsStorage = Core.UserDefaultsSettingsStorage()
         let settingsDependencies = SettingsModuleDependencies(
             settingsStorage: settingsStorage,
             itemRepository: itemRepository,
