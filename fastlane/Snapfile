@@ -13,8 +13,17 @@ languages([
 # The name of the scheme which contains the UI Tests
 scheme("HomeInventoryModular")
 
+# The test bundle to run
+test_target_name("HomeInventoryModularUITests")
+
+# Specify the test case to run
+only_testing("HomeInventoryModularUITests/HomeInventoryModularUITests/testTakeScreenshots")
+
 # Where should the resulting screenshots be stored?
 output_directory("./fastlane/screenshots")
+
+# Set explicit paths for Fastlane
+ENV["SNAPSHOT_SCREENSHOTS_PATH"] = File.expand_path("./fastlane/screenshots")
 
 # Clear all previously generated screenshots before creating new ones
 clear_previous_screenshots(true)
@@ -23,7 +32,7 @@ clear_previous_screenshots(true)
 override_status_bar(true)
 
 # Arguments to pass to the app on launch.
-# launch_arguments(["-AppMode Screenshots"])
+launch_arguments(["-FASTLANE_SNAPSHOT", "YES"])
 
 # For more information about all available options run
 # fastlane action snapshot

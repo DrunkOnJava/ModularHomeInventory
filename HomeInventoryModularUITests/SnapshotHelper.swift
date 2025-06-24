@@ -57,22 +57,51 @@ open class Snapshot: NSObject {
     static var waitForAnimations = true
     static var cacheDirectory: URL?
     static var screenshotsDirectory: URL? {
-        return cacheDirectory?.appendingPathComponent("screenshots", isDirectory: true)
+        // First try the cache directory approach
+        if let cacheDir = cacheDirectory {
+            return cacheDir.appendingPathComponent("screenshots", isDirectory: true)
+        }
+        
+        // Fallback: Try to find the fastlane screenshots directory
+        // This assumes we're running from the project root
+        let fileManager = FileManager.default
+        let currentDir = fileManager.currentDirectoryPath
+        let fastlaneScreenshotsPath = "\(currentDir)/fastlane/screenshots"
+        
+        if fileManager.fileExists(atPath: fastlaneScreenshotsPath) {
+            NSLog("DEBUG: Using direct fastlane screenshots path: \(fastlaneScreenshotsPath)")
+            return URL(fileURLWithPath: fastlaneScreenshotsPath)
+        }
+        
+        // Final fallback: Use home directory
+        let homeScreenshotsPath = FileManager.default.homeDirectoryForCurrentUser
+            .appendingPathComponent("Library/Caches/tools.fastlane/screenshots")
+        
+        NSLog("DEBUG: Using home directory screenshots path: \(homeScreenshotsPath.path)")
+        return homeScreenshotsPath
     }
 
     open class func setupSnapshot(_ app: XCUIApplication, waitForAnimations: Bool = true) {
-
+        NSLog("DEBUG: setupSnapshot called")
+        
         Snapshot.app = app
         Snapshot.waitForAnimations = waitForAnimations
 
         do {
+            NSLog("DEBUG: Attempting to get cache directory...")
             let cacheDir = try getCacheDirectory()
             Snapshot.cacheDirectory = cacheDir
+            NSLog("DEBUG: Cache directory set to: \(cacheDir.path)")
+            NSLog("DEBUG: Screenshots directory will be: \(cacheDir.appendingPathComponent("screenshots", isDirectory: true).path)")
+            
             setLanguage(app)
             setLocale(app)
             setLaunchArguments(app)
+            
+            NSLog("DEBUG: setupSnapshot completed successfully")
         } catch let error {
-            NSLog(error.localizedDescription)
+            NSLog("ERROR in setupSnapshot: \(error.localizedDescription)")
+            NSLog("ERROR: Failed to setup snapshot properly")
         }
     }
 
@@ -88,8 +117,15 @@ open class Snapshot: NSObject {
             let trimCharacterSet = CharacterSet.whitespacesAndNewlines
             deviceLanguage = try String(contentsOf: path, encoding: .utf8).trimmingCharacters(in: trimCharacterSet)
             app.launchArguments += ["-AppleLanguages", "(\(deviceLanguage))"]
+            NSLog("DEBUG: Set language to: \(deviceLanguage)")
         } catch {
-            NSLog("Couldn't detect/set language...")
+            NSLog("Couldn't detect/set language from file, using default")
+            // If we're running with FASTLANE_LANGUAGE, use that
+            if let fastlaneLanguage = ProcessInfo().environment["FASTLANE_LANGUAGE"] {
+                deviceLanguage = fastlaneLanguage
+                app.launchArguments += ["-AppleLanguages", "(\(deviceLanguage))"]
+                NSLog("DEBUG: Using FASTLANE_LANGUAGE: \(deviceLanguage)")
+            }
         }
     }
 
@@ -140,6 +176,22 @@ open class Snapshot: NSObject {
     }
 
     open class func snapshot(_ name: String, timeWaitingForIdle timeout: TimeInterval = 20) {
+        // Debug: Write to a file to verify this function is being called
+        let debugPath = FileManager.default.homeDirectoryForCurrentUser
+            .appendingPathComponent("fastlane_snapshot_debug.txt")
+        let debugMessage = "[\(Date())] snapshot() called with name: \(name)\n"
+        if let data = debugMessage.data(using: .utf8) {
+            if FileManager.default.fileExists(atPath: debugPath.path) {
+                if let fileHandle = try? FileHandle(forWritingTo: debugPath) {
+                    fileHandle.seekToEndOfFile()
+                    fileHandle.write(data)
+                    fileHandle.closeFile()
+                }
+            } else {
+                try? data.write(to: debugPath)
+            }
+        }
+        
         guard let app = app else {
             NSLog("XCUIApplication is not set. Please call setupSnapshot(app) before snapshot().")
             return
@@ -180,7 +232,57 @@ open class Snapshot: NSObject {
             let image = screenshot.image
             #endif
 
-            guard var simulator = ProcessInfo().environment["SIMULATOR_DEVICE_NAME"], let screenshotsDir = screenshotsDirectory else { return }
+            // Setup debug path
+            let debugPath = FileManager.default.homeDirectoryForCurrentUser
+                .appendingPathComponent("fastlane_snapshot_debug.txt")
+            
+            // Debug logging
+            NSLog("DEBUG: Checking environment variables...")
+            NSLog("DEBUG: SIMULATOR_DEVICE_NAME = \(ProcessInfo().environment["SIMULATOR_DEVICE_NAME"] ?? "NOT SET")")
+            NSLog("DEBUG: FASTLANE_SNAPSHOT = \(ProcessInfo().environment["FASTLANE_SNAPSHOT"] ?? "NOT SET")")
+            NSLog("DEBUG: screenshotsDirectory = \(String(describing: screenshotsDirectory))")
+            NSLog("DEBUG: cacheDirectory = \(String(describing: cacheDirectory))")
+            
+            // Write debug info to file
+            let debugInfo = """
+            [\(Date())] Screenshot saving attempt:
+            - Name: \(name)
+            - SIMULATOR_DEVICE_NAME: \(ProcessInfo().environment["SIMULATOR_DEVICE_NAME"] ?? "NOT SET")
+            - FASTLANE_SNAPSHOT: \(ProcessInfo().environment["FASTLANE_SNAPSHOT"] ?? "NOT SET")
+            - screenshotsDirectory: \(String(describing: screenshotsDirectory))
+            
+            """
+            if let data = debugInfo.data(using: .utf8),
+               let fileHandle = try? FileHandle(forWritingTo: debugPath) {
+                fileHandle.seekToEndOfFile()
+                fileHandle.write(data)
+                fileHandle.closeFile()
+            }
+            
+            // Get simulator name, with fallback
+            var simulator = ProcessInfo().environment["SIMULATOR_DEVICE_NAME"] ?? "iPhone 16 Pro Max"
+            
+            guard let baseScreenshotsDir = screenshotsDirectory else { 
+                NSLog("ERROR: Failed to get screenshots directory")
+                NSLog("ERROR: screenshotsDirectory = \(String(describing: screenshotsDirectory))")
+                let errorInfo = "ERROR: Failed to get screenshots directory\n"
+                if let data = errorInfo.data(using: .utf8),
+                   let fileHandle = try? FileHandle(forWritingTo: debugPath) {
+                    fileHandle.seekToEndOfFile()
+                    fileHandle.write(data)
+                    fileHandle.closeFile()
+                }
+                return 
+            }
+            
+            // Get the language for the subdirectory
+            let language = ProcessInfo().environment["FASTLANE_LANGUAGE"] ?? (deviceLanguage.isEmpty ? "en-US" : deviceLanguage)
+            let screenshotsDir = baseScreenshotsDir.appendingPathComponent(language)
+            
+            // Create screenshots directory if it doesn't exist
+            try? FileManager.default.createDirectory(at: screenshotsDir, withIntermediateDirectories: true, attributes: nil)
+            
+            NSLog("DEBUG: Will save screenshots to: \(screenshotsDir.path)")
 
             do {
                 // The simulator name contains "Clone X of " inside the screenshot file when running parallelized UI Tests on concurrent devices
@@ -189,14 +291,48 @@ open class Snapshot: NSObject {
                 simulator = regex.stringByReplacingMatches(in: simulator, range: range, withTemplate: "")
 
                 let path = screenshotsDir.appendingPathComponent("\(simulator)-\(name).png")
+                NSLog("DEBUG: Attempting to save screenshot to: \(path.path)")
+                
                 #if swift(<5.0)
                     try UIImagePNGRepresentation(image)?.write(to: path)
                 #else
-                    try image.pngData()?.write(to: path)
+                    if let pngData = image.pngData() {
+                        try pngData.write(to: path)
+                        NSLog("SUCCESS: Screenshot saved to: \(path.path)")
+                        
+                        // Write success to debug file
+                        let successInfo = "SUCCESS: Screenshot '\(name)' saved to: \(path.path)\n"
+                        if let data = successInfo.data(using: .utf8),
+                           let fileHandle = try? FileHandle(forWritingTo: debugPath) {
+                            fileHandle.seekToEndOfFile()
+                            fileHandle.write(data)
+                            fileHandle.closeFile()
+                        }
+                    } else {
+                        NSLog("ERROR: Failed to convert image to PNG data")
+                        
+                        // Write error to debug file
+                        let errorInfo = "ERROR: Failed to convert image to PNG data for '\(name)'\n"
+                        if let data = errorInfo.data(using: .utf8),
+                           let fileHandle = try? FileHandle(forWritingTo: debugPath) {
+                            fileHandle.seekToEndOfFile()
+                            fileHandle.write(data)
+                            fileHandle.closeFile()
+                        }
+                    }
                 #endif
             } catch let error {
-                NSLog("Problem writing screenshot: \(name) to \(screenshotsDir)/\(simulator)-\(name).png")
-                NSLog(error.localizedDescription)
+                NSLog("ERROR: Problem writing screenshot: \(name)")
+                NSLog("ERROR: \(error.localizedDescription)")
+                
+                // Write error to debug file
+                let errorInfo = "ERROR: Problem writing screenshot '\(name)': \(error.localizedDescription)\n"
+                if let data = errorInfo.data(using: .utf8),
+                   let fileHandle = try? FileHandle(forWritingTo: debugPath) {
+                    fileHandle.seekToEndOfFile()
+                    fileHandle.write(data)
+                    fileHandle.closeFile()
+                }
             }
         #endif
     }
@@ -226,11 +362,27 @@ open class Snapshot: NSObject {
             let homeDir = URL(fileURLWithPath: NSHomeDirectory())
             return homeDir.appendingPathComponent(cachePath)
         #elseif targetEnvironment(simulator)
-            guard let simulatorHostHome = ProcessInfo().environment["SIMULATOR_HOST_HOME"] else {
-                throw SnapshotError.cannotFindSimulatorHomeDirectory
+            NSLog("DEBUG: Getting cache directory for simulator...")
+            NSLog("DEBUG: SIMULATOR_HOST_HOME = \(ProcessInfo().environment["SIMULATOR_HOST_HOME"] ?? "NOT SET")")
+            
+            // Try to get SIMULATOR_HOST_HOME first
+            if let simulatorHostHome = ProcessInfo().environment["SIMULATOR_HOST_HOME"] {
+                let homeDir = URL(fileURLWithPath: simulatorHostHome)
+                let cacheDir = homeDir.appendingPathComponent(cachePath)
+                NSLog("DEBUG: Using SIMULATOR_HOST_HOME cache directory: \(cacheDir.path)")
+                return cacheDir
             }
-            let homeDir = URL(fileURLWithPath: simulatorHostHome)
-            return homeDir.appendingPathComponent(cachePath)
+            
+            // Fallback: Use the current user's home directory
+            NSLog("WARNING: SIMULATOR_HOST_HOME not set, using fallback approach")
+            let homeDir = FileManager.default.homeDirectoryForCurrentUser
+            let cacheDir = homeDir.appendingPathComponent(cachePath)
+            
+            // Create the cache directory if it doesn't exist
+            try? FileManager.default.createDirectory(at: cacheDir, withIntermediateDirectories: true, attributes: nil)
+            
+            NSLog("DEBUG: Using fallback cache directory: \(cacheDir.path)")
+            return cacheDir
         #else
             throw SnapshotError.cannotRunOnPhysicalDevice
         #endif

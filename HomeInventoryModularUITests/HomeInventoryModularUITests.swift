@@ -22,24 +22,35 @@ final class HomeInventoryModularUITests: XCTestCase {
     }
     
     func testTakeScreenshots() throws {
+        // Log that we're starting
+        print("Starting screenshot test")
+        
+        // Debug: Check critical environment variables
+        print("FASTLANE_SNAPSHOT: \(ProcessInfo.processInfo.environment["FASTLANE_SNAPSHOT"] ?? "NOT SET")")
+        print("SIMULATOR_DEVICE_NAME: \(ProcessInfo.processInfo.environment["SIMULATOR_DEVICE_NAME"] ?? "NOT SET")")
+        print("SIMULATOR_HOST_HOME: \(ProcessInfo.processInfo.environment["SIMULATOR_HOST_HOME"] ?? "NOT SET")")
+        
         // Wait for app to load
         sleep(2)
         
         // Take screenshot of main screen
-        snapshot("01_MainScreen")
+        print("Taking screenshot: 01_MainScreen")
+        snapshot("01_MainScreen", waitForLoadingIndicator: false)
         
         // Navigate to Items tab if not already there
         if app.tabBars.buttons["Items"].exists {
             app.tabBars.buttons["Items"].tap()
             sleep(1)
-            snapshot("02_ItemsList")
+            print("Taking screenshot: 02_ItemsList")
+            snapshot("02_ItemsList", waitForLoadingIndicator: false)
         }
         
         // Tap add button to show add item screen
         if app.navigationBars.buttons["Add"].exists {
             app.navigationBars.buttons["Add"].tap()
             sleep(1)
-            snapshot("03_AddItem")
+            print("Taking screenshot: 03_AddItem")
+            snapshot("03_AddItem", waitForLoadingIndicator: false)
             
             // Go back
             if app.navigationBars.buttons["Cancel"].exists {
@@ -51,28 +62,32 @@ final class HomeInventoryModularUITests: XCTestCase {
         if app.tabBars.buttons["Scanner"].exists {
             app.tabBars.buttons["Scanner"].tap()
             sleep(1)
-            snapshot("04_Scanner")
+            print("Taking screenshot: 04_Scanner")
+            snapshot("04_Scanner", waitForLoadingIndicator: false)
         }
         
         // Navigate to Receipts tab
         if app.tabBars.buttons["Receipts"].exists {
             app.tabBars.buttons["Receipts"].tap()
             sleep(1)
-            snapshot("05_Receipts")
+            print("Taking screenshot: 05_Receipts")
+            snapshot("05_Receipts", waitForLoadingIndicator: false)
         }
         
         // Navigate to Settings tab
         if app.tabBars.buttons["Settings"].exists {
             app.tabBars.buttons["Settings"].tap()
             sleep(1)
-            snapshot("06_Settings")
+            print("Taking screenshot: 06_Settings")
+            snapshot("06_Settings", waitForLoadingIndicator: false)
             
             // Try to navigate to a settings subsection
             let settingsCells = app.tables.cells
             if settingsCells.count > 0 {
                 settingsCells.element(boundBy: 0).tap()
                 sleep(1)
-                snapshot("07_SettingsDetail")
+                print("Taking screenshot: 07_SettingsDetail")
+                snapshot("07_SettingsDetail", waitForLoadingIndicator: false)
                 
                 // Go back
                 if app.navigationBars.buttons.element(boundBy: 0).exists {
@@ -91,9 +106,12 @@ final class HomeInventoryModularUITests: XCTestCase {
             if itemCells.count > 0 {
                 itemCells.element(boundBy: 0).tap()
                 sleep(1)
-                snapshot("08_ItemDetail")
+                print("Taking screenshot: 08_ItemDetail")
+                snapshot("08_ItemDetail", waitForLoadingIndicator: false)
             }
         }
+        
+        print("Finished screenshot test")
     }
     
     func testAccessibilityScreenshots() throws {
@@ -102,7 +120,7 @@ final class HomeInventoryModularUITests: XCTestCase {
         app.launch()
         
         sleep(2)
-        snapshot("09_AccessibilityLargeText")
+        snapshot("09_AccessibilityLargeText", waitForLoadingIndicator: false)
         
         // Navigate to Settings for accessibility options
         if app.tabBars.buttons["Settings"].exists {
@@ -115,7 +133,7 @@ final class HomeInventoryModularUITests: XCTestCase {
             if accessibilityCell.exists {
                 accessibilityCell.tap()
                 sleep(1)
-                snapshot("10_AccessibilitySettings")
+                snapshot("10_AccessibilitySettings", waitForLoadingIndicator: false)
             }
         }
     }

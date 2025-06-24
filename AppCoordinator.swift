@@ -13,13 +13,13 @@ import Combine
 @MainActor
 final class AppCoordinator: ObservableObject {
     // Module instances
-    private(set) var itemsModule: ItemsModuleAPI!
-    private(set) var scannerModule: ScannerModuleAPI!
-    private(set) var settingsModule: SettingsModuleAPI!
-    private(set) var receiptsModule: ReceiptsModuleAPI!
-    private(set) var syncModule: SyncModuleAPI!
-    private(set) var premiumModule: PremiumModuleAPI!
-    private(set) var onboardingModule: OnboardingModuleAPI!
+    private(set) var itemsModule: Items.ItemsModuleAPI!
+    private(set) var scannerModule: Scanner.ScannerModuleAPI!
+    private(set) var settingsModule: Settings.SettingsModuleAPI!
+    private(set) var receiptsModule: Receipts.ReceiptsModuleAPI!
+    private(set) var syncModule: Sync.SyncModuleAPI!
+    private(set) var premiumModule: Premium.PremiumModuleAPI!
+    private(set) var onboardingModule: Onboarding.OnboardingModuleAPI!
     
     // Mock repositories (temporary - will be replaced with real implementations)
     private let itemRepository = MockItemRepository()
@@ -36,13 +36,13 @@ final class AppCoordinator: ObservableObject {
     private func setupModules() {
         // Initialize Settings module first to get settings storage
         let settingsStorage = Core.UserDefaultsSettingsStorage()
-        let settingsDependencies = SettingsModuleDependencies(
+        let settingsDependencies = Settings.SettingsModuleDependencies(
             settingsStorage: settingsStorage,
             itemRepository: itemRepository,
             receiptRepository: receiptRepository,
             locationRepository: locationRepository
         )
-        settingsModule = SettingsModule(dependencies: settingsDependencies)
+        settingsModule = Settings.SettingsModule(dependencies: settingsDependencies)
         
         // Create scan history repository
         let scanHistoryRepository = Core.DefaultScanHistoryRepository()
@@ -57,7 +57,7 @@ final class AppCoordinator: ObservableObject {
         let barcodeLookupService = DefaultBarcodeLookupService()
         
         // Initialize Scanner module with settings storage
-        let scannerDependencies = ScannerModuleDependencies(
+        let scannerDependencies = Scanner.ScannerModuleDependencies(
             itemRepository: itemRepository,
             itemTemplateRepository: itemTemplateRepository,
             settingsStorage: settingsStorage,
@@ -66,7 +66,7 @@ final class AppCoordinator: ObservableObject {
             barcodeLookupService: barcodeLookupService,
             networkMonitor: networkMonitor
         )
-        scannerModule = ScannerModule(dependencies: scannerDependencies)
+        scannerModule = Scanner.ScannerModule(dependencies: scannerDependencies)
         
         // Create photo repository
         let photoRepository = try! CoreModule.makePhotoRepository()
@@ -89,16 +89,16 @@ final class AppCoordinator: ObservableObject {
         let cloudStorage: CloudDocumentStorageProtocol? = nil // TODO: Add cloud storage when available
         
         // Initialize Receipts module first
-        let receiptsDependencies = ReceiptsModuleDependencies(
+        let receiptsDependencies = Receipts.ReceiptsModuleDependencies(
             receiptRepository: receiptRepository,
             itemRepository: itemRepository,
             emailService: emailService,
             ocrService: ocrService
         )
-        receiptsModule = ReceiptsModule(dependencies: receiptsDependencies)
+        receiptsModule = Receipts.ReceiptsModule(dependencies: receiptsDependencies)
         
         // Initialize Items module with scanner and receipts dependencies
-        let itemsDependencies = ItemsModuleDependencies(
+        let itemsDependencies = Items.ItemsModuleDependencies(
             itemRepository: itemRepository,
             locationRepository: locationRepository,
             itemTemplateRepository: itemTemplateRepository,
@@ -117,28 +117,28 @@ final class AppCoordinator: ObservableObject {
             scannerModule: scannerModule,
             receiptsModule: receiptsModule
         )
-        itemsModule = ItemsModule(dependencies: itemsDependencies)
+        itemsModule = Items.ItemsModule(dependencies: itemsDependencies)
         
         // Initialize Sync module
         let cloudService = MockCloudService()
-        let syncDependencies = SyncModuleDependencies(
+        let syncDependencies = Sync.SyncModuleDependencies(
             itemRepository: itemRepository,
             receiptRepository: receiptRepository,
             locationRepository: locationRepository,
             cloudService: cloudService
         )
-        syncModule = SyncModule(dependencies: syncDependencies)
+        syncModule = Sync.SyncModule(dependencies: syncDependencies)
         
         // Initialize Premium module
         let purchaseService = MockPurchaseService()
-        let premiumDependencies = PremiumModuleDependencies(
+        let premiumDependencies = Premium.PremiumModuleDependencies(
             purchaseService: purchaseService
         )
-        premiumModule = PremiumModule(dependencies: premiumDependencies)
+        premiumModule = Premium.PremiumModule(dependencies: premiumDependencies)
         
         // Initialize Onboarding module
-        let onboardingDependencies = OnboardingModuleDependencies()
-        onboardingModule = OnboardingModule(dependencies: onboardingDependencies)
+        let onboardingDependencies = Onboarding.OnboardingModuleDependencies()
+        onboardingModule = Onboarding.OnboardingModule(dependencies: onboardingDependencies)
         
         // Start warranty expiration monitoring
         Core.WarrantyExpirationCheckService.shared.startMonitoring(warrantyRepository: warrantyRepository)

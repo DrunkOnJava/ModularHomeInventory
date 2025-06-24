@@ -5,7 +5,7 @@ import Core
 
 extension SettingsStorageProtocol {
     /// Load AppSettings from storage
-    func loadSettings() -> AppSettings {
+    public func loadSettings() -> AppSettings {
         AppSettings(
             notificationsEnabled: bool(forKey: .notificationsEnabled) ?? true,
             darkModeEnabled: bool(forKey: .darkModeEnabled) ?? false,
@@ -24,7 +24,7 @@ extension SettingsStorageProtocol {
     }
     
     /// Save AppSettings to storage
-    func saveSettings(_ settings: AppSettings) {
+    public func saveSettings(_ settings: AppSettings) {
         set(settings.notificationsEnabled, forKey: .notificationsEnabled)
         set(settings.darkModeEnabled, forKey: .darkModeEnabled)
         set(settings.biometricAuthEnabled, forKey: .biometricAuthEnabled)
