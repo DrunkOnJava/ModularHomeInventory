@@ -161,23 +161,19 @@ final class WarrantyTransferViewModel: ObservableObject {
         }) else { return }
         
         let transfer = createTransfer()
-        let notification = WarrantyTransferService.generateProviderNotification(
-            transfer: transfer,
-            warranty: warranty,
-            item: item,
-            provider: WarrantyProvider(
-                name: warranty.provider,
-                supportPhone: nil,
-                supportEmail: nil,
-                website: nil,
-                claimsPhone: nil,
-                claimsEmail: nil,
-                claimsWebsite: nil,
-                address: nil,
-                transferPolicy: nil,
-                commonIssues: []
-            )
-        )
+        // Generate provider notification
+        let notification = """
+        To: \(warranty.provider)
+        Re: Warranty Transfer Notification
+        
+        Policy Number: \(warranty.registrationNumber ?? "N/A")
+        Item: \(item.name)
+        Transfer Date: \(transferDate.formatted())
+        
+        This is to notify you of a warranty transfer from \(fromOwnerName) to \(toOwnerName).
+        
+        Please update your records accordingly.
+        """
         
         // In a real app, this would save the document and allow sharing
         shareDocument(notification, title: "Warranty Transfer Notification")

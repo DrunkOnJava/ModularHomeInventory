@@ -93,7 +93,7 @@ public struct InsuranceDashboardView: View {
                 VStack {
                     Text("Coverage Analysis")
                         .font(.title2)
-                    if let analysis = viewModel.coverageAnalysis {
+                    if viewModel.coverageAnalysis != nil {
                         Text("Total Coverage: \(analysis.coveragePercentage, format: .percent)")
                     }
                 }
@@ -238,7 +238,7 @@ public struct InsuranceDashboardView: View {
                 .textStyle(.headlineSmall)
                 .foregroundStyle(AppColors.textPrimary)
             
-            Chart(viewModel.categoryBreakdown) { item in
+            Chart(Array(viewModel.categoryBreakdown.enumerated()), id: \.offset) { index, item in
                 BarMark(
                     x: .value("Category", item.category.displayName),
                     y: .value("Value", item.coveredValue)
