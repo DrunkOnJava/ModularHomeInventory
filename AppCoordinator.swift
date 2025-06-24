@@ -99,7 +99,7 @@ final class AppCoordinator: ObservableObject {
         receiptsModule = Receipts.ReceiptsModule(dependencies: receiptsDependencies)
         
         // Create budget repository
-        let budgetRepository = Core.DefaultBudgetRepository()
+        let budgetRepository = MockBudgetRepository()
         
         // Initialize Items module with scanner and receipts dependencies
         let itemsDependencies = Items.ItemsModuleDependencies(

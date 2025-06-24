@@ -149,7 +149,7 @@ public final class SmartCategoryService {
         "dewalt": .tools,
         "milwaukee": .tools,
         "makita": .tools,
-        "bosch": .tools,
+        "bosch tools": .tools,  // Changed to avoid duplicate with appliances
         "craftsman": .tools,
         "stanley": .tools,
         "black & decker": .tools,
