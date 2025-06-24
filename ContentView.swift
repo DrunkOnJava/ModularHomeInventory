@@ -33,12 +33,12 @@ struct ContentView: View {
                     }
                     .tag(0)
                 
-                // Collections Tab
+                // Insurance Tab
                 NavigationView {
-                    coordinator.itemsModule.makeCollectionsListView()
+                    coordinator.itemsModule.makeInsuranceDashboardView()
                 }
                     .tabItem {
-                        Label("Collections", systemImage: "folder")
+                        Label("Insurance", systemImage: "shield.fill")
                     }
                     .tag(1)
                 

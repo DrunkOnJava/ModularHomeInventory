@@ -246,4 +246,14 @@ public final class ItemsModule: ItemsModuleAPI {
             }
         )
     }
+    
+    public func makeInsuranceDashboardView() -> AnyView {
+        let viewModel = InsuranceDashboardViewModel(
+            insuranceRepository: dependencies.insuranceRepository,
+            itemRepository: dependencies.itemRepository
+        )
+        return AnyView(
+            InsuranceDashboardView(viewModel: viewModel)
+        )
+    }
 }

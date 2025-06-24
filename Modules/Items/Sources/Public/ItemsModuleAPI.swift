@@ -74,6 +74,9 @@ public protocol ItemsModuleAPI: AnyObject {
     
     /// Creates the warranty notifications view
     func makeWarrantyNotificationsView() -> AnyView
+    
+    /// Creates the insurance dashboard view
+    func makeInsuranceDashboardView() -> AnyView
 }
 
 /// Dependencies required by the Items module
@@ -97,6 +100,7 @@ public struct ItemsModuleDependencies {
     public let scannerModule: (any ScannerModuleAPI)?
     public let receiptsModule: (any ReceiptsModuleAPI)?
     public let budgetRepository: (any BudgetRepository)?
+    public let insuranceRepository: any InsurancePolicyRepository
     
     public init(
         itemRepository: any ItemRepository,
@@ -117,7 +121,8 @@ public struct ItemsModuleDependencies {
         receiptRepository: (any ReceiptRepository)? = nil,
         scannerModule: (any ScannerModuleAPI)? = nil,
         receiptsModule: (any ReceiptsModuleAPI)? = nil,
-        budgetRepository: (any BudgetRepository)? = nil
+        budgetRepository: (any BudgetRepository)? = nil,
+        insuranceRepository: any InsurancePolicyRepository
     ) {
         self.itemRepository = itemRepository
         self.locationRepository = locationRepository
@@ -138,5 +143,6 @@ public struct ItemsModuleDependencies {
         self.scannerModule = scannerModule
         self.receiptsModule = receiptsModule
         self.budgetRepository = budgetRepository
+        self.insuranceRepository = insuranceRepository
     }
 }
