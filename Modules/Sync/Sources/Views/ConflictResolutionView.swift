@@ -35,7 +35,22 @@ public struct ConflictResolutionView: View {
                 }
                 
                 if viewModel.isLoading {
-                    LoadingOverlay(message: "Detecting conflicts...")
+                    ZStack {
+                        Color.black.opacity(0.4)
+                            .ignoresSafeArea()
+                        
+                        VStack(spacing: AppSpacing.md) {
+                            ProgressView()
+                                .scaleEffect(1.5)
+                            
+                            Text("Detecting conflicts...")
+                                .textStyle(.bodyMedium)
+                                .foregroundStyle(.white)
+                        }
+                        .padding()
+                        .background(Color.black.opacity(0.8))
+                        .cornerRadius(AppCornerRadius.medium)
+                    }
                 }
             }
             .navigationTitle("Sync Conflicts")

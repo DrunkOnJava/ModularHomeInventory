@@ -43,7 +43,7 @@ public final class BiometricAuthService: ObservableObject {
     }
     
     // Error types
-    public enum BiometricError: LocalizedError {
+    public enum BiometricError: LocalizedError, Equatable {
         case notAvailable
         case notEnrolled
         case authenticationFailed

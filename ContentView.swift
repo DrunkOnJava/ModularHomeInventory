@@ -61,7 +61,7 @@ struct ContentView: View {
         .sheet(isPresented: $showingBarcodeSearch) {
             coordinator.itemsModule.makeBarcodeSearchView()
         }
-        .biometricLock() // Add biometric lock protection
+        // Biometric lock would be added here when BiometricLockModifier is available
     }
 }
 
