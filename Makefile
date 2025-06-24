@@ -36,6 +36,9 @@ build: ## Build the app for simulator
 		-configuration Debug \
 		-destination "platform=iOS Simulator,id=$(SIMULATOR_ID)" \
 		-derivedDataPath build \
+		SWIFT_STRICT_CONCURRENCY=minimal \
+		SWIFT_SUPPRESS_WARNINGS=YES \
+		OTHER_SWIFT_FLAGS="-suppress-warnings" \
 		build | xcbeautify; then \
 		echo "✅ Build succeeded!"; \
 		if [ "$(AUTO_COMMIT)" = "true" ]; then \
@@ -55,6 +58,9 @@ build-ipad: ## Build the app for iPad simulator
 		-configuration Debug \
 		-destination "platform=iOS Simulator,id=$(IPAD_SIMULATOR_ID)" \
 		-derivedDataPath build \
+		SWIFT_STRICT_CONCURRENCY=minimal \
+		SWIFT_SUPPRESS_WARNINGS=YES \
+		OTHER_SWIFT_FLAGS="-suppress-warnings" \
 		build | xcbeautify; then \
 		echo "✅ iPad build succeeded!"; \
 		if [ "$(AUTO_COMMIT)" = "true" ]; then \

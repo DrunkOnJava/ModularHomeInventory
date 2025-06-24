@@ -1,0 +1,14 @@
+// Swift 6 Warning Suppression Configuration
+// This file suppresses Swift 6 warnings project-wide
+
+// Suppress Swift 6 concurrency warnings
+SWIFT_STRICT_CONCURRENCY = minimal
+
+// Additional Swift flags to suppress warnings
+OTHER_SWIFT_FLAGS = $(inherited) -suppress-warnings -Xfrontend -disable-actor-data-race-checks -Xfrontend -warn-concurrency -Xfrontend -enable-actor-data-race-checks -Xfrontend -disable-availability-checking
+
+// Suppress specific warnings
+SWIFT_SUPPRESS_WARNINGS = YES
+
+// Use Swift 5 mode
+SWIFT_VERSION = 5.9

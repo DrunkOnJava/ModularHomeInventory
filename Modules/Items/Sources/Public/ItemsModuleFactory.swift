@@ -133,6 +133,7 @@ private final class MockWarrantyRepository: WarrantyRepository {
 }
 
 // MARK: - Mock Service Record Repository for Factory
+@MainActor
 private final class MockServiceRecordRepositoryForItemsModule: ServiceRecordRepository {
     private var serviceRecords: [ServiceRecord] = []
     private let serviceRecordsSubject = CurrentValueSubject<[ServiceRecord], Never>([])

@@ -447,7 +447,7 @@ struct StoreStatsGrid: View {
                     
                     StatCard(
                         title: "Avg Monthly",
-                        value: Int(avgMonthly).asCurrency(),
+                        value: "$\(Int(avgMonthly))",
                         icon: "chart.line.uptrend.xyaxis",
                         color: .blue
                     )

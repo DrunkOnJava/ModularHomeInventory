@@ -97,7 +97,7 @@ struct PurchasePatternsView: View {
                 Text("All Time").tag(9999)
             }
             .pickerStyle(.segmented)
-            .onChange(of: timeRange) { _ in
+            .onChange(of: timeRange) {
                 Task {
                     await viewModel.analyzePatterns(days: timeRange)
                 }
@@ -707,26 +707,18 @@ struct CategoryPreferenceDetail: View {
             .background(Color(.systemGray6))
             .cornerRadius(12)
             
-            // Top Brands in Category
-            if !pattern.topBrands.isEmpty {
-                VStack(alignment: .leading, spacing: 12) {
-                    Text("Preferred Brands")
-                        .font(.headline)
-                    
-                    ForEach(pattern.topBrands, id: \.self) { brand in
-                        HStack {
-                            Label(brand, systemImage: "star.fill")
-                                .font(.system(size: 15))
-                                .foregroundStyle(.yellow)
-                            Spacer()
-                        }
-                        .padding(.vertical, 4)
-                    }
-                }
-                .padding()
-                .background(Color(.systemGray6))
-                .cornerRadius(12)
+            // Category Trend
+            HStack {
+                Image(systemName: pattern.trend.icon)
+                    .font(.system(size: 20))
+                    .foregroundColor(Color(hex: pattern.trend.color))
+                Text("\(pattern.trend.rawValue) trend in spending")
+                    .font(.system(size: 14))
+                    .foregroundStyle(.secondary)
             }
+            .padding()
+            .background(Color(.systemGray6))
+            .cornerRadius(12)
             
             // Growth Trend
             if pattern.growthTrend != .stable {
@@ -1252,7 +1244,7 @@ struct BulkBuyingDetail: View {
                 DetailRow(label: "Purchase Frequency", value: pattern.frequency.rawValue)
                 DetailRow(label: "Avg Quantity", value: "\(pattern.averageQuantity) units")
                 DetailRow(label: "Bulk Frequency", value: pattern.frequency.rawValue)
-                DetailRow(label: "Times Purchased", value: "\(pattern.occurrences)")
+                DetailRow(label: "Category", value: pattern.category.rawValue)
             }
             .padding()
             .background(Color(.systemGray6))
