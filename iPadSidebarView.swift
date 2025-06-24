@@ -200,9 +200,11 @@ struct CollectionsNavigationView: View {
 }
 
 struct LocationsNavigationView: View {
+    @EnvironmentObject var coordinator: AppCoordinator
+    
     var body: some View {
         NavigationStack {
-            LocationsListView()
+            coordinator.itemsModule.makeLocationsListView()
                 .navigationTitle("Locations")
                 .navigationBarTitleDisplayMode(.automatic)
         }
@@ -214,10 +216,7 @@ struct CategoriesNavigationView: View {
     
     var body: some View {
         NavigationStack {
-            // Category management view
-            Text("Category Management")
-                .font(.largeTitle)
-                .padding()
+            coordinator.itemsModule.makeCategoryListView()
                 .navigationTitle("Categories")
                 .navigationBarTitleDisplayMode(.automatic)
         }
@@ -225,9 +224,11 @@ struct CategoriesNavigationView: View {
 }
 
 struct AnalyticsNavigationView: View {
+    @EnvironmentObject var coordinator: AppCoordinator
+    
     var body: some View {
         NavigationStack {
-            AnalyticsDashboardView()
+            coordinator.itemsModule.makeSpendingDashboardView()
                 .navigationTitle("Analytics")
                 .navigationBarTitleDisplayMode(.automatic)
         }
@@ -235,9 +236,11 @@ struct AnalyticsNavigationView: View {
 }
 
 struct ReportsNavigationView: View {
+    @EnvironmentObject var coordinator: AppCoordinator
+    
     var body: some View {
         NavigationStack {
-            ReportsDashboardView()
+            coordinator.itemsModule.makeInventoryReportView()
                 .navigationTitle("Reports")
                 .navigationBarTitleDisplayMode(.automatic)
         }
@@ -269,9 +272,11 @@ struct ScannerNavigationView: View {
 }
 
 struct SearchNavigationView: View {
+    @EnvironmentObject var coordinator: AppCoordinator
+    
     var body: some View {
         NavigationStack {
-            AdvancedSearchView()
+            coordinator.itemsModule.makeAdvancedSearchView()
                 .navigationTitle("Search")
                 .navigationBarTitleDisplayMode(.automatic)
         }
@@ -279,9 +284,12 @@ struct SearchNavigationView: View {
 }
 
 struct ImportExportNavigationView: View {
+    @EnvironmentObject var coordinator: AppCoordinator
+    
     var body: some View {
         NavigationStack {
-            ImportExportDashboardView()
+            ImportExportDashboard()
+                .environmentObject(coordinator)
                 .navigationTitle("Import/Export")
                 .navigationBarTitleDisplayMode(.automatic)
         }
@@ -367,6 +375,23 @@ struct AddItemSheet: View {
                 }
             }
         }
+    }
+}
+
+// MARK: - Import/Export Dashboard
+
+struct ImportExportDashboard: View {
+    @EnvironmentObject var coordinator: AppCoordinator
+    
+    var body: some View {
+        VStack(spacing: AppSpacing.lg) {
+            coordinator.itemsModule.makeCSVImportView { result in
+                print("Import completed with \(result.successfulImports) items")
+            }
+            Divider()
+            coordinator.itemsModule.makeCSVExportView(items: nil)
+        }
+        .padding()
     }
 }
 
