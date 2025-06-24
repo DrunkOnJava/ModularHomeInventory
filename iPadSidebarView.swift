@@ -11,46 +11,79 @@ struct iPadSidebarView: View {
     var body: some View {
         NavigationSplitView {
             // Sidebar
-            List(selection: $navigationState.selectedTab) {
+            List {
                 Section("Inventory") {
-                    Label("Items", systemImage: "shippingbox.fill")
-                        .tag(iPadTab.items)
+                    Button(action: { navigationState.selectedTab = .items }) {
+                        Label("Items", systemImage: "shippingbox.fill")
+                    }
+                    .buttonStyle(.plain)
+                    .listRowBackground(navigationState.selectedTab == .items ? Color.accentColor.opacity(0.1) : nil)
                     
-                    Label("Collections", systemImage: "folder.fill")
-                        .tag(iPadTab.collections)
+                    Button(action: { navigationState.selectedTab = .collections }) {
+                        Label("Collections", systemImage: "folder.fill")
+                    }
+                    .buttonStyle(.plain)
+                    .listRowBackground(navigationState.selectedTab == .collections ? Color.accentColor.opacity(0.1) : nil)
                     
-                    Label("Locations", systemImage: "location.fill")
-                        .tag(iPadTab.locations)
+                    Button(action: { navigationState.selectedTab = .locations }) {
+                        Label("Locations", systemImage: "location.fill")
+                    }
+                    .buttonStyle(.plain)
+                    .listRowBackground(navigationState.selectedTab == .locations ? Color.accentColor.opacity(0.1) : nil)
                     
-                    Label("Categories", systemImage: "square.grid.2x2.fill")
-                        .tag(iPadTab.categories)
+                    Button(action: { navigationState.selectedTab = .categories }) {
+                        Label("Categories", systemImage: "square.grid.2x2.fill")
+                    }
+                    .buttonStyle(.plain)
+                    .listRowBackground(navigationState.selectedTab == .categories ? Color.accentColor.opacity(0.1) : nil)
                 }
                 
                 Section("Insights") {
-                    Label("Analytics", systemImage: "chart.line.uptrend.xyaxis")
-                        .tag(iPadTab.analytics)
+                    Button(action: { navigationState.selectedTab = .analytics }) {
+                        Label("Analytics", systemImage: "chart.line.uptrend.xyaxis")
+                    }
+                    .buttonStyle(.plain)
+                    .listRowBackground(navigationState.selectedTab == .analytics ? Color.accentColor.opacity(0.1) : nil)
                     
-                    Label("Reports", systemImage: "doc.text.fill")
-                        .tag(iPadTab.reports)
+                    Button(action: { navigationState.selectedTab = .reports }) {
+                        Label("Reports", systemImage: "doc.text.fill")
+                    }
+                    .buttonStyle(.plain)
+                    .listRowBackground(navigationState.selectedTab == .reports ? Color.accentColor.opacity(0.1) : nil)
                     
-                    Label("Budget", systemImage: "dollarsign.circle.fill")
-                        .tag(iPadTab.budget)
+                    Button(action: { navigationState.selectedTab = .budget }) {
+                        Label("Budget", systemImage: "dollarsign.circle.fill")
+                    }
+                    .buttonStyle(.plain)
+                    .listRowBackground(navigationState.selectedTab == .budget ? Color.accentColor.opacity(0.1) : nil)
                 }
                 
                 Section("Tools") {
-                    Label("Scanner", systemImage: "barcode.viewfinder")
-                        .tag(iPadTab.scanner)
+                    Button(action: { navigationState.selectedTab = .scanner }) {
+                        Label("Scanner", systemImage: "barcode.viewfinder")
+                    }
+                    .buttonStyle(.plain)
+                    .listRowBackground(navigationState.selectedTab == .scanner ? Color.accentColor.opacity(0.1) : nil)
                     
-                    Label("Search", systemImage: "magnifyingglass")
-                        .tag(iPadTab.search)
+                    Button(action: { navigationState.selectedTab = .search }) {
+                        Label("Search", systemImage: "magnifyingglass")
+                    }
+                    .buttonStyle(.plain)
+                    .listRowBackground(navigationState.selectedTab == .search ? Color.accentColor.opacity(0.1) : nil)
                     
-                    Label("Import/Export", systemImage: "square.and.arrow.up.on.square.fill")
-                        .tag(iPadTab.importExport)
+                    Button(action: { navigationState.selectedTab = .importExport }) {
+                        Label("Import/Export", systemImage: "square.and.arrow.up.on.square.fill")
+                    }
+                    .buttonStyle(.plain)
+                    .listRowBackground(navigationState.selectedTab == .importExport ? Color.accentColor.opacity(0.1) : nil)
                 }
                 
                 Section {
-                    Label("Settings", systemImage: "gear")
-                        .tag(iPadTab.settings)
+                    Button(action: { navigationState.selectedTab = .settings }) {
+                        Label("Settings", systemImage: "gear")
+                    }
+                    .buttonStyle(.plain)
+                    .listRowBackground(navigationState.selectedTab == .settings ? Color.accentColor.opacity(0.1) : nil)
                 }
             }
             .listStyle(SidebarListStyle())
