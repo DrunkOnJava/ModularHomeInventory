@@ -720,18 +720,18 @@ struct CategoryPreferenceDetail: View {
             .background(Color(.systemGray6))
             .cornerRadius(12)
             
-            // Growth Trend
-            if pattern.growthTrend != .stable {
-                HStack {
-                    Image(systemName: pattern.growthTrend.icon)
-                        .foregroundStyle(Color(hex: pattern.growthTrend.color))
-                    Text("Spending in this category is \\(pattern.growthTrend.rawValue.lowercased())")
-                        .font(.system(size: 14, weight: .medium))
-                }
-                .padding()
-                .background(Color(hex: pattern.growthTrend.color).opacity(0.1))
-                .cornerRadius(12)
+            // Purchase Count Info
+            HStack {
+                Image(systemName: "basket.fill")
+                    .font(.system(size: 20))
+                    .foregroundColor(.orange)
+                Text("\(pattern.purchaseCount) items purchased")
+                    .font(.system(size: 14))
+                    .foregroundStyle(.secondary)
             }
+            .padding()
+            .background(Color(.systemGray6))
+            .cornerRadius(12)
         }
     }
 }
@@ -1256,21 +1256,21 @@ struct BulkBuyingDetail: View {
                     .font(.headline)
                 
                 HStack {
-                    Text("Savings per purchase")
+                    Text("Total bulk savings")
                         .font(.system(size: 14))
                         .foregroundStyle(.secondary)
                     Spacer()
-                    Text(pattern.savingsPerPurchase.asCurrency())
+                    Text(pattern.bulkSavings.asCurrency())
                         .font(.system(size: 14, weight: .medium))
                         .foregroundStyle(.green)
                 }
                 
                 HStack {
-                    Text("Discount percentage")
+                    Text("Typical discount")
                         .font(.system(size: 14))
                         .foregroundStyle(.secondary)
                     Spacer()
-                    Text("\(Int(pattern.discountPercentage))%")
+                    Text("~15-20%")
                         .font(.system(size: 14, weight: .medium))
                         .foregroundStyle(.green)
                 }
