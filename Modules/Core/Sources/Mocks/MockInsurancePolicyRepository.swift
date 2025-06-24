@@ -55,7 +55,6 @@ public final class MockInsurancePolicyRepository: InsurancePolicyRepository {
                         dateOfLoss: Date().addingTimeInterval(-30 * 24 * 60 * 60),
                         description: "MacBook Pro water damage",
                         claimAmount: 2500,
-                        status: .paid,
                         paidAmount: 2250
                     )
                 ]

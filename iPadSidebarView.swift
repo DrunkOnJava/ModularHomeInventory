@@ -21,11 +21,11 @@ struct iPadSidebarView: View {
                     .buttonStyle(.plain)
                     .listRowBackground(navigationState.selectedTab == .items ? Color.accentColor.opacity(0.1) : nil)
                     
-                    Button(action: { navigationState.selectedTab = .collections }) {
-                        Label("Collections", systemImage: "folder.fill")
+                    Button(action: { navigationState.selectedTab = .insurance }) {
+                        Label("Insurance", systemImage: "shield.fill")
                     }
                     .buttonStyle(.plain)
-                    .listRowBackground(navigationState.selectedTab == .collections ? Color.accentColor.opacity(0.1) : nil)
+                    .listRowBackground(navigationState.selectedTab == .insurance ? Color.accentColor.opacity(0.1) : nil)
                     
                     Button(action: { navigationState.selectedTab = .locations }) {
                         Label("Locations", systemImage: "location.fill")
@@ -111,8 +111,8 @@ struct iPadSidebarView: View {
             case .items:
                 ItemsNavigationView()
                     .environmentObject(coordinator)
-            case .collections:
-                CollectionsNavigationView()
+            case .insurance:
+                InsuranceNavigationView()
                     .environmentObject(coordinator)
             case .locations:
                 LocationsNavigationView()
@@ -151,7 +151,7 @@ class iPadNavigationState: ObservableObject {
     @Published var selectedTab: iPadTab = .items
     @Published var showAddItem = false
     @Published var selectedItem: Item?
-    @Published var selectedCollection: Collection?
+    @Published var selectedInsurancePolicy: InsurancePolicy?
     @Published var selectedLocation: Location?
     @Published var showExport = false
     @Published var showImport = false
@@ -163,7 +163,7 @@ class iPadNavigationState: ObservableObject {
 /// iPad navigation tabs
 enum iPadTab: String, CaseIterable {
     case items
-    case collections
+    case insurance
     case locations
     case categories
     case analytics
@@ -191,12 +191,12 @@ struct ItemsNavigationView: View {
     }
 }
 
-struct CollectionsNavigationView: View {
+struct InsuranceNavigationView: View {
     @EnvironmentObject var coordinator: AppCoordinator
     
     var body: some View {
         NavigationStack {
-            coordinator.itemsModule.makeCollectionsListView()
+            coordinator.itemsModule.makeInsuranceDashboardView()
         }
     }
 }
