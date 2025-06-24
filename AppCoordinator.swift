@@ -149,6 +149,12 @@ final class AppCoordinator: ObservableObject {
             warrantyRepository: warrantyRepository,
             budgetRepository: nil  // Will be added when budget repository is available
         )
+        
+        // Configure Spotlight integration
+        Core.SpotlightIntegrationManager.shared.configure(
+            itemRepository: itemRepository,
+            locationRepository: locationRepository
+        )
     }
 }
 

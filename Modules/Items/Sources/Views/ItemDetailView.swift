@@ -185,6 +185,7 @@ struct ItemDetailView: View {
                 )
             }
         }
+        .searchableItem(viewModel.item, location: viewModel.location)
     }
     
     // MARK: - Sections

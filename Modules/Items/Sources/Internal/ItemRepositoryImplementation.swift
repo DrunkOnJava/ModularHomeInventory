@@ -36,8 +36,16 @@ final class ItemRepositoryImplementation: ItemRepository {
             queue.async(flags: .barrier) {
                 if let index = self.items.firstIndex(where: { $0.id == entity.id }) {
                     self.items[index] = entity
+                    // Post update notification for Spotlight
+                    DispatchQueue.main.async {
+                        NotificationCenter.default.post(name: .itemUpdated, object: entity)
+                    }
                 } else {
                     self.items.append(entity)
+                    // Post add notification for Spotlight
+                    DispatchQueue.main.async {
+                        NotificationCenter.default.post(name: .itemAdded, object: entity)
+                    }
                 }
                 continuation.resume()
             }
@@ -67,6 +75,10 @@ final class ItemRepositoryImplementation: ItemRepository {
         return await withCheckedContinuation { continuation in
             queue.async(flags: .barrier) {
                 self.items.removeAll { $0.id == id }
+                // Post delete notification for Spotlight
+                DispatchQueue.main.async {
+                    NotificationCenter.default.post(name: .itemDeleted, object: id)
+                }
                 continuation.resume()
             }
         }

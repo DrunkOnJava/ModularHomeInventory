@@ -133,6 +133,11 @@ struct SettingsView: View {
                 Label("Notifications", systemImage: "bell")
             }
             
+            // Spotlight Search
+            NavigationLink(destination: SpotlightSettingsView()) {
+                Label("Spotlight Search", systemImage: "magnifyingglass")
+            }
+            
             // Dark Mode
             Toggle(isOn: Binding(
                 get: { ThemeManager.shared.isDarkMode },
