@@ -170,7 +170,10 @@ struct ScannerSettingsView: View {
 }
 
 #Preview {
-    @State var settings = AppSettings()
-    let viewModel = SettingsViewModel(settingsStorage: UserDefaultsSettingsStorage())
-    return ScannerSettingsView(settings: $settings, viewModel: viewModel)
+    NavigationView {
+        ScannerSettingsView(
+            settings: .constant(AppSettings()),
+            viewModel: SettingsViewModel(settingsStorage: UserDefaultsSettingsStorage())
+        )
+    }
 }

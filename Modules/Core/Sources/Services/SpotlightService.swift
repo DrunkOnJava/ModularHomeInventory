@@ -291,6 +291,7 @@ public extension SpotlightService {
 
 public extension Item {
     /// Create a searchable item for this item
+    @MainActor
     func toSearchableItem(location: Location? = nil) -> CSSearchableItem {
         SpotlightService.shared.createSearchableItem(for: self, location: location)
     }

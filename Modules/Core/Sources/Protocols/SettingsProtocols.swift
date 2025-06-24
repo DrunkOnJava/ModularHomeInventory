@@ -63,4 +63,8 @@ extension SettingsKey {
     // Crash Reporting
     public static let crashReportingEnabled = SettingsKey("crash_reporting_enabled")
     public static let crashReportingAutoSend = SettingsKey("crash_reporting_auto_send")
+    public static let crashReportingDetailLevel = SettingsKey("crash_reporting_detail_level")
+    
+    // VoiceOver Additional
+    public static let voiceOverAnnouncementDelay = SettingsKey("voiceover_announcement_delay")
 }

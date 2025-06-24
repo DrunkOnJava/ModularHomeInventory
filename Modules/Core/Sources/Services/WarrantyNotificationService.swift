@@ -82,6 +82,8 @@ public final class WarrantyNotificationService: ObservableObject {
             return await requestNotificationPermission()
         case .denied:
             return false
+        case .ephemeral:
+            return true
         @unknown default:
             return false
         }

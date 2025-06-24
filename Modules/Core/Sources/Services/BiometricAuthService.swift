@@ -102,6 +102,8 @@ public final class BiometricAuthService: ObservableObject {
                 biometricType = .touchID
             case .faceID:
                 biometricType = .faceID
+            case .opticID:
+                biometricType = .none // Treat opticID as none for now
             @unknown default:
                 biometricType = .none
             }

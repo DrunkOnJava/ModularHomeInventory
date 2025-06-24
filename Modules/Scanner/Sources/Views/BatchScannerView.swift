@@ -242,7 +242,7 @@ final class BatchScannerViewModel: NSObject, ObservableObject {
         itemTemplateRepository: any ItemTemplateRepository,
         createItemView: ((String) -> AnyView)? = nil,
         soundService: SoundFeedbackService? = nil,
-        settingsStorage: SettingsStorageProtocol? = nil,
+        settingsStorage: (any Core.SettingsStorageProtocol)? = nil,
         scanHistoryRepository: (any ScanHistoryRepository)? = nil,
         completion: @escaping ([Item]) -> Void
     ) {

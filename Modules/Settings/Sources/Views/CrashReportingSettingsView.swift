@@ -4,7 +4,11 @@ import SharedUI
 
 /// Settings view for crash reporting configuration
 struct CrashReportingSettingsView: View {
-    @ObservedObject var settingsStorage: any SettingsStorageProtocol
+    @StateObject private var settingsWrapper: SettingsStorageWrapper
+    
+    init(settingsStorage: any SettingsStorageProtocol) {
+        self._settingsWrapper = StateObject(wrappedValue: SettingsStorageWrapper(storage: settingsStorage))
+    }
     @StateObject private var crashService = CrashReportingService.shared
     @State private var showingReportDetails = false
     @State private var showingPrivacyInfo = false
@@ -227,24 +231,24 @@ struct CrashReportingSettingsView: View {
             get: { crashService.isEnabled },
             set: { enabled in
                 crashService.setEnabled(enabled)
-                settingsStorage.set(enabled, forKey: .crashReportingEnabled)
+                settingsWrapper.set(enabled, forKey: .crashReportingEnabled)
             }
         )
     }
     
     private func bindingForBool(key: SettingsKey, defaultValue: Bool) -> Binding<Bool> {
         Binding(
-            get: { settingsStorage.bool(forKey: key) ?? defaultValue },
-            set: { settingsStorage.set($0, forKey: key) }
+            get: { settingsWrapper.bool(forKey: key) ?? defaultValue },
+            set: { settingsWrapper.set($0, forKey: key) }
         )
     }
     
     private func bindingForDetailLevel() -> Binding<String> {
         Binding(
             get: { 
-                settingsStorage.string(forKey: .crashReportingDetailLevel) ?? CrashReportDetailLevel.standard.rawValue 
+                settingsWrapper.string(forKey: .crashReportingDetailLevel) ?? CrashReportDetailLevel.standard.rawValue 
             },
-            set: { settingsStorage.set($0, forKey: .crashReportingDetailLevel) }
+            set: { settingsWrapper.set($0, forKey: .crashReportingDetailLevel) }
         )
     }
     

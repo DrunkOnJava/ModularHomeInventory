@@ -10,7 +10,7 @@ final class SettingsViewModel: ObservableObject {
     @Published var hasConflicts = false
     @Published var conflictCount = 0
     
-    private let settingsStorage: SettingsStorageProtocol
+    let settingsStorage: SettingsStorageProtocol
     private var cancellables = Set<AnyCancellable>()
     
     // Repository references for conflict resolution

@@ -155,13 +155,13 @@ final class BarcodeScannerViewModel: NSObject, ObservableObject {
     private var videoDevice: AVCaptureDevice?
     private let completion: (String) -> Void
     private let soundService: SoundFeedbackService?
-    private let settingsStorage: SettingsStorageProtocol?
+    private let settingsStorage: (any Core.SettingsStorageProtocol)?
     private let scanHistoryRepository: (any ScanHistoryRepository)?
     private var lastScanTime: Date = Date()
     
     init(
         soundService: SoundFeedbackService? = nil,
-        settingsStorage: SettingsStorageProtocol? = nil,
+        settingsStorage: (any Core.SettingsStorageProtocol)? = nil,
         scanHistoryRepository: (any ScanHistoryRepository)? = nil,
         completion: @escaping (String) -> Void
     ) {

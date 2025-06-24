@@ -26,7 +26,7 @@ public struct DynamicTypeModifier: ViewModifier {
     }
     
     private var textSizePreference: TextSizePreference? {
-        guard let savedSize = wrapper.storage.string(forKey: SettingsKey(rawValue: "textSizePreference")),
+        guard let savedSize = wrapper.storage.string(forKey: SettingsKey.textSizePreference),
               let preference = TextSizePreference(rawValue: savedSize) else {
             return nil
         }
@@ -34,7 +34,7 @@ public struct DynamicTypeModifier: ViewModifier {
     }
     
     private var legibilityWeight: LegibilityWeight? {
-        guard let enableBold = wrapper.storage.bool(forKey: SettingsKey(rawValue: "enableBoldText")),
+        guard let enableBold = wrapper.storage.bool(forKey: SettingsKey.enableBoldText),
               enableBold else {
             return nil
         }

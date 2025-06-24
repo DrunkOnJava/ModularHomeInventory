@@ -15,13 +15,17 @@ public func withErrorReporting<T>(
     do {
         return try closure()
     } catch {
-        CrashReportingService.shared.reportError(
-            error,
-            userInfo: ["operation": operation],
-            file: file,
-            function: function,
-            line: line
-        )
+        Task { @MainActor in
+            Task { @MainActor in
+                CrashReportingService.shared.reportError(
+                    error,
+                    userInfo: ["operation": operation],
+                    file: file,
+                    function: function,
+                    line: line
+                )
+            }
+        }
         return nil
     }
 }
@@ -38,13 +42,17 @@ public func withErrorReporting<T>(
     do {
         return try await closure()
     } catch {
-        CrashReportingService.shared.reportError(
-            error,
-            userInfo: ["operation": operation],
-            file: file,
-            function: function,
-            line: line
-        )
+        Task { @MainActor in
+            Task { @MainActor in
+                CrashReportingService.shared.reportError(
+                    error,
+                    userInfo: ["operation": operation],
+                    file: file,
+                    function: function,
+                    line: line
+                )
+            }
+        }
         return nil
     }
 }
@@ -62,13 +70,15 @@ public func withDefault<T>(
         return try closure()
     } catch {
         if let operation = operation {
-            CrashReportingService.shared.reportError(
-                error,
-                userInfo: ["operation": operation],
-                file: file,
-                function: function,
-                line: line
-            )
+            Task { @MainActor in
+                CrashReportingService.shared.reportError(
+                    error,
+                    userInfo: ["operation": operation],
+                    file: file,
+                    function: function,
+                    line: line
+                )
+            }
         }
         return defaultValue
     }
@@ -87,13 +97,15 @@ public func withDefault<T>(
         return try await closure()
     } catch {
         if let operation = operation {
-            CrashReportingService.shared.reportError(
-                error,
-                userInfo: ["operation": operation],
-                file: file,
-                function: function,
-                line: line
-            )
+            Task { @MainActor in
+                CrashReportingService.shared.reportError(
+                    error,
+                    userInfo: ["operation": operation],
+                    file: file,
+                    function: function,
+                    line: line
+                )
+            }
         }
         return defaultValue
     }
@@ -110,13 +122,15 @@ public func productionAssert(
     assert(condition(), message(), file: file, line: line)
     #else
     if !condition() {
-        CrashReportingService.shared.reportNonFatal(
-            "Assertion failed: \(message())",
-            userInfo: nil,
-            file: "\(file)",
-            function: "productionAssert",
-            line: Int(line)
-        )
+        Task { @MainActor in
+            CrashReportingService.shared.reportNonFatal(
+                "Assertion failed: \(message())",
+                userInfo: nil,
+                file: "\(file)",
+                function: "productionAssert",
+                line: Int(line)
+            )
+        }
     }
     #endif
 }
@@ -129,13 +143,15 @@ public func reportedFatalError(
     function: StaticString = #function,
     line: UInt = #line
 ) -> Never {
-    CrashReportingService.shared.reportNonFatal(
-        "Fatal error: \(message())",
-        userInfo: userInfo,
-        file: "\(file)",
-        function: "\(function)",
-        line: Int(line)
-    )
+    Task { @MainActor in
+        CrashReportingService.shared.reportNonFatal(
+            "Fatal error: \(message())",
+            userInfo: userInfo,
+            file: "\(file)",
+            function: "\(function)",
+            line: Int(line)
+        )
+    }
     
     fatalError(message(), file: file, line: line)
 }
@@ -156,13 +172,15 @@ public extension Result {
                 userInfo["operation"] = operation
             }
             
-            CrashReportingService.shared.reportError(
-                error,
-                userInfo: userInfo.isEmpty ? nil : userInfo,
-                file: file,
-                function: function,
-                line: line
-            )
+            Task { @MainActor in
+                CrashReportingService.shared.reportError(
+                    error,
+                    userInfo: userInfo.isEmpty ? nil : userInfo,
+                    file: file,
+                    function: function,
+                    line: line
+                )
+            }
         }
     }
 }
@@ -183,13 +201,15 @@ public extension Task where Failure == Error {
             do {
                 return try await block()
             } catch {
-                CrashReportingService.shared.reportError(
-                    error,
-                    userInfo: ["operation": operation],
-                    file: file,
-                    function: function,
-                    line: line
-                )
+                await MainActor.run {
+                    CrashReportingService.shared.reportError(
+                        error,
+                        userInfo: ["operation": operation],
+                        file: file,
+                        function: function,
+                        line: line
+                    )
+                }
                 throw error
             }
         }
@@ -219,10 +239,12 @@ public struct ErrorBoundaryView<Content: View>: View {
             if let error = currentError {
                 errorView(error)
                     .onAppear {
-                        CrashReportingService.shared.reportError(
-                            error,
-                            userInfo: ["context": "view_error_boundary"]
-                        )
+                        Task { @MainActor in
+                            CrashReportingService.shared.reportError(
+                                error,
+                                userInfo: ["context": "view_error_boundary"]
+                            )
+                        }
                     }
             } else {
                 content()

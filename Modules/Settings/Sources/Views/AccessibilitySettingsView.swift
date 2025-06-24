@@ -3,7 +3,11 @@ import SharedUI
 import Core
 
 struct AccessibilitySettingsView: View {
-    @ObservedObject var settingsStorage: any SettingsStorageProtocol
+    @StateObject private var settingsWrapper: SettingsStorageWrapper
+    
+    init(settingsStorage: any SettingsStorageProtocol) {
+        self._settingsWrapper = StateObject(wrappedValue: SettingsStorageWrapper(storage: settingsStorage))
+    }
     @State private var selectedTextSize: TextSizePreference = .medium
     @State private var showPreview = false
     @Environment(\.sizeCategory) private var sizeCategory
@@ -160,7 +164,7 @@ struct AccessibilitySettingsView: View {
     // MARK: - Helper Methods
     
     private func loadCurrentTextSize() {
-        if let savedSize = settingsStorage.string(forKey: .textSizePreference),
+        if let savedSize = settingsWrapper.string(forKey: .textSizePreference),
            let size = TextSizePreference(rawValue: savedSize) {
             selectedTextSize = size
         } else {
@@ -170,7 +174,7 @@ struct AccessibilitySettingsView: View {
     }
     
     private func saveTextSize(_ size: TextSizePreference) {
-        settingsStorage.set(size.rawValue, forKey: .textSizePreference)
+        settingsWrapper.set(size.rawValue, forKey: .textSizePreference)
         
         // Apply to the app immediately
         if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene {
@@ -195,8 +199,8 @@ struct AccessibilitySettingsView: View {
     
     private func bindingForBool(key: SettingsKey, defaultValue: Bool) -> Binding<Bool> {
         Binding(
-            get: { settingsStorage.bool(forKey: key) ?? defaultValue },
-            set: { settingsStorage.set($0, forKey: key) }
+            get: { settingsWrapper.bool(forKey: key) ?? defaultValue },
+            set: { settingsWrapper.set($0, forKey: key) }
         )
     }
 }

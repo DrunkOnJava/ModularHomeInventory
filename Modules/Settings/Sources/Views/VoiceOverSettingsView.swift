@@ -4,7 +4,11 @@ import SharedUI
 
 /// Settings view for VoiceOver preferences
 struct VoiceOverSettingsView: View {
-    @ObservedObject var settingsStorage: any SettingsStorageProtocol
+    @StateObject private var settingsWrapper: SettingsStorageWrapper
+    
+    init(settingsStorage: any SettingsStorageProtocol) {
+        self._settingsWrapper = StateObject(wrappedValue: SettingsStorageWrapper(storage: settingsStorage))
+    }
     @Environment(\.accessibilityVoiceOverEnabled) private var voiceOverEnabled
     @State private var showingGuide = false
     
@@ -116,12 +120,12 @@ struct VoiceOverSettingsView: View {
                 HStack {
                     Label("Announcement Delay", systemImage: "timer")
                     Spacer()
-                    Text("\(settingsStorage.integer(forKey: .voiceOverAnnouncementDelay) ?? 1)s")
+                    Text("\(settingsWrapper.integer(forKey: .voiceOverAnnouncementDelay) ?? 1)s")
                         .foregroundStyle(AppColors.textSecondary)
                 }
             }
             .voiceOverLabel("Announcement delay")
-            .voiceOverValue("\(settingsStorage.integer(forKey: .voiceOverAnnouncementDelay) ?? 1) seconds")
+            .voiceOverValue("\(settingsWrapper.integer(forKey: .voiceOverAnnouncementDelay) ?? 1) seconds")
             .voiceOverHint("Adjust the delay before announcements")
         } header: {
             Text("Announcements")
@@ -135,11 +139,11 @@ struct VoiceOverSettingsView: View {
         Section {
             NavigationLink(destination: VoiceOverGesturesView()) {
                 Label("Learn Gestures", systemImage: "hand.draw")
-                    .voiceOverNavigationLink(
-                        label: "Learn VoiceOver gestures",
-                        hint: "Double tap to view gesture guide"
-                    )
             }
+            .voiceOverNavigationLink(
+                label: "Learn VoiceOver gestures",
+                hint: "Double tap to view gesture guide"
+            )
             
             Toggle(isOn: bindingForBool(key: .voiceOverCustomActions, defaultValue: true)) {
                 Label("Enable Custom Actions", systemImage: "hand.tap")
@@ -188,15 +192,15 @@ struct VoiceOverSettingsView: View {
     
     private func bindingForBool(key: SettingsKey, defaultValue: Bool) -> Binding<Bool> {
         Binding(
-            get: { settingsStorage.bool(forKey: key) ?? defaultValue },
-            set: { settingsStorage.set($0, forKey: key) }
+            get: { settingsWrapper.bool(forKey: key) ?? defaultValue },
+            set: { settingsWrapper.set($0, forKey: key) }
         )
     }
     
     private func bindingForInt(key: SettingsKey, defaultValue: Int) -> Binding<Int> {
         Binding(
-            get: { settingsStorage.integer(forKey: key) ?? defaultValue },
-            set: { settingsStorage.set($0, forKey: key) }
+            get: { settingsWrapper.integer(forKey: key) ?? defaultValue },
+            set: { settingsWrapper.set($0, forKey: key) }
         )
     }
     
