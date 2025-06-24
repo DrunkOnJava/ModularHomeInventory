@@ -103,12 +103,6 @@ public struct TextStyle: ViewModifier {
 }
 
 public extension View {
-    /// Legacy text style modifier - use dynamicTextStyle for Dynamic Type support
-    @available(*, deprecated, message: "Use dynamicTextStyle for Dynamic Type support")
-    func textStyle(_ style: TextStyle.Style) -> some View {
-        modifier(TextStyle(style: style))
-    }
-    
     /// Apply text style with Dynamic Type support
     func textStyle(_ style: DynamicTextStyle.Style) -> some View {
         modifier(DynamicTextStyle(style: style))

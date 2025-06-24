@@ -229,7 +229,7 @@ public extension View {
 
 // MARK: - Image Accessibility
 
-public extension Image {
+public extension View {
     /// Make an image accessible with a label
     func accessibleImage(_ label: String, isDecorative: Bool = false) -> some View {
         Group {
@@ -246,7 +246,7 @@ public extension Image {
 
 // MARK: - TextField Accessibility
 
-public extension TextField {
+public extension View {
     /// Add VoiceOver support for text fields
     func voiceOverTextField(
         label: String,

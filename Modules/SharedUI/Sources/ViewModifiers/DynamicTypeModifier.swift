@@ -1,12 +1,22 @@
 import SwiftUI
 import Core
 
+/// Observable wrapper for SettingsStorageProtocol
+@MainActor
+private class SettingsStorageWrapper: ObservableObject {
+    let storage: any SettingsStorageProtocol
+    
+    init(storage: any SettingsStorageProtocol) {
+        self.storage = storage
+    }
+}
+
 /// View modifier to apply user's text size preference from settings
 public struct DynamicTypeModifier: ViewModifier {
-    @ObservedObject private var settingsStorage: any SettingsStorageProtocol
+    @StateObject private var wrapper: SettingsStorageWrapper
     
     public init(settingsStorage: any SettingsStorageProtocol) {
-        self.settingsStorage = settingsStorage
+        self._wrapper = StateObject(wrappedValue: SettingsStorageWrapper(storage: settingsStorage))
     }
     
     public func body(content: Content) -> some View {
@@ -16,7 +26,7 @@ public struct DynamicTypeModifier: ViewModifier {
     }
     
     private var textSizePreference: TextSizePreference? {
-        guard let savedSize = settingsStorage.string(forKey: .textSizePreference),
+        guard let savedSize = wrapper.storage.string(forKey: SettingsKey(rawValue: "textSizePreference")),
               let preference = TextSizePreference(rawValue: savedSize) else {
             return nil
         }
@@ -24,7 +34,7 @@ public struct DynamicTypeModifier: ViewModifier {
     }
     
     private var legibilityWeight: LegibilityWeight? {
-        guard let enableBold = settingsStorage.bool(forKey: .enableBoldText),
+        guard let enableBold = wrapper.storage.bool(forKey: SettingsKey(rawValue: "enableBoldText")),
               enableBold else {
             return nil
         }
