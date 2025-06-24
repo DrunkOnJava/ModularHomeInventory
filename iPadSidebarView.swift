@@ -176,10 +176,12 @@ struct ItemsNavigationView: View {
     @EnvironmentObject var coordinator: AppCoordinator
     
     var body: some View {
-        coordinator.itemsModule.makeItemsListView(
-            onSearchTapped: {},
-            onBarcodeSearchTapped: {}
-        )
+        NavigationStack {
+            coordinator.itemsModule.makeItemsListView(
+                onSearchTapped: {},
+                onBarcodeSearchTapped: {}
+            )
+        }
     }
 }
 
@@ -187,7 +189,9 @@ struct CollectionsNavigationView: View {
     @EnvironmentObject var coordinator: AppCoordinator
     
     var body: some View {
-        coordinator.itemsModule.makeCollectionsListView()
+        NavigationStack {
+            coordinator.itemsModule.makeCollectionsListView()
+        }
     }
 }
 
@@ -195,7 +199,9 @@ struct LocationsNavigationView: View {
     @EnvironmentObject var coordinator: AppCoordinator
     
     var body: some View {
-        coordinator.itemsModule.makeStorageUnitsListView()
+        NavigationStack {
+            coordinator.itemsModule.makeStorageUnitsListView()
+        }
     }
 }
 
@@ -203,7 +209,9 @@ struct CategoriesNavigationView: View {
     @EnvironmentObject var coordinator: AppCoordinator
     
     var body: some View {
-        coordinator.itemsModule.makeTagsManagementView()
+        NavigationStack {
+            coordinator.itemsModule.makeTagsManagementView()
+        }
     }
 }
 
@@ -211,7 +219,9 @@ struct AnalyticsNavigationView: View {
     @EnvironmentObject var coordinator: AppCoordinator
     
     var body: some View {
-        coordinator.itemsModule.makeSpendingDashboardView()
+        NavigationStack {
+            coordinator.itemsModule.makeSpendingDashboardView()
+        }
     }
 }
 
@@ -219,7 +229,9 @@ struct ReportsNavigationView: View {
     @EnvironmentObject var coordinator: AppCoordinator
     
     var body: some View {
-        coordinator.itemsModule.makeDepreciationReportView()
+        NavigationStack {
+            coordinator.itemsModule.makeDepreciationReportView()
+        }
     }
 }
 
@@ -227,7 +239,9 @@ struct BudgetNavigationView: View {
     @EnvironmentObject var coordinator: AppCoordinator
     
     var body: some View {
-        coordinator.itemsModule.makeBudgetDashboardView()
+        NavigationStack {
+            coordinator.itemsModule.makeBudgetDashboardView()
+        }
     }
 }
 
@@ -235,7 +249,9 @@ struct ScannerNavigationView: View {
     @EnvironmentObject var coordinator: AppCoordinator
     
     var body: some View {
-        coordinator.scannerModule.makeScannerView()
+        NavigationStack {
+            coordinator.scannerModule.makeScannerView()
+        }
     }
 }
 
@@ -243,7 +259,9 @@ struct SearchNavigationView: View {
     @EnvironmentObject var coordinator: AppCoordinator
     
     var body: some View {
-        coordinator.itemsModule.makeNaturalLanguageSearchView()
+        NavigationStack {
+            coordinator.itemsModule.makeNaturalLanguageSearchView()
+        }
     }
 }
 
@@ -251,8 +269,10 @@ struct ImportExportNavigationView: View {
     @EnvironmentObject var coordinator: AppCoordinator
     
     var body: some View {
-        ImportExportDashboard()
-            .environmentObject(coordinator)
+        NavigationStack {
+            ImportExportDashboard()
+                .environmentObject(coordinator)
+        }
     }
 }
 
@@ -260,7 +280,9 @@ struct SettingsNavigationView: View {
     @EnvironmentObject var coordinator: AppCoordinator
     
     var body: some View {
-        coordinator.settingsModule.makeSettingsView()
+        NavigationStack {
+            coordinator.settingsModule.makeSettingsView()
+        }
     }
 }
 
