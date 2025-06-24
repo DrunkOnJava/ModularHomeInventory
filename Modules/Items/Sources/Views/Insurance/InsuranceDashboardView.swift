@@ -94,7 +94,7 @@ public struct InsuranceDashboardView: View {
                     Text("Coverage Analysis")
                         .font(.title2)
                     if viewModel.coverageAnalysis != nil {
-                        Text("Total Coverage: \(analysis.coveragePercentage, format: .percent)")
+                        Text("Total Coverage: \(viewModel.coverageAnalysis?.coveragePercentage ?? 0, format: .percent)")
                     }
                 }
                 .navigationTitle("Coverage Analysis")
