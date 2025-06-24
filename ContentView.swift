@@ -14,12 +14,11 @@ struct ContentView: View {
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     
     var body: some View {
-        if UIDevice.current.userInterfaceIdiom == .pad {
-            // Use iPad-optimized interface
-            iPadApp()
-                .environmentObject(coordinator)
-        } else {
-            // iPhone interface
+        // TODO: Enable iPad interface once files are added to target
+        // if UIDevice.current.userInterfaceIdiom == .pad {
+        //     iPadApp()
+        //         .environmentObject(coordinator)
+        // } else {
             TabView(selection: $selectedTab) {
             // Items Tab - Now using the Items module!
             coordinator.itemsModule.makeItemsListView(onSearchTapped: {
@@ -69,7 +68,7 @@ struct ContentView: View {
             coordinator.itemsModule.makeBarcodeSearchView()
         }
         // Biometric lock would be added here when BiometricLockModifier is available
-        }
+        // } // Closing brace for iPad condition
     }
 }
 
