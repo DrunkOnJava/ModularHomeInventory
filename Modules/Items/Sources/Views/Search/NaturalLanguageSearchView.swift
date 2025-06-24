@@ -52,8 +52,7 @@ struct NaturalLanguageSearchView: View {
     }
     
     var body: some View {
-        NavigationView {
-            VStack(spacing: 0) {
+        VStack(spacing: 0) {
                 // Search bar with natural language hints
                 VStack(alignment: .leading, spacing: 8) {
                     // TODO: Re-enable search field with suggestions
@@ -250,7 +249,6 @@ struct NaturalLanguageSearchView: View {
                 isSearchFocused = true
             }
         }
-    }
 }
 
 // MARK: - Query Interpretation View

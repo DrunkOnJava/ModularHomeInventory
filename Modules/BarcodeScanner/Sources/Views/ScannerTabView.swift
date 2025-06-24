@@ -48,8 +48,7 @@ public struct ScannerTabView: View {
     }
     
     public var body: some View {
-        NavigationView {
-            VStack(spacing: AppSpacing.lg) {
+        VStack(spacing: AppSpacing.lg) {
                 // Mode selector
                 Picker("Scan Mode", selection: $scanMode) {
                     ForEach(ScanMode.allCases, id: \.self) { mode in
@@ -124,7 +123,6 @@ public struct ScannerTabView: View {
                 }
             }
         }
-    }
     
     @ViewBuilder
     private var scannerSheet: some View {

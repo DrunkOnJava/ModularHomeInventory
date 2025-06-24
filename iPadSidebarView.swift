@@ -143,13 +143,6 @@ struct iPadSidebarView: View {
                     .environmentObject(coordinator)
             }
         }
-        .toolbar {
-            ToolbarItem(placement: .primaryAction) {
-                Button(action: { navigationState.showAddItem = true }) {
-                    Image(systemName: "plus")
-                }
-            }
-        }
     }
 }
 
