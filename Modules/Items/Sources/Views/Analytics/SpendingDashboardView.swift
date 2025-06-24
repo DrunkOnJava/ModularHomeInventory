@@ -542,7 +542,7 @@ struct SpendingDashboardView: View {
             HStack(spacing: AppSpacing.md) {
                 // Most expensive category
                 if let topCategory = viewModel.topCategories.first {
-                    InsightCard(
+                    QuickInsightCard(
                         title: "Top Category",
                         value: topCategory.category.displayName,
                         subtitle: topCategory.totalSpent.formatted(.currency(code: viewModel.currency)),
@@ -553,7 +553,7 @@ struct SpendingDashboardView: View {
                 
                 // Spending trend
                 if viewModel.spendingTrend != 0 {
-                    InsightCard(
+                    QuickInsightCard(
                         title: "Trend",
                         value: "\(viewModel.spendingTrend > 0 ? "+" : "")\(Int(viewModel.spendingTrend))%",
                         subtitle: "vs last period",
@@ -564,7 +564,7 @@ struct SpendingDashboardView: View {
                 
                 // Most frequent store
                 if let topRetailer = viewModel.topRetailers.first {
-                    InsightCard(
+                    QuickInsightCard(
                         title: "Favorite Store",
                         value: topRetailer.name,
                         subtitle: "\(topRetailer.itemCount) purchases",
@@ -608,7 +608,7 @@ struct SpendingDashboardView: View {
 
 // MARK: - Supporting Views
 
-struct InsightCard: View {
+struct QuickInsightCard: View {
     let title: String
     let value: String
     let subtitle: String
