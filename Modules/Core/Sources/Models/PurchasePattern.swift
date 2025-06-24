@@ -58,7 +58,7 @@ public struct RecurringPattern: Codable, Identifiable {
     public let itemName: String
     public let category: ItemCategory
     public let averageInterval: TimeInterval // in days
-    public let frequency: PurchaseFrequency
+    public let frequency: PatternFrequency
     public let lastPurchaseDate: Date
     public let nextExpectedDate: Date
     public let confidence: Double // 0-1
@@ -68,7 +68,7 @@ public struct RecurringPattern: Codable, Identifiable {
         itemName: String,
         category: ItemCategory,
         averageInterval: TimeInterval,
-        frequency: PurchaseFrequency,
+        frequency: PatternFrequency,
         lastPurchaseDate: Date,
         nextExpectedDate: Date,
         confidence: Double
@@ -84,8 +84,8 @@ public struct RecurringPattern: Codable, Identifiable {
     }
 }
 
-/// Purchase frequency
-public enum PurchaseFrequency: String, Codable, CaseIterable {
+/// Purchase frequency for patterns
+public enum PatternFrequency: String, Codable, CaseIterable {
     case daily = "Daily"
     case weekly = "Weekly"
     case biweekly = "Bi-weekly"
@@ -199,7 +199,7 @@ public struct PriceRangePattern: Codable, Identifiable {
     public let maxPrice: Decimal
     public let averagePrice: Decimal
     public let sweetSpot: Decimal // Most common price point
-    public let priceDistribution: [PriceRange: Int]
+    public let priceDistribution: [PatternPriceRange: Int]
     
     public init(
         id: UUID = UUID(),
@@ -208,7 +208,7 @@ public struct PriceRangePattern: Codable, Identifiable {
         maxPrice: Decimal,
         averagePrice: Decimal,
         sweetSpot: Decimal,
-        priceDistribution: [PriceRange: Int]
+        priceDistribution: [PatternPriceRange: Int]
     ) {
         self.id = id
         self.category = category
@@ -220,8 +220,8 @@ public struct PriceRangePattern: Codable, Identifiable {
     }
 }
 
-/// Price range buckets
-public enum PriceRange: String, Codable, CaseIterable {
+/// Price range buckets for patterns
+public enum PatternPriceRange: String, Codable, CaseIterable {
     case under10 = "Under $10"
     case range10to25 = "$10-25"
     case range25to50 = "$25-50"
@@ -307,7 +307,7 @@ public struct BulkBuyingPattern: Codable, Identifiable {
     public let category: ItemCategory
     public let averageQuantity: Int
     public let bulkSavings: Decimal
-    public let frequency: PurchaseFrequency
+    public let frequency: PatternFrequency
     
     public init(
         id: UUID = UUID(),

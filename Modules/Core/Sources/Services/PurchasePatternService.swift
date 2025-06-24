@@ -240,7 +240,7 @@ public final class PurchasePatternService {
             let sweetSpot = sortedPrices[sortedPrices.count / 2]
             
             // Create price distribution
-            var priceDistribution: [PriceRange: Int] = [:]
+            var priceDistribution: [PatternPriceRange: Int] = [:]
             for price in prices {
                 let range = determinePriceRange(price: price)
                 priceDistribution[range, default: 0] += 1
@@ -384,7 +384,7 @@ public final class PurchasePatternService {
     
     // MARK: - Helper Methods
     
-    private func determineFrequency(days: Double) -> PurchaseFrequency {
+    private func determineFrequency(days: Double) -> PatternFrequency {
         switch days {
         case 0..<2: return .daily
         case 2..<10: return .weekly
@@ -396,7 +396,7 @@ public final class PurchasePatternService {
         }
     }
     
-    private func determinePriceRange(price: Decimal) -> PriceRange {
+    private func determinePriceRange(price: Decimal) -> PatternPriceRange {
         let amount = NSDecimalNumber(decimal: price).doubleValue
         switch amount {
         case 0..<10: return .under10
