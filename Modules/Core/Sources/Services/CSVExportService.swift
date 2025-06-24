@@ -37,7 +37,12 @@ public final class CSVExportService {
         currencyFormatter.currencySymbol = configuration.currencySymbol
         
         // Get items if not provided
-        let itemsToExport = try await (items ?? itemRepository.fetchAll())
+        let itemsToExport: [Item]
+        if let items = items {
+            itemsToExport = items
+        } else {
+            itemsToExport = try await itemRepository.fetchAll()
+        }
         
         // Get locations for mapping
         let locations = try await locationRepository.fetchAll()

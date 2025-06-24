@@ -28,8 +28,59 @@ struct CSVExportView: View {
     var body: some View {
         NavigationView {
             Form {
-                // Export scope
-                Section("Export Scope") {
+                exportScopeSection
+                templateSection
+                configurationSection
+                previewSection
+            }
+            .navigationTitle("Export to CSV")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .navigationBarLeading) {
+                    Button("Cancel") {
+                        dismiss()
+                    }
+                }
+                
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button("Export") {
+                        Task {
+                            await viewModel.exportCSV()
+                            showingShareSheet = true
+                        }
+                    }
+                    .disabled(viewModel.isExporting)
+                }
+            }
+            .sheet(isPresented: $showingFieldSelector) {
+                FieldSelectorView(configuration: $viewModel.configuration)
+            }
+            .sheet(isPresented: $showingShareSheet) {
+                if let result = viewModel.exportResult {
+                    ShareSheet(items: [CSVFileDocument(result: result)])
+                }
+            }
+            .alert("Export Error", isPresented: $viewModel.showingError) {
+                Button("OK") { }
+            } message: {
+                Text(viewModel.errorMessage)
+            }
+            .onAppear {
+                viewModel.configuration = selectedTemplate.configuration
+                Task {
+                    await viewModel.generatePreview()
+                }
+            }
+            .onChange(of: viewModel.configuration) { _ in
+                Task {
+                    await viewModel.generatePreview()
+                }
+            }
+        }
+    }
+    
+    private var exportScopeSection: some View {
+        Section("Export Scope") {
                     HStack {
                         Image(systemName: "doc.on.doc")
                             .foregroundStyle(AppColors.primary)
@@ -45,10 +96,11 @@ struct CSVExportView: View {
                                 .foregroundStyle(.secondary)
                         }
                     }
-                }
-                
-                // Template selection
-                Section("Template") {
+        }
+    }
+    
+    private var templateSection: some View {
+        Section("Template") {
                     ForEach(Core.CSVExportTemplate.allTemplates) { template in
                         HStack {
                             VStack(alignment: .leading, spacing: 4) {
@@ -73,10 +125,11 @@ struct CSVExportView: View {
                             viewModel.configuration = template.configuration
                         }
                     }
-                }
-                
-                // Configuration
-                Section("Configuration") {
+        }
+    }
+    
+    private var configurationSection: some View {
+        Section("Configuration") {
                     // Delimiter
                     Picker("Delimiter", selection: Binding(
                         get: { viewModel.configuration.delimiter },
@@ -140,10 +193,11 @@ struct CSVExportView: View {
                         get: { viewModel.configuration.sortAscending },
                         set: { viewModel.updateSortAscending($0) }
                     ))
-                }
-                
-                // Preview
-                Section("Preview") {
+        }
+    }
+    
+    private var previewSection: some View {
+        Section("Preview") {
                     if viewModel.isGeneratingPreview {
                         HStack {
                             ProgressView()
@@ -161,50 +215,6 @@ struct CSVExportView: View {
                                 .cornerRadius(8)
                         }
                     }
-                }
-            }
-            .navigationTitle("Export to CSV")
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .navigationBarLeading) {
-                    Button("Cancel") {
-                        dismiss()
-                    }
-                }
-                
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button("Export") {
-                        Task {
-                            await viewModel.exportCSV()
-                            showingShareSheet = true
-                        }
-                    }
-                    .disabled(viewModel.isExporting)
-                }
-            }
-            .sheet(isPresented: $showingFieldSelector) {
-                FieldSelectorView(configuration: $viewModel.configuration)
-            }
-            .sheet(isPresented: $showingShareSheet) {
-                if let result = viewModel.exportResult {
-                    ShareSheet(items: [CSVFileDocument(result: result)])
-                }
-            }
-            .alert("Export Error", isPresented: $viewModel.showingError) {
-                Button("OK") { }
-            } message: {
-                Text(viewModel.errorMessage)
-            }
-            .onAppear {
-                viewModel.configuration = selectedTemplate.configuration
-                Task {
-                    await viewModel.generatePreview()
-                }
-            }
-            .onChange(of: viewModel.configuration) { _ in
-                Task {
-                    await viewModel.generatePreview()
-                }
             }
         }
     }
