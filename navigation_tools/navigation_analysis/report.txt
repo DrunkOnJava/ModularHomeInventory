@@ -1,0 +1,60 @@
+SwiftUI Navigation Analysis Report
+==================================================
+Total Swift files analyzed: 298
+Total views found: 367
+Total navigation connections: 104
+
+Navigation breakdown:
+  - sheet: 89
+  - nav: 14
+  - fullscreen: 1
+
+Top source views (most outgoing connections):
+  - SpendingDashboardView: 9 connections
+  - ItemDetailView: 7 connections
+  - ItemsListView: 7 connections
+  - AddSavedSearchView: 4 connections
+  - CollectionsListView: 4 connections
+  - AddItemView: 3 connections
+  - TagsManagementView: 3 connections
+  - NaturalLanguageSearchView: 3 connections
+  - SavedSearchesView: 3 connections
+  - StorageUnitsListView: 3 connections
+
+Potential root views (no incoming connections):
+  - AccessibilitySettingsView
+  - AddItemView
+  - AddReceiptView
+  - BarcodeSearchView
+  - BatchScannerView
+  - CSVExportView
+  - CSVImportView
+  - CategoryManagementView
+  - CollectionDetailView
+  - CollectionsListView
+  - ConflictResolutionView
+  - ContentView
+  - CrashReportingSettingsView
+  - DocumentThumbnailGrid
+  - DocumentsDashboardView
+  - EnhancedSettingsView
+  - FuzzySearchToggle
+  - HomeInventoryModularApp
+  - ItemDetailView
+  - ItemsListView
+  - LegalConsentView
+  - NaturalLanguageSearchView
+  - PDFViewerEnhanced
+  - PrivacyConsentView
+  - ReceiptDetailView
+  - ReceiptsListView
+  - ScannerSettingsView
+  - ScannerTabView
+  - SpendingDashboardView
+  - StorageUnitsListView
+  - TagInputView
+  - TagSelectorView
+  - TagsManagementView
+  - WarrantyListView
+  - iPadApp
+  - iPadSidebarView

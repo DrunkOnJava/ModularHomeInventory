@@ -3,7 +3,13 @@ import Foundation
 /// Mock implementation of BudgetRepository for testing
 /// Swift 5.9 - No Swift 6 features
 public class MockBudgetRepository: BudgetRepository {
-    private var budgets: [UUID: Budget] = [:]
+    private var budgets: [UUID: Budget] = {
+        var dict: [UUID: Budget] = [:]
+        for budget in MockDataService.generateBudgets() {
+            dict[budget.id] = budget
+        }
+        return dict
+    }()
     private var statuses: [UUID: BudgetStatus] = [:]
     private var alerts: [BudgetAlert] = []
     private var transactions: [BudgetTransaction] = []

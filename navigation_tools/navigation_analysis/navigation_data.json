@@ -1,0 +1,1139 @@
+{
+  "views": {
+    "iPadContextMenus.swift": [
+      "EditItemSheet",
+      "MoveItemSheet",
+      "CollectionPickerSheet",
+      "MultiSelectionContextMenu"
+    ],
+    "iPadDragDrop.swift": [
+      "DragPreview"
+    ],
+    "iPadKeyboardShortcuts.swift": [
+      "KeyboardShortcutHelpView",
+      "ShortcutRow"
+    ],
+    "SmartCategoryDemo.swift": [
+      "SmartCategoryDemoView",
+      "SmartCategoryExampleUsage"
+    ],
+    "iPadApp.swift": [
+      "iPadApp",
+      "SlideOverPanel"
+    ],
+    "iPadColumnView.swift": [
+      "iPadColumnView",
+      "CategoryRow",
+      "ItemRow",
+      "ItemDetailPlaceholder",
+      "DetailRow"
+    ],
+    "iPadSidebarView.swift": [
+      "iPadSidebarView",
+      "ItemsNavigationView",
+      "CollectionsNavigationView",
+      "LocationsNavigationView",
+      "CategoriesNavigationView",
+      "AnalyticsNavigationView",
+      "ReportsNavigationView",
+      "BudgetNavigationView",
+      "ScannerNavigationView",
+      "SearchNavigationView",
+      "ImportExportNavigationView",
+      "SettingsNavigationView",
+      "LocationsListView",
+      "AnalyticsDashboardView",
+      "ReportsDashboardView",
+      "AdvancedSearchView",
+      "ImportExportDashboardView",
+      "AddItemSheet",
+      "ImportExportDashboard"
+    ],
+    "ContentView.swift": [
+      "ContentView"
+    ],
+    "LegalConsentView.swift": [
+      "LegalConsentView",
+      "FullTermsOfServiceView"
+    ],
+    "PrivacyConsentView.swift": [
+      "PrivacyConsentView",
+      "FullPrivacyPolicyView"
+    ],
+    "OnboardingView.swift": [
+      "OnboardingView",
+      "OnboardingStepView",
+      "PageIndicator"
+    ],
+    "RecentItemsWidgetView.swift": [
+      "RecentItemsWidgetView",
+      "RecentItemCard",
+      "RecentItemRow"
+    ],
+    "InventoryStatsWidgetView.swift": [
+      "InventoryStatsWidgetView",
+      "StatCard",
+      "CategoryBadge"
+    ],
+    "WarrantyExpirationWidgetView.swift": [
+      "WarrantyExpirationWidgetView",
+      "StatBadge",
+      "WarrantyRow"
+    ],
+    "SpendingSummaryWidgetView.swift": [
+      "SpendingSummaryWidgetView"
+    ],
+    "SubscriptionManagementView.swift": [
+      "SubscriptionManagementView"
+    ],
+    "PremiumUpgradeView.swift": [
+      "PremiumUpgradeView",
+      "PricingCard"
+    ],
+    "TemplateSelectionView.swift": [
+      "TemplateSelectionView",
+      "TemplateRowView"
+    ],
+    "ItemDetailView.swift": [
+      "ItemDetailView",
+      "PhotoThumbnailButton",
+      "MorePhotosButton",
+      "InfoRow"
+    ],
+    "EditItemView.swift": [
+      "EditItemView"
+    ],
+    "ItemsListView.swift": [
+      "ItemsListView",
+      "ItemRowView",
+      "FilterChip"
+    ],
+    "AddItemView.swift": [
+      "AddItemView"
+    ],
+    "ItemShareView.swift": [
+      "ItemShareView",
+      "ShareFormatRow",
+      "SharePreviewSection"
+    ],
+    "AddEditTagView.swift": [
+      "AddEditTagView"
+    ],
+    "TagsManagementView.swift": [
+      "TagsManagementView",
+      "TagRow"
+    ],
+    "TagSelectorView.swift": [
+      "TagSelectorView",
+      "TagSelectionRow",
+      "TagChip"
+    ],
+    "AddSavedSearchView.swift": [
+      "AddSavedSearchView",
+      "EditSavedSearchView",
+      "IconPickerView",
+      "ColorPickerView"
+    ],
+    "FuzzySearchToggle.swift": [
+      "FuzzySearchToggle",
+      "FuzzySearchInfoView",
+      "ExampleRow",
+      "ToleranceExample",
+      "CircularProgressView",
+      "TipRow"
+    ],
+    "BarcodeSearchView.swift": [
+      "BarcodeSearchView"
+    ],
+    "SearchHistoryView.swift": [
+      "SearchHistoryView",
+      "SearchHistoryRow"
+    ],
+    "NaturalLanguageSearchView.swift": [
+      "NaturalLanguageSearchView",
+      "QueryInterpretationView",
+      "InterpretationChip",
+      "ExampleQueriesView",
+      "ExampleQueryCard",
+      "NoResultsView",
+      "BulletPoint",
+      "SearchResultsList"
+    ],
+    "SavedSearchesView.swift": [
+      "SavedSearchesView",
+      "SavedSearchRow"
+    ],
+    "ItemSearchResultRow.swift": [
+      "ItemSearchResultRow"
+    ],
+    "StorageUnitDetailView.swift": [
+      "StorageUnitDetailView",
+      "ItemRow",
+      "CapacityIndicator"
+    ],
+    "AddEditStorageUnitView.swift": [
+      "AddEditStorageUnitView"
+    ],
+    "StorageUnitsListView.swift": [
+      "StorageUnitsListView",
+      "StorageUnitRow"
+    ],
+    "DocumentThumbnailGrid.swift": [
+      "DocumentThumbnailGrid",
+      "DocumentThumbnailCard",
+      "DocumentQuickLookView"
+    ],
+    "ItemDocumentsView.swift": [
+      "ItemDocumentsView",
+      "DocumentRow"
+    ],
+    "DocumentSearchView.swift": [
+      "DocumentSearchView",
+      "SearchResultRow",
+      "AdvancedFiltersSheet"
+    ],
+    "CloudSyncView.swift": [
+      "CloudSyncView",
+      "CloudDocumentRow"
+    ],
+    "AddDocumentSheet.swift": [
+      "AddDocumentSheet",
+      "ProcessingOverlay",
+      "TagInputField"
+    ],
+    "DocumentsDashboardView.swift": [
+      "DocumentsDashboardView",
+      "CategorySection",
+      "ItemDocumentSection",
+      "DocumentListRow",
+      "StatisticItem",
+      "DocumentGridCard"
+    ],
+    "CSVExportView.swift": [
+      "CSVExportView",
+      "FieldSelectorView"
+    ],
+    "ColumnMappingView.swift": [
+      "ColumnMappingView",
+      "MappingRow"
+    ],
+    "CSVImportView.swift": [
+      "CSVImportView",
+      "TemplateCard",
+      "InstructionRow",
+      "TemplateDetailView",
+      "ConfigRow"
+    ],
+    "AddItemsToCollectionView.swift": [
+      "AddItemsToCollectionView",
+      "ItemSelectionRow",
+      "CategoryChipView"
+    ],
+    "AddEditCollectionView.swift": [
+      "AddEditCollectionView"
+    ],
+    "CollectionsListView.swift": [
+      "CollectionsListView",
+      "CollectionRow"
+    ],
+    "CollectionDetailView.swift": [
+      "CollectionDetailView",
+      "ItemRow"
+    ],
+    "TimeBasedAnalyticsView.swift": [
+      "TimeBasedAnalyticsView",
+      "PeriodSelector",
+      "MetricsOverviewCard",
+      "ComparisonBadge",
+      "MetricCard",
+      "SpendingTrendsChart",
+      "TrendSummaryRow",
+      "CategoryBreakdownChart",
+      "CategoryTimeRow",
+      "StoreBreakdownChart",
+      "StoreTimeBar",
+      "InsightsSection",
+      "InsightCard",
+      "AcquisitionRateCard",
+      "SeasonalPatternsView",
+      "SeasonCard",
+      "SpendingHeatmapView",
+      "HeatmapCell",
+      "DatePickerSheet"
+    ],
+    "DepreciationReportView.swift": [
+      "DepreciationReportView",
+      "DepreciationGauge",
+      "MetricBox",
+      "ValueOverTimeChart",
+      "TopDepreciatingItemsCard",
+      "CategoryDepreciationCard",
+      "ItemDepreciationRow",
+      "DepreciationScheduleChart",
+      "DepreciationScheduleTable",
+      "ItemDepreciationDetailView",
+      "ValueRow",
+      "CategoryFilterSheet"
+    ],
+    "CategoryAnalyticsView.swift": [
+      "CategoryAnalyticsView",
+      "CategoryListRow",
+      "InsightRow",
+      "EmptyChartView",
+      "CategoryDetailView",
+      "StatBox"
+    ],
+    "PurchasePatternsView.swift": [
+      "PurchasePatternsView",
+      "SummaryMetric",
+      "PatternInsightCard",
+      "RecommendationCard",
+      "PatternCard",
+      "PatternDetailView",
+      "RecurringPatternDetail",
+      "SeasonalPatternDetail",
+      "DetailRow",
+      "CategoryPreferenceDetail",
+      "BrandLoyaltyDetail",
+      "PriceRangeDetail",
+      "ShoppingTimeDetail",
+      "RetailerPreferenceDetail",
+      "BulkBuyingDetail"
+    ],
+    "RetailerAnalyticsView.swift": [
+      "RetailerAnalyticsView",
+      "InsightsSummaryCard",
+      "InsightItem",
+      "TimeRangePicker",
+      "TopStoresChart",
+      "MetricChip",
+      "RankingsList",
+      "CategoryLeadersSection",
+      "CategoryLeaderCard",
+      "SpendingComparisonChart",
+      "SpendingBar"
+    ],
+    "PortfolioValueView.swift": [
+      "PortfolioValueView",
+      "ValueMetric",
+      "StatRow",
+      "DepreciationRow",
+      "PortfolioBreakdownView"
+    ],
+    "StoreDetailView.swift": [
+      "StoreDetailView",
+      "StoreHeaderCard",
+      "MetricBadge",
+      "PurchaseFrequencyCard",
+      "MonthlySpendingChart",
+      "CategoryBreakdownSection",
+      "StoreCategoryRow",
+      "RecentItemsSection",
+      "RecentItemCard",
+      "StoreStatsGrid",
+      "StatCard"
+    ],
+    "SpendingDashboardView.swift": [
+      "SpendingDashboardView",
+      "StatItem",
+      "CategoryRow",
+      "CategorySpendingDetailView"
+    ],
+    "WarrantyNotificationsView.swift": [
+      "WarrantyNotificationsView",
+      "WarrantyExpirationRow"
+    ],
+    "AddEditWarrantyView.swift": [
+      "AddEditWarrantyView"
+    ],
+    "WarrantyDetailView.swift": [
+      "WarrantyDetailView",
+      "InfoRow"
+    ],
+    "WarrantyDashboardView.swift": [
+      "WarrantyDashboardView",
+      "SummaryCard",
+      "StatusRow",
+      "UpcomingExpirationRow"
+    ],
+    "WarrantyListView.swift": [
+      "WarrantyListView",
+      "WarrantyRowView",
+      "WarrantyFilterChip"
+    ],
+    "BudgetAlertsView.swift": [
+      "BudgetAlertsView",
+      "AlertRow"
+    ],
+    "BudgetDetailView.swift": [
+      "BudgetDetailView"
+    ],
+    "AddBudgetView.swift": [
+      "AddBudgetView"
+    ],
+    "BudgetDashboardView.swift": [
+      "BudgetDashboardView",
+      "BudgetCard",
+      "AlertCard",
+      "PerformanceCard"
+    ],
+    "EditBudgetView.swift": [
+      "EditBudgetView"
+    ],
+    "BatchResolutionView.swift": [
+      "BatchResolutionView",
+      "StatItem",
+      "StrategyOption",
+      "MergeStrategyOption"
+    ],
+    "FieldByFieldComparisonView.swift": [
+      "FieldByFieldComparisonView",
+      "FieldComparisonCard",
+      "ValueOption"
+    ],
+    "ConflictDetailView.swift": [
+      "ConflictDetailView",
+      "VersionCard",
+      "FieldChangeRow",
+      "ResolutionOptionRow"
+    ],
+    "ConflictResolutionView.swift": [
+      "ConflictResolutionView",
+      "ConflictGroupView",
+      "ConflictRowView",
+      "StatItem"
+    ],
+    "AboutView.swift": [
+      "AboutView"
+    ],
+    "EnhancedSettingsView.swift": [
+      "EnhancedSettingsView",
+      "SettingsListView",
+      "SettingsSectionCard",
+      "SettingsItemRow",
+      "QuickStatCard"
+    ],
+    "SpotlightSettingsView.swift": [
+      "SpotlightSettingsView"
+    ],
+    "ExportDataView.swift": [
+      "ExportDataView"
+    ],
+    "ScannerSettingsView.swift": [
+      "ScannerSettingsView"
+    ],
+    "BarcodeFormatSettingsView.swift": [
+      "BarcodeFormatSettingsView",
+      "BarcodeFormatRow"
+    ],
+    "AccessibilitySettingsView.swift": [
+      "AccessibilitySettingsView"
+    ],
+    "CrashReportingSettingsView.swift": [
+      "CrashReportingSettingsView",
+      "CrashReportingPrivacyView",
+      "CrashReportDetailView",
+      "InfoRow"
+    ],
+    "EnhancedSettingsComponents.swift": [
+      "SettingsProfileHeaderView",
+      "SettingsQuickStatsView",
+      "SettingsSearchBarView",
+      "SettingsFooterView"
+    ],
+    "RateAppView.swift": [
+      "RateAppView"
+    ],
+    "SettingsBackgroundView.swift": [
+      "SettingsBackgroundView",
+      "PatternOverlay",
+      "FloatingShapes"
+    ],
+    "NotificationSettingsView.swift": [
+      "NotificationSettingsView",
+      "NotificationTypeRow",
+      "QuietHoursRow"
+    ],
+    "ShareAppView.swift": [
+      "ShareAppView"
+    ],
+    "CategoryManagementView.swift": [
+      "CategoryManagementView",
+      "CategoryRowView",
+      "SubcategoryRowView",
+      "AddCategoryView",
+      "EditCategoryView"
+    ],
+    "VoiceOverSettingsView.swift": [
+      "VoiceOverSettingsView",
+      "VoiceOverGesturesView"
+    ],
+    "TermsOfServiceView.swift": [
+      "TermsOfServiceView"
+    ],
+    "PrivacyPolicyView.swift": [
+      "PrivacyPolicyView"
+    ],
+    "ClearCacheView.swift": [
+      "ClearCacheView"
+    ],
+    "BiometricSettingsView.swift": [
+      "BiometricSettingsView"
+    ],
+    "BatchScannerView.swift": [
+      "BatchScannerView"
+    ],
+    "DocumentScannerView.swift": [
+      "DocumentScannerWrapper",
+      "MultiPageReceiptView"
+    ],
+    "BarcodeScannerView.swift": [
+      "BarcodeScannerView"
+    ],
+    "OfflineScanQueueView.swift": [
+      "OfflineScanQueueView",
+      "OfflineScanQueueRow"
+    ],
+    "ScannerTabView.swift": [
+      "ScannerTabView",
+      "BarcodeScannerPlaceholder",
+      "DocumentScannerPlaceholder"
+    ],
+    "ScanHistoryView.swift": [
+      "ScanHistoryView",
+      "ScanHistoryRow"
+    ],
+    "TagInputView.swift": [
+      "TagInputView",
+      "TagChip",
+      "TagPickerView",
+      "TagPickerRow"
+    ],
+    "FeatureUnavailableView.swift": [
+      "FeatureUnavailableView"
+    ],
+    "PrimaryButton.swift": [
+      "PrimaryButton"
+    ],
+    "DynamicTypeExampleView.swift": [
+      "DynamicTypeExampleView"
+    ],
+    "VoiceOverModifiers.swift": [
+      "AccessibleProgressView"
+    ],
+    "VoiceOverGuideView.swift": [
+      "VoiceOverGuideView"
+    ],
+    "CategoryPickerView.swift": [
+      "CategoryPickerView",
+      "CategoryPickerRow",
+      "CategoryDisplayView"
+    ],
+    "PDFViewerEnhanced.swift": [
+      "PDFViewerEnhanced",
+      "PDFThumbnailsView",
+      "PDFThumbnailView"
+    ],
+    "DocumentPicker.swift": [
+      "DocumentPickerButton"
+    ],
+    "SecureDataView.swift": [
+      "SecureCurrencyText",
+      "SecureStatCard"
+    ],
+    "OfflineIndicator.swift": [
+      "OfflineIndicator",
+      "SyncStatusView",
+      "OfflineDataView"
+    ],
+    "PDFViewer.swift": [
+      "PDFViewerView"
+    ],
+    "SearchBar.swift": [
+      "SearchBar"
+    ],
+    "LoadingOverlay.swift": [
+      "LoadingOverlay"
+    ],
+    "DocumentCategoryPicker.swift": [
+      "DocumentCategoryPicker",
+      "DocumentCategoryFilter",
+      "CategoryFilterChip",
+      "DocumentOrganizationView",
+      "DocumentCard"
+    ],
+    "BiometricLockView.swift": [
+      "BiometricLockView"
+    ],
+    "CrashReportBanner.swift": [
+      "CrashReportBanner"
+    ],
+    "MultiPageDocumentScanner.swift": [
+      "MultiPageDocumentScannerButton"
+    ],
+    "FilterChipsView.swift": [
+      "FilterChipsView",
+      "FilterChip"
+    ],
+    "AdvancedFiltersView.swift": [
+      "AdvancedFiltersView",
+      "FilterToggleRow",
+      "TagCloudView",
+      "RangeSlider"
+    ],
+    "PhotoGridView.swift": [
+      "PhotoGridView",
+      "PhotoThumbnailView",
+      "AddPhotoButton"
+    ],
+    "PhotoGalleryView.swift": [
+      "PhotoGalleryView",
+      "PhotoDetailView"
+    ],
+    "PhotoPickerView.swift": [
+      "PhotoPickerView"
+    ],
+    "ErrorBoundary.swift": [
+      "ErrorFallbackView"
+    ],
+    "ReceiptPreviewView.swift": [
+      "ReceiptPreviewView"
+    ],
+    "ReceiptsListView.swift": [
+      "ReceiptsListView",
+      "ReceiptRowView"
+    ],
+    "ReceiptDetailView.swift": [
+      "ReceiptDetailView",
+      "InfoRow",
+      "LinkedItemRow",
+      "FullScreenImageView"
+    ],
+    "AddReceiptView.swift": [
+      "AddReceiptView",
+      "ItemPickerView",
+      "ItemPickerRow"
+    ],
+    "ReceiptImportView.swift": [
+      "ReceiptImportView"
+    ]
+  },
+  "navigation": {
+    "iPadApp": [
+      {
+        "type": "sheet",
+        "destination": "KeyboardShortcutHelpView"
+      }
+    ],
+    "HomeInventoryModularApp": [
+      {
+        "type": "sheet",
+        "destination": "makeItemDetailView"
+      }
+    ],
+    "iPadSidebarView": [
+      {
+        "type": "sheet",
+        "destination": "makeCSVExportView"
+      }
+    ],
+    "ContentView": [
+      {
+        "type": "sheet",
+        "destination": "makeNaturalLanguageSearchView"
+      },
+      {
+        "type": "sheet",
+        "destination": "makeBarcodeSearchView"
+      }
+    ],
+    "LegalConsentView": [
+      {
+        "type": "sheet",
+        "destination": "FullPrivacyPolicyView"
+      },
+      {
+        "type": "sheet",
+        "destination": "FullTermsOfServiceView"
+      }
+    ],
+    "PrivacyConsentView": [
+      {
+        "type": "sheet",
+        "destination": "FullPrivacyPolicyView"
+      }
+    ],
+    "ItemDetailView": [
+      {
+        "type": "sheet",
+        "destination": "makeEditView"
+      },
+      {
+        "type": "sheet",
+        "destination": "PhotoGalleryView"
+      },
+      {
+        "type": "sheet",
+        "destination": "WarrantyDetailView"
+      },
+      {
+        "type": "sheet",
+        "destination": "AddEditWarrantyView"
+      },
+      {
+        "type": "sheet",
+        "destination": "ItemDocumentsView"
+      },
+      {
+        "type": "sheet",
+        "destination": "CloudSyncView"
+      },
+      {
+        "type": "sheet",
+        "destination": "ItemShareView"
+      }
+    ],
+    "ItemsListView": [
+      {
+        "type": "sheet",
+        "destination": "makeAddItemView"
+      },
+      {
+        "type": "sheet",
+        "destination": "makeItemDetailView"
+      },
+      {
+        "type": "sheet",
+        "destination": "makeCSVImportView"
+      },
+      {
+        "type": "sheet",
+        "destination": "makeCSVExportView"
+      },
+      {
+        "type": "sheet",
+        "destination": "ItemShareView"
+      },
+      {
+        "type": "sheet",
+        "destination": "AdvancedFiltersView"
+      },
+      {
+        "type": "sheet",
+        "destination": "makeItemDetailView"
+      }
+    ],
+    "AddItemView": [
+      {
+        "type": "sheet",
+        "destination": "TemplateSelectionView"
+      },
+      {
+        "type": "sheet",
+        "destination": "PhotoPickerView"
+      },
+      {
+        "type": "sheet",
+        "destination": "CameraCaptureView"
+      }
+    ],
+    "TagsManagementView": [
+      {
+        "type": "sheet",
+        "destination": "AddEditTagView"
+      },
+      {
+        "type": "sheet",
+        "destination": "AddEditTagView"
+      },
+      {
+        "type": "sheet",
+        "destination": "AddEditTagView"
+      }
+    ],
+    "TagSelectorView": [
+      {
+        "type": "sheet",
+        "destination": "AddEditTagView"
+      }
+    ],
+    "AddSavedSearchView": [
+      {
+        "type": "sheet",
+        "destination": "IconPickerView"
+      },
+      {
+        "type": "sheet",
+        "destination": "ColorPickerView"
+      },
+      {
+        "type": "sheet",
+        "destination": "IconPickerView"
+      },
+      {
+        "type": "sheet",
+        "destination": "ColorPickerView"
+      }
+    ],
+    "FuzzySearchToggle": [
+      {
+        "type": "sheet",
+        "destination": "FuzzySearchInfoView"
+      }
+    ],
+    "BarcodeSearchView": [
+      {
+        "type": "sheet",
+        "destination": "makeScannerView"
+      }
+    ],
+    "NaturalLanguageSearchView": [
+      {
+        "type": "sheet",
+        "destination": "SearchHistoryView"
+      },
+      {
+        "type": "sheet",
+        "destination": "SavedSearchesView"
+      },
+      {
+        "type": "sheet",
+        "destination": "AddSavedSearchView"
+      }
+    ],
+    "SavedSearchesView": [
+      {
+        "type": "sheet",
+        "destination": "AddSavedSearchView"
+      },
+      {
+        "type": "sheet",
+        "destination": "EditSavedSearchView"
+      },
+      {
+        "type": "sheet",
+        "destination": "EditSavedSearchView"
+      }
+    ],
+    "StorageUnitDetailView": [
+      {
+        "type": "sheet",
+        "destination": "AddEditStorageUnitView"
+      }
+    ],
+    "StorageUnitsListView": [
+      {
+        "type": "sheet",
+        "destination": "AddEditStorageUnitView"
+      },
+      {
+        "type": "sheet",
+        "destination": "StorageUnitDetailView"
+      },
+      {
+        "type": "sheet",
+        "destination": "StorageUnitDetailView"
+      }
+    ],
+    "DocumentThumbnailGrid": [
+      {
+        "type": "sheet",
+        "destination": "DocumentQuickLookView"
+      }
+    ],
+    "DocumentsDashboardView": [
+      {
+        "type": "sheet",
+        "destination": "DocumentSearchView"
+      }
+    ],
+    "CSVExportView": [
+      {
+        "type": "sheet",
+        "destination": "FieldSelectorView"
+      }
+    ],
+    "CSVImportView": [
+      {
+        "type": "sheet",
+        "destination": "TemplateDetailView"
+      },
+      {
+        "type": "sheet",
+        "destination": "TemplateDetailView"
+      }
+    ],
+    "CollectionsListView": [
+      {
+        "type": "sheet",
+        "destination": "AddEditCollectionView"
+      },
+      {
+        "type": "sheet",
+        "destination": "AddEditCollectionView"
+      },
+      {
+        "type": "sheet",
+        "destination": "AddEditCollectionView"
+      },
+      {
+        "type": "sheet",
+        "destination": "AddEditCollectionView"
+      }
+    ],
+    "CollectionDetailView": [
+      {
+        "type": "sheet",
+        "destination": "AddItemsToCollectionView"
+      },
+      {
+        "type": "sheet",
+        "destination": "AddEditCollectionView"
+      }
+    ],
+    "DepreciationReportView": [
+      {
+        "type": "sheet",
+        "destination": "ItemDepreciationDetailView"
+      }
+    ],
+    "CategoryAnalyticsView": [
+      {
+        "type": "sheet",
+        "destination": "CategoryDetailView"
+      }
+    ],
+    "PurchasePatternsView": [
+      {
+        "type": "sheet",
+        "destination": "PatternDetailView"
+      }
+    ],
+    "RetailerAnalyticsView": [
+      {
+        "type": "sheet",
+        "destination": "StoreDetailView"
+      },
+      {
+        "type": "sheet",
+        "destination": "StoreDetailView"
+      }
+    ],
+    "PortfolioValueView": [
+      {
+        "type": "sheet",
+        "destination": "PortfolioBreakdownView"
+      }
+    ],
+    "SpendingDashboardView": [
+      {
+        "type": "nav",
+        "destination": "CategoryAnalyticsView"
+      },
+      {
+        "type": "nav",
+        "destination": "RetailerAnalyticsView"
+      },
+      {
+        "type": "nav",
+        "destination": "PortfolioValueView"
+      },
+      {
+        "type": "nav",
+        "destination": "TimeBasedAnalyticsView"
+      },
+      {
+        "type": "nav",
+        "destination": "DepreciationReportView"
+      },
+      {
+        "type": "nav",
+        "destination": "PurchasePatternsView"
+      },
+      {
+        "type": "nav",
+        "destination": "BudgetDashboardView"
+      },
+      {
+        "type": "nav",
+        "destination": "WarrantyDashboardView"
+      },
+      {
+        "type": "sheet",
+        "destination": "CategorySpendingDetailView"
+      }
+    ],
+    "WarrantyDashboardView": [
+      {
+        "type": "sheet",
+        "destination": "WarrantyNotificationsView"
+      }
+    ],
+    "WarrantyListView": [
+      {
+        "type": "sheet",
+        "destination": "WarrantyDetailView"
+      },
+      {
+        "type": "sheet",
+        "destination": "WarrantyDetailView"
+      }
+    ],
+    "BudgetDetailView": [
+      {
+        "type": "sheet",
+        "destination": "EditBudgetView"
+      }
+    ],
+    "BudgetDashboardView": [
+      {
+        "type": "nav",
+        "destination": "BudgetAlertsView"
+      },
+      {
+        "type": "sheet",
+        "destination": "AddBudgetView"
+      },
+      {
+        "type": "sheet",
+        "destination": "BudgetDetailView"
+      }
+    ],
+    "ConflictDetailView": [
+      {
+        "type": "sheet",
+        "destination": "FieldByFieldComparisonView"
+      }
+    ],
+    "ConflictResolutionView": [
+      {
+        "type": "sheet",
+        "destination": "ConflictDetailView"
+      },
+      {
+        "type": "sheet",
+        "destination": "BatchResolutionView"
+      }
+    ],
+    "EnhancedSettingsView": [
+      {
+        "type": "sheet",
+        "destination": "sheetView"
+      },
+      {
+        "type": "sheet",
+        "destination": "sheetView"
+      }
+    ],
+    "ScannerSettingsView": [
+      {
+        "type": "nav",
+        "destination": "BarcodeFormatSettingsView"
+      }
+    ],
+    "AccessibilitySettingsView": [
+      {
+        "type": "nav",
+        "destination": "VoiceOverSettingsView"
+      }
+    ],
+    "CrashReportingSettingsView": [
+      {
+        "type": "sheet",
+        "destination": "CrashReportingPrivacyView"
+      },
+      {
+        "type": "sheet",
+        "destination": "CrashReportDetailView"
+      },
+      {
+        "type": "sheet",
+        "destination": "CrashReportDetailView"
+      }
+    ],
+    "CategoryManagementView": [
+      {
+        "type": "sheet",
+        "destination": "AddCategoryView"
+      },
+      {
+        "type": "sheet",
+        "destination": "EditCategoryView"
+      },
+      {
+        "type": "sheet",
+        "destination": "EditCategoryView"
+      }
+    ],
+    "VoiceOverSettingsView": [
+      {
+        "type": "nav",
+        "destination": "VoiceOverGesturesView"
+      },
+      {
+        "type": "sheet",
+        "destination": "VoiceOverGuideView"
+      }
+    ],
+    "BatchScannerView": [
+      {
+        "type": "sheet",
+        "destination": "makeAddItemView"
+      }
+    ],
+    "ScannerTabView": [
+      {
+        "type": "sheet",
+        "destination": "ScanHistoryView"
+      },
+      {
+        "type": "sheet",
+        "destination": "OfflineScanQueueView"
+      }
+    ],
+    "TagInputView": [
+      {
+        "type": "sheet",
+        "destination": "TagPickerView"
+      }
+    ],
+    "VoiceOverGuideView": [
+      {
+        "type": "nav",
+        "destination": "Text"
+      }
+    ],
+    "PDFViewerEnhanced": [
+      {
+        "type": "sheet",
+        "destination": "PDFThumbnailsView"
+      }
+    ],
+    "ReceiptsListView": [
+      {
+        "type": "nav",
+        "destination": "destinationView"
+      },
+      {
+        "type": "sheet",
+        "destination": "makeAddReceiptView"
+      }
+    ],
+    "ReceiptDetailView": [
+      {
+        "type": "sheet",
+        "destination": "FeatureUnavailableView"
+      },
+      {
+        "type": "fullscreen",
+        "destination": "FullScreenImageView"
+      }
+    ],
+    "AddReceiptView": [
+      {
+        "type": "sheet",
+        "destination": "ItemPickerView"
+      }
+    ]
+  }
+}

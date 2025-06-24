@@ -166,7 +166,7 @@ final class AppCoordinator: ObservableObject {
 // MARK: - Mock Repositories
 
 final class MockItemRepository: ItemRepository {
-    private var items: [Item] = Item.previews
+    private var items: [Item] = MockDataService.generateComprehensiveItems()
     
     func fetchAll() async throws -> [Item] {
         // Simulate network delay
@@ -268,7 +268,7 @@ final class MockItemRepository: ItemRepository {
 }
 
 final class MockLocationRepository: LocationRepository {
-    private let locations: [Location] = Location.previews
+    private let locations: [Location] = MockDataService.locations
     
     func fetchAll() async throws -> [Location] {
         locations
@@ -306,10 +306,15 @@ final class MockLocationRepository: LocationRepository {
 // MARK: - Mock Receipt Repository
 
 final class MockReceiptRepository: ReceiptRepository {
-    private var receipts: [Receipt] = Receipt.previews
+    private var receipts: [Receipt] = {
+        let generated = MockDataService.generateReceipts()
+        print("MockReceiptRepository: Generated \(generated.count) receipts")
+        return generated
+    }()
     
     func fetchAll() async throws -> [Receipt] {
-        receipts
+        print("MockReceiptRepository: Returning \(receipts.count) receipts")
+        return receipts
     }
     
     func fetch(id: UUID) async throws -> Receipt? {
@@ -412,8 +417,8 @@ final class MockOCRService: OCRServiceProtocol {
 // MARK: - Mock Warranty Repository
 
 final class MockWarrantyRepository: WarrantyRepository {
-    private var warranties: [Warranty] = []
-    @Published private var warrantiesSubject: [Warranty] = []
+    private var warranties: [Warranty] = MockDataService.generateWarranties()
+    @Published private var warrantiesSubject: [Warranty] = MockDataService.generateWarranties()
     
     var warrantiesPublisher: AnyPublisher<[Warranty], Never> {
         $warrantiesSubject.eraseToAnyPublisher()

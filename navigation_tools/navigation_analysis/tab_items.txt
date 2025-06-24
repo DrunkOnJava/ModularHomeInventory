@@ -1,0 +1,3 @@
+DocumentScannerView
+OnboardingView
+PhotoGalleryView
