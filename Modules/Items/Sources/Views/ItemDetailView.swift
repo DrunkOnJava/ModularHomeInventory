@@ -15,6 +15,7 @@ struct ItemDetailView: View {
     @State private var documentCount = 0
     @State private var showingCloudSync = false
     @State private var pendingSyncCount = 0
+    @State private var showingShareView = false
     
     init(viewModel: ItemDetailViewModel) {
         self._viewModel = StateObject(wrappedValue: viewModel)
@@ -78,6 +79,10 @@ struct ItemDetailView: View {
                 Menu {
                     Button(action: { showingEditView = true }) {
                         Label("Edit", systemImage: "pencil")
+                    }
+                    
+                    Button(action: { showingShareView = true }) {
+                        Label("Share", systemImage: "square.and.arrow.up")
                     }
                     
                     Button(action: { 
@@ -169,6 +174,14 @@ struct ItemDetailView: View {
                     )
                 }
             }
+        }
+        .sheet(isPresented: $showingShareView) {
+            ItemShareView(
+                item: viewModel.item,
+                sharingService: ItemSharingService(
+                    locationRepository: viewModel.locationRepository
+                )
+            )
         }
     }
     

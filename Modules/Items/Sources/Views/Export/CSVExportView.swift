@@ -71,11 +71,7 @@ struct CSVExportView: View {
                     await viewModel.generatePreview()
                 }
             }
-            .onChange(of: viewModel.configuration) { _ in
-                Task {
-                    await viewModel.generatePreview()
-                }
-            }
+            // Configuration changes are handled in the update methods
         }
     }
     
@@ -218,7 +214,6 @@ struct CSVExportView: View {
             }
         }
     }
-}
 
 // MARK: - Field Selector View
 

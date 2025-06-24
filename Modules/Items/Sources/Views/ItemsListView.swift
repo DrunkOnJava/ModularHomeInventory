@@ -10,6 +10,8 @@ struct ItemsListView: View {
     @State private var selectedSegment = 0 // 0 = Items, 1 = Receipts
     @State private var showingImport = false
     @State private var showingExport = false
+    @State private var itemToShare: Item?
+    @State private var showingShareView = false
     
     private let onSearchTapped: (() -> Void)?
     private let onBarcodeSearchTapped: (() -> Void)?
@@ -116,6 +118,16 @@ struct ItemsListView: View {
             .sheet(isPresented: $showingExport) {
                 viewModel.makeCSVExportView()
             }
+            .sheet(isPresented: $showingShareView) {
+                if let item = itemToShare {
+                    ItemShareView(
+                        item: item,
+                        sharingService: ItemSharingService(
+                            locationRepository: viewModel.locationRepository
+                        )
+                    )
+                }
+            }
         }
     }
     
@@ -186,6 +198,14 @@ struct ItemsListView: View {
                                 Label("Duplicate", systemImage: "doc.on.doc")
                             }
                             .tint(AppColors.primary)
+                            
+                            Button {
+                                itemToShare = item
+                                showingShareView = true
+                            } label: {
+                                Label("Share", systemImage: "square.and.arrow.up")
+                            }
+                            .tint(.blue)
                         }
                 }
             }
