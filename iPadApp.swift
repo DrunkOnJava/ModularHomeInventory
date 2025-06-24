@@ -208,6 +208,7 @@ struct SlideOverModifier: ViewModifier {
 
 struct SlideOverPanel: View {
     @Binding var width: CGFloat
+    @EnvironmentObject var coordinator: AppCoordinator
     
     var body: some View {
         VStack {
@@ -277,4 +278,5 @@ extension Notification.Name {
     static let showKeyboardShortcuts = Notification.Name("showKeyboardShortcuts")
     static let increaseTextSize = Notification.Name("increaseTextSize")
     static let decreaseTextSize = Notification.Name("decreaseTextSize")
+    static let showImport = Notification.Name("showImport")
 }

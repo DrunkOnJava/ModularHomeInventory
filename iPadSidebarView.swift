@@ -111,6 +111,11 @@ class iPadNavigationState: ObservableObject {
     @Published var selectedItem: Item?
     @Published var selectedCollection: Collection?
     @Published var selectedLocation: Location?
+    @Published var showExport = false
+    @Published var showImport = false
+    @Published var showDuplicate = false
+    @Published var showDeleteConfirmation = false
+    @Published var showQuickLook = false
 }
 
 /// iPad navigation tabs
@@ -300,7 +305,7 @@ struct ImportExportDashboardView: View {
         VStack(spacing: AppSpacing.lg) {
             coordinator.itemsModule.makeCSVImportView { result in
                 // Handle import completion
-                print("Import completed with \(result.importedCount) items")
+                print("Import completed with \(result.successfulImports) items")
             }
             Divider()
             coordinator.itemsModule.makeCSVExportView()
@@ -316,17 +321,15 @@ struct AddItemSheet: View {
     var body: some View {
         NavigationView {
             coordinator.itemsModule.makeAddItemView { newItem in
-                // Handle new item creation
-                navigationState.selectedItem = newItem
-                navigationState.showAddItem = false
+                dismiss()
             }
-                .toolbar {
-                    ToolbarItem(placement: .cancellationAction) {
-                        Button("Cancel") {
-                            dismiss()
-                        }
+            .toolbar {
+                ToolbarItem(placement: .cancellationAction) {
+                    Button("Cancel") {
+                        dismiss()
                     }
                 }
+            }
         }
     }
 }

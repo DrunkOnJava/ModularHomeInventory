@@ -219,7 +219,7 @@ class ColumnViewModel: ObservableObject {
     @Published var searchText = ""
     
     // Mock data for now
-    @Published var items: [Item] = Item.previewItems
+    @Published var items: [Item] = []
     @Published var collections: [UUID] = []
     @Published var locations: [UUID] = []
     
