@@ -122,9 +122,10 @@ public func productionAssert(
     assert(condition(), message(), file: file, line: line)
     #else
     if !condition() {
+        let assertionMessage = message()
         Task { @MainActor in
             CrashReportingService.shared.reportNonFatal(
-                "Assertion failed: \(message())",
+                "Assertion failed: \(assertionMessage)",
                 userInfo: nil,
                 file: "\(file)",
                 function: "productionAssert",
