@@ -82,7 +82,10 @@ public final class MockWarrantyRepository: WarrantyRepository {
     }
     
     public func fetchWarranties(for itemId: UUID) async throws -> [Warranty] {
-        return try await fetchByItem(itemId)
+        if let warranty = try await fetchByItem(itemId) {
+            return [warranty]
+        }
+        return []
     }
     
     // Publisher requirement
