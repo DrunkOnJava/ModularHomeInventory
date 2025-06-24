@@ -485,11 +485,6 @@ public final class MockDataService {
                         
                         Thank you for shopping at Apple!
                         """,
-                metadata: [
-                    "paymentMethod": "Apple Card",
-                    "cashier": "Sarah M.",
-                    "storeNumber": "R238"
-                ],
                 confidence: 0.98
             ))
         }
@@ -533,11 +528,6 @@ public final class MockDataService {
                         Return Policy: 15 days with receipt
                         Extended through 1/31/24 for holidays
                         """,
-                metadata: [
-                    "memberID": "***********7823",
-                    "pointsEarned": "400",
-                    "transactionType": "in-store"
-                ],
                 confidence: 0.95
             ))
         }
@@ -584,11 +574,6 @@ public final class MockDataService {
                         Visit homedepot.com/survey
                         ID: 619-382-847392
                         """,
-                metadata: [
-                    "proMember": "true",
-                    "discount": "15.00",
-                    "surveyCode": "619-382-847392"
-                ],
                 confidence: 0.97
             ))
         }
@@ -634,11 +619,6 @@ public final class MockDataService {
                         A = TAXABLE ITEM
                         THANK YOU FOR SHOPPING AT COSTCO
                         """,
-                metadata: [
-                    "memberNumber": "****8293",
-                    "savings": "262.03",
-                    "warehouse": "487"
-                ],
                 confidence: 0.96
             ))
         }
@@ -681,11 +661,6 @@ public final class MockDataService {
                         
                         Delivered: \(formatDate(now.addingTimeInterval(-1 * 24 * 60 * 60)))
                         """,
-                metadata: [
-                    "orderType": "online",
-                    "shipping": "Prime One-Day",
-                    "orderNumber": "114-8392847-2938472"
-                ],
                 confidence: 0.99
             ))
         }
@@ -736,11 +711,6 @@ public final class MockDataService {
                         
                         Return within 30 days with receipt
                         """,
-                metadata: [
-                    "associate": "Jennifer",
-                    "rewardsPoints": "685",
-                    "location": "Stanford Shopping Center"
-                ],
                 confidence: 0.94
             ))
         }
@@ -790,11 +760,6 @@ public final class MockDataService {
                         
                         Easy 60-day returns at any Nike Store
                         """,
-                metadata: [
-                    "memberDiscount": "18.50",
-                    "memberNumber": "****9283",
-                    "returnPolicy": "60 days"
-                ],
                 confidence: 0.96
             ))
         }
@@ -846,11 +811,6 @@ public final class MockDataService {
                         Thank you for your business!
                         Track: bhphotovideo.com/track
                         """,
-                metadata: [
-                    "financing": "12 months 0%",
-                    "shipping": "Overnight",
-                    "taxSavings": "433.02"
-                ],
                 confidence: 0.98
             ))
         }
@@ -905,11 +865,6 @@ public final class MockDataService {
                         Return Policy: 7 days new, 48hrs used
                         Receipt required for all returns
                         """,
-                metadata: [
-                    "proMember": "true",
-                    "pointsEarned": "580",
-                    "storeLocation": "Westfield SF"
-                ],
                 confidence: 0.93
             ))
         }
