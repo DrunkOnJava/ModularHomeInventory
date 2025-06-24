@@ -427,7 +427,7 @@ struct IncidentDetailsView: View {
             }
         }
         .sheet(isPresented: $showingDatePicker) {
-            DatePickerSheet(
+            ClaimDatePickerSheet(
                 date: $viewModel.incidentDate,
                 maxDate: Date()
             )

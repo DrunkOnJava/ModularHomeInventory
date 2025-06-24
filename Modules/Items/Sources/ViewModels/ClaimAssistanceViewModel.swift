@@ -511,7 +511,7 @@ struct ClaimEmailView: View {
     }
 }
 
-struct DatePickerSheet: View {
+struct ClaimDatePickerSheet: View {
     @Binding var date: Date
     let maxDate: Date
     @Environment(\.dismiss) private var dismiss

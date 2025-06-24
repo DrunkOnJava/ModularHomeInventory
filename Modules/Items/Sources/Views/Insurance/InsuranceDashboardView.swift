@@ -388,7 +388,7 @@ struct RecommendationCard: View {
         .cornerRadius(AppCornerRadius.medium)
     }
     
-    private func iconForType(_ type: RecommendationType) -> String {
+    private func iconForType(_ type: InsuranceRecommendationType) -> String {
         switch type {
         case .addCoverage: return "plus.circle"
         case .increaseCoverage: return "arrow.up.circle"
@@ -398,7 +398,7 @@ struct RecommendationCard: View {
         }
     }
     
-    private func colorForPriority(_ priority: RecommendationPriority) -> Color {
+    private func colorForPriority(_ priority: InsuranceRecommendationPriority) -> Color {
         switch priority {
         case .low: return AppColors.textSecondary
         case .medium: return AppColors.warning

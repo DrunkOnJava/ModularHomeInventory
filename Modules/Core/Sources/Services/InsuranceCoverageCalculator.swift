@@ -275,15 +275,15 @@ public struct ClaimAnalysis {
 }
 
 public struct CoverageRecommendation {
-    public let type: RecommendationType
-    public let priority: RecommendationPriority
+    public let type: InsuranceRecommendationType
+    public let priority: InsuranceRecommendationPriority
     public let title: String
     public let description: String
     public let estimatedSavings: Decimal?
     public let affectedItems: [Item]
 }
 
-public enum RecommendationType: String {
+public enum InsuranceRecommendationType: String {
     case addCoverage = "add_coverage"
     case increaseCoverage = "increase_coverage"
     case consolidate = "consolidate"
@@ -291,7 +291,7 @@ public enum RecommendationType: String {
     case review = "review"
 }
 
-public enum RecommendationPriority: Int {
+public enum InsuranceRecommendationPriority: Int {
     case low = 1
     case medium = 2
     case high = 3
