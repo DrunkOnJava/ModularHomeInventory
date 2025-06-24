@@ -1,0 +1,17 @@
+Version 1.0.0 - Initial Release
+
+Welcome to Home Inventory! This first release includes:
+
+• Complete item cataloging with barcode scanning
+• Photo documentation for all items
+• Warranty tracking with expiration notifications
+• Receipt scanning and storage
+• Budget tracking and spending analytics
+• Collections for organizing related items
+• Advanced search with filters
+• CSV export for insurance documentation
+• Face ID/Touch ID security
+• Full offline support
+• iCloud sync across devices
+
+We're excited to help you get organized! Please send feedback through the app's settings.

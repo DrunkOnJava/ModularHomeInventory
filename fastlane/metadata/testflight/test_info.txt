@@ -1,0 +1,46 @@
+WHAT TO TEST:
+
+Thank you for testing Home Inventory! Please focus on these key areas:
+
+1. ITEM MANAGEMENT
+   - Add items using the barcode scanner
+   - Add items manually with photos
+   - Edit and delete items
+   - Search for items using the search bar
+
+2. ORGANIZATION
+   - Create and manage locations (rooms)
+   - Create collections to group items
+   - Add tags to items
+   - Use storage units
+
+3. FINANCIAL TRACKING
+   - Add purchase prices and dates
+   - View spending analytics
+   - Set and monitor budgets
+   - Track depreciation
+
+4. DOCUMENTATION
+   - Scan and attach receipts
+   - Add warranty information
+   - Set warranty expiration reminders
+   - Export data as CSV
+
+5. ADVANCED FEATURES
+   - Test Face ID/Touch ID security
+   - Try offline mode (airplane mode)
+   - Test iCloud sync between devices
+   - Use advanced search filters
+
+TEST ACCOUNTS:
+No special accounts needed - the app works with your iCloud account for syncing.
+
+KNOWN ISSUES:
+- This is our first beta release
+- Some advanced analytics may need refinement
+- Please report any crashes or unexpected behavior
+
+FEEDBACK:
+Please send feedback through TestFlight or the in-app feedback option in Settings.
+
+Thank you for helping us improve Home Inventory!

@@ -2,7 +2,7 @@
 
 # A list of devices you want to take the screenshots from
 devices([
-  "iPhone 16 Pro Max"
+  "iPhone 16 Pro Max"    # 6.9" Display
 ])
 
 # Languages to capture

@@ -1,0 +1,29 @@
+Home Inventory is your comprehensive solution for cataloging and managing all your belongings. Whether you're organizing your home, tracking warranties, or managing insurance documentation, our app makes it simple and efficient.
+
+KEY FEATURES:
+
+• Smart Item Cataloging: Quickly add items using barcode scanning, manual entry, or templates
+• Photo Documentation: Capture and store multiple photos for each item
+• Location Tracking: Organize items by rooms, storage units, and custom locations
+• Warranty Management: Never miss warranty expiration with smart notifications
+• Receipt Storage: Scan and attach receipts directly to items
+• Budget Tracking: Monitor spending by category and set budget alerts
+• Collections: Group related items for easy management
+• Advanced Search: Find items instantly with fuzzy search and filters
+• Analytics Dashboard: View spending patterns, depreciation, and portfolio value
+• Data Export: Export your inventory as CSV for insurance or moving
+• Offline Support: Full functionality even without internet connection
+• Secure Access: Protect your data with Face ID/Touch ID
+• iCloud Sync: Keep your inventory synchronized across all your devices
+
+PERFECT FOR:
+
+• Homeowners documenting possessions for insurance
+• Renters keeping track of their belongings
+• Collectors organizing their collections
+• Small businesses managing inventory
+• Anyone wanting to stay organized
+
+Your data privacy is our priority. All information is stored securely on your device and optionally synced via iCloud. We never access or share your personal data.
+
+Start organizing your life today with Home Inventory!

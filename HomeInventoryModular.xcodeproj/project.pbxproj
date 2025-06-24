@@ -415,7 +415,11 @@
 				DEVELOPMENT_TEAM = 2VXBQV4XC9;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = "Home Inventory";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.lifestyle";
 				INFOPLIST_KEY_NSCameraUsageDescription = "Camera access is needed to scan barcodes and take photos of your items";
+				INFOPLIST_KEY_NSFaceIDUsageDescription = "Face ID is used to secure access to your inventory data";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Photo library access is needed to add photos to your items";
+				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "This allows the app to save item photos to your photo library";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -505,7 +509,11 @@
 				DEVELOPMENT_TEAM = 2VXBQV4XC9;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = "Home Inventory";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.lifestyle";
 				INFOPLIST_KEY_NSCameraUsageDescription = "Camera access is needed to scan barcodes and take photos of your items";
+				INFOPLIST_KEY_NSFaceIDUsageDescription = "Face ID is used to secure access to your inventory data";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Photo library access is needed to add photos to your items";
+				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "This allows the app to save item photos to your photo library";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
