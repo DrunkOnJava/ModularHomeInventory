@@ -12,6 +12,7 @@ public final class SettingsModule: SettingsModuleAPI {
     }
     
     public func makeSettingsView() -> AnyView {
+        print("SettingsModule: Creating EnhancedSettingsView")
         let viewModel = SettingsViewModel(
             settingsStorage: dependencies.settingsStorage,
             itemRepository: dependencies.itemRepository,

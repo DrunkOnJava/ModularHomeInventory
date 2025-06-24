@@ -25,6 +25,12 @@ struct EnhancedSettingsView: View {
             
             ScrollView {
                     VStack(spacing: 0) {
+                        // Debug indicator
+                        Text("Enhanced Settings View")
+                            .font(.caption)
+                            .foregroundColor(.red)
+                            .padding(.top)
+                        
                         // Profile Header
                         SettingsProfileHeaderView(
                             userName: $userName,
