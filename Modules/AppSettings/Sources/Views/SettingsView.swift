@@ -25,7 +25,8 @@ struct SettingsView: View {
     }
     
     var body: some View {
-        List {
+        NavigationView {
+            List {
                 // General Section
                 generalSection
                 
@@ -120,6 +121,7 @@ struct SettingsView: View {
                     )
                 }
             }
+        }
         }
     
     // MARK: - Sections

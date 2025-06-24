@@ -79,7 +79,6 @@ struct PurchasePatternsView: View {
             .task {
                 await viewModel.analyzePatterns(days: timeRange)
             }
-        }
     }
     
     // MARK: - Components
