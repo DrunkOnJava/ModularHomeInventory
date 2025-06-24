@@ -19,6 +19,7 @@ public struct ItemsModuleFactory {
         let warrantyRepository = MockWarrantyRepository()
         let documentRepository = Core.DefaultDocumentRepository()
         let documentStorage = try! FileDocumentStorage()
+        let insuranceRepository = MockInsurancePolicyRepository()
         
         let dependencies = ItemsModuleDependencies(
             itemRepository: itemRepository,
@@ -31,7 +32,8 @@ public struct ItemsModuleFactory {
             storageUnitRepository: storageUnitRepository,
             warrantyRepository: warrantyRepository,
             documentRepository: documentRepository,
-            documentStorage: documentStorage
+            documentStorage: documentStorage,
+            insuranceRepository: insuranceRepository
         )
         
         let module = ItemsModule(dependencies: dependencies)
@@ -52,7 +54,8 @@ public struct ItemsModuleFactory {
         storageUnitRepository: any StorageUnitRepository,
         warrantyRepository: any WarrantyRepository,
         documentRepository: any DocumentRepository,
-        documentStorage: DocumentStorageProtocol
+        documentStorage: DocumentStorageProtocol,
+        insuranceRepository: any InsurancePolicyRepository
     ) -> ItemsModuleAPI {
         let dependencies = ItemsModuleDependencies(
             itemRepository: itemRepository,
@@ -65,7 +68,8 @@ public struct ItemsModuleFactory {
             storageUnitRepository: storageUnitRepository,
             warrantyRepository: warrantyRepository,
             documentRepository: documentRepository,
-            documentStorage: documentStorage
+            documentStorage: documentStorage,
+            insuranceRepository: insuranceRepository
         )
         
         return ItemsModule(dependencies: dependencies)

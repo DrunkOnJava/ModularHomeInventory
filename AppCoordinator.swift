@@ -102,7 +102,7 @@ final class AppCoordinator: ObservableObject {
         let budgetRepository = MockBudgetRepository()
         
         // Create insurance repository
-        let insuranceRepository = MockInsurancePolicyRepository()
+        let insuranceRepository = Core.MockInsurancePolicyRepository()
         
         // Initialize Items module with scanner and receipts dependencies
         let itemsDependencies = Items.ItemsModuleDependencies(
