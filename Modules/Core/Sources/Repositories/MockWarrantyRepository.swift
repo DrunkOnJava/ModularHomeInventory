@@ -43,7 +43,7 @@ public final class MockWarrantyRepository: WarrantyRepository {
         }
     }
     
-    public func fetch(id: UUID) async throws -> Warranty? {
+    public func fetch(by id: UUID) async throws -> Warranty? {
         return await withCheckedContinuation { continuation in
             queue.async {
                 continuation.resume(returning: self.warranties[id])
@@ -120,7 +120,7 @@ public final class MockWarrantyRepository: WarrantyRepository {
         return await withCheckedContinuation { continuation in
             queue.async(flags: .barrier) {
                 if var warranty = self.warranties[warrantyId] {
-                    warranty.documents.append(documentId)
+                    warranty.documentIds.append(documentId)
                     self.warranties[warrantyId] = warranty
                 }
                 continuation.resume()
@@ -132,7 +132,7 @@ public final class MockWarrantyRepository: WarrantyRepository {
         return await withCheckedContinuation { continuation in
             queue.async(flags: .barrier) {
                 if var warranty = self.warranties[warrantyId] {
-                    warranty.documents.removeAll { $0 == documentId }
+                    warranty.documentIds.removeAll { $0 == documentId }
                     self.warranties[warrantyId] = warranty
                 }
                 continuation.resume()

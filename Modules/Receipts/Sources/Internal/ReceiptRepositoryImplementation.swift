@@ -8,8 +8,8 @@ final class ReceiptRepositoryImplementation: ReceiptRepository {
     private let queue = DispatchQueue(label: "com.homeinventory.receipts", attributes: .concurrent)
     
     init() {
-        // Initialize with mock receipts
-        self.receipts = MockDataService.generateReceipts()
+        // Initialize with some preview receipts
+        self.receipts = [Receipt.preview]
     }
     
     // MARK: - Repository Protocol
@@ -53,34 +53,11 @@ final class ReceiptRepositoryImplementation: ReceiptRepository {
         }
     }
     
-    func searchReceipts(query: String) async throws -> [Receipt] {
+    func fetchByDateRange(from startDate: Date, to endDate: Date) async throws -> [Receipt] {
         return await withCheckedContinuation { continuation in
             queue.async {
                 let filtered = self.receipts.filter { receipt in
-                    receipt.storeName.localizedCaseInsensitiveContains(query) ||
-                    receipt.rawText?.localizedCaseInsensitiveContains(query) == true
-                }
-                continuation.resume(returning: filtered)
-            }
-        }
-    }
-    
-    func fetchReceipts(for itemId: UUID) async throws -> [Receipt] {
-        return await withCheckedContinuation { continuation in
-            queue.async {
-                let filtered = self.receipts.filter { receipt in
-                    receipt.items.contains(itemId)
-                }
-                continuation.resume(returning: filtered)
-            }
-        }
-    }
-    
-    func fetchReceipts(in dateRange: DateInterval) async throws -> [Receipt] {
-        return await withCheckedContinuation { continuation in
-            queue.async {
-                let filtered = self.receipts.filter { receipt in
-                    dateRange.contains(receipt.purchaseDate)
+                    receipt.date >= startDate && receipt.date <= endDate
                 }
                 continuation.resume(returning: filtered)
             }
@@ -92,6 +69,28 @@ final class ReceiptRepositoryImplementation: ReceiptRepository {
             queue.async {
                 let filtered = self.receipts.filter { receipt in
                     receipt.storeName.localizedCaseInsensitiveContains(storeName)
+                }
+                continuation.resume(returning: filtered)
+            }
+        }
+    }
+    
+    func fetchByItemId(_ itemId: UUID) async throws -> [Receipt] {
+        return await withCheckedContinuation { continuation in
+            queue.async {
+                let filtered = self.receipts.filter { receipt in
+                    receipt.itemIds.contains(itemId)
+                }
+                continuation.resume(returning: filtered)
+            }
+        }
+    }
+    
+    func fetchAboveAmount(_ amount: Decimal) async throws -> [Receipt] {
+        return await withCheckedContinuation { continuation in
+            queue.async {
+                let filtered = self.receipts.filter { receipt in
+                    receipt.totalAmount > amount
                 }
                 continuation.resume(returning: filtered)
             }

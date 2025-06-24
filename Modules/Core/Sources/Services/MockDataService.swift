@@ -9,23 +9,23 @@ public final class MockDataService {
     
     // MARK: - Locations
     public static let locations: [Location] = [
-        Location(id: UUID(), name: "Home", type: .residential, room: "Living Room", notes: "Main living area"),
-        Location(id: UUID(), name: "Home", type: .residential, room: "Master Bedroom", notes: "Primary bedroom"),
-        Location(id: UUID(), name: "Home", type: .residential, room: "Kitchen", notes: "Kitchen and dining area"),
-        Location(id: UUID(), name: "Home", type: .residential, room: "Home Office", notes: "Work from home setup"),
-        Location(id: UUID(), name: "Home", type: .residential, room: "Garage", notes: "Storage and tools"),
-        Location(id: UUID(), name: "Storage Unit", type: .commercial, room: "Unit A23", notes: "Climate controlled storage"),
-        Location(id: UUID(), name: "Office", type: .commercial, room: "Desk Area", notes: "Work office")
+        Location(name: "Living Room", icon: "sofa", notes: "Main living area"),
+        Location(name: "Master Bedroom", icon: "bed.double", notes: "Primary bedroom"),
+        Location(name: "Kitchen", icon: "fork.knife", notes: "Kitchen and dining area"),
+        Location(name: "Home Office", icon: "desktopcomputer", notes: "Work from home setup"),
+        Location(name: "Garage", icon: "car", notes: "Storage and tools"),
+        Location(name: "Storage Unit", icon: "shippingbox", notes: "Climate controlled storage"),
+        Location(name: "Office", icon: "building.2", notes: "Work office")
     ]
     
     // MARK: - Storage Units
     public static let storageUnits: [StorageUnit] = [
-        StorageUnit(name: "TV Stand Cabinet", locationId: locations[0].id, type: .cabinet, notes: "Entertainment center storage"),
-        StorageUnit(name: "Closet Shelf A", locationId: locations[1].id, type: .shelf, notes: "Top shelf - seasonal items"),
-        StorageUnit(name: "Kitchen Pantry", locationId: locations[2].id, type: .closet, notes: "Food and kitchen supplies"),
-        StorageUnit(name: "Office Drawer Unit", locationId: locations[3].id, type: .drawer, notes: "Office supplies and documents"),
-        StorageUnit(name: "Tool Chest", locationId: locations[4].id, type: .cabinet, notes: "Tools and hardware"),
-        StorageUnit(name: "Storage Boxes", locationId: locations[5].id, type: .box, notes: "Archived items")
+        StorageUnit(name: "TV Stand Cabinet", type: .cabinet, locationId: locations[0].id, notes: "Entertainment center storage"),
+        StorageUnit(name: "Closet Shelf A", type: .shelf, locationId: locations[1].id, notes: "Top shelf - seasonal items"),
+        StorageUnit(name: "Kitchen Pantry", type: .closet, locationId: locations[2].id, notes: "Food and kitchen supplies"),
+        StorageUnit(name: "Office Drawer Unit", type: .drawer, locationId: locations[3].id, notes: "Office supplies and documents"),
+        StorageUnit(name: "Tool Chest", type: .cabinet, locationId: locations[4].id, notes: "Tools and hardware"),
+        StorageUnit(name: "Storage Boxes", type: .box, locationId: locations[5].id, notes: "Archived items")
     ]
     
     // MARK: - Comprehensive Items
@@ -404,47 +404,39 @@ public final class MockDataService {
             // Active warranties
             Warranty(
                 itemId: UUID(),
+                type: .manufacturer,
+                provider: "Apple",
                 startDate: now.addingTimeInterval(-90 * 24 * 60 * 60),
                 endDate: now.addingTimeInterval(275 * 24 * 60 * 60), // Expires in 9 months
-                provider: "Apple",
-                type: .manufacturer,
                 coverageDetails: "AppleCare+ for Mac",
-                cost: 399.00,
-                documents: [],
-                remindersEnabled: true
+                cost: 399.00
             ),
             Warranty(
                 itemId: UUID(),
+                type: .manufacturer,
+                provider: "Sony",
                 startDate: now.addingTimeInterval(-45 * 24 * 60 * 60),
                 endDate: now.addingTimeInterval(320 * 24 * 60 * 60), // Expires in 10.5 months
-                provider: "Sony",
-                type: .manufacturer,
-                coverageDetails: "Standard manufacturer warranty",
-                documents: [],
-                remindersEnabled: true
+                coverageDetails: "Standard manufacturer warranty"
             ),
             // Expiring soon
             Warranty(
                 itemId: UUID(),
+                type: .extended,
+                provider: "Best Buy",
                 startDate: now.addingTimeInterval(-340 * 24 * 60 * 60),
                 endDate: now.addingTimeInterval(25 * 24 * 60 * 60), // Expires in 25 days
-                provider: "Best Buy",
-                type: .extended,
                 coverageDetails: "Geek Squad Protection",
-                cost: 199.00,
-                documents: [],
-                remindersEnabled: true
+                cost: 199.00
             ),
             // Expired
             Warranty(
                 itemId: UUID(),
+                type: .manufacturer,
+                provider: "LG",
                 startDate: now.addingTimeInterval(-730 * 24 * 60 * 60),
                 endDate: now.addingTimeInterval(-5 * 24 * 60 * 60), // Expired 5 days ago
-                provider: "LG",
-                type: .manufacturer,
-                coverageDetails: "Standard 1-year warranty",
-                documents: [],
-                remindersEnabled: false
+                coverageDetails: "Standard 1-year warranty"
             )
         ]
     }
@@ -459,12 +451,9 @@ public final class MockDataService {
         if !appleItems.isEmpty {
             receipts.append(Receipt(
                 storeName: "Apple Store",
-                purchaseDate: appleItems[0].purchaseDate ?? Date(),
+                date: appleItems[0].purchaseDate ?? Date(),
                 totalAmount: appleItems.reduce(0) { $0 + ($1.purchasePrice ?? 0) },
-                taxAmount: appleItems.reduce(0) { $0 + ($1.purchasePrice ?? 0) } * 0.0875,
-                items: appleItems.map { $0.id },
-                paymentMethod: "Apple Card",
-                documentIds: [UUID()],
+                itemIds: appleItems.map { $0.id },
                 rawText: "APPLE STORE\n#R123456789\n\nMacBook Pro 16\" - $3,499.00\niPad Pro 12.9\" - $1,299.00\n\nSubtotal: $4,798.00\nTax: $419.83\nTotal: $5,217.83"
             ))
         }
@@ -478,30 +467,30 @@ public final class MockDataService {
             Collection(
                 name: "Home Office Setup",
                 description: "All equipment for the home office",
-                itemIds: [],
-                tags: ["office", "work"],
-                coverImageId: nil
+                icon: "desktopcomputer",
+                color: "blue",
+                itemIds: []
             ),
             Collection(
                 name: "Emergency Kit",
                 description: "Items for emergency preparedness",
-                itemIds: [],
-                tags: ["emergency", "safety"],
-                coverImageId: nil
+                icon: "cross.case",
+                color: "red",
+                itemIds: []
             ),
             Collection(
                 name: "Travel Gear",
                 description: "Essential items for traveling",
-                itemIds: [],
-                tags: ["travel", "portable"],
-                coverImageId: nil
+                icon: "airplane",
+                color: "green",
+                itemIds: []
             ),
             Collection(
                 name: "Investment Items",
                 description: "Items that appreciate in value",
-                itemIds: [],
-                tags: ["investment", "collectible"],
-                coverImageId: nil
+                icon: "chart.line.uptrend.xyaxis",
+                color: "orange",
+                itemIds: []
             )
         ]
     }
@@ -515,30 +504,30 @@ public final class MockDataService {
         return [
             Budget(
                 name: "Electronics Budget",
-                category: .electronics,
                 amount: 500.00,
                 period: .monthly,
+                category: .electronics,
                 startDate: startOfMonth,
-                alertThreshold: 80,
+                notificationThreshold: 0.80,
                 isActive: true
             ),
             Budget(
                 name: "Annual Furniture",
-                category: .furniture,
                 amount: 3000.00,
                 period: .yearly,
+                category: .furniture,
                 startDate: startOfYear,
-                alertThreshold: 75,
+                notificationThreshold: 0.75,
                 isActive: true
             ),
             Budget(
                 name: "Clothing Quarterly",
-                category: .clothing,
                 amount: 600.00,
                 period: .custom,
+                category: .clothing,
                 startDate: now.addingTimeInterval(-45 * 24 * 60 * 60),
                 endDate: now.addingTimeInterval(45 * 24 * 60 * 60),
-                alertThreshold: 90,
+                notificationThreshold: 0.90,
                 isActive: true
             )
         ]
@@ -548,8 +537,8 @@ public final class MockDataService {
     public func loadAllMockData(
         itemRepository: any ItemRepository,
         locationRepository: any LocationRepository,
-        receiptRepository: any ReceiptRepository? = nil,
-        budgetRepository: any BudgetRepository? = nil
+        receiptRepository: (any ReceiptRepository)? = nil,
+        budgetRepository: (any BudgetRepository)? = nil
     ) async throws {
         // Load locations first
         for location in Self.locations {
