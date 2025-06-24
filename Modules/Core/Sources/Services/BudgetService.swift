@@ -304,7 +304,8 @@ public final class BudgetService {
         // Analyze performance
         if performance.timesExceeded > performance.monthsAnalyzed / 2 {
             insights.append("This budget is exceeded more than 50% of the time")
-            recommendations.append("Consider increasing your budget by \(Int((performance.averageSpending - budget.amount) / budget.amount * 100))%")
+            let percentageIncrease = Int((performance.averageSpending - budget.amount) / budget.amount * 100)
+            recommendations.append("Consider increasing your budget by \(percentageIncrease)%")
         }
         
         if performance.averagePercentageUsed < 0.5 {
@@ -313,7 +314,7 @@ public final class BudgetService {
         }
         
         // Analyze trends
-        if performance.trend == .increasing {
+        if performance.trend == .up {
             insights.append("Your spending in this category is trending upward")
             recommendations.append("Review recent purchases to identify areas to cut back")
         }

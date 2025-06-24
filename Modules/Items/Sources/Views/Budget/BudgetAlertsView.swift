@@ -97,7 +97,7 @@ struct AlertRow: View {
                             .frame(width: 8, height: 8)
                     }
                     
-                    Text(alert.createdAt.formatted(.relative(presentation: .abbreviated)))
+                    Text(alert.createdAt, style: .relative)
                         .font(.caption2)
                         .foregroundStyle(.tertiary)
                 }

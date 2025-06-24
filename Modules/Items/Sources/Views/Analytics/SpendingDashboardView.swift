@@ -459,7 +459,6 @@ struct SpendingDashboardView: View {
             }
         }
     }
-}
 
 // MARK: - Supporting Views
 

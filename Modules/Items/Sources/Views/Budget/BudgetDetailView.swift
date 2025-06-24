@@ -419,7 +419,7 @@ final class BudgetDetailViewModel: ObservableObject {
     @Published var transactions: [Core.BudgetTransaction] = []
     @Published var history: [Core.BudgetHistoryEntry] = []
     @Published var insights: Core.BudgetInsights?
-    @Published var spendingData: [SpendingDataPoint] = []
+    @Published var spendingData: [BudgetSpendingDataPoint] = []
     
     let budgetService: Core.BudgetService
     let budgetRepository: any BudgetRepository
@@ -491,15 +491,15 @@ final class BudgetDetailViewModel: ObservableObject {
     private func generateSpendingData(from transactions: [Core.BudgetTransaction], in period: DateInterval) {
         let sortedTransactions = transactions.sorted { $0.date < $1.date }
         var cumulativeAmount: Decimal = 0
-        var dataPoints: [SpendingDataPoint] = []
+        var dataPoints: [BudgetSpendingDataPoint] = []
         
         // Add starting point
-        dataPoints.append(SpendingDataPoint(date: period.start, cumulativeAmount: 0))
+        dataPoints.append(BudgetSpendingDataPoint(date: period.start, cumulativeAmount: 0))
         
         // Add transaction points
         for transaction in sortedTransactions {
             cumulativeAmount += transaction.amount
-            dataPoints.append(SpendingDataPoint(
+            dataPoints.append(BudgetSpendingDataPoint(
                 date: transaction.date,
                 cumulativeAmount: cumulativeAmount
             ))
@@ -507,7 +507,7 @@ final class BudgetDetailViewModel: ObservableObject {
         
         // Add current point if different from last
         if let lastDate = dataPoints.last?.date, lastDate < Date() {
-            dataPoints.append(SpendingDataPoint(
+            dataPoints.append(BudgetSpendingDataPoint(
                 date: min(Date(), period.end),
                 cumulativeAmount: cumulativeAmount
             ))
@@ -517,7 +517,7 @@ final class BudgetDetailViewModel: ObservableObject {
     }
 }
 
-struct SpendingDataPoint: Identifiable {
+struct BudgetSpendingDataPoint: Identifiable {
     let id = UUID()
     let date: Date
     let cumulativeAmount: Decimal

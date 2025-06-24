@@ -39,7 +39,8 @@ public protocol BudgetRepository {
 }
 
 /// Budget performance analytics
-public struct BudgetPerformance: Codable {
+public struct BudgetPerformance: Codable, Identifiable {
+    public var id: UUID { budgetId }
     public let budgetId: UUID
     public let averageSpending: Decimal
     public let monthsAnalyzed: Int

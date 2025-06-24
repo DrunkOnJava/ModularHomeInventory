@@ -3,6 +3,12 @@ import Core
 import SharedUI
 import Charts
 
+extension Calendar {
+    func isDateInThisMonth(_ date: Date) -> Bool {
+        return isDate(date, equalTo: Date(), toGranularity: .month)
+    }
+}
+
 /// Budget dashboard view for tracking spending against budgets
 /// Swift 5.9 - No Swift 6 features
 struct BudgetDashboardView: View {
@@ -278,7 +284,7 @@ struct BudgetCard: View {
                 Spacer()
                 
                 VStack(alignment: .trailing, spacing: 4) {
-                    Text(status?.spent ?? 0, format: .currency(code: "USD"))
+                    Text((status?.spent ?? 0).formatted(.currency(code: "USD")))
                         .font(.system(size: 16, weight: .semibold))
                     
                     Text("of \(budget.amount.formatted(.currency(code: "USD")))")
@@ -390,13 +396,13 @@ struct PerformanceCard: View {
             
             if performance.trend != .stable {
                 HStack(spacing: 4) {
-                    Image(systemName: performance.trend == .increasing ? "arrow.up.right" : "arrow.down.right")
+                    Image(systemName: performance.trend == .up ? "arrow.up.right" : "arrow.down.right")
                         .font(.caption)
                     
                     Text(performance.trend.rawValue)
                         .font(.caption)
                 }
-                .foregroundStyle(performance.trend == .increasing ? .red : .green)
+                .foregroundStyle(performance.trend == .up ? .red : .green)
             }
         }
         .padding()
