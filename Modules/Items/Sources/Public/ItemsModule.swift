@@ -175,4 +175,12 @@ public final class ItemsModule: ItemsModuleAPI {
             )
         )
     }
+    
+    public func makeTimeBasedAnalyticsView() -> AnyView {
+        return AnyView(
+            TimeBasedAnalyticsView(
+                itemRepository: dependencies.itemRepository
+            )
+        )
+    }
 }

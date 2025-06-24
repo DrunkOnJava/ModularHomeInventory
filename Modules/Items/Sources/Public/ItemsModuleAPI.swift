@@ -50,6 +50,9 @@ public protocol ItemsModuleAPI: AnyObject {
     
     /// Creates the retailer analytics view
     func makeRetailerAnalyticsView() -> AnyView
+    
+    /// Creates the time-based analytics view
+    func makeTimeBasedAnalyticsView() -> AnyView
 }
 
 /// Dependencies required by the Items module

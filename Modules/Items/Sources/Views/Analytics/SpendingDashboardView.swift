@@ -48,6 +48,9 @@ struct SpendingDashboardView: View {
                 
                 // Portfolio value link
                 portfolioValueLink
+                
+                // Time analysis link
+                timeAnalysisLink
             }
             .padding(AppSpacing.md)
         }
@@ -298,6 +301,38 @@ struct SpendingDashboardView: View {
                         .foregroundStyle(AppColors.textPrimary)
                     
                     Text("Track your inventory value over time")
+                        .textStyle(.bodyMedium)
+                        .foregroundStyle(AppColors.textSecondary)
+                }
+                
+                Spacer()
+                
+                Image(systemName: "chevron.right")
+                    .font(.system(size: 16))
+                    .foregroundStyle(AppColors.textTertiary)
+            }
+            .padding(AppSpacing.lg)
+            .background(AppColors.surface)
+            .cornerRadius(AppCornerRadius.large)
+        }
+        .buttonStyle(PlainButtonStyle())
+    }
+    
+    private var timeAnalysisLink: some View {
+        NavigationLink(destination: TimeBasedAnalyticsView(
+            itemRepository: viewModel.itemRepository
+        )) {
+            HStack(spacing: AppSpacing.md) {
+                Image(systemName: "calendar.circle.fill")
+                    .font(.system(size: 44))
+                    .foregroundStyle(AppColors.primary)
+                
+                VStack(alignment: .leading, spacing: AppSpacing.xs) {
+                    Text("Time-based Analysis")
+                        .textStyle(.headlineMedium)
+                        .foregroundStyle(AppColors.textPrimary)
+                    
+                    Text("Analyze spending trends over time")
                         .textStyle(.bodyMedium)
                         .foregroundStyle(AppColors.textSecondary)
                 }
