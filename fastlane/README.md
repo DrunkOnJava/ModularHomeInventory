@@ -15,6 +15,38 @@ For _fastlane_ installation instructions, see [Installing _fastlane_](https://do
 
 ## iOS
 
+### ios build_dev
+
+```sh
+[bundle exec] fastlane ios build_dev
+```
+
+Build the app for development
+
+### ios build_only
+
+```sh
+[bundle exec] fastlane ios build_only
+```
+
+Build the app for TestFlight (without upload)
+
+### ios testflight
+
+```sh
+[bundle exec] fastlane ios testflight
+```
+
+Build and upload to TestFlight
+
+### ios fix_build
+
+```sh
+[bundle exec] fastlane ios fix_build
+```
+
+Fix common build issues
+
 ### ios screenshots
 
 ```sh
@@ -23,45 +55,13 @@ For _fastlane_ installation instructions, see [Installing _fastlane_](https://do
 
 Generate screenshots
 
-### ios frame
+### ios validate
 
 ```sh
-[bundle exec] fastlane ios frame
+[bundle exec] fastlane ios validate
 ```
 
-Frame screenshots
-
-### ios upload_screenshots
-
-```sh
-[bundle exec] fastlane ios upload_screenshots
-```
-
-Upload screenshots to App Store Connect
-
-### ios screenshots_all
-
-```sh
-[bundle exec] fastlane ios screenshots_all
-```
-
-Generate and frame screenshots
-
-### ios beta
-
-```sh
-[bundle exec] fastlane ios beta
-```
-
-Build and upload to TestFlight
-
-### ios release
-
-```sh
-[bundle exec] fastlane ios release
-```
-
-Release to App Store
+Validate the app before submission
 
 ----
 
