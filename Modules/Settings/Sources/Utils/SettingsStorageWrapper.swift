@@ -4,7 +4,7 @@ import Core
 /// Observable wrapper for SettingsStorageProtocol to work with SwiftUI
 @MainActor
 public class SettingsStorageWrapper: ObservableObject {
-    private let storage: any SettingsStorageProtocol
+    let storage: any SettingsStorageProtocol
     @Published private var updateTrigger = false
     
     public init(storage: any SettingsStorageProtocol) {

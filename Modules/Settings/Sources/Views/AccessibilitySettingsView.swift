@@ -142,7 +142,7 @@ struct AccessibilitySettingsView: View {
             HStack {
                 Image(systemName: "info.circle")
                     .foregroundStyle(AppColors.primary)
-                NavigationLink(destination: VoiceOverSettingsView(settingsStorage: settingsStorage)) {
+                NavigationLink(destination: VoiceOverSettingsView(settingsStorage: settingsWrapper.storage)) {
                     Text("Configure VoiceOver settings for enhanced screen reader support.")
                         .dynamicTextStyle(.bodySmall)
                         .foregroundStyle(AppColors.textSecondary)

@@ -143,9 +143,10 @@ public func reportedFatalError(
     function: StaticString = #function,
     line: UInt = #line
 ) -> Never {
+    let errorMessage = message()
     Task { @MainActor in
         CrashReportingService.shared.reportNonFatal(
-            "Fatal error: \(message())",
+            "Fatal error: \(errorMessage)",
             userInfo: userInfo,
             file: "\(file)",
             function: "\(function)",
@@ -153,7 +154,7 @@ public func reportedFatalError(
         )
     }
     
-    fatalError(message(), file: file, line: line)
+    fatalError(errorMessage, file: file, line: line)
 }
 
 // MARK: - Result Extensions

@@ -233,7 +233,7 @@ final class BatchScannerViewModel: NSObject, ObservableObject {
     private let itemTemplateRepository: any ItemTemplateRepository
     private let createItemView: ((String) -> AnyView)?
     private let soundService: SoundFeedbackService?
-    private let settingsStorage: SettingsStorageProtocol?
+    private let settingsStorage: (any Core.SettingsStorageProtocol)?
     private let scanHistoryRepository: (any ScanHistoryRepository)?
     
     // MARK: - Initialization

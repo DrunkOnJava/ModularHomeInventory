@@ -1,5 +1,6 @@
 import AVFoundation
 import UIKit
+import Core
 import Settings
 
 /// Service for playing scanner sound effects
@@ -7,9 +8,9 @@ import Settings
 @MainActor
 public final class SoundFeedbackService {
     private var soundPlayer: AVAudioPlayer?
-    private let settingsStorage: SettingsStorageProtocol
+    private let settingsStorage: any SettingsStorageProtocol
     
-    public init(settingsStorage: SettingsStorageProtocol) {
+    public init(settingsStorage: any SettingsStorageProtocol) {
         self.settingsStorage = settingsStorage
         setupSound()
     }

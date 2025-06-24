@@ -1,4 +1,5 @@
 import SwiftUI
+import Core
 import SharedUI
 
 /// Scanner settings view for adjusting scanner behavior
