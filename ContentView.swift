@@ -11,9 +11,16 @@ struct ContentView: View {
     @State private var selectedTab = 0
     @State private var showingSearch = false
     @State private var showingBarcodeSearch = false
+    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     
     var body: some View {
-        TabView(selection: $selectedTab) {
+        if UIDevice.current.userInterfaceIdiom == .pad {
+            // Use iPad-optimized interface
+            iPadApp()
+                .environmentObject(coordinator)
+        } else {
+            // iPhone interface
+            TabView(selection: $selectedTab) {
             // Items Tab - Now using the Items module!
             coordinator.itemsModule.makeItemsListView(onSearchTapped: {
                 showingSearch = true
@@ -62,6 +69,7 @@ struct ContentView: View {
             coordinator.itemsModule.makeBarcodeSearchView()
         }
         // Biometric lock would be added here when BiometricLockModifier is available
+        }
     }
 }
 
