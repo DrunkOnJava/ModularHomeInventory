@@ -4,7 +4,7 @@ import Core
 import Sync
 
 /// Simplified enhanced settings view with sophisticated UI/UX
-struct EnhancedSettingsView: View {
+public struct EnhancedSettingsView: View {
     @StateObject private var viewModel: SettingsViewModel
     @State private var searchText = ""
     @State private var showingSheet = false
@@ -14,11 +14,11 @@ struct EnhancedSettingsView: View {
     @State private var profileImage: UIImage?
     @State private var isSearching = false
     
-    init(viewModel: SettingsViewModel) {
+    public init(viewModel: SettingsViewModel) {
         self._viewModel = StateObject(wrappedValue: viewModel)
     }
     
-    var body: some View {
+    public var body: some View {
         ZStack {
             // Background
             SettingsBackgroundView()
