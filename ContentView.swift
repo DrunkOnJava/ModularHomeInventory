@@ -20,63 +20,63 @@ struct ContentView: View {
                 .environmentObject(coordinator)
         } else {
             TabView(selection: $selectedTab) {
-            // Items Tab - Now using the Items module!
-            coordinator.itemsModule.makeItemsListView(onSearchTapped: {
-                showingSearch = true
-            }, onBarcodeSearchTapped: {
-                showingBarcodeSearch = true
-            })
-                .tabItem {
-                    Label("Items", systemImage: "square.grid.2x2")
+                // Items Tab - Now using the Items module!
+                coordinator.itemsModule.makeItemsListView(onSearchTapped: {
+                    showingSearch = true
+                }, onBarcodeSearchTapped: {
+                    showingBarcodeSearch = true
+                })
+                    .tabItem {
+                        Label("Items", systemImage: "square.grid.2x2")
+                    }
+                    .tag(0)
+                
+                // Collections Tab
+                NavigationView {
+                    coordinator.itemsModule.makeCollectionsListView()
                 }
-                .tag(0)
-            
-            // Collections Tab
-            NavigationView {
-                coordinator.itemsModule.makeCollectionsListView()
-            }
-                .tabItem {
-                    Label("Collections", systemImage: "folder")
+                    .tabItem {
+                        Label("Collections", systemImage: "folder")
+                    }
+                    .tag(1)
+                
+                // Analytics Tab - Spending Dashboard
+                NavigationView {
+                    coordinator.itemsModule.makeSpendingDashboardView()
                 }
-                .tag(1)
-            
-            // Analytics Tab - Spending Dashboard
-            NavigationView {
-                coordinator.itemsModule.makeSpendingDashboardView()
-            }
-                .tabItem {
-                    Label("Analytics", systemImage: "chart.bar.fill")
+                    .tabItem {
+                        Label("Analytics", systemImage: "chart.bar.fill")
+                    }
+                    .tag(2)
+                
+                // Scanner Tab - Now using the Scanner module!
+                NavigationView {
+                    coordinator.scannerModule.makeScannerView()
                 }
-                .tag(2)
-            
-            // Scanner Tab - Now using the Scanner module!
-            NavigationView {
-                coordinator.scannerModule.makeScannerView()
-            }
-                .tabItem {
-                    Label("Scanner", systemImage: "barcode.viewfinder")
+                    .tabItem {
+                        Label("Scanner", systemImage: "barcode.viewfinder")
+                    }
+                    .tag(3)
+                
+                // Settings Tab - Now using the Settings module!
+                NavigationView {
+                    coordinator.settingsModule.makeSettingsView()
                 }
-                .tag(3)
-            
-            // Settings Tab - Now using the Settings module!
-            NavigationView {
-                coordinator.settingsModule.makeSettingsView()
+                .tabItem {
+                    Label("Settings", systemImage: "gear")
+                }
+                .tag(4)
             }
-            .tabItem {
-                Label("Settings", systemImage: "gear")
+            .accentColor(AppColors.primary)
+            .withOfflineIndicator()
+            .sheet(isPresented: $showingSearch) {
+                coordinator.itemsModule.makeNaturalLanguageSearchView()
             }
-            .tag(4)
+            .sheet(isPresented: $showingBarcodeSearch) {
+                coordinator.itemsModule.makeBarcodeSearchView()
+            }
+            // Biometric lock would be added here when BiometricLockModifier is available
         }
-        .accentColor(AppColors.primary)
-        .withOfflineIndicator()
-        .sheet(isPresented: $showingSearch) {
-            coordinator.itemsModule.makeNaturalLanguageSearchView()
-        }
-        .sheet(isPresented: $showingBarcodeSearch) {
-            coordinator.itemsModule.makeBarcodeSearchView()
-        }
-        // Biometric lock would be added here when BiometricLockModifier is available
-    }
 }
 
 #Preview {
