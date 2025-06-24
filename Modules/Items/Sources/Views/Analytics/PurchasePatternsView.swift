@@ -701,7 +701,7 @@ struct CategoryPreferenceDetail: View {
                 DetailRow(label: "Total Items", value: "\(pattern.purchaseCount)")
                 DetailRow(label: "Total Spent", value: pattern.totalSpent.asCurrency())
                 DetailRow(label: "Average Item Price", value: pattern.averagePrice.asCurrency())
-                DetailRow(label: "Purchase Frequency", value: pattern.frequency.rawValue)
+                DetailRow(label: "Growth Trend", value: pattern.trend.rawValue)
             }
             .padding()
             .background(Color(.systemGray6))
@@ -777,54 +777,53 @@ struct BrandLoyaltyDetail: View {
             VStack(alignment: .leading, spacing: 12) {
                 DetailRow(label: "Total Purchases", value: "\(pattern.purchaseCount)")
                 DetailRow(label: "Total Spent", value: pattern.totalSpent.asCurrency())
-                DetailRow(label: "Average Price", value: pattern.averagePrice.asCurrency())
-                DetailRow(label: "Last Purchase", value: pattern.lastPurchaseDate.formatted(date: .abbreviated, time: .omitted))
+                DetailRow(label: "Average Rating", value: pattern.averageRating != nil ? "\(String(format: "%.1f", pattern.averageRating!)) stars" : "No ratings")
+                DetailRow(label: "Loyalty Score", value: "\(Int(pattern.loyaltyScore * 100))%")
             }
             .padding()
             .background(Color(.systemGray6))
             .cornerRadius(12)
             
-            // Categories Purchased
-            if !pattern.categories.isEmpty {
-                VStack(alignment: .leading, spacing: 12) {
-                    Text("Categories")
-                        .font(.headline)
-                    
-                    LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 8) {
-                        ForEach(pattern.categories, id: \.self) { category in
-                            HStack {
-                                Image(systemName: category.icon)
-                                    .font(.system(size: 16))
-                                    .foregroundStyle(Color(hex: category.color))
-                                Text(category.rawValue)
-                                    .font(.system(size: 14))
-                                    .lineLimit(1)
-                            }
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                            .padding(8)
-                            .background(Color(.systemGray5))
-                            .cornerRadius(8)
-                        }
-                    }
+            // Category for this brand
+            VStack(alignment: .leading, spacing: 12) {
+                Text("Category")
+                    .font(.headline)
+                
+                HStack {
+                    Image(systemName: pattern.category.icon)
+                        .font(.system(size: 16))
+                        .foregroundStyle(Color(hex: pattern.category.color))
+                    Text(pattern.category.rawValue)
+                        .font(.system(size: 14))
                 }
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(8)
+                .background(Color(.systemGray5))
+                .cornerRadius(8)
             }
             
-            // Alternative Brands
-            if !pattern.alternativeBrands.isEmpty {
-                VStack(alignment: .leading, spacing: 12) {
-                    Text("Also Purchased")
-                        .font(.headline)
-                    
-                    ForEach(pattern.alternativeBrands, id: \.self) { brand in
-                        Text(brand)
-                            .font(.system(size: 14))
-                            .padding(.vertical, 2)
-                    }
+            // Brand loyalty insights
+            VStack(alignment: .leading, spacing: 12) {
+                Text("Loyalty Insights")
+                    .font(.headline)
+                
+                if pattern.loyaltyScore > 0.8 {
+                    Label("Highly loyal to this brand", systemImage: "star.fill")
+                        .font(.system(size: 14))
+                        .foregroundStyle(.yellow)
+                } else if pattern.loyaltyScore > 0.5 {
+                    Label("Moderately loyal", systemImage: "star.leadinghalf.filled")
+                        .font(.system(size: 14))
+                        .foregroundStyle(.blue)
+                } else {
+                    Label("Occasionally purchases", systemImage: "star")
+                        .font(.system(size: 14))
+                        .foregroundStyle(.gray)
                 }
-                .padding()
-                .background(Color(.systemGray6))
-                .cornerRadius(12)
             }
+            .padding()
+            .background(Color(.systemGray6))
+            .cornerRadius(12)
         }
     }
     
@@ -924,26 +923,26 @@ struct PriceRangeDetail: View {
             
             // Distribution Stats
             VStack(alignment: .leading, spacing: 12) {
-                DetailRow(label: "Items in Range", value: "\(pattern.itemCount)")
+                DetailRow(label: "Price Distribution", value: "\(pattern.priceDistribution.count) ranges")
                 DetailRow(label: "Average Price", value: pattern.averagePrice.asCurrency())
-                DetailRow(label: "Price Sensitivity", value: pattern.sensitivity.rawValue)
+                DetailRow(label: "Sweet Spot", value: pattern.sweetSpot.asCurrency())
             }
             .padding()
             .background(Color(.systemGray6))
             .cornerRadius(12)
             
             // Distribution Breakdown
-            if pattern.distribution.count > 0 {
+            if pattern.priceDistribution.count > 0 {
                 VStack(alignment: .leading, spacing: 12) {
                     Text("Price Distribution")
                         .font(.headline)
                     
-                    ForEach(Array(pattern.distribution.sorted(by: { $0.key < $1.key })), id: \.key) { range, percentage in
+                    ForEach(Array(pattern.priceDistribution.sorted(by: { $0.key.rawValue < $1.key.rawValue })), id: \.key) { range, count in
                         HStack {
-                            Text(range)
+                            Text(range.rawValue)
                                 .font(.system(size: 14))
                             Spacer()
-                            Text("\(Int(percentage))%")
+                            Text("\(count) items")
                                 .font(.system(size: 14, weight: .medium))
                                 .foregroundStyle(.secondary)
                         }
@@ -992,7 +991,7 @@ struct ShoppingTimeDetail: View {
                 DetailRow(label: "Preferred Day", value: pattern.preferredDayOfWeek)
                 DetailRow(label: "Preferred Time", value: pattern.preferredTimeOfDay.rawValue)
                 DetailRow(label: "Shopping Style", value: pattern.weekendVsWeekday.rawValue)
-                DetailRow(label: "Total Purchases", value: "\(pattern.purchaseCount)")
+                DetailRow(label: "Monthly Pattern", value: "\(pattern.monthlyDistribution.count) active days")
             }
             .padding()
             .background(Color(.systemGray6))
@@ -1000,15 +999,15 @@ struct ShoppingTimeDetail: View {
             
             // Time Distribution Chart
             VStack(alignment: .leading, spacing: 12) {
-                Text("Shopping Activity by Hour")
+                Text("Shopping Activity by Day of Month")
                     .font(.headline)
                 
-                // Simple bar chart for hourly distribution
-                if let hourlyData = pattern.hourlyDistribution {
+                // Simple bar chart for monthly distribution
+                if pattern.monthlyDistribution.count > 0 {
                     VStack(spacing: 4) {
-                        ForEach(Array(hourlyData.sorted(by: { $0.key < $1.key })).prefix(5), id: \.key) { hour, count in
+                        ForEach(Array(pattern.monthlyDistribution.sorted(by: { $0.key < $1.key })).prefix(5), id: \.key) { day, count in
                             HStack {
-                                Text(formatHour(hour))
+                                Text("Day \(day)")
                                     .font(.caption)
                                     .frame(width: 60, alignment: .trailing)
                                 
@@ -1016,7 +1015,7 @@ struct ShoppingTimeDetail: View {
                                     Rectangle()
                                         .fill(AppColors.primary)
                                         .frame(
-                                            width: geometry.size.width * (Double(count) / Double(hourlyData.values.max() ?? 1)),
+                                            width: geometry.size.width * (Double(count) / Double(pattern.monthlyDistribution.values.max() ?? 1)),
                                             height: 20
                                         )
                                         .cornerRadius(4)
@@ -1040,11 +1039,9 @@ struct ShoppingTimeDetail: View {
                 Text("Insights")
                     .font(.headline)
                 
-                if pattern.isConsistent {
-                    Label("You have consistent shopping habits", systemImage: "checkmark.circle.fill")
-                        .font(.system(size: 14))
-                        .foregroundStyle(.green)
-                }
+                Label("Preferred: \(pattern.preferredDayOfWeek)", systemImage: "calendar")
+                    .font(.system(size: 14))
+                    .foregroundStyle(.blue)
                 
                 if pattern.weekendVsWeekday == .weekend {
                     Label("You prefer weekend shopping trips", systemImage: "calendar.badge.clock")
@@ -1052,8 +1049,8 @@ struct ShoppingTimeDetail: View {
                         .foregroundStyle(.blue)
                 }
                 
-                if let peakHour = pattern.peakShoppingHour {
-                    Label("Peak shopping hour: \(formatHour(peakHour))", systemImage: "flame.fill")
+                if let peakDay = pattern.monthlyDistribution.max(by: { $0.value < $1.value }) {
+                    Label("Peak shopping day: Day \(peakDay.key)", systemImage: "flame.fill")
                         .font(.system(size: 14))
                         .foregroundStyle(.orange)
                 }
@@ -1125,21 +1122,21 @@ struct RetailerPreferenceDetail: View {
                 
                 MetricCard(
                     title: "Frequency",
-                    value: pattern.frequency.rawValue,
+                    value: "\(pattern.visitCount) visits",
                     icon: "calendar",
                     color: .purple
                 )
             }
             
             // Categories at this Store
-            if !pattern.categoriesPurchased.isEmpty {
+            if !pattern.categories.isEmpty {
                 VStack(alignment: .leading, spacing: 12) {
                     Text("What You Buy Here")
                         .font(.headline)
                     
                     ScrollView(.horizontal, showsIndicators: false) {
                         HStack(spacing: 8) {
-                            ForEach(pattern.categoriesPurchased, id: \.self) { category in
+                            ForEach(pattern.categories, id: \.self) { category in
                                 HStack {
                                     Image(systemName: category.icon)
                                         .font(.system(size: 14))
@@ -1162,19 +1159,15 @@ struct RetailerPreferenceDetail: View {
                 Text("Recent Visits")
                     .font(.headline)
                 
-                if let lastVisit = pattern.lastVisitDate {
-                    DetailRow(
-                        label: "Last Visit",
-                        value: lastVisit.formatted(date: .abbreviated, time: .omitted)
-                    )
-                }
+                DetailRow(
+                    label: "Total Visits",
+                    value: "\(pattern.visitCount)"
+                )
                 
-                if let firstVisit = pattern.firstVisitDate {
-                    DetailRow(
-                        label: "Customer Since",
-                        value: firstVisit.formatted(date: .abbreviated, time: .omitted)
-                    )
-                }
+                DetailRow(
+                    label: "Loyalty Rank",
+                    value: "#\(pattern.loyaltyRank)"
+                )
             }
             .padding()
             .background(Color(.systemGray6))
@@ -1258,7 +1251,7 @@ struct BulkBuyingDetail: View {
             VStack(alignment: .leading, spacing: 12) {
                 DetailRow(label: "Purchase Frequency", value: pattern.frequency.rawValue)
                 DetailRow(label: "Avg Quantity", value: "\(pattern.averageQuantity) units")
-                DetailRow(label: "Avg Unit Price", value: pattern.unitPrice.asCurrency())
+                DetailRow(label: "Bulk Frequency", value: pattern.frequency.rawValue)
                 DetailRow(label: "Times Purchased", value: "\(pattern.occurrences)")
             }
             .padding()
