@@ -23,8 +23,7 @@ struct ItemsListView: View {
     }
     
     var body: some View {
-        NavigationView {
-            VStack(spacing: 0) {
+        VStack(spacing: 0) {
                 // Segmented Control
                 Picker("View", selection: $selectedSegment) {
                     Text("Items").tag(0)
@@ -129,7 +128,6 @@ struct ItemsListView: View {
                 }
             }
         }
-    }
     
     // MARK: - Views
     

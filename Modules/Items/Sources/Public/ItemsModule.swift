@@ -125,21 +125,17 @@ public final class ItemsModule: ItemsModuleAPI {
     
     public func makeTagsManagementView() -> AnyView {
         return AnyView(
-            NavigationView {
-                TagsManagementView(tagRepository: dependencies.tagRepository)
-            }
+            TagsManagementView(tagRepository: dependencies.tagRepository)
         )
     }
     
     public func makeStorageUnitsListView() -> AnyView {
         return AnyView(
-            NavigationView {
-                StorageUnitsListView(
-                    storageUnitRepository: dependencies.storageUnitRepository,
-                    locationRepository: dependencies.locationRepository,
-                    itemRepository: dependencies.itemRepository
-                )
-            }
+            StorageUnitsListView(
+                storageUnitRepository: dependencies.storageUnitRepository,
+                locationRepository: dependencies.locationRepository,
+                itemRepository: dependencies.itemRepository
+            )
         )
     }
     
