@@ -35,14 +35,14 @@ platform :ios do
     frame
   end
 
-  desc "Build and upload to TestFlight"
-  lane :beta do
+  desc "Build app locally"
+  lane :build_local do
     # Ensure we're on a clean git status
     ensure_git_status_clean
     
-    # Increment build number
+    # Set build number to 2 (since Build 1 exists)
     increment_build_number(
-      build_number: latest_testflight_build_number + 1,
+      build_number: 2,
       xcodeproj: "HomeInventoryModular.xcodeproj"
     )
     
@@ -50,17 +50,36 @@ platform :ios do
     build_app(
       scheme: "HomeInventoryModular",
       export_method: "app-store",
+      skip_codesigning: false,
       export_options: {
-        provisioningProfiles: {
-          "com.homeinventory.modular" => "match AppStore com.homeinventory.modular"
-        }
+        compileBitcode: false,
+        uploadBitcode: false,
+        uploadSymbols: true
       }
+    )
+  end
+
+  desc "Build and upload to TestFlight"
+  lane :beta do
+    # Ensure we're on a clean git status
+    ensure_git_status_clean
+    
+    # Increment build number
+    increment_build_number(
+      build_number: 2,
+      xcodeproj: "HomeInventoryModular.xcodeproj"
+    )
+    
+    # Build the app
+    build_app(
+      scheme: "HomeInventoryModular",
+      export_method: "app-store"
     )
     
     # Upload to TestFlight
     upload_to_testflight(
       skip_waiting_for_build_processing: true,
-      changelog: "Bug fixes and improvements"
+      changelog: "Version 1.0.0 - Complete rebuild with modular architecture\n\n• All new codebase with improved performance\n• Enhanced UI with SwiftUI\n• Better organization features\n• Improved barcode scanning\n• iCloud sync support"
     )
     
     # Commit the version bump
