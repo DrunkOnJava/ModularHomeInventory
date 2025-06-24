@@ -14,12 +14,13 @@ let package = Package(
     dependencies: [
         .package(path: "../Core"),
         .package(path: "../SharedUI"),
-        .package(path: "../Scanner")
+        .package(path: "../Scanner"),
+        .package(path: "../Receipts")
     ],
     targets: [
         .target(
             name: "Items",
-            dependencies: ["Core", "SharedUI", "Scanner"],
+            dependencies: ["Core", "SharedUI", "Scanner", "Receipts"],
             path: "Sources"
         ),
         .testTarget(
