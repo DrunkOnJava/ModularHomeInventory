@@ -16,7 +16,7 @@ final class AppCoordinator: ObservableObject {
     // Module instances
     private(set) var itemsModule: Items.ItemsModuleAPI!
     private(set) var scannerModule: BarcodeScanner.ScannerModuleAPI!
-    private(set) var settingsModule: AppSettings.SettingsModuleAPI!
+    private(set) var settingsModule: SettingsModuleAPI!
     private(set) var receiptsModule: Receipts.ReceiptsModuleAPI!
     private(set) var syncModule: Sync.SyncModuleAPI!
     private(set) var premiumModule: Premium.PremiumModuleAPI!
@@ -37,13 +37,13 @@ final class AppCoordinator: ObservableObject {
     private func setupModules() {
         // Initialize Settings module first to get settings storage
         let settingsStorage = Core.UserDefaultsSettingsStorage()
-        let settingsDependencies = AppSettings.SettingsModuleDependencies(
+        let settingsDependencies = SettingsModuleDependencies(
             settingsStorage: settingsStorage,
             itemRepository: itemRepository,
             receiptRepository: receiptRepository,
             locationRepository: locationRepository
         )
-        settingsModule = AppSettings.SettingsModule(dependencies: settingsDependencies)
+        settingsModule = SettingsModule(dependencies: settingsDependencies)
         
         // Create scan history repository
         let scanHistoryRepository = Core.DefaultScanHistoryRepository()
