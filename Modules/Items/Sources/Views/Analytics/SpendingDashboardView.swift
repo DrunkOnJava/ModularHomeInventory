@@ -433,32 +433,33 @@ struct SpendingDashboardView: View {
                 budgetRepository: budgetRepository,
                 itemRepository: viewModel.itemRepository
             )) {
-            HStack(spacing: AppSpacing.md) {
-                Image(systemName: "chart.pie.fill")
-                    .font(.system(size: 44))
-                    .foregroundStyle(AppColors.primary)
-                
-                VStack(alignment: .leading, spacing: AppSpacing.xs) {
-                    Text("Budget Tracking")
-                        .textStyle(.headlineMedium)
-                        .foregroundStyle(AppColors.textPrimary)
+                HStack(spacing: AppSpacing.md) {
+                    Image(systemName: "chart.pie.fill")
+                        .font(.system(size: 44))
+                        .foregroundStyle(AppColors.primary)
                     
-                    Text("Set and monitor spending budgets")
-                        .textStyle(.bodyMedium)
-                        .foregroundStyle(AppColors.textSecondary)
+                    VStack(alignment: .leading, spacing: AppSpacing.xs) {
+                        Text("Budget Tracking")
+                            .textStyle(.headlineMedium)
+                            .foregroundStyle(AppColors.textPrimary)
+                        
+                        Text("Set and monitor spending budgets")
+                            .textStyle(.bodyMedium)
+                            .foregroundStyle(AppColors.textSecondary)
+                    }
+                    
+                    Spacer()
+                    
+                    Image(systemName: "chevron.right")
+                        .font(.system(size: 16))
+                        .foregroundStyle(AppColors.textTertiary)
                 }
-                
-                Spacer()
-                
-                Image(systemName: "chevron.right")
-                    .font(.system(size: 16))
-                    .foregroundStyle(AppColors.textTertiary)
+                .padding(AppSpacing.lg)
+                .background(AppColors.surface)
+                .cornerRadius(AppCornerRadius.large)
             }
-            .padding(AppSpacing.lg)
-            .background(AppColors.surface)
-            .cornerRadius(AppCornerRadius.large)
+            .buttonStyle(PlainButtonStyle())
         }
-        .buttonStyle(PlainButtonStyle())
     }
     
     private var warrantyDashboardLink: some View {
