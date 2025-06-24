@@ -32,7 +32,7 @@ public final class NotificationManager: NSObject, ObservableObject {
         case maintenanceReminder = "maintenance_reminder"
         case customAlert = "custom_alert"
         
-        var displayName: String {
+        public var displayName: String {
             switch self {
             case .warrantyExpiration: return "Warranty Expirations"
             case .priceAlert: return "Price Drop Alerts"
@@ -46,7 +46,7 @@ public final class NotificationManager: NSObject, ObservableObject {
             }
         }
         
-        var icon: String {
+        public var icon: String {
             switch self {
             case .warrantyExpiration: return "shield"
             case .priceAlert: return "tag"

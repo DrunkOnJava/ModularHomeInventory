@@ -459,8 +459,6 @@ struct SpendingDashboardView: View {
             .cornerRadius(AppCornerRadius.large)
         }
         .buttonStyle(PlainButtonStyle())
-            }
-        }
     }
     
     private var warrantyDashboardLink: some View {

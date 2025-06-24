@@ -74,7 +74,8 @@ public final class NotificationTriggerService: ObservableObject {
             let now = Date()
             
             for warranty in warranties {
-                guard warranty.status == .active else { continue }
+                // Only check active warranties
+                guard warranty.endDate > Date() else { continue }
                 
                 let daysUntilExpiration = Calendar.current.dateComponents([.day], from: now, to: warranty.endDate).day ?? 0
                 
@@ -138,11 +139,14 @@ public final class NotificationTriggerService: ObservableObject {
     // MARK: - Budget Monitoring
     
     private func monitorBudgetAlerts(budgetRepository: any BudgetRepository, itemRepository: any ItemRepository) {
-        // Monitor budget changes
-        budgetRepository.budgetsPublisher
-            .sink { [weak self] budgets in
+        // Check budgets periodically (every 6 hours)
+        Timer.publish(every: 21600, on: .main, in: .common)
+            .autoconnect()
+            .sink { [weak self] _ in
                 Task {
-                    await self?.checkBudgetAlerts(budgets: budgets, budgetRepository: budgetRepository, itemRepository: itemRepository)
+                    if let budgets = try? await budgetRepository.fetchAll() {
+                        await self?.checkBudgetAlerts(budgets: budgets, budgetRepository: budgetRepository, itemRepository: itemRepository)
+                    }
                 }
             }
             .store(in: &cancellables)
@@ -151,7 +155,14 @@ public final class NotificationTriggerService: ObservableObject {
     private func checkBudgetAlerts(budgets: [Budget], budgetRepository: any BudgetRepository, itemRepository: any ItemRepository) async {
         for budget in budgets where budget.isActive {
             do {
-                let status = try await budgetRepository.getBudgetStatus(budget.id)
+                // Calculate budget status
+                let spent = try await calculateBudgetSpent(budget: budget, itemRepository: itemRepository)
+                let status = BudgetStatus(
+                    budgetId: budget.id,
+                    spent: spent,
+                    remaining: budget.amount - spent,
+                    percentage: (spent / budget.amount) * 100
+                )
                 let percentUsed = (status.spent / budget.amount) * 100
                 
                 // Alert at 80%, 90%, and 100% usage
@@ -227,12 +238,9 @@ public final class NotificationTriggerService: ObservableObject {
             let items = try await itemRepository.fetchAll()
             
             for item in items {
-                // Check if quantity is below minimum stock level
-                if let quantity = item.quantity,
-                   let minStock = item.minimumStockLevel,
-                   quantity <= minStock && quantity > 0 {
-                    await scheduleLowStockNotification(item: item, currentQuantity: quantity, minQuantity: minStock)
-                }
+                // For now, skip low stock monitoring as items don't have minimumStockLevel
+                // This would be implemented when inventory management is added
+                continue
             }
         } catch {
             print("Error checking low stock items: \(error)")
@@ -272,7 +280,8 @@ public final class NotificationTriggerService: ObservableObject {
         guard priceDropPercentage >= 10 else { return }
         
         let title = "Price Drop Alert!"
-        let body = "\(item.name) price dropped by \(Int(priceDropPercentage))% - Now $\(newPrice)"
+        let dropPercentage = NSDecimalNumber(decimal: priceDropPercentage).intValue
+        let body = "\(item.name) price dropped by \(dropPercentage)% - Now $\(newPrice)"
         
         let request = NotificationRequest(
             id: "price_\(item.id)_\(Date().timeIntervalSince1970)",
@@ -410,4 +419,67 @@ public extension Notification.Name {
     static let navigateToItem = Notification.Name("navigateToItem")
     static let navigateToBudget = Notification.Name("navigateToBudget")
     static let navigateToReceipt = Notification.Name("navigateToReceipt")
+}
+
+// MARK: - Helper Extensions
+
+private extension NotificationTriggerService {
+    
+    func calculateBudgetSpent(budget: Budget, itemRepository: any ItemRepository) async throws -> Decimal {
+        let items = try await itemRepository.fetchAll()
+        let now = Date()
+        
+        // Filter items within budget period
+        let relevantItems = items.filter { item in
+            guard let purchaseDate = item.purchaseDate,
+                  let price = item.purchasePrice else { return false }
+            
+            switch budget.period {
+            case .monthly:
+                let components = Calendar.current.dateComponents([.month], from: budget.startDate, to: now)
+                let monthsElapsed = components.month ?? 0
+                let currentPeriodStart = Calendar.current.date(byAdding: .month, value: monthsElapsed, to: budget.startDate) ?? budget.startDate
+                let currentPeriodEnd = Calendar.current.date(byAdding: .month, value: 1, to: currentPeriodStart) ?? now
+                return purchaseDate >= currentPeriodStart && purchaseDate < currentPeriodEnd
+                
+            case .yearly:
+                let components = Calendar.current.dateComponents([.year], from: budget.startDate, to: now)
+                let yearsElapsed = components.year ?? 0
+                let currentPeriodStart = Calendar.current.date(byAdding: .year, value: yearsElapsed, to: budget.startDate) ?? budget.startDate
+                let currentPeriodEnd = Calendar.current.date(byAdding: .year, value: 1, to: currentPeriodStart) ?? now
+                return purchaseDate >= currentPeriodStart && purchaseDate < currentPeriodEnd
+                
+            case .quarterly:
+                let components = Calendar.current.dateComponents([.month], from: budget.startDate, to: now)
+                let monthsElapsed = components.month ?? 0
+                let quartersElapsed = monthsElapsed / 3
+                let currentPeriodStart = Calendar.current.date(byAdding: .month, value: quartersElapsed * 3, to: budget.startDate) ?? budget.startDate
+                let currentPeriodEnd = Calendar.current.date(byAdding: .month, value: 3, to: currentPeriodStart) ?? now
+                return purchaseDate >= currentPeriodStart && purchaseDate < currentPeriodEnd
+                
+            case .weekly:
+                let components = Calendar.current.dateComponents([.weekOfYear], from: budget.startDate, to: now)
+                let weeksElapsed = components.weekOfYear ?? 0
+                let currentPeriodStart = Calendar.current.date(byAdding: .weekOfYear, value: weeksElapsed, to: budget.startDate) ?? budget.startDate
+                let currentPeriodEnd = Calendar.current.date(byAdding: .weekOfYear, value: 1, to: currentPeriodStart) ?? now
+                return purchaseDate >= currentPeriodStart && purchaseDate < currentPeriodEnd
+                
+            case .custom:
+                return purchaseDate >= budget.startDate && (budget.endDate == nil || purchaseDate <= budget.endDate!)
+            }
+        }
+        
+        // Filter by category if specified
+        let finalItems: [Item]
+        if let categories = budget.categories, !categories.isEmpty {
+            finalItems = relevantItems.filter { categories.contains($0.category) }
+        } else {
+            finalItems = relevantItems
+        }
+        
+        // Sum up the spent amount
+        return finalItems.reduce(0) { sum, item in
+            sum + (item.purchasePrice ?? 0)
+        }
+    }
 }
