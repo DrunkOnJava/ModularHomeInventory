@@ -15,7 +15,8 @@ struct ContentView: View {
     
     var body: some View {
         if UIDevice.current.userInterfaceIdiom == .pad {
-            iPadApp()
+            // Use iPad optimized interface
+            iPadSidebarView()
                 .environmentObject(coordinator)
         } else {
             TabView(selection: $selectedTab) {
