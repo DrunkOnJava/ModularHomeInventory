@@ -77,6 +77,7 @@ struct ContentView: View {
             }
             // Biometric lock would be added here when BiometricLockModifier is available
         }
+    }
 }
 
 #Preview {
