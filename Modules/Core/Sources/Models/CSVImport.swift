@@ -5,10 +5,21 @@ import Foundation
 public struct CSVImportConfiguration: Codable {
     public let delimiter: String
     public let hasHeaders: Bool
-    public let encoding: String.Encoding
+    public let encodingName: String // Store encoding name instead of String.Encoding
     public let dateFormat: String
     public let currencySymbol: String
     public let columnMapping: CSVColumnMapping
+    
+    public var encoding: String.Encoding {
+        switch encodingName {
+        case "utf8": return .utf8
+        case "utf16": return .utf16
+        case "iso2022JP": return .iso2022JP
+        case "isoLatin1": return .isoLatin1
+        case "windowsCP1252": return .windowsCP1252
+        default: return .utf8
+        }
+    }
     
     public init(
         delimiter: String = ",",
@@ -20,7 +31,17 @@ public struct CSVImportConfiguration: Codable {
     ) {
         self.delimiter = delimiter
         self.hasHeaders = hasHeaders
-        self.encoding = encoding
+        
+        // Convert encoding to string name
+        switch encoding {
+        case .utf8: self.encodingName = "utf8"
+        case .utf16: self.encodingName = "utf16"
+        case .iso2022JP: self.encodingName = "iso2022JP"
+        case .isoLatin1: self.encodingName = "isoLatin1"
+        case .windowsCP1252: self.encodingName = "windowsCP1252"
+        default: self.encodingName = "utf8"
+        }
+        
         self.dateFormat = dateFormat
         self.currencySymbol = currencySymbol
         self.columnMapping = columnMapping

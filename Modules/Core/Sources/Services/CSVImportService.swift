@@ -123,8 +123,8 @@ public final class CSVImportService {
                     ))
                 } else {
                     // Save item
-                    let savedItem = try await itemRepository.update(item)
-                    importedItems.append(savedItem)
+                    try await itemRepository.save(item)
+                    importedItems.append(item)
                     successCount += 1
                 }
             } catch let error as CSVImportError {
@@ -286,8 +286,11 @@ public final class CSVImportService {
             } else {
                 // Create new location
                 let newLocation = Location(name: locationName)
-                if let savedLocation = try? await locationRepository.update(newLocation) {
-                    item.locationId = savedLocation.id
+                do {
+                    try await locationRepository.save(newLocation)
+                    item.locationId = newLocation.id
+                } catch {
+                    // Location creation failed, continue without location
                 }
             }
         }
@@ -364,21 +367,8 @@ public final class CSVImportService {
             }
         }
         
-        // Warranty End Date
-        if let index = mapping.warrantyEndDate, index < row.count, !row[index].isEmpty {
-            let dateString = row[index]
-            if let date = dateFormatter.date(from: dateString) {
-                item.warrantyEndDate = date
-            } else {
-                throw CSVImportError(
-                    row: rowNumber,
-                    column: "Warranty End Date",
-                    value: dateString,
-                    reason: .invalidDateFormat,
-                    description: "Invalid date format: \(dateString)"
-                )
-            }
-        }
+        // Warranty End Date - skip for now since Item doesn't have this property
+        // TODO: Create warranty record when warranty end date is provided
         
         // Condition
         if let index = mapping.condition, index < row.count, !row[index].isEmpty {
@@ -397,7 +387,7 @@ public final class CSVImportService {
     private func checkForDuplicate(_ item: Item) async throws -> Item? {
         // Check by barcode first
         if let barcode = item.barcode {
-            if let existing = try await itemRepository.findByBarcode(barcode) {
+            if let existing = try await itemRepository.fetchByBarcode(barcode) {
                 return existing
             }
         }

@@ -37,7 +37,7 @@ public final class CSVExportService {
         currencyFormatter.currencySymbol = configuration.currencySymbol
         
         // Get items if not provided
-        let itemsToExport = try items ?? await itemRepository.fetchAll()
+        let itemsToExport = try await (items ?? itemRepository.fetchAll())
         
         // Get locations for mapping
         let locations = try await locationRepository.fetchAll()
@@ -212,13 +212,11 @@ public final class CSVExportService {
             return item.condition.displayName
             
         case .warrantyEndDate:
-            if let date = item.warrantyEndDate {
-                return dateFormatter.string(from: date)
-            }
+            // TODO: Implement when warrantyEndDate is added to Item model
             return ""
             
         case .tags:
-            return escapeCSVValue(item.tags?.joined(separator: ", ") ?? "")
+            return escapeCSVValue(item.tags.joined(separator: ", "))
             
         case .notes:
             return escapeCSVValue(item.notes ?? "")
