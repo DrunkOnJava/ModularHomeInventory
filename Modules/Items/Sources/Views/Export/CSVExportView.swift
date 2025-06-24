@@ -78,7 +78,10 @@ struct CSVExportView: View {
                 // Configuration
                 Section("Configuration") {
                     // Delimiter
-                    Picker("Delimiter", selection: $viewModel.configuration.delimiter) {
+                    Picker("Delimiter", selection: Binding(
+                        get: { viewModel.configuration.delimiter },
+                        set: { viewModel.updateDelimiter($0) }
+                    )) {
                         Text("Comma (,)").tag(",")
                         Text("Semicolon (;)").tag(";")
                         Text("Tab").tag("\t")
@@ -86,10 +89,16 @@ struct CSVExportView: View {
                     }
                     
                     // Include headers
-                    Toggle("Include Headers", isOn: $viewModel.configuration.includeHeaders)
+                    Toggle("Include Headers", isOn: Binding(
+                        get: { viewModel.configuration.includeHeaders },
+                        set: { viewModel.updateIncludeHeaders($0) }
+                    ))
                     
                     // Date format
-                    Picker("Date Format", selection: $viewModel.configuration.dateFormat) {
+                    Picker("Date Format", selection: Binding(
+                        get: { viewModel.configuration.dateFormat },
+                        set: { viewModel.updateDateFormat($0) }
+                    )) {
                         Text("YYYY-MM-DD").tag("yyyy-MM-dd")
                         Text("MM/DD/YYYY").tag("MM/dd/yyyy")
                         Text("DD/MM/YYYY").tag("dd/MM/yyyy")
@@ -118,13 +127,19 @@ struct CSVExportView: View {
                     }
                     
                     // Sort options
-                    Picker("Sort By", selection: $viewModel.configuration.sortBy) {
+                    Picker("Sort By", selection: Binding(
+                        get: { viewModel.configuration.sortBy },
+                        set: { viewModel.updateSortBy($0) }
+                    )) {
                         ForEach(Core.CSVExportSortField.allCases, id: \.self) { field in
                             Text(field.displayName).tag(field)
                         }
                     }
                     
-                    Toggle("Ascending", isOn: $viewModel.configuration.sortAscending)
+                    Toggle("Ascending", isOn: Binding(
+                        get: { viewModel.configuration.sortAscending },
+                        set: { viewModel.updateSortAscending($0) }
+                    ))
                 }
                 
                 // Preview
@@ -379,5 +394,82 @@ final class CSVExportViewModel: ObservableObject {
         } catch {
             previewText = "Preview generation failed"
         }
+    }
+    
+    // MARK: - Configuration Updates
+    
+    func updateDelimiter(_ delimiter: String) {
+        configuration = Core.CSVExportConfiguration(
+            delimiter: delimiter,
+            includeHeaders: configuration.includeHeaders,
+            encoding: configuration.encoding,
+            dateFormat: configuration.dateFormat,
+            currencySymbol: configuration.currencySymbol,
+            includeAllFields: configuration.includeAllFields,
+            selectedFields: configuration.selectedFields,
+            sortBy: configuration.sortBy,
+            sortAscending: configuration.sortAscending
+        )
+        Task { await generatePreview() }
+    }
+    
+    func updateIncludeHeaders(_ includeHeaders: Bool) {
+        configuration = Core.CSVExportConfiguration(
+            delimiter: configuration.delimiter,
+            includeHeaders: includeHeaders,
+            encoding: configuration.encoding,
+            dateFormat: configuration.dateFormat,
+            currencySymbol: configuration.currencySymbol,
+            includeAllFields: configuration.includeAllFields,
+            selectedFields: configuration.selectedFields,
+            sortBy: configuration.sortBy,
+            sortAscending: configuration.sortAscending
+        )
+        Task { await generatePreview() }
+    }
+    
+    func updateDateFormat(_ dateFormat: String) {
+        configuration = Core.CSVExportConfiguration(
+            delimiter: configuration.delimiter,
+            includeHeaders: configuration.includeHeaders,
+            encoding: configuration.encoding,
+            dateFormat: dateFormat,
+            currencySymbol: configuration.currencySymbol,
+            includeAllFields: configuration.includeAllFields,
+            selectedFields: configuration.selectedFields,
+            sortBy: configuration.sortBy,
+            sortAscending: configuration.sortAscending
+        )
+        Task { await generatePreview() }
+    }
+    
+    func updateSortBy(_ sortBy: Core.CSVExportSortField) {
+        configuration = Core.CSVExportConfiguration(
+            delimiter: configuration.delimiter,
+            includeHeaders: configuration.includeHeaders,
+            encoding: configuration.encoding,
+            dateFormat: configuration.dateFormat,
+            currencySymbol: configuration.currencySymbol,
+            includeAllFields: configuration.includeAllFields,
+            selectedFields: configuration.selectedFields,
+            sortBy: sortBy,
+            sortAscending: configuration.sortAscending
+        )
+        Task { await generatePreview() }
+    }
+    
+    func updateSortAscending(_ sortAscending: Bool) {
+        configuration = Core.CSVExportConfiguration(
+            delimiter: configuration.delimiter,
+            includeHeaders: configuration.includeHeaders,
+            encoding: configuration.encoding,
+            dateFormat: configuration.dateFormat,
+            currencySymbol: configuration.currencySymbol,
+            includeAllFields: configuration.includeAllFields,
+            selectedFields: configuration.selectedFields,
+            sortBy: configuration.sortBy,
+            sortAscending: sortAscending
+        )
+        Task { await generatePreview() }
     }
 }

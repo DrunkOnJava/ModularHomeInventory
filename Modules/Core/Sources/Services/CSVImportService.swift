@@ -284,14 +284,8 @@ public final class CSVImportService {
             }) {
                 item.locationId = location.id
             } else {
-                // Create new location
-                let newLocation = Location(name: locationName)
-                do {
-                    try await locationRepository.save(newLocation)
-                    item.locationId = newLocation.id
-                } catch {
-                    // Location creation failed, continue without location
-                }
+                // Location creation would need to be handled outside parsing
+                // For now, skip location assignment if not found
             }
         }
         

@@ -88,7 +88,7 @@ public final class CSVExportService {
         criteria: ItemSearchCriteria,
         configuration: CSVExportConfiguration
     ) async throws -> CSVExportResult {
-        let items = try await itemRepository.search(criteria)
+        let items = try await itemRepository.searchWithCriteria(criteria)
         return try await exportItems(items: items, configuration: configuration)
     }
     
