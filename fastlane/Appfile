@@ -2,7 +2,7 @@
 #     https://docs.fastlane.tools/advanced/#appfile
 
 # The bundle identifier of your app
-app_identifier("com.homeinventory.modular")
+app_identifier("com.homeinventory")
 
 # Your Apple email address
 apple_id("griffinradcliffe@gmail.com")

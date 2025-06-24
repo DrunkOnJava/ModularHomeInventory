@@ -430,7 +430,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.homeinventory.modular;
+				PRODUCT_BUNDLE_IDENTIFIER = com.homeinventory;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -524,7 +524,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.homeinventory.modular;
+				PRODUCT_BUNDLE_IDENTIFIER = com.homeinventory;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
