@@ -13,17 +13,20 @@ languages([
 # The name of the scheme which contains the UI Tests
 scheme("HomeInventoryModular")
 
+# Use workspace instead of project to resolve SPM dependencies
+workspace("./HomeInventoryModular.xcworkspace")
+
 # The test bundle to run
 test_target_name("HomeInventoryModularUITests")
 
+# The app identifier of the app to be tested
+app_identifier("com.homeinventory.app")
+
 # Specify the test case to run
-only_testing("HomeInventoryModularUITests/ScreenshotDebug/testTakeSingleScreenshot")
+only_testing("HomeInventoryModularUITests/HomeInventoryModularUITests/testTakeScreenshots")
 
 # Where should the resulting screenshots be stored?
 output_directory("./fastlane/screenshots")
-
-# Set explicit paths for Fastlane
-ENV["SNAPSHOT_SCREENSHOTS_PATH"] = File.expand_path("./fastlane/screenshots")
 
 # Clear all previously generated screenshots before creating new ones
 clear_previous_screenshots(true)
@@ -33,12 +36,6 @@ override_status_bar(true)
 
 # Arguments to pass to the app on launch.
 launch_arguments(["-FASTLANE_SNAPSHOT", "YES"])
-
-# Enable simulator logs for debugging
-output_simulator_logs(true)
-
-# Disable xcbeautify to see raw output
-xcodebuild_formatter("")
 
 # For more information about all available options run
 # fastlane action snapshot

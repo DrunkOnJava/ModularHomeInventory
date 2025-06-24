@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Workspace
+   version = "1.0">
+   <FileRef
+      location = "group:HomeInventoryModular.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:Modules/Core">
+   </FileRef>
+   <FileRef
+      location = "group:Modules/SharedUI">
+   </FileRef>
+   <FileRef
+      location = "group:Modules/Items">
+   </FileRef>
+   <FileRef
+      location = "group:Modules/BarcodeScanner">
+   </FileRef>
+   <FileRef
+      location = "group:Modules/Receipts">
+   </FileRef>
+   <FileRef
+      location = "group:Modules/AppSettings">
+   </FileRef>
+   <FileRef
+      location = "group:Modules/Sync">
+   </FileRef>
+   <FileRef
+      location = "group:Modules/Premium">
+   </FileRef>
+   <FileRef
+      location = "group:Modules/Onboarding">
+   </FileRef>
+</Workspace>

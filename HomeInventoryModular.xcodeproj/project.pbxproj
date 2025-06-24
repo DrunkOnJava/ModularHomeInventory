@@ -160,8 +160,6 @@
 				5B62F69060DDD29B7C40A639 /* PBXTargetDependency */,
 			);
 			name = HomeInventoryModularUITests;
-			packageProductDependencies = (
-			);
 			productName = HomeInventoryModularUITests;
 			productReference = 3F46D3FE17D78B8D9DF66A01 /* HomeInventoryModularUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
@@ -225,16 +223,17 @@
 			mainGroup = 4D256B14F10E6B1FDB76EE04;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
-				A8567266DFF953CA8A18F162 /* XCLocalSwiftPackageReference "Modules/AppSettings" */,
-				1C4DD3D3BCA1FE59B0EDC6FC /* XCLocalSwiftPackageReference "Modules/BarcodeScanner" */,
-				FBE10A76C36BB2B6F3385092 /* XCLocalSwiftPackageReference "Modules/Core" */,
-				BD0C6169C787E9B64F600DDF /* XCLocalSwiftPackageReference "Modules/Items" */,
-				576F0F487BCA364CFE1C86DC /* XCLocalSwiftPackageReference "Modules/Onboarding" */,
-				E8EB40612E5F2E5A9C3DA28D /* XCLocalSwiftPackageReference "Modules/Premium" */,
-				CF03CD87CCA89366BCF7268C /* XCLocalSwiftPackageReference "Modules/Receipts" */,
-				B99BC64D551CE8562B6B6E53 /* XCLocalSwiftPackageReference "Modules/SharedUI" */,
-				8C9B55554D3805C4DD883AE0 /* XCLocalSwiftPackageReference "Modules/Sync" */,
+				A8567266DFF953CA8A18F162 /* XCLocalSwiftPackageReference "AppSettings" */,
+				1C4DD3D3BCA1FE59B0EDC6FC /* XCLocalSwiftPackageReference "BarcodeScanner" */,
+				FBE10A76C36BB2B6F3385092 /* XCLocalSwiftPackageReference "Core" */,
+				BD0C6169C787E9B64F600DDF /* XCLocalSwiftPackageReference "Items" */,
+				576F0F487BCA364CFE1C86DC /* XCLocalSwiftPackageReference "Onboarding" */,
+				E8EB40612E5F2E5A9C3DA28D /* XCLocalSwiftPackageReference "Premium" */,
+				CF03CD87CCA89366BCF7268C /* XCLocalSwiftPackageReference "Receipts" */,
+				B99BC64D551CE8562B6B6E53 /* XCLocalSwiftPackageReference "SharedUI" */,
+				8C9B55554D3805C4DD883AE0 /* XCLocalSwiftPackageReference "Sync" */,
 			);
+			productRefGroup = E61D147BB59AF782EA912E0C /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
@@ -297,7 +296,6 @@
 		0E5265B8E84D53F7B4A4A7A5 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 2VXBQV4XC9;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -310,14 +308,15 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.homeinventory.modular.uitests;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_APPLICATION_IDENTIFIER = com.homeinventory.app;
 				TEST_TARGET_NAME = HomeInventoryModular;
+				USES_XCTRUNNER = YES;
 			};
 			name = Release;
 		};
 		6E8F3A15BBE43CB1EDD746F7 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 2VXBQV4XC9;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -330,7 +329,9 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.homeinventory.modular.uitests;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_APPLICATION_IDENTIFIER = com.homeinventory.app;
 				TEST_TARGET_NAME = HomeInventoryModular;
+				USES_XCTRUNNER = YES;
 			};
 			name = Debug;
 		};
@@ -562,39 +563,39 @@
 /* End XCConfigurationList section */
 
 /* Begin XCLocalSwiftPackageReference section */
-		1C4DD3D3BCA1FE59B0EDC6FC /* XCLocalSwiftPackageReference "Modules/BarcodeScanner" */ = {
+		1C4DD3D3BCA1FE59B0EDC6FC /* XCLocalSwiftPackageReference "BarcodeScanner" */ = {
 			isa = XCLocalSwiftPackageReference;
 			relativePath = Modules/BarcodeScanner;
 		};
-		576F0F487BCA364CFE1C86DC /* XCLocalSwiftPackageReference "Modules/Onboarding" */ = {
+		576F0F487BCA364CFE1C86DC /* XCLocalSwiftPackageReference "Onboarding" */ = {
 			isa = XCLocalSwiftPackageReference;
 			relativePath = Modules/Onboarding;
 		};
-		8C9B55554D3805C4DD883AE0 /* XCLocalSwiftPackageReference "Modules/Sync" */ = {
+		8C9B55554D3805C4DD883AE0 /* XCLocalSwiftPackageReference "Sync" */ = {
 			isa = XCLocalSwiftPackageReference;
 			relativePath = Modules/Sync;
 		};
-		A8567266DFF953CA8A18F162 /* XCLocalSwiftPackageReference "Modules/AppSettings" */ = {
+		A8567266DFF953CA8A18F162 /* XCLocalSwiftPackageReference "AppSettings" */ = {
 			isa = XCLocalSwiftPackageReference;
 			relativePath = Modules/AppSettings;
 		};
-		B99BC64D551CE8562B6B6E53 /* XCLocalSwiftPackageReference "Modules/SharedUI" */ = {
+		B99BC64D551CE8562B6B6E53 /* XCLocalSwiftPackageReference "SharedUI" */ = {
 			isa = XCLocalSwiftPackageReference;
 			relativePath = Modules/SharedUI;
 		};
-		BD0C6169C787E9B64F600DDF /* XCLocalSwiftPackageReference "Modules/Items" */ = {
+		BD0C6169C787E9B64F600DDF /* XCLocalSwiftPackageReference "Items" */ = {
 			isa = XCLocalSwiftPackageReference;
 			relativePath = Modules/Items;
 		};
-		CF03CD87CCA89366BCF7268C /* XCLocalSwiftPackageReference "Modules/Receipts" */ = {
+		CF03CD87CCA89366BCF7268C /* XCLocalSwiftPackageReference "Receipts" */ = {
 			isa = XCLocalSwiftPackageReference;
 			relativePath = Modules/Receipts;
 		};
-		E8EB40612E5F2E5A9C3DA28D /* XCLocalSwiftPackageReference "Modules/Premium" */ = {
+		E8EB40612E5F2E5A9C3DA28D /* XCLocalSwiftPackageReference "Premium" */ = {
 			isa = XCLocalSwiftPackageReference;
 			relativePath = Modules/Premium;
 		};
-		FBE10A76C36BB2B6F3385092 /* XCLocalSwiftPackageReference "Modules/Core" */ = {
+		FBE10A76C36BB2B6F3385092 /* XCLocalSwiftPackageReference "Core" */ = {
 			isa = XCLocalSwiftPackageReference;
 			relativePath = Modules/Core;
 		};

@@ -55,6 +55,14 @@ Build and upload to TestFlight
 
 Fix common build issues
 
+### ios resolve_dependencies
+
+```sh
+[bundle exec] fastlane ios resolve_dependencies
+```
+
+Resolve SPM dependencies
+
 ### ios screenshots
 
 ```sh

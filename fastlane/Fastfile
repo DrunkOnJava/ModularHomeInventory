@@ -147,15 +147,33 @@ platform :ios do
     UI.success("✅ Build issues fixed! Try building again.")
   end
 
+  desc "Resolve SPM dependencies"
+  lane :resolve_dependencies do
+    sh("xcodebuild -resolvePackageDependencies -workspace ../HomeInventoryModular.xcworkspace -scheme HomeInventoryModular")
+    UI.success("✅ Dependencies resolved!")
+  end
+
   desc "Generate screenshots"
   lane :screenshots do
+    # First resolve dependencies
+    resolve_dependencies
+    
+    # Clean derived data to ensure fresh build
+    clear_derived_data
+    
+    # Build for testing using xcodebuild directly
+    sh("xcodebuild build-for-testing -workspace ../HomeInventoryModular.xcworkspace -scheme HomeInventoryModular -destination 'platform=iOS Simulator,name=iPhone 16 Pro Max' -derivedDataPath ../DerivedData")
+    
+    # Now capture screenshots
     capture_screenshots(
+      workspace: "HomeInventoryModular.xcworkspace",
       devices: ["iPhone 16 Pro Max"],
       languages: ["en-US"],
       scheme: "HomeInventoryModular",
       output_directory: "./fastlane/screenshots",
       clear_previous_screenshots: true,
-      override_status_bar: true
+      override_status_bar: true,
+      derived_data_path: "./DerivedData"
     )
   end
 

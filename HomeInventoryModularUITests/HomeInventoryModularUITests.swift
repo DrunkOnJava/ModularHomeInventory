@@ -6,14 +6,17 @@ final class HomeInventoryModularUITests: XCTestCase {
     
     override func setUpWithError() throws {
         continueAfterFailure = false
-        app = XCUIApplication()
         
-        // Add launch arguments for better screenshots
-        app.launchArguments += ["-AppleLocale", "en_US"]
+        // Initialize app without launching yet
+        app = XCUIApplication()
+        app.launchArguments = ["-AppleLocale", "en_US"]
         app.launchArguments += ["-AppleLanguages", "(en)"]
         app.launchArguments += ["-UIPreferredContentSizeCategoryName", "UICTContentSizeCategoryM"]
         
+        // Setup snapshot before launch
         setupSnapshot(app)
+        
+        // Launch the app
         app.launch()
     }
     
