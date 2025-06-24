@@ -238,17 +238,17 @@ public struct ErrorBoundaryView<Content: View>: View {
 /// Default error fallback view
 struct ErrorFallbackView: View {
     var body: some View {
-        VStack(spacing: AppSpacing.lg) {
+        VStack(spacing: 16) {
             Image(systemName: "exclamationmark.triangle.fill")
                 .font(.system(size: 48))
-                .foregroundStyle(AppColors.warning)
+                .foregroundColor(.orange)
             
             Text("Something went wrong")
-                .dynamicTextStyle(.headlineMedium)
+                .font(.headline)
             
             Text("An error occurred. Please try again.")
-                .dynamicTextStyle(.bodyMedium)
-                .foregroundStyle(AppColors.textSecondary)
+                .font(.body)
+                .foregroundColor(.secondary)
                 .multilineTextAlignment(.center)
             
             Button("Retry") {
@@ -256,6 +256,6 @@ struct ErrorFallbackView: View {
             }
             .buttonStyle(.borderedProminent)
         }
-        .appPadding()
+        .padding()
     }
 }

@@ -115,10 +115,28 @@ private struct VoiceOverActionsModifier: ViewModifier {
 
 // MARK: - Focus Management
 
+@available(iOS 15.0, *)
 public extension View {
     /// Request VoiceOver focus when a condition is met
     func voiceOverFocus(when condition: Bool, equals value: Bool = true) -> some View {
-        self.accessibilityFocused(.voiceOver, equals: condition == value)
+        self.modifier(VoiceOverFocusModifier(condition: condition, value: value))
+    }
+}
+
+@available(iOS 15.0, *)
+private struct VoiceOverFocusModifier: ViewModifier {
+    let condition: Bool
+    let value: Bool
+    @AccessibilityFocusState private var isVoiceOverFocused: Bool
+    
+    func body(content: Content) -> some View {
+        content
+            .accessibilityFocused($isVoiceOverFocused)
+            .onChange(of: condition) { newCondition in
+                if newCondition == value {
+                    isVoiceOverFocused = true
+                }
+            }
     }
 }
 

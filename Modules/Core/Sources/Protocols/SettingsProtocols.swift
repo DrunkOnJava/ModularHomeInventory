@@ -54,4 +54,13 @@ extension SettingsKey {
     public static let autoBackupEnabled = SettingsKey("auto_backup_enabled")
     public static let offlineModeEnabled = SettingsKey("offline_mode_enabled")
     public static let autoSyncOnWiFi = SettingsKey("auto_sync_on_wifi")
+    
+    // VoiceOver
+    public static let voiceOverEnabled = SettingsKey("voiceover_enabled")
+    public static let voiceOverSpeakingRate = SettingsKey("voiceover_speaking_rate")
+    public static let voiceOverVerbosity = SettingsKey("voiceover_verbosity")
+    
+    // Crash Reporting
+    public static let crashReportingEnabled = SettingsKey("crash_reporting_enabled")
+    public static let crashReportingAutoSend = SettingsKey("crash_reporting_auto_send")
 }

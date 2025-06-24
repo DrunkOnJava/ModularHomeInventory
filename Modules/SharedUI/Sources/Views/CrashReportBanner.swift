@@ -1,5 +1,5 @@
 import SwiftUI
-import SharedUI
+import Core
 
 /// A banner view that shows when there are pending crash reports
 public struct CrashReportBanner: View {
