@@ -84,24 +84,20 @@ public final class ItemsModule: ItemsModuleAPI {
             warrantyRepository: dependencies.warrantyRepository
         )
         return AnyView(
-            NavigationView {
-                SpendingDashboardView(viewModel: viewModel)
-            }
+            SpendingDashboardView(viewModel: viewModel)
         )
     }
     
     public func makeCollectionsListView() -> AnyView {
         return AnyView(
-            NavigationView {
-                CollectionsListView(
-                    collectionRepository: dependencies.collectionRepository,
-                    itemRepository: dependencies.itemRepository,
-                    onSelectCollection: { [weak self] collection in
-                        // Navigate to collection detail
-                        // This would be handled by the navigation coordinator
-                    }
-                )
-            }
+            CollectionsListView(
+                collectionRepository: dependencies.collectionRepository,
+                itemRepository: dependencies.itemRepository,
+                onSelectCollection: { [weak self] collection in
+                    // Navigate to collection detail
+                    // This would be handled by the navigation coordinator
+                }
+            )
         )
     }
     
@@ -237,12 +233,10 @@ public final class ItemsModule: ItemsModuleAPI {
     
     public func makeWarrantyDashboardView() -> AnyView {
         return AnyView(
-            NavigationView {
-                WarrantyDashboardView(
-                    warrantyRepository: dependencies.warrantyRepository,
-                    itemRepository: dependencies.itemRepository
-                )
-            }
+            WarrantyDashboardView(
+                warrantyRepository: dependencies.warrantyRepository,
+                itemRepository: dependencies.itemRepository
+            )
         )
     }
     
