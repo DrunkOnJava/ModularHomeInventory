@@ -3,21 +3,16 @@ import SharedUI
 import Core
 import Sync
 
-/// Enhanced settings view with sophisticated UI/UX
+/// Simplified enhanced settings view with sophisticated UI/UX
 struct EnhancedSettingsView: View {
     @StateObject private var viewModel: SettingsViewModel
-    @State private var selectedSection: SettingsSection? = nil
     @State private var searchText = ""
     @State private var showingSheet = false
     @State private var sheetContent: SheetContent? = nil
-    
-    // Profile
     @State private var userName = "User"
     @State private var userEmail = ""
     @State private var profileImage: UIImage?
-    
-    // Visual feedback
-    @State private var impactFeedback = UIImpactFeedbackGenerator(style: .light)
+    @State private var isSearching = false
     
     init(viewModel: SettingsViewModel) {
         self._viewModel = StateObject(wrappedValue: viewModel)
@@ -31,54 +26,45 @@ struct EnhancedSettingsView: View {
                 
                 ScrollView {
                     VStack(spacing: 0) {
-                    // Profile Header
-                    profileHeaderView
+                        // Profile Header
+                        SettingsProfileHeaderView(
+                            userName: $userName,
+                            userEmail: $userEmail,
+                            profileImage: $profileImage,
+                            onProfileEdit: handleProfileEdit
+                        )
                         .padding(.bottom, AppSpacing.md)
-                    
-                    // Quick Stats
-                    quickStatsView
-                        .padding(.horizontal, AppSpacing.lg)
-                        .padding(.bottom, AppSpacing.lg)
-                    
-                    // Search Bar
-                    if !searchText.isEmpty || isSearching {
-                        searchBarView
+                        
+                        // Quick Stats
+                        SettingsQuickStatsView()
                             .padding(.horizontal, AppSpacing.lg)
-                            .padding(.bottom, AppSpacing.md)
-                    }
-                    
-                    // Settings Sections
-                    VStack(spacing: AppSpacing.sm) {
-                        ForEach(filteredSections) { section in
-                            SettingsSectionCard(
-                                section: section,
-                                isExpanded: selectedSection == section,
-                                searchText: searchText,
-                                viewModel: viewModel,
-                                onTap: {
-                                    withAnimation(.spring(response: 0.3, dampingFraction: 0.8)) {
-                                        if selectedSection == section {
-                                            selectedSection = nil
-                                        } else {
-                                            selectedSection = section
-                                            impactFeedback.impactOccurred()
-                                        }
-                                    }
-                                },
-                                onItemTap: { item in
-                                    handleItemTap(item)
-                                }
-                            )
+                            .padding(.bottom, AppSpacing.lg)
+                        
+                        // Search Bar
+                        if isSearching {
+                            SettingsSearchBarView(searchText: $searchText)
+                                .padding(.horizontal, AppSpacing.lg)
+                                .padding(.bottom, AppSpacing.md)
                         }
-                    }
-                    .padding(.horizontal, AppSpacing.lg)
-                    
-                    // Footer
-                    footerView
+                        
+                        // Settings List
+                        SettingsListView(
+                            searchText: searchText,
+                            viewModel: viewModel,
+                            onItemTap: handleItemTap
+                        )
+                        .padding(.horizontal, AppSpacing.lg)
+                        
+                        // Footer
+                        SettingsFooterView(
+                            onSupport: handleSupport,
+                            onPrivacy: handlePrivacy,
+                            onTerms: handleTerms
+                        )
                         .padding(.top, AppSpacing.xl)
                         .padding(.horizontal, AppSpacing.lg)
                         .padding(.bottom, AppSpacing.xxl)
-                }
+                    }
                 }
             }
             .navigationTitle("Settings")
@@ -97,214 +83,9 @@ struct EnhancedSettingsView: View {
         }
     }
     
-    // MARK: - Profile Header
-    
-    private var profileHeaderView: some View {
-        VStack(spacing: AppSpacing.md) {
-            // Profile Image
-            ZStack {
-                Circle()
-                    .fill(LinearGradient(
-                        colors: [AppColors.primary, AppColors.primary.opacity(0.7)],
-                        startPoint: .topLeading,
-                        endPoint: .bottomTrailing
-                    ))
-                    .frame(width: 100, height: 100)
-                
-                if let profileImage = profileImage {
-                    Image(uiImage: profileImage)
-                        .resizable()
-                        .scaledToFill()
-                        .frame(width: 100, height: 100)
-                        .clipShape(Circle())
-                } else {
-                    Text(userName.prefix(2).uppercased())
-                        .font(.system(size: 36, weight: .semibold, design: .rounded))
-                        .foregroundColor(.white)
-                }
-                
-                // Edit button
-                Button(action: { handleProfileEdit() }) {
-                    Image(systemName: "camera.fill")
-                        .font(.system(size: 16))
-                        .foregroundColor(.white)
-                        .frame(width: 32, height: 32)
-                        .background(AppColors.primary)
-                        .clipShape(Circle())
-                        .overlay(
-                            Circle()
-                                .stroke(Color.white, lineWidth: 3)
-                        )
-                }
-                .offset(x: 35, y: 35)
-            }
-            
-            // User Info
-            VStack(spacing: AppSpacing.xs) {
-                Text(userName)
-                    .font(.system(size: 24, weight: .semibold, design: .rounded))
-                    .foregroundColor(AppColors.textPrimary)
-                
-                if !userEmail.isEmpty {
-                    Text(userEmail)
-                        .font(.system(size: 14))
-                        .foregroundColor(AppColors.textSecondary)
-                }
-            }
-            
-            // Premium Status
-            HStack(spacing: AppSpacing.sm) {
-                Image(systemName: "crown.fill")
-                    .foregroundColor(.orange)
-                    .font(.system(size: 14))
-                
-                Text("Premium Member")
-                    .font(.system(size: 14, weight: .medium))
-                    .foregroundColor(.orange)
-            }
-            .padding(.horizontal, AppSpacing.md)
-            .padding(.vertical, AppSpacing.sm)
-            .background(
-                Capsule()
-                    .fill(Color.orange.opacity(0.1))
-            )
-        }
-        .padding(.top, AppSpacing.lg)
-    }
-    
-    // MARK: - Quick Stats
-    
-    private var quickStatsView: some View {
-        HStack(spacing: AppSpacing.md) {
-            QuickStatCard(
-                icon: "shippingbox.fill",
-                value: "247",
-                label: "Items",
-                color: AppColors.primary
-            )
-            
-            QuickStatCard(
-                icon: "folder.fill",
-                value: "12",
-                label: "Collections",
-                color: .purple
-            )
-            
-            QuickStatCard(
-                icon: "doc.fill",
-                value: "89",
-                label: "Receipts",
-                color: .green
-            )
-            
-            QuickStatCard(
-                icon: "icloud.fill",
-                value: "2.3 GB",
-                label: "Storage",
-                color: .blue
-            )
-        }
-    }
-    
-    // MARK: - Search
-    
-    @State private var isSearching = false
-    
-    private var searchBarView: some View {
-        HStack {
-            Image(systemName: "magnifyingglass")
-                .foregroundColor(AppColors.textSecondary)
-            
-            TextField("Search settings", text: $searchText)
-                .textFieldStyle(PlainTextFieldStyle())
-            
-            if !searchText.isEmpty {
-                Button(action: { searchText = "" }) {
-                    Image(systemName: "xmark.circle.fill")
-                        .foregroundColor(AppColors.textSecondary)
-                }
-            }
-        }
-        .padding(AppSpacing.md)
-        .background(AppColors.surface)
-        .cornerRadius(12)
-        .transition(.move(edge: .top).combined(with: .opacity))
-    }
-    
-    private var filteredSections: [SettingsSection] {
-        if searchText.isEmpty {
-            return SettingsSection.allSections
-        }
-        
-        return SettingsSection.allSections.compactMap { section in
-            let filteredItems = section.items.filter { item in
-                item.title.localizedCaseInsensitiveContains(searchText) ||
-                item.subtitle?.localizedCaseInsensitiveContains(searchText) ?? false
-            }
-            
-            if !filteredItems.isEmpty {
-                var modifiedSection = section
-                modifiedSection.items = filteredItems
-                return modifiedSection
-            }
-            
-            if section.title.localizedCaseInsensitiveContains(searchText) {
-                return section
-            }
-            
-            return nil
-        }
-    }
-    
-    // MARK: - Footer
-    
-    private var footerView: some View {
-        VStack(spacing: AppSpacing.lg) {
-            // App Info
-            VStack(spacing: AppSpacing.xs) {
-                Text("Home Inventory")
-                    .font(.system(size: 18, weight: .semibold, design: .rounded))
-                    .foregroundColor(AppColors.textPrimary)
-                
-                Text("Version 1.0.0 (Build 2)")
-                    .font(.system(size: 14))
-                    .foregroundColor(AppColors.textSecondary)
-            }
-            
-            // Links
-            HStack(spacing: AppSpacing.xl) {
-                Button(action: { handleSupport() }) {
-                    Text("Support")
-                        .font(.system(size: 14, weight: .medium))
-                        .foregroundColor(AppColors.primary)
-                }
-                
-                Button(action: { handlePrivacy() }) {
-                    Text("Privacy")
-                        .font(.system(size: 14, weight: .medium))
-                        .foregroundColor(AppColors.primary)
-                }
-                
-                Button(action: { handleTerms() }) {
-                    Text("Terms")
-                        .font(.system(size: 14, weight: .medium))
-                        .foregroundColor(AppColors.primary)
-                }
-            }
-            
-            // Copyright
-            Text("© 2024 Home Inventory. All rights reserved.")
-                .font(.system(size: 12))
-                .foregroundColor(AppColors.textTertiary)
-                .multilineTextAlignment(.center)
-        }
-    }
-    
     // MARK: - Actions
     
     private func handleItemTap(_ item: SettingsItem) {
-        impactFeedback.impactOccurred()
-        
         switch item.id {
         case "notifications":
             sheetContent = .notifications
@@ -347,7 +128,6 @@ struct EnhancedSettingsView: View {
     
     private func handleProfileEdit() {
         // Handle profile editing
-        impactFeedback.impactOccurred()
     }
     
     private func handleSupport() {
@@ -480,49 +260,74 @@ struct EnhancedSettingsView: View {
     }
 }
 
-// MARK: - Supporting Types
+// MARK: - Settings List View
 
-enum SheetContent: Identifiable {
-    case notifications
-    case spotlight
-    case accessibility
-    case scanner
-    case categories
-    case biometric
-    case privacy
-    case terms
-    case export
-    case clearCache
-    case crashReporting
-    case syncStatus
-    case conflicts
-    case offlineData
-    case rate
-    case share
+struct SettingsListView: View {
+    let searchText: String
+    @ObservedObject var viewModel: SettingsViewModel
+    let onItemTap: (SettingsItem) -> Void
+    @State private var expandedSections: Set<String> = []
     
-    var id: String {
-        switch self {
-        case .notifications: return "notifications"
-        case .spotlight: return "spotlight"
-        case .accessibility: return "accessibility"
-        case .scanner: return "scanner"
-        case .categories: return "categories"
-        case .biometric: return "biometric"
-        case .privacy: return "privacy"
-        case .terms: return "terms"
-        case .export: return "export"
-        case .clearCache: return "clearCache"
-        case .crashReporting: return "crashReporting"
-        case .syncStatus: return "syncStatus"
-        case .conflicts: return "conflicts"
-        case .offlineData: return "offlineData"
-        case .rate: return "rate"
-        case .share: return "share"
+    var body: some View {
+        VStack(spacing: AppSpacing.sm) {
+            ForEach(filteredSections) { section in
+                SettingsSectionCard(
+                    section: section,
+                    isExpanded: expandedSections.contains(section.title),
+                    viewModel: viewModel,
+                    onTap: {
+                        withAnimation(.spring(response: 0.3, dampingFraction: 0.8)) {
+                            if expandedSections.contains(section.title) {
+                                expandedSections.remove(section.title)
+                            } else {
+                                expandedSections.insert(section.title)
+                            }
+                        }
+                    },
+                    onItemTap: onItemTap
+                )
+            }
+        }
+    }
+    
+    private var filteredSections: [SettingsSection] {
+        if searchText.isEmpty {
+            return SettingsSection.allSections
+        }
+        
+        return SettingsSection.allSections.compactMap { section in
+            let filteredItems = section.items.filter { item in
+                item.title.localizedCaseInsensitiveContains(searchText) ||
+                item.subtitle?.localizedCaseInsensitiveContains(searchText) ?? false
+            }
+            
+            if !filteredItems.isEmpty {
+                var modifiedSection = section
+                modifiedSection.items = filteredItems
+                return modifiedSection
+            }
+            
+            if section.title.localizedCaseInsensitiveContains(searchText) {
+                return section
+            }
+            
+            return nil
         }
     }
 }
 
-// MARK: - Settings Section Model
+// MARK: - Supporting Types
+
+enum SheetContent: Identifiable {
+    case notifications, spotlight, accessibility, scanner, categories
+    case biometric, privacy, terms, export, clearCache
+    case crashReporting, syncStatus, conflicts, offlineData
+    case rate, share
+    
+    var id: String {
+        String(describing: self)
+    }
+}
 
 struct SettingsSection: Identifiable {
     let id = UUID()
@@ -614,8 +419,7 @@ enum SettingsItemType {
 struct SettingsSectionCard: View {
     let section: SettingsSection
     let isExpanded: Bool
-    let searchText: String
-    let viewModel: SettingsViewModel
+    @ObservedObject var viewModel: SettingsViewModel
     let onTap: () -> Void
     let onItemTap: (SettingsItem) -> Void
     
@@ -688,54 +492,48 @@ struct SettingsItemRow: View {
                     .foregroundColor(item.destructive ? .red : AppColors.textSecondary)
                     .frame(width: 24)
                 
-                // Title & Subtitle
-                VStack(alignment: .leading, spacing: 2) {
-                    Text(item.title)
-                        .font(.system(size: 16))
-                        .foregroundColor(item.destructive ? .red : AppColors.textPrimary)
-                    
-                    if let subtitle = item.subtitle {
-                        Text(subtitle)
-                            .font(.system(size: 13))
-                            .foregroundColor(AppColors.textSecondary)
-                    }
-                }
+                // Title
+                Text(item.title)
+                    .font(.system(size: 16))
+                    .foregroundColor(item.destructive ? .red : AppColors.textPrimary)
                 
                 Spacer()
                 
                 // Right side content
-                switch item.type {
-                case .toggle(let key):
-                    Toggle("", isOn: boolBinding(for: key))
-                        .labelsHidden()
-                    
-                case .navigation:
-                    if let badge = item.badge {
-                        Text(badge)
-                            .font(.system(size: 13))
-                            .foregroundColor(AppColors.textSecondary)
-                    }
-                    Image(systemName: "chevron.right")
-                        .font(.system(size: 14))
-                        .foregroundColor(AppColors.textTertiary)
-                    
-                case .action:
-                    EmptyView()
-                    
-                case .picker(let key, let options):
-                    Picker("", selection: stringBinding(for: key)) {
-                        ForEach(options, id: \.self) { option in
-                            Text(option).tag(option)
-                        }
-                    }
-                    .pickerStyle(.menu)
-                    .labelsHidden()
-                }
+                rightSideContent
             }
             .padding(.horizontal, AppSpacing.md)
             .padding(.vertical, AppSpacing.sm)
         }
         .buttonStyle(PlainButtonStyle())
+    }
+    
+    @ViewBuilder
+    private var rightSideContent: some View {
+        switch item.type {
+        case .toggle(let key):
+            Toggle("", isOn: boolBinding(for: key))
+                .labelsHidden()
+        case .navigation:
+            if let badge = item.badge {
+                Text(badge)
+                    .font(.system(size: 13))
+                    .foregroundColor(AppColors.textSecondary)
+            }
+            Image(systemName: "chevron.right")
+                .font(.system(size: 14))
+                .foregroundColor(AppColors.textTertiary)
+        case .action:
+            EmptyView()
+        case .picker(let key, let options):
+            Picker("", selection: stringBinding(for: key)) {
+                ForEach(options, id: \.self) { option in
+                    Text(option).tag(option)
+                }
+            }
+            .pickerStyle(.menu)
+            .labelsHidden()
+        }
     }
     
     private func boolBinding(for key: String) -> Binding<Bool> {
