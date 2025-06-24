@@ -334,4 +334,19 @@ final class ItemsListViewModel: ObservableObject {
     func makeReceiptsListView() -> AnyView? {
         itemsModule?.makeReceiptsListView()
     }
+    
+    func makeCSVImportView() -> AnyView? {
+        itemsModule?.makeCSVImportView { [weak self] result in
+            Task { @MainActor in
+                await self?.loadData()
+                // Show import result notification
+                print("Import complete: \(result.successfulImports) items imported, \(result.failedImports) failed")
+            }
+        }
+    }
+    
+    func makeCSVExportView() -> AnyView? {
+        // Export all current items (considering filters)
+        itemsModule?.makeCSVExportView(items: filteredItems)
+    }
 }

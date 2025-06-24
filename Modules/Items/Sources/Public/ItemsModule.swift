@@ -213,4 +213,24 @@ public final class ItemsModule: ItemsModuleAPI {
             )
         )
     }
+    
+    public func makeCSVImportView(onImportComplete: @escaping (CSVImportResult) -> Void) -> AnyView {
+        return AnyView(
+            CSVImportView(
+                itemRepository: dependencies.itemRepository,
+                locationRepository: dependencies.locationRepository,
+                onImportComplete: onImportComplete
+            )
+        )
+    }
+    
+    public func makeCSVExportView(items: [Item]?) -> AnyView {
+        return AnyView(
+            CSVExportView(
+                itemRepository: dependencies.itemRepository,
+                locationRepository: dependencies.locationRepository,
+                items: items
+            )
+        )
+    }
 }

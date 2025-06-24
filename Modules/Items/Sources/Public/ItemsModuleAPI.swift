@@ -62,6 +62,12 @@ public protocol ItemsModuleAPI: AnyObject {
     
     /// Creates the budget dashboard view
     func makeBudgetDashboardView() -> AnyView
+    
+    /// Creates the CSV import view
+    func makeCSVImportView(onImportComplete: @escaping (CSVImportResult) -> Void) -> AnyView
+    
+    /// Creates the CSV export view
+    func makeCSVExportView(items: [Item]?) -> AnyView
 }
 
 /// Dependencies required by the Items module

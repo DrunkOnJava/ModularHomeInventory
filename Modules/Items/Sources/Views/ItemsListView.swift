@@ -8,6 +8,8 @@ struct ItemsListView: View {
     @State private var selectedItem: Item?
     @State private var showingItemDetail = false
     @State private var selectedSegment = 0 // 0 = Items, 1 = Receipts
+    @State private var showingImport = false
+    @State private var showingExport = false
     
     private let onSearchTapped: (() -> Void)?
     private let onBarcodeSearchTapped: (() -> Void)?
@@ -58,6 +60,21 @@ struct ItemsListView: View {
             .navigationTitle(selectedSegment == 0 ? "Items" : "Receipts")
             .toolbar {
                 ToolbarItemGroup(placement: .navigationBarTrailing) {
+                    if selectedSegment == 0 {
+                        // Import/Export menu for items
+                        Menu {
+                            Button(action: { showingImport = true }) {
+                                Label("Import from CSV", systemImage: "square.and.arrow.down")
+                            }
+                            
+                            Button(action: { showingExport = true }) {
+                                Label("Export to CSV", systemImage: "square.and.arrow.up")
+                            }
+                        } label: {
+                            Image(systemName: "ellipsis.circle")
+                        }
+                    }
+                    
                     if let onBarcodeSearchTapped = onBarcodeSearchTapped {
                         Button(action: onBarcodeSearchTapped) {
                             Image(systemName: "barcode.viewfinder")
@@ -92,6 +109,12 @@ struct ItemsListView: View {
                         detailView
                     }
                 }
+            }
+            .sheet(isPresented: $showingImport) {
+                viewModel.makeCSVImportView()
+            }
+            .sheet(isPresented: $showingExport) {
+                viewModel.makeCSVExportView()
             }
         }
     }
