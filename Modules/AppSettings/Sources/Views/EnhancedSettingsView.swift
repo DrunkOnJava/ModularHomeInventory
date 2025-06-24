@@ -19,12 +19,11 @@ struct EnhancedSettingsView: View {
     }
     
     var body: some View {
-        NavigationView {
-            ZStack {
-                // Background
-                SettingsBackgroundView()
-                
-                ScrollView {
+        ZStack {
+            // Background
+            SettingsBackgroundView()
+            
+            ScrollView {
                     VStack(spacing: 0) {
                         // Profile Header
                         SettingsProfileHeaderView(
@@ -65,16 +64,15 @@ struct EnhancedSettingsView: View {
                         .padding(.horizontal, AppSpacing.lg)
                         .padding(.bottom, AppSpacing.xxl)
                     }
-                }
             }
-            .navigationTitle("Settings")
-            .navigationBarTitleDisplayMode(.large)
-            .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button(action: { isSearching.toggle() }) {
-                        Image(systemName: isSearching ? "xmark.circle.fill" : "magnifyingglass")
-                            .foregroundColor(AppColors.primary)
-                    }
+        }
+        .navigationTitle("Settings")
+        .navigationBarTitleDisplayMode(.large)
+        .toolbar {
+            ToolbarItem(placement: .navigationBarTrailing) {
+                Button(action: { isSearching.toggle() }) {
+                    Image(systemName: isSearching ? "xmark.circle.fill" : "magnifyingglass")
+                        .foregroundColor(AppColors.primary)
                 }
             }
         }
