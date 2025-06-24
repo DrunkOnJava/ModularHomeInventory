@@ -18,7 +18,7 @@ public final class SettingsModule: SettingsModuleAPI {
             receiptRepository: dependencies.receiptRepository,
             locationRepository: dependencies.locationRepository
         )
-        return AnyView(SettingsView(viewModel: viewModel))
+        return AnyView(EnhancedSettingsView(viewModel: viewModel))
     }
     
     public func makeAboutView() -> AnyView {
