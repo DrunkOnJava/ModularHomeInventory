@@ -11,7 +11,7 @@ languages([
 ])
 
 # The name of the scheme which contains the UI Tests
-scheme("HomeInventoryModularUITests")
+scheme("HomeInventoryModular")
 
 # Where should the resulting screenshots be stored?
 output_directory("./fastlane/screenshots")

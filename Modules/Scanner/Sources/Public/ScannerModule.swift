@@ -1,6 +1,5 @@
 import SwiftUI
 import Core
-import Settings
 
 /// Main implementation of the Scanner module
 /// Swift 5.9 - No Swift 6 features

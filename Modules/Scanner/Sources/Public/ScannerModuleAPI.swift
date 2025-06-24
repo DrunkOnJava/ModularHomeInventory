@@ -1,6 +1,8 @@
 import SwiftUI
 import Core
-import Settings
+#if canImport(UIKit)
+import UIKit
+#endif
 
 /// Public API for the Scanner module
 /// Swift 5.9 - No Swift 6 features
