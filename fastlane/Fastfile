@@ -79,7 +79,7 @@ platform :ios do
     # Upload to TestFlight
     upload_to_testflight(
       ipa: "./build/HomeInventoryModular.ipa",
-      app_identifier: "com.homeinventory",
+      app_identifier: "com.homeinventory.app",
       skip_waiting_for_build_processing: true,
       skip_submission: false,
       distribute_external: false,
@@ -111,7 +111,7 @@ platform :ios do
     
     # Upload to TestFlight
     upload_to_testflight(
-      app_identifier: "com.homeinventory",
+      app_identifier: "com.homeinventory.app",
       skip_waiting_for_build_processing: true,
       skip_submission: false,
       distribute_external: false,
