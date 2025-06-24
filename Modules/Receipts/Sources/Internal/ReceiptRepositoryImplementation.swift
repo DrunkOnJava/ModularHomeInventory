@@ -53,6 +53,30 @@ final class ReceiptRepositoryImplementation: ReceiptRepository {
         }
     }
     
+    func saveAll(_ entities: [Receipt]) async throws {
+        return await withCheckedContinuation { continuation in
+            queue.async(flags: .barrier) {
+                for entity in entities {
+                    if let index = self.receipts.firstIndex(where: { $0.id == entity.id }) {
+                        self.receipts[index] = entity
+                    } else {
+                        self.receipts.append(entity)
+                    }
+                }
+                continuation.resume()
+            }
+        }
+    }
+    
+    func delete(id: UUID) async throws {
+        return await withCheckedContinuation { continuation in
+            queue.async(flags: .barrier) {
+                self.receipts.removeAll { $0.id == id }
+                continuation.resume()
+            }
+        }
+    }
+    
     func fetchByDateRange(from startDate: Date, to endDate: Date) async throws -> [Receipt] {
         return await withCheckedContinuation { continuation in
             queue.async {

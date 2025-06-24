@@ -166,7 +166,7 @@ final class AppCoordinator: ObservableObject {
 // MARK: - Mock Repositories
 
 final class MockItemRepository: ItemRepository {
-    private var items: [Item] = MockDataService.generateComprehensiveItems()
+    private var items: [Item] = Item.previews
     
     func fetchAll() async throws -> [Item] {
         // Simulate network delay
@@ -268,7 +268,7 @@ final class MockItemRepository: ItemRepository {
 }
 
 final class MockLocationRepository: LocationRepository {
-    private let locations: [Location] = MockDataService.locations
+    private let locations: [Location] = Location.previews
     
     func fetchAll() async throws -> [Location] {
         locations
@@ -306,7 +306,7 @@ final class MockLocationRepository: LocationRepository {
 // MARK: - Mock Receipt Repository
 
 final class MockReceiptRepository: ReceiptRepository {
-    private var receipts: [Receipt] = MockDataService.generateReceipts()
+    private var receipts: [Receipt] = Receipt.previews
     
     func fetchAll() async throws -> [Receipt] {
         receipts

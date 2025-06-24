@@ -8,8 +8,8 @@ final class ItemRepositoryImplementation: ItemRepository {
     private let queue = DispatchQueue(label: "com.homeinventory.items", attributes: .concurrent)
     
     init() {
-        // Initialize with comprehensive mock data
-        self.items = MockDataService.generateComprehensiveItems()
+        // Initialize with some sample data
+        self.items = Item.previews
     }
     
     // MARK: - Repository Protocol

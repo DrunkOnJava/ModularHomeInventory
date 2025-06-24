@@ -508,8 +508,8 @@ public final class MockDataService {
                 period: .monthly,
                 category: .electronics,
                 startDate: startOfMonth,
-                notificationThreshold: 0.80,
-                isActive: true
+                isActive: true,
+                notificationThreshold: 0.80
             ),
             Budget(
                 name: "Annual Furniture",
@@ -517,8 +517,8 @@ public final class MockDataService {
                 period: .yearly,
                 category: .furniture,
                 startDate: startOfYear,
-                notificationThreshold: 0.75,
-                isActive: true
+                isActive: true,
+                notificationThreshold: 0.75
             ),
             Budget(
                 name: "Clothing Quarterly",
@@ -527,8 +527,8 @@ public final class MockDataService {
                 category: .clothing,
                 startDate: now.addingTimeInterval(-45 * 24 * 60 * 60),
                 endDate: now.addingTimeInterval(45 * 24 * 60 * 60),
-                notificationThreshold: 0.90,
-                isActive: true
+                isActive: true,
+                notificationThreshold: 0.90
             )
         ]
     }

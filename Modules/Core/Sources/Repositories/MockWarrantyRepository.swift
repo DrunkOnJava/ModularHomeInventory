@@ -43,7 +43,32 @@ public final class MockWarrantyRepository: WarrantyRepository {
         }
     }
     
-    public func fetch(by id: UUID) async throws -> Warranty? {
+    // MARK: - Repository Protocol Requirements
+    
+    public func save(_ entity: Warranty) async throws {
+        return try await update(entity)
+    }
+    
+    public func saveAll(_ entities: [Warranty]) async throws {
+        return await withCheckedContinuation { continuation in
+            queue.async(flags: .barrier) {
+                for entity in entities {
+                    self.warranties[entity.id] = entity
+                }
+                continuation.resume()
+            }
+        }
+    }
+    
+    public func delete(_ entity: Warranty) async throws {
+        return try await delete(entity.id)
+    }
+    
+    public func delete(id: UUID) async throws {
+        return try await delete(id)
+    }
+    
+    public func fetch(id: UUID) async throws -> Warranty? {
         return await withCheckedContinuation { continuation in
             queue.async {
                 continuation.resume(returning: self.warranties[id])
