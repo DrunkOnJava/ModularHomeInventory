@@ -21,13 +21,11 @@ struct ContentView: View {
         } else {
             TabView(selection: $selectedTab) {
             // Items Tab - Now using the Items module!
-            NavigationView {
-                coordinator.itemsModule.makeItemsListView(onSearchTapped: {
-                    showingSearch = true
-                }, onBarcodeSearchTapped: {
-                    showingBarcodeSearch = true
-                })
-            }
+            coordinator.itemsModule.makeItemsListView(onSearchTapped: {
+                showingSearch = true
+            }, onBarcodeSearchTapped: {
+                showingBarcodeSearch = true
+            })
                 .tabItem {
                     Label("Items", systemImage: "square.grid.2x2")
                 }

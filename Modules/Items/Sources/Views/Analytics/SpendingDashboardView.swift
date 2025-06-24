@@ -327,7 +327,6 @@ struct SpendingDashboardView: View {
             .background(AppColors.surface)
             .cornerRadius(AppCornerRadius.large)
         }
-        .buttonStyle(PlainButtonStyle())
     }
     
     private var timeAnalysisLink: some View {
@@ -359,7 +358,6 @@ struct SpendingDashboardView: View {
             .background(AppColors.surface)
             .cornerRadius(AppCornerRadius.large)
         }
-        .buttonStyle(PlainButtonStyle())
     }
     
     private var depreciationReportLink: some View {
@@ -391,7 +389,6 @@ struct SpendingDashboardView: View {
             .background(AppColors.surface)
             .cornerRadius(AppCornerRadius.large)
         }
-        .buttonStyle(PlainButtonStyle())
     }
     
     private var purchasePatternsLink: some View {
@@ -423,7 +420,6 @@ struct SpendingDashboardView: View {
             .background(AppColors.surface)
             .cornerRadius(AppCornerRadius.large)
         }
-        .buttonStyle(PlainButtonStyle())
     }
     
     @ViewBuilder
@@ -458,7 +454,6 @@ struct SpendingDashboardView: View {
                 .background(AppColors.surface)
                 .cornerRadius(AppCornerRadius.large)
             }
-            .buttonStyle(PlainButtonStyle())
         }
     }
     
@@ -492,7 +487,6 @@ struct SpendingDashboardView: View {
             .background(AppColors.surface)
             .cornerRadius(AppCornerRadius.large)
         }
-        .buttonStyle(PlainButtonStyle())
     }
 }
 
@@ -571,7 +565,6 @@ private struct CategoryRow: View {
                 }
             }
         }
-        .buttonStyle(PlainButtonStyle())
     }
 }
 
