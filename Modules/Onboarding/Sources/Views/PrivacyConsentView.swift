@@ -31,11 +31,11 @@ public struct PrivacyConsentView: View {
                     .padding(.top, AppSpacing.xl)
                 
                 Text("Your Privacy Matters")
-                    .textStyle(.title1)
+                    .textStyle(.titleLarge)
                     .multilineTextAlignment(.center)
                 
                 Text("We respect your privacy and put you in control")
-                    .textStyle(.body)
+                    .textStyle(.bodyMedium)
                     .foregroundStyle(AppColors.textSecondary)
                     .multilineTextAlignment(.center)
             }
@@ -92,13 +92,13 @@ public struct PrivacyConsentView: View {
                 HStack(spacing: AppSpacing.lg) {
                     Button(action: { showFullPolicy = true }) {
                         Text("Read Full Policy")
-                            .textStyle(.body)
+                            .textStyle(.bodyMedium)
                             .foregroundStyle(AppColors.primary)
                     }
                     
                     Button(action: onDecline) {
                         Text("Decline")
-                            .textStyle(.body)
+                            .textStyle(.bodyMedium)
                             .foregroundStyle(AppColors.textSecondary)
                     }
                 }
@@ -125,7 +125,7 @@ public struct PrivacyConsentView: View {
                     .fontWeight(.medium)
                 
                 Text(description)
-                    .textStyle(.body)
+                    .textStyle(.bodyMedium)
                     .foregroundStyle(AppColors.textSecondary)
             }
             
@@ -143,7 +143,7 @@ struct FullPrivacyPolicyView: View {
             ScrollView {
                 VStack(alignment: .leading, spacing: AppSpacing.lg) {
                     Text(privacyPolicyText)
-                        .textStyle(.body)
+                        .textStyle(.bodyMedium)
                         .padding()
                 }
             }

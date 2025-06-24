@@ -35,7 +35,7 @@ public struct PrivacyPolicyVersion {
     
     private static let acceptanceKey = "com.modularhomeinventory.privacy.acceptance"
     
-    private static func loadAcceptance() -> PrivacyPolicyAcceptance? {
+    static func loadAcceptance() -> PrivacyPolicyAcceptance? {
         guard let data = UserDefaults.standard.data(forKey: acceptanceKey) else { return nil }
         return try? JSONDecoder().decode(PrivacyPolicyAcceptance.self, from: data)
     }
