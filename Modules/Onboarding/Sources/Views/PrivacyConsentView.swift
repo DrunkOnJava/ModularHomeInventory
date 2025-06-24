@@ -31,7 +31,7 @@ public struct PrivacyConsentView: View {
                     .padding(.top, AppSpacing.xl)
                 
                 Text("Your Privacy Matters")
-                    .textStyle(.titleLarge)
+                    .textStyle(.displayLarge)
                     .multilineTextAlignment(.center)
                 
                 Text("We respect your privacy and put you in control")
