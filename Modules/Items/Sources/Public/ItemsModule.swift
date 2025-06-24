@@ -80,7 +80,8 @@ public final class ItemsModule: ItemsModuleAPI {
         let viewModel = SpendingDashboardViewModel(
             itemRepository: dependencies.itemRepository,
             receiptRepository: dependencies.receiptRepository,
-            budgetRepository: dependencies.budgetRepository
+            budgetRepository: dependencies.budgetRepository,
+            warrantyRepository: dependencies.warrantyRepository
         )
         return AnyView(
             NavigationView {
@@ -231,6 +232,28 @@ public final class ItemsModule: ItemsModuleAPI {
                 locationRepository: dependencies.locationRepository,
                 items: items
             )
+        )
+    }
+    
+    public func makeWarrantyDashboardView() -> AnyView {
+        return AnyView(
+            NavigationView {
+                WarrantyDashboardView(
+                    warrantyRepository: dependencies.warrantyRepository,
+                    itemRepository: dependencies.itemRepository
+                )
+            }
+        )
+    }
+    
+    public func makeWarrantyNotificationsView() -> AnyView {
+        return AnyView(
+            NavigationView {
+                WarrantyNotificationsView(
+                    warrantyRepository: dependencies.warrantyRepository,
+                    itemRepository: dependencies.itemRepository
+                )
+            }
         )
     }
 }

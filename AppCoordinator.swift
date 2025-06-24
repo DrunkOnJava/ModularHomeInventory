@@ -136,6 +136,16 @@ final class AppCoordinator: ObservableObject {
         // Initialize Onboarding module
         let onboardingDependencies = OnboardingModuleDependencies()
         onboardingModule = OnboardingModule(dependencies: onboardingDependencies)
+        
+        // Start warranty expiration monitoring
+        Core.WarrantyExpirationCheckService.shared.startMonitoring(warrantyRepository: warrantyRepository)
+        
+        // Start notification monitoring
+        Core.NotificationTriggerService.shared.startMonitoring(
+            itemRepository: itemRepository,
+            warrantyRepository: warrantyRepository,
+            budgetRepository: nil  // Will be added when budget repository is available
+        )
     }
 }
 

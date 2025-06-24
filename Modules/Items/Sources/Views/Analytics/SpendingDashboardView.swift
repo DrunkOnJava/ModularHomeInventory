@@ -60,6 +60,9 @@ struct SpendingDashboardView: View {
                 
                 // Budget tracking link
                 budgetTrackingLink
+                
+                // Warranty dashboard link
+                warrantyDashboardLink
             }
             .padding(AppSpacing.md)
         }
@@ -458,6 +461,39 @@ struct SpendingDashboardView: View {
         .buttonStyle(PlainButtonStyle())
             }
         }
+    }
+    
+    private var warrantyDashboardLink: some View {
+        NavigationLink(destination: WarrantyDashboardView(
+            warrantyRepository: viewModel.warrantyRepository,
+            itemRepository: viewModel.itemRepository
+        )) {
+            HStack(spacing: AppSpacing.md) {
+                Image(systemName: "shield.lefthalf.filled")
+                    .font(.system(size: 44))
+                    .foregroundStyle(AppColors.primary)
+                
+                VStack(alignment: .leading, spacing: AppSpacing.xs) {
+                    Text("Warranty Dashboard")
+                        .textStyle(.headlineMedium)
+                        .foregroundStyle(AppColors.textPrimary)
+                    
+                    Text("Track warranty expirations and alerts")
+                        .textStyle(.bodyMedium)
+                        .foregroundStyle(AppColors.textSecondary)
+                }
+                
+                Spacer()
+                
+                Image(systemName: "chevron.right")
+                    .font(.system(size: 16))
+                    .foregroundStyle(AppColors.textTertiary)
+            }
+            .padding(AppSpacing.lg)
+            .background(AppColors.surface)
+            .cornerRadius(AppCornerRadius.large)
+        }
+        .buttonStyle(PlainButtonStyle())
     }
 
 // MARK: - Supporting Views

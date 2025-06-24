@@ -57,7 +57,7 @@ struct CSVExportView: View {
             }
             .sheet(isPresented: $showingShareSheet) {
                 if let result = viewModel.exportResult {
-                    ShareSheet(items: [CSVFileDocument(result: result)])
+                    CSVExportShareSheet(items: [CSVFileDocument(result: result)])
                 }
             }
             .alert("Export Error", isPresented: $viewModel.showingError) {
@@ -316,9 +316,9 @@ struct CSVFileDocument: Transferable {
     }
 }
 
-// MARK: - Share Sheet
+// MARK: - CSV Export Share Sheet
 
-struct ShareSheet: UIViewControllerRepresentable {
+struct CSVExportShareSheet: UIViewControllerRepresentable {
     let items: [Any]
     
     func makeUIViewController(context: Context) -> UIActivityViewController {

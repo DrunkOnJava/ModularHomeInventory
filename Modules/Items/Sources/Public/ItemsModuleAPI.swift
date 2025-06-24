@@ -68,6 +68,12 @@ public protocol ItemsModuleAPI: AnyObject {
     
     /// Creates the CSV export view
     func makeCSVExportView(items: [Item]?) -> AnyView
+    
+    /// Creates the warranty dashboard view
+    func makeWarrantyDashboardView() -> AnyView
+    
+    /// Creates the warranty notifications view
+    func makeWarrantyNotificationsView() -> AnyView
 }
 
 /// Dependencies required by the Items module

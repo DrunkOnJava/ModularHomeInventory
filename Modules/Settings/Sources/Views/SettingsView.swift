@@ -109,7 +109,7 @@ struct SettingsView: View {
     private var generalSection: some View {
         Section {
             // Notifications
-            Toggle(isOn: $viewModel.settings.notificationsEnabled) {
+            NavigationLink(destination: NotificationSettingsView()) {
                 Label("Notifications", systemImage: "bell")
             }
             

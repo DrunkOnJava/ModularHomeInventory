@@ -3,6 +3,7 @@ import SharedUI
 
 @main
 struct HomeInventoryModularApp: App {
+    @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     @StateObject private var coordinator = AppCoordinator()
     
     init() {
