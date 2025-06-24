@@ -236,8 +236,10 @@ public struct ErrorBoundaryView<Content: View>: View {
 }
 
 /// Default error fallback view
-struct ErrorFallbackView: View {
-    var body: some View {
+public struct ErrorFallbackView: View {
+    public init() {}
+    
+    public var body: some View {
         VStack(spacing: 16) {
             Image(systemName: "exclamationmark.triangle.fill")
                 .font(.system(size: 48))
