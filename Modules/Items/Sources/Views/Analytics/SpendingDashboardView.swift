@@ -569,7 +569,7 @@ struct SpendingDashboardView: View {
                         value: topRetailer.name,
                         subtitle: "\(topRetailer.itemCount) purchases",
                         icon: "storefront.fill",
-                        color: AppColors.secondary
+                        color: AppColors.primaryMuted
                     )
                 }
             }
