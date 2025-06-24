@@ -91,8 +91,19 @@ public protocol SettingsStorageProtocol {
 /// Dependencies required by the Settings module
 public struct SettingsModuleDependencies {
     public let settingsStorage: SettingsStorageProtocol
+    public let itemRepository: (any ItemRepository)?
+    public let receiptRepository: (any ReceiptRepository)?
+    public let locationRepository: (any LocationRepository)?
     
-    public init(settingsStorage: SettingsStorageProtocol) {
+    public init(
+        settingsStorage: SettingsStorageProtocol,
+        itemRepository: (any ItemRepository)? = nil,
+        receiptRepository: (any ReceiptRepository)? = nil,
+        locationRepository: (any LocationRepository)? = nil
+    ) {
         self.settingsStorage = settingsStorage
+        self.itemRepository = itemRepository
+        self.receiptRepository = receiptRepository
+        self.locationRepository = locationRepository
     }
 }

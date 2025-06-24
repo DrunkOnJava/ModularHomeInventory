@@ -1,6 +1,7 @@
 import Foundation
 import Core
 import Combine
+import UIKit
 
 /// Service for detecting and resolving sync conflicts
 /// Swift 5.9 - No Swift 6 features
@@ -427,26 +428,21 @@ public final class ConflictResolutionService: ObservableObject {
                     localItem = Item(
                         id: localItem.id,
                         name: remoteItem.name,
-                        description: localItem.description,
-                        category: localItem.category,
                         brand: localItem.brand,
                         model: localItem.model,
-                        serialNumber: localItem.serialNumber,
-                        purchaseDate: localItem.purchaseDate,
-                        purchasePrice: localItem.purchasePrice,
-                        value: localItem.value,
-                        quantity: localItem.quantity,
-                        locationId: localItem.locationId,
-                        barcode: localItem.barcode,
-                        sku: localItem.sku,
-                        warrantyId: localItem.warrantyId,
+                        category: localItem.category,
                         condition: localItem.condition,
-                        photoIds: localItem.photoIds,
-                        tags: localItem.tags,
-                        customFields: localItem.customFields,
+                        quantity: localItem.quantity,
+                        value: localItem.value,
+                        purchasePrice: localItem.purchasePrice,
+                        purchaseDate: localItem.purchaseDate,
                         notes: localItem.notes,
-                        isFavorite: localItem.isFavorite,
-                        categoryId: localItem.categoryId,
+                        barcode: localItem.barcode,
+                        serialNumber: localItem.serialNumber,
+                        tags: localItem.tags,
+                        imageIds: localItem.imageIds,
+                        locationId: localItem.locationId,
+                        warrantyId: localItem.warrantyId,
                         createdAt: localItem.createdAt,
                         updatedAt: Date()
                     )

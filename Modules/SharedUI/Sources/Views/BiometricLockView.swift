@@ -1,5 +1,5 @@
 import SwiftUI
-import SharedUI
+import Core
 
 /// Lock screen view that requires biometric authentication
 /// Swift 5.9 - No Swift 6 features

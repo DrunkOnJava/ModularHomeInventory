@@ -122,7 +122,7 @@ public struct FieldChange: Identifiable {
 }
 
 /// Resolution strategy for conflicts
-public enum ConflictResolution {
+public enum ConflictResolution: Equatable {
     case keepLocal
     case keepRemote
     case merge(MergeStrategy)
@@ -139,7 +139,7 @@ public enum ConflictResolution {
 }
 
 /// Merge strategies for conflict resolution
-public enum MergeStrategy {
+public enum MergeStrategy: Equatable {
     case latestWins
     case localPriority
     case remotePriority
@@ -156,11 +156,11 @@ public enum MergeStrategy {
 }
 
 /// Field-level resolution
-public struct FieldResolution {
+public struct FieldResolution: Equatable {
     public let fieldName: String
     public let resolution: FieldResolutionType
     
-    public enum FieldResolutionType {
+    public enum FieldResolutionType: Equatable {
         case useLocal
         case useRemote
         case concatenate(separator: String)

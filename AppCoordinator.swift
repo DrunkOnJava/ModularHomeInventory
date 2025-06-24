@@ -37,7 +37,10 @@ final class AppCoordinator: ObservableObject {
         // Initialize Settings module first to get settings storage
         let settingsStorage = UserDefaultsSettingsStorage()
         let settingsDependencies = SettingsModuleDependencies(
-            settingsStorage: settingsStorage
+            settingsStorage: settingsStorage,
+            itemRepository: itemRepository,
+            receiptRepository: receiptRepository,
+            locationRepository: locationRepository
         )
         settingsModule = SettingsModule(dependencies: settingsDependencies)
         

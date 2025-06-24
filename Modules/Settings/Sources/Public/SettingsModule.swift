@@ -13,7 +13,10 @@ public final class SettingsModule: SettingsModuleAPI {
     
     public func makeSettingsView() -> AnyView {
         let viewModel = SettingsViewModel(
-            settingsStorage: dependencies.settingsStorage
+            settingsStorage: dependencies.settingsStorage,
+            itemRepository: dependencies.itemRepository,
+            receiptRepository: dependencies.receiptRepository,
+            locationRepository: dependencies.locationRepository
         )
         return AnyView(SettingsView(viewModel: viewModel))
     }

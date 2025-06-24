@@ -1,5 +1,5 @@
 import SwiftUI
-import SharedUI
+import Core
 
 /// View wrapper that requires biometric authentication to display sensitive data
 /// Swift 5.9 - No Swift 6 features

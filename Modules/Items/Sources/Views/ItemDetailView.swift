@@ -176,12 +176,14 @@ struct ItemDetailView: View {
             }
         }
         .sheet(isPresented: $showingShareView) {
-            ItemShareView(
-                item: viewModel.item,
-                sharingService: ItemSharingService(
-                    locationRepository: viewModel.locationRepository
+            if let locationRepo = viewModel.locationRepository {
+                ItemShareView(
+                    item: viewModel.item,
+                    sharingService: ItemSharingService(
+                        locationRepository: locationRepo
+                    )
                 )
-            )
+            }
         }
     }
     
