@@ -14,7 +14,7 @@ SIMULATOR_NAME ?= iPhone 16 Pro Max
 IPAD_SIMULATOR_ID ?= CE6D038C-840B-4BDB-AA63-D61FA0755C4A
 IPAD_SIMULATOR_NAME ?= iPad Pro 13-inch (M4)
 
-APP_BUNDLE_ID = com.homeinventory.modular
+APP_BUNDLE_ID = com.homeinventory.app
 
 # Auto-commit feature (default: on)
 AUTO_COMMIT ?= true
