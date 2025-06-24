@@ -132,7 +132,7 @@ public struct BudgetAlert: Codable, Identifiable {
     public let amountSpent: Decimal
     public let amountRemaining: Decimal
     public let createdAt: Date
-    public let isRead: Bool
+    public var isRead: Bool
     
     public init(
         id: UUID = UUID(),
