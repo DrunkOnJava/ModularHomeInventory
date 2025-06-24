@@ -20,6 +20,7 @@
 		ACF691C75D3CE2A0368D350E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 362A5252C4DF6A3EB2576072 /* Assets.xcassets */; };
 		BB0DD5FF03285CB7996948EB /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EF2F55CB9E0C0D2E0A2AC96 /* ContentView.swift */; };
 		C4F37384ED723E64ACAAF5C5 /* HomeInventoryModularUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 851ADC8B8F9E673AC19166A0 /* HomeInventoryModularUITests.swift */; };
+		D11C17DFC3910E7BFCA63187 /* ScreenshotDebug.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05127C77BA29A74CDD30F8E6 /* ScreenshotDebug.swift */; };
 		F110E061FDBC925483D96631 /* SharedUI in Frameworks */ = {isa = PBXBuildFile; productRef = 1E4ABB9448702E1172AD1D5B /* SharedUI */; };
 		FA3C772C8BC354A93E204D0C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7CCD81CB60BE20EC61ED398 /* AppDelegate.swift */; };
 		FD938184E545CCEB3567B64E /* Items in Frameworks */ = {isa = PBXBuildFile; productRef = 11065E0B954F8B47091C5898 /* Items */; };
@@ -37,6 +38,7 @@
 
 /* Begin PBXFileReference section */
 		0356A52527E14766531C3817 /* Premium */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Premium; path = Modules/Premium; sourceTree = SOURCE_ROOT; };
+		05127C77BA29A74CDD30F8E6 /* ScreenshotDebug.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenshotDebug.swift; sourceTree = "<group>"; };
 		1EF2F55CB9E0C0D2E0A2AC96 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		362A5252C4DF6A3EB2576072 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		3AE0C7854F2B950F4BCC3A9C /* SharedUI */ = {isa = PBXFileReference; lastKnownFileType = folder; name = SharedUI; path = Modules/SharedUI; sourceTree = SOURCE_ROOT; };
@@ -110,6 +112,7 @@
 			isa = PBXGroup;
 			children = (
 				851ADC8B8F9E673AC19166A0 /* HomeInventoryModularUITests.swift */,
+				05127C77BA29A74CDD30F8E6 /* ScreenshotDebug.swift */,
 				6FA9E85F9D0016AF30814111 /* SnapshotHelper.swift */,
 			);
 			path = HomeInventoryModularUITests;
@@ -252,6 +255,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C4F37384ED723E64ACAAF5C5 /* HomeInventoryModularUITests.swift in Sources */,
+				D11C17DFC3910E7BFCA63187 /* ScreenshotDebug.swift in Sources */,
 				9506FEA0E51000A89D505F1C /* SnapshotHelper.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

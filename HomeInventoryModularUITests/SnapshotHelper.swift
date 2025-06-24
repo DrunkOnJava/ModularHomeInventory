@@ -177,6 +177,8 @@ open class Snapshot: NSObject {
     }
 
     open class func snapshot(_ name: String, timeWaitingForIdle timeout: TimeInterval = 20) {
+        print("📸 Snapshot called for: \(name)")
+        
         // Debug: Write to a file to verify this function is being called
         let debugPath = URL(fileURLWithPath: NSHomeDirectory())
             .appendingPathComponent("fastlane_snapshot_debug.txt")
@@ -208,6 +210,7 @@ open class Snapshot: NSObject {
             sleep(1) // Waiting for the animation to be finished (kind of)
         }
 
+        print("snapshot: \(name)") // CRITICAL: This exact format is what Fastlane looks for
         NSLog("snapshot: \(name)") // more information about this, check out https://docs.fastlane.tools/actions/snapshot/#how-does-it-work
 
         sleep(1) // Waiting for the animation to be finished (kind of)

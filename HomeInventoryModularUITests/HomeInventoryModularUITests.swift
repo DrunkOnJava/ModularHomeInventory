@@ -24,18 +24,37 @@ final class HomeInventoryModularUITests: XCTestCase {
     func testTakeScreenshots() throws {
         // Log that we're starting
         print("Starting screenshot test")
-        
-        // Debug: Check critical environment variables
-        print("FASTLANE_SNAPSHOT: \(ProcessInfo.processInfo.environment["FASTLANE_SNAPSHOT"] ?? "NOT SET")")
-        print("SIMULATOR_DEVICE_NAME: \(ProcessInfo.processInfo.environment["SIMULATOR_DEVICE_NAME"] ?? "NOT SET")")
-        print("SIMULATOR_HOST_HOME: \(ProcessInfo.processInfo.environment["SIMULATOR_HOST_HOME"] ?? "NOT SET")")
+        XCTContext.runActivity(named: "Debug Environment") { _ in
+            print("FASTLANE_SNAPSHOT: \(ProcessInfo.processInfo.environment["FASTLANE_SNAPSHOT"] ?? "NOT SET")")
+            print("SIMULATOR_DEVICE_NAME: \(ProcessInfo.processInfo.environment["SIMULATOR_DEVICE_NAME"] ?? "NOT SET")")
+            print("SIMULATOR_HOST_HOME: \(ProcessInfo.processInfo.environment["SIMULATOR_HOST_HOME"] ?? "NOT SET")")
+        }
         
         // Wait for app to load
         sleep(2)
         
         // Take screenshot of main screen
-        print("Taking screenshot: 01_MainScreen")
-        snapshot("01_MainScreen", waitForLoadingIndicator: false)
+        XCTContext.runActivity(named: "Take Main Screen Screenshot") { _ in
+            print("Taking screenshot: 01_MainScreen")
+            
+            // Test if we're in Fastlane environment
+            if ProcessInfo.processInfo.environment["FASTLANE_SNAPSHOT"] == "YES" {
+                print("✅ FASTLANE_SNAPSHOT is set correctly")
+            } else {
+                print("❌ FASTLANE_SNAPSHOT is not set")
+            }
+            
+            // Take a manual screenshot for debugging
+            let screenshot = app.screenshot()
+            let attachment = XCTAttachment(screenshot: screenshot)
+            attachment.name = "Debug_MainScreen"
+            attachment.lifetime = .keepAlways
+            add(attachment)
+            print("Added XCTest screenshot attachment")
+            
+            snapshot("01_MainScreen", waitForLoadingIndicator: false)
+            print("Called snapshot function")
+        }
         
         // Navigate to Items tab if not already there
         if app.tabBars.buttons["Items"].exists {
