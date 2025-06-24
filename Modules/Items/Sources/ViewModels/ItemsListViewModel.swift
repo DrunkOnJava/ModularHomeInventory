@@ -34,7 +34,7 @@ final class ItemsListViewModel: ObservableObject {
     
     // MARK: - Dependencies
     let itemRepository: any ItemRepository
-    private let locationRepository: any LocationRepository
+    let locationRepository: any LocationRepository
     weak var itemsModule: ItemsModuleAPI?
     private var cancellables = Set<AnyCancellable>()
     

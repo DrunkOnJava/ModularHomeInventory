@@ -4,6 +4,7 @@ import Items
 import Scanner
 import Settings
 import Receipts
+import Core
 
 struct ContentView: View {
     @EnvironmentObject var coordinator: AppCoordinator
@@ -60,6 +61,7 @@ struct ContentView: View {
         .sheet(isPresented: $showingBarcodeSearch) {
             coordinator.itemsModule.makeBarcodeSearchView()
         }
+        .biometricLock() // Add biometric lock protection
     }
 }
 

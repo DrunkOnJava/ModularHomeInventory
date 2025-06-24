@@ -118,8 +118,7 @@ struct SpendingDashboardView: View {
                         .textStyle(.labelMedium)
                         .foregroundStyle(AppColors.textSecondary)
                     
-                    Text(viewModel.totalSpent, format: .currency(code: viewModel.currency))
-                        .textStyle(.headlineLarge)
+                    SecureCurrencyText(viewModel.totalSpent, currency: viewModel.currency, style: .largeTitle)
                         .foregroundStyle(AppColors.textPrimary)
                 }
                 
@@ -137,10 +136,11 @@ struct SpendingDashboardView: View {
                     icon: "shippingbox"
                 )
                 
-                StatItem(
-                    label: "Avg. Price",
+                SecureStatCard(
+                    title: "Avg. Price",
                     value: viewModel.averagePrice.formatted(.currency(code: viewModel.currency)),
-                    icon: "chart.line.uptrend.xyaxis"
+                    icon: "chart.line.uptrend.xyaxis",
+                    isFinancial: true
                 )
                 
                 StatItem(

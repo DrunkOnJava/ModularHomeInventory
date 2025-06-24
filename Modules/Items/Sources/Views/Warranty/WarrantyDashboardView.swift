@@ -426,14 +426,24 @@ final class WarrantyDashboardViewModel: ObservableObject {
             
             // Calculate counts
             let now = Date()
-            activeCount = warranties.filter { $0.status == .active }.count
+            activeCount = warranties.filter { warranty in
+                if case Warranty.Status.active = warranty.status {
+                    return true
+                }
+                return false
+            }.count
             expiringSoonCount = warranties.filter { warranty in
                 if case .expiringSoon = warranty.status {
                     return true
                 }
                 return false
             }.count
-            expiredCount = warranties.filter { $0.status == .expired }.count
+            expiredCount = warranties.filter { warranty in
+                if case Warranty.Status.expired = warranty.status {
+                    return true
+                }
+                return false
+            }.count
             totalCount = warranties.count
             
             // Calculate total value of items with warranties

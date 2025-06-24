@@ -96,7 +96,7 @@ public enum WarrantyType: String, Codable, CaseIterable {
 // MARK: - Warranty Status
 
 public extension Warranty {
-    enum Status {
+    enum Status: Equatable {
         case active
         case expiringSoon(daysRemaining: Int)
         case expired

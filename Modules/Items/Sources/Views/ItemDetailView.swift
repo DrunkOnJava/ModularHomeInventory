@@ -231,7 +231,7 @@ struct ItemDetailView: View {
                 InfoRow(label: "Quantity", value: "\(viewModel.item.quantity)", icon: "number.square")
                 
                 if let value = viewModel.item.value {
-                    InfoRow(label: "Current Value", value: value.formatted(.currency(code: "USD")), icon: "chart.line.uptrend.xyaxis")
+                    InfoRow(label: "Current Value", value: value.formatted(.currency(code: "USD")), icon: "chart.line.uptrend.xyaxis", isSecure: true)
                 }
             }
         }
@@ -248,7 +248,7 @@ struct ItemDetailView: View {
             
             VStack(spacing: AppSpacing.sm) {
                 if let price = viewModel.item.purchasePrice {
-                    InfoRow(label: "Purchase Price", value: price.formatted(.currency(code: "USD")), icon: "dollarsign.circle")
+                    InfoRow(label: "Purchase Price", value: price.formatted(.currency(code: "USD")), icon: "dollarsign.circle", isSecure: true)
                 }
                 
                 if let date = viewModel.item.purchaseDate {
@@ -708,15 +708,27 @@ private struct InfoRow: View {
     let label: String
     let value: String
     let icon: String
+    var isSecure: Bool = false
     
     var body: some View {
         HStack {
             Label(label, systemImage: icon)
                 .foregroundStyle(AppColors.textSecondary)
             Spacer()
-            Text(value)
-                .textStyle(.bodyMedium)
-                .foregroundStyle(AppColors.textPrimary)
+            if isSecure {
+                SecureDataView(
+                    placeholder: "••••",
+                    reason: "Authenticate to view \(label.lowercased())"
+                ) {
+                    Text(value)
+                        .textStyle(.bodyMedium)
+                        .foregroundStyle(AppColors.textPrimary)
+                }
+            } else {
+                Text(value)
+                    .textStyle(.bodyMedium)
+                    .foregroundStyle(AppColors.textPrimary)
+            }
         }
     }
 }
@@ -727,7 +739,7 @@ private struct InfoRow: View {
 final class ItemDetailViewModel: ObservableObject {
     @Published var item: Item
     let itemRepository: any ItemRepository
-    private let locationRepository: (any LocationRepository)?
+    let locationRepository: (any LocationRepository)?
     private let photoRepository: (any PhotoRepository)?
     let warrantyRepository: (any WarrantyRepository)?
     let documentRepository: (any DocumentRepository)?

@@ -1,5 +1,7 @@
 import SwiftUI
 import SharedUI
+import Core
+import Sync
 
 /// Main settings view with various configuration options
 /// Swift 5.9 - No Swift 6 features
@@ -16,6 +18,7 @@ struct SettingsView: View {
     @State private var showingSyncStatus = false
     @State private var showingCategoryManagement = false
     @State private var showingScannerSettings = false
+    @State private var showingConflictResolution = false
     
     init(viewModel: SettingsViewModel) {
         self._viewModel = StateObject(wrappedValue: viewModel)
@@ -101,6 +104,23 @@ struct SettingsView: View {
             .sheet(isPresented: $showingScannerSettings) {
                 ScannerSettingsView(settings: $viewModel.settings, viewModel: viewModel)
             }
+            .sheet(isPresented: $showingConflictResolution) {
+                // Note: We'll need to pass the repositories here
+                if let itemRepo = viewModel.itemRepository,
+                   let receiptRepo = viewModel.receiptRepository,
+                   let locationRepo = viewModel.locationRepository {
+                    ConflictResolutionView(
+                        conflictService: ConflictResolutionService(
+                            itemRepository: itemRepo,
+                            receiptRepository: receiptRepo,
+                            locationRepository: locationRepo
+                        ),
+                        itemRepository: itemRepo,
+                        receiptRepository: receiptRepo,
+                        locationRepository: locationRepo
+                    )
+                }
+            }
         }
     }
     
@@ -160,8 +180,8 @@ struct SettingsView: View {
     private var privacySection: some View {
         Section {
             // Biometric Auth
-            Toggle(isOn: $viewModel.settings.biometricAuthEnabled) {
-                Label("Face ID / Touch ID", systemImage: "faceid")
+            NavigationLink(destination: BiometricSettingsView()) {
+                Label("Face ID / Touch ID", systemImage: BiometricAuthService.shared.biometricType.icon)
             }
             
             // Privacy Policy
@@ -233,6 +253,26 @@ struct SettingsView: View {
                     Text("Synced")
                         .textStyle(.labelSmall)
                         .foregroundStyle(AppColors.textSecondary)
+                }
+            }
+            
+            // Conflict Resolution
+            Button(action: {
+                showingConflictResolution = true
+            }) {
+                HStack {
+                    Label("Resolve Conflicts", systemImage: "exclamationmark.icloud")
+                        .foregroundColor(AppColors.textPrimary)
+                    Spacer()
+                    if viewModel.hasConflicts {
+                        Text("\(viewModel.conflictCount)")
+                            .textStyle(.labelSmall)
+                            .foregroundStyle(.white)
+                            .padding(.horizontal, 8)
+                            .padding(.vertical, 2)
+                            .background(AppColors.error)
+                            .cornerRadius(10)
+                    }
                 }
             }
             
