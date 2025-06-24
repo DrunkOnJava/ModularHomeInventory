@@ -183,4 +183,12 @@ public final class ItemsModule: ItemsModuleAPI {
             )
         )
     }
+    
+    public func makeDepreciationReportView() -> AnyView {
+        return AnyView(
+            DepreciationReportView(
+                itemRepository: dependencies.itemRepository
+            )
+        )
+    }
 }
