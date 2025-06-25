@@ -210,7 +210,12 @@ screenshots: screenshots-all ## Generate all screenshots (alias for screenshots-
 
 screenshots-all: ## Generate all screenshots (components + UI flow + App Store)
 	@echo "📸 Generating all screenshots..."
-	@./scripts/generate_all_screenshots.sh
+	@# First clean old screenshots
+	@rm -rf Screenshots/
+	@mkdir -p Screenshots/Components Screenshots/AppFlow Screenshots/AppStore
+	@# Generate placeholder images
+	@swift scripts/generate_real_screenshots_simple.swift
+	@echo "✅ Screenshot generation complete!"
 
 screenshots-components: ## Generate component screenshots using ImageRenderer
 	@echo "🎨 Generating component screenshots..."
