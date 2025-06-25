@@ -7,21 +7,6 @@ import SwiftUI
 import Core
 import GoogleSignIn
 
-/// Errors that can occur during Gmail operations
-public enum GmailError: LocalizedError {
-    case notAuthenticated
-    case fetchFailed(String)
-    
-    public var errorDescription: String? {
-        switch self {
-        case .notAuthenticated:
-            return "Please sign in to Gmail to access your receipts"
-        case .fetchFailed(let message):
-            return "Failed to fetch receipts: \(message)"
-        }
-    }
-}
-
 /// Main Gmail module implementation
 public final class GmailModule: ObservableObject, GmailModuleAPI {
     @Published public var isAuthenticated: Bool = false
@@ -93,20 +78,17 @@ public final class GmailModule: ObservableObject, GmailModuleAPI {
         let emails = try await bridge.fetchReceiptEmails()
         
         // Convert to Core.Receipt model
-        return emails.compactMap { email in
+        return emails.compactMap { email -> Receipt? in
             guard let receiptInfo = email.receiptInfo else { return nil }
             
             return Receipt(
                 id: UUID(),
-                retailer: receiptInfo.retailer,
-                purchaseDate: email.date,
-                totalAmount: receiptInfo.totalAmount ?? 0,
-                itemCount: receiptInfo.items?.count ?? 0,
-                category: categorizeRetailer(receiptInfo.retailer),
-                storageService: "Gmail",
-                storagePath: email.id,
-                notes: "Order #\(receiptInfo.orderNumber ?? "")",
-                ocrText: email.body,
+                storeName: receiptInfo.retailer,
+                date: email.date,
+                totalAmount: Decimal(receiptInfo.totalAmount ?? 0),
+                itemIds: [],
+                imageData: nil,
+                rawText: email.body,
                 confidence: receiptInfo.confidence,
                 createdAt: Date(),
                 updatedAt: Date()

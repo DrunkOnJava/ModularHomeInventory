@@ -1,13 +1,13 @@
 import SwiftUI
 import Core
 import SharedUI
-// import Gmail // TODO: Fix compilation errors
+import Gmail
 
 /// Receipt import view with Gmail integration
 /// Swift 5.9 - No Swift 6 features
 struct ReceiptImportView: View {
     @StateObject private var viewModel: ReceiptImportViewModel
-    // @StateObject private var gmailModule = GmailModule() // TODO: Re-enable after Gmail module is fixed
+    @StateObject private var gmailModule = GmailModule()
     @State private var selectedImportMethod: ImportMethod?
     @State private var showingGmailImport = false
     @State private var isImporting = false
@@ -66,7 +66,7 @@ struct ReceiptImportView: View {
                                 
                                 Spacer()
                                 
-                                if method == .gmail /* && !gmailModule.isAuthenticated */ {
+                                if method == .gmail && !gmailModule.isAuthenticated {
                                     Text("Not Connected")
                                         .font(.caption)
                                         .foregroundColor(.orange)
@@ -102,10 +102,10 @@ struct ReceiptImportView: View {
             }
             .navigationTitle("Import Receipt")
             .navigationBarTitleDisplayMode(.inline)
-            /* .sheet(isPresented: $showingGmailImport) {
+            .sheet(isPresented: $showingGmailImport) {
                 gmailModule.makeReceiptImportView()
                     .presentationDetents([.large])
-            } */
+            }
             .alert("Import Error", isPresented: .constant(importError != nil)) {
                 Button("OK") {
                     importError = nil
@@ -141,7 +141,7 @@ struct ReceiptImportView: View {
     private func handleImportMethod(_ method: ImportMethod) {
         switch method {
         case .gmail:
-            if false /* gmailModule.isAuthenticated */ {
+            if gmailModule.isAuthenticated {
                 importFromGmail()
             } else {
                 showingGmailImport = true
@@ -159,7 +159,7 @@ struct ReceiptImportView: View {
         
         Task {
             do {
-                let receipts: [Receipt] = [] // try await gmailModule.fetchReceipts()
+                let receipts = try await gmailModule.fetchReceipts()
                 
                 await MainActor.run {
                     // Save receipts to repository

@@ -13,12 +13,13 @@ let package = Package(
     ],
     dependencies: [
         .package(path: "../Core"),
-        .package(path: "../SharedUI")
+        .package(path: "../SharedUI"),
+        .package(path: "../Gmail")
     ],
     targets: [
         .target(
             name: "Receipts",
-            dependencies: ["Core", "SharedUI"],
+            dependencies: ["Core", "SharedUI", "Gmail"],
             path: "Sources"
         ),
         .testTarget(
