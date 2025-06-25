@@ -31,4 +31,7 @@
    <FileRef
       location = "group:Modules/Onboarding">
    </FileRef>
+   <FileRef
+      location = "group:Modules/Gmail">
+   </FileRef>
 </Workspace>

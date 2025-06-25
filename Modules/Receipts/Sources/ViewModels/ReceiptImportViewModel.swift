@@ -29,4 +29,8 @@ final class ReceiptImportViewModel: ObservableObject {
     func importFromCamera() async {
         // TODO: Implement camera/OCR import
     }
+    
+    func saveReceipt(_ receipt: Receipt) {
+        completion(receipt)
+    }
 }

@@ -15,7 +15,7 @@ struct ReceiptImportView: View {
         NavigationView {
             FeatureUnavailableView(
                 feature: "Import Receipt",
-                reason: "Email and OCR import coming soon",
+                reason: "Gmail integration is being configured. Check back soon!",
                 icon: "doc.viewfinder"
             )
             .navigationTitle("Import Receipt")

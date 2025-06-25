@@ -262,7 +262,9 @@ screenshots-auto: ## Automated screenshot navigation
 
 screenshots-ruby: ## Ruby-powered intelligent screenshot capture
 	@echo "💎 Starting Ruby-powered screenshot automation..."
-	@ruby scripts/automated_screenshots.rb
+	@ruby scripts/populate_sample_data.rb
+	@ruby scripts/working_screenshots.rb
+	@ruby scripts/cleanup_final_duplicates.rb
 
 screenshots-smart: ## Smart screenshot capture with duplicate detection
 	@echo "🧠 Starting smart screenshot capture..."
