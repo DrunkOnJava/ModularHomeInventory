@@ -1,6 +1,6 @@
 import UIKit
 import Core
-import GoogleSignIn
+// import GoogleSignIn // TODO: Re-enable after Gmail module is fixed
 
 /// App delegate for handling remote notifications and app lifecycle events
 /// Swift 5.9 - No Swift 6 features
@@ -109,7 +109,9 @@ class AppDelegate: NSObject, UIApplicationDelegate {
     // MARK: - Google Sign In
     
     func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
-        return GIDSignIn.sharedInstance.handle(url)
+        // TODO: Re-enable after Gmail module is fixed
+        // return GIDSignIn.sharedInstance.handle(url)
+        return false
     }
     
 }
