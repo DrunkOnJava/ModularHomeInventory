@@ -47,7 +47,7 @@ struct ContentView: View {
                 NavigationView {
                     VStack(spacing: 0) {
                         // Gmail Integration Banner at the top
-                        GmailIntegrationBanner()
+                        GmailBanner()
                             .padding(.horizontal)
                             .padding(.vertical, 8)
                         
@@ -98,6 +98,73 @@ struct ContentView: View {
             }
             // Biometric lock would be added here when BiometricLockModifier is available
         }
+    }
+}
+
+// Gmail banner for promoting Gmail integration
+struct GmailBanner: View {
+    @StateObject private var gmailModule = GmailModule()
+    @State private var showingGmailSetup = false
+    
+    var body: some View {
+        if !gmailModule.isAuthenticated {
+            Button(action: { showingGmailSetup = true }) {
+                HStack(spacing: 16) {
+                    // Icon
+                    Image(systemName: "envelope.badge.fill")
+                        .font(.system(size: 28))
+                        .foregroundColor(.white)
+                        .frame(width: 50, height: 50)
+                        .background(
+                            LinearGradient(
+                                gradient: Gradient(colors: [Color.blue, Color.blue.opacity(0.8)]),
+                                startPoint: .topLeading,
+                                endPoint: .bottomTrailing
+                            )
+                        )
+                        .cornerRadius(12)
+                    
+                    // Text content
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text("Connect Gmail for Easy Receipt Import")
+                            .font(.system(size: 16, weight: .semibold))
+                            .foregroundColor(.primary)
+                        
+                        Text("Automatically import receipts from your email")
+                            .font(.system(size: 14))
+                            .foregroundColor(.secondary)
+                            .lineLimit(2)
+                    }
+                    
+                    Spacer()
+                    
+                    // Arrow
+                    Image(systemName: "chevron.right")
+                        .font(.system(size: 14, weight: .medium))
+                        .foregroundColor(.secondary)
+                }
+                .padding(16)
+                .background(Color(.systemGray6))
+                .cornerRadius(16)
+                .overlay(
+                    RoundedRectangle(cornerRadius: 16)
+                        .stroke(Color.blue.opacity(0.3), lineWidth: 1)
+                )
+            }
+            .buttonStyle(ScaleButtonStyle())
+            .sheet(isPresented: $showingGmailSetup) {
+                gmailModule.makeReceiptImportView()
+            }
+        }
+    }
+}
+
+// Button style for subtle scale animation
+struct ScaleButtonStyle: ButtonStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .scaleEffect(configuration.isPressed ? 0.98 : 1.0)
+            .animation(.easeInOut(duration: 0.1), value: configuration.isPressed)
     }
 }
 
