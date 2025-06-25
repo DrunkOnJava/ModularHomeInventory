@@ -5,6 +5,7 @@ import BarcodeScanner
 import AppSettings
 import Receipts
 import Core
+import Gmail
 
 struct ContentView: View {
     @EnvironmentObject var coordinator: AppCoordinator
@@ -42,6 +43,24 @@ struct ContentView: View {
                     }
                     .tag(1)
                 
+                // Receipts Tab - with Gmail integration
+                NavigationView {
+                    VStack(spacing: 0) {
+                        // Gmail Integration Banner at the top
+                        GmailIntegrationBanner()
+                            .padding(.horizontal)
+                            .padding(.vertical, 8)
+                        
+                        // Receipts List
+                        coordinator.receiptsModule.makeReceiptsListView()
+                    }
+                    .navigationBarTitle("Receipts", displayMode: .large)
+                }
+                    .tabItem {
+                        Label("Receipts", systemImage: "doc.text.fill")
+                    }
+                    .tag(2)
+                
                 // Analytics Tab - Spending Dashboard
                 NavigationView {
                     coordinator.itemsModule.makeSpendingDashboardView()
@@ -49,7 +68,7 @@ struct ContentView: View {
                     .tabItem {
                         Label("Analytics", systemImage: "chart.bar.fill")
                     }
-                    .tag(2)
+                    .tag(3)
                 
                 // Scanner Tab - Now using the Scanner module!
                 NavigationView {
@@ -58,7 +77,7 @@ struct ContentView: View {
                     .tabItem {
                         Label("Scanner", systemImage: "barcode.viewfinder")
                     }
-                    .tag(3)
+                    .tag(4)
                 
                 // Settings Tab - Now using the Settings module!
                 NavigationView {
@@ -67,7 +86,7 @@ struct ContentView: View {
                 .tabItem {
                     Label("Settings", systemImage: "gear")
                 }
-                .tag(4)
+                .tag(5)
             }
             .accentColor(AppColors.primary)
             .withOfflineIndicator()
