@@ -25,7 +25,8 @@
       "Bash(xcparse:*)",
       "Bash(swift build:*)",
       "Bash(chmod:*)",
-      "Bash(bundle exec fastlane:*)"
+      "Bash(bundle exec fastlane:*)",
+      "Bash(swift run_component_screenshots.swift:*)"
     ],
     "deny": []
   }

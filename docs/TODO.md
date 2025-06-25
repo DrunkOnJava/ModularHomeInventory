@@ -1,13 +1,13 @@
 # HomeInventory App - Development TODO List
 
 ## Overview
-This TODO list contains 250 development tasks organized by feature area, based on the comprehensive features specification. Tasks are prioritized and aligned with the modular architecture.
+This TODO list contains 249 development tasks organized by feature area, based on the comprehensive features specification. Tasks are prioritized and aligned with the modular architecture.
 
 ## Progress Summary
-- **Total Tasks**: 250
-- **Completed**: 159 (63.6%)
+- **Total Tasks**: 249
+- **Completed**: 159 (63.9%)
 - **In Progress**: 0
-- **Remaining**: 91 (36.4%)
+- **Remaining**: 90 (36.1%)
 
 ### Recently Completed (Major Updates)
 - ✅ Complete Privacy Policy and Terms of Service implementation
@@ -38,8 +38,7 @@ This TODO list contains 250 development tasks organized by feature area, based o
 1. **Gmail Integration** (Tasks 41-55) - OAuth login, email scanning, retailer parsers
 2. **Voice Search** (Task 57) - Dictate search queries
 3. **Image Search** (Task 59) - Search by photo similarity
-4. **AR Preview** (Task 201) - View items in your space
-5. **Multi-platform Sync** (Task 145) - iOS/iPadOS/macOS sync
+4. **Multi-platform Sync** (Task 145) - iOS/iPadOS/macOS sync
 
 ## Legend
 - 🔴 High Priority - Core functionality, blocking features
@@ -310,7 +309,6 @@ This TODO list contains 250 development tasks organized by feature area, based o
 - [x] ✅ 198. Advanced Analytics - Deep insights
 - [ ] 🟡 199. Custom Fields - Add any property
 - [ ] 🟡 200. Multiple Locations - Unlimited locations
-- [ ] 🟢 201. AR Preview - View in your space
 - [ ] 🟢 202. Insurance Integration - Direct connections
 - [ ] 🟢 203. API Access - Developer features
 - [ ] 🟡 204. Priority Support - Fast help
@@ -452,7 +450,6 @@ A comprehensive review of the codebase was conducted to verify task completion s
 #### Confirmed Not Implemented:
 - ❌ Gmail OAuth integration (Tasks 41-43, 50-55)
 - ❌ Voice Search (Task 57) - UI exists but no functionality
-- ❌ AR Features (Task 201)
 - ❌ Family Sharing (Task 109)
 - ❌ Apple Watch App (Tasks 166-175)
 - ❌ Language Settings (Task 214)
