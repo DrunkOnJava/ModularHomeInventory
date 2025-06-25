@@ -14,11 +14,12 @@ final class ScreenshotTests: XCTestCase {
     override func setUpWithError() throws {
         continueAfterFailure = false
         
-        app = XCUIApplication()
+        app = XCUIApplication(bundleIdentifier: "com.homeinventory.app")
         app.launchArguments.append("-FASTLANE_SNAPSHOT")
         app.launchArguments.append("-DisableAnimations")
         app.launchArguments.append("-MockDataEnabled")
         setupSnapshot(app)
+        app.terminate()
         app.launch()
     }
     

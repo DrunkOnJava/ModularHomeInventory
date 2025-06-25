@@ -7,14 +7,18 @@ final class HomeInventoryModularUITests: XCTestCase {
     override func setUpWithError() throws {
         continueAfterFailure = false
         
-        // Initialize app without launching yet
-        app = XCUIApplication()
+        // Initialize app with the correct bundle identifier
+        app = XCUIApplication(bundleIdentifier: "com.homeinventory.app")
         app.launchArguments = ["-AppleLocale", "en_US"]
         app.launchArguments += ["-AppleLanguages", "(en)"]
         app.launchArguments += ["-UIPreferredContentSizeCategoryName", "UICTContentSizeCategoryM"]
+        app.launchArguments += ["-FASTLANE_SNAPSHOT"]
         
         // Setup snapshot before launch
         setupSnapshot(app)
+        
+        // Terminate any existing instance
+        app.terminate()
         
         // Launch the app
         app.launch()
@@ -25,115 +29,143 @@ final class HomeInventoryModularUITests: XCTestCase {
     }
     
     func testTakeScreenshots() throws {
-        // Log that we're starting
-        print("Starting screenshot test")
-        XCTContext.runActivity(named: "Debug Environment") { _ in
-            print("FASTLANE_SNAPSHOT: \(ProcessInfo.processInfo.environment["FASTLANE_SNAPSHOT"] ?? "NOT SET")")
-            print("SIMULATOR_DEVICE_NAME: \(ProcessInfo.processInfo.environment["SIMULATOR_DEVICE_NAME"] ?? "NOT SET")")
-            print("SIMULATOR_HOST_HOME: \(ProcessInfo.processInfo.environment["SIMULATOR_HOST_HOME"] ?? "NOT SET")")
-        }
+        // Create screenshot directory
+        let screenshotDir = getScreenshotDirectory()
         
-        // Wait for app to load
-        sleep(2)
+        // Wait for app to fully load
+        XCTAssert(app.tabBars.firstMatch.waitForExistence(timeout: 5))
         
-        // Take screenshot of main screen
-        XCTContext.runActivity(named: "Take Main Screen Screenshot") { _ in
-            print("Taking screenshot: 01_MainScreen")
+        // 1. Main Items List
+        captureScreenshot(named: "01_ItemsList", directory: screenshotDir)
+        
+        // 2. Add Item Flow
+        if app.navigationBars.buttons["plus"].waitForExistence(timeout: 2) {
+            app.navigationBars.buttons["plus"].tap()
+            sleep(1)
+            captureScreenshot(named: "02_AddItem", directory: screenshotDir)
             
-            // Test if we're in Fastlane environment
-            if ProcessInfo.processInfo.environment["FASTLANE_SNAPSHOT"] == "YES" {
-                print("✅ FASTLANE_SNAPSHOT is set correctly")
-            } else {
-                print("❌ FASTLANE_SNAPSHOT is not set")
+            // Fill in some item details for a more realistic screenshot
+            let nameField = app.textFields.firstMatch
+            if nameField.exists {
+                nameField.tap()
+                nameField.typeText("MacBook Pro 16\"")
             }
             
-            // Take a manual screenshot for debugging
-            let screenshot = app.screenshot()
-            let attachment = XCTAttachment(screenshot: screenshot)
-            attachment.name = "Debug_MainScreen"
-            attachment.lifetime = .keepAlways
-            add(attachment)
-            print("Added XCTest screenshot attachment")
-            
-            snapshot("01_MainScreen", waitForLoadingIndicator: false)
-            print("Called snapshot function")
-        }
-        
-        // Navigate to Items tab if not already there
-        if app.tabBars.buttons["Items"].exists {
-            app.tabBars.buttons["Items"].tap()
-            sleep(1)
-            print("Taking screenshot: 02_ItemsList")
-            snapshot("02_ItemsList", waitForLoadingIndicator: false)
-        }
-        
-        // Tap add button to show add item screen
-        if app.navigationBars.buttons["Add"].exists {
-            app.navigationBars.buttons["Add"].tap()
-            sleep(1)
-            print("Taking screenshot: 03_AddItem")
-            snapshot("03_AddItem", waitForLoadingIndicator: false)
-            
-            // Go back
+            // Cancel to go back
             if app.navigationBars.buttons["Cancel"].exists {
                 app.navigationBars.buttons["Cancel"].tap()
+                sleep(1)
             }
         }
         
-        // Navigate to Scanner tab
-        if app.tabBars.buttons["Scanner"].exists {
-            app.tabBars.buttons["Scanner"].tap()
-            sleep(1)
-            print("Taking screenshot: 04_Scanner")
-            snapshot("04_Scanner", waitForLoadingIndicator: false)
+        // 3. Scanner Tab
+        navigateToTab("Scanner")
+        captureScreenshot(named: "03_BarcodeScanner", directory: screenshotDir)
+        
+        // 4. Receipts Tab
+        navigateToTab("Receipts")
+        captureScreenshot(named: "04_Receipts", directory: screenshotDir)
+        
+        // 5. Analytics Tab (if exists)
+        if app.tabBars.buttons["Analytics"].exists {
+            navigateToTab("Analytics")
+            captureScreenshot(named: "05_Analytics", directory: screenshotDir)
         }
         
-        // Navigate to Receipts tab
-        if app.tabBars.buttons["Receipts"].exists {
-            app.tabBars.buttons["Receipts"].tap()
-            sleep(1)
-            print("Taking screenshot: 05_Receipts")
-            snapshot("05_Receipts", waitForLoadingIndicator: false)
+        // 6. Settings Tab
+        navigateToTab("Settings")
+        captureScreenshot(named: "06_Settings", directory: screenshotDir)
+        
+        // 7. Settings Sub-screens
+        captureSettingsScreens(directory: screenshotDir)
+        
+        // 8. Premium Features (if accessible)
+        capturePremiumScreens(directory: screenshotDir)
+        
+        print("✅ Screenshot capture completed. Saved to: \(screenshotDir.path)")
+    }
+    
+    // MARK: - Helper Methods
+    
+    private func getScreenshotDirectory() -> URL {
+        let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+        let screenshotsDir = documentsDirectory.appendingPathComponent("UITestScreenshots")
+        try? FileManager.default.createDirectory(at: screenshotsDir, withIntermediateDirectories: true)
+        return screenshotsDir
+    }
+    
+    private func navigateToTab(_ tabName: String) {
+        let tabButton = app.tabBars.buttons[tabName]
+        if tabButton.waitForExistence(timeout: 2) {
+            tabButton.tap()
+            sleep(1) // Allow UI to settle
+        }
+    }
+    
+    private func captureScreenshot(named name: String, directory: URL) {
+        let screenshot = app.screenshot()
+        
+        // Save to file if possible
+        let fileURL = directory.appendingPathComponent("\(name).png")
+        do {
+            try screenshot.pngRepresentation.write(to: fileURL)
+            print("📸 Captured: \(name)")
+        } catch {
+            print("❌ Failed to save screenshot: \(name)")
         }
         
-        // Navigate to Settings tab
-        if app.tabBars.buttons["Settings"].exists {
-            app.tabBars.buttons["Settings"].tap()
-            sleep(1)
-            print("Taking screenshot: 06_Settings")
-            snapshot("06_Settings", waitForLoadingIndicator: false)
-            
-            // Try to navigate to a settings subsection
-            let settingsCells = app.tables.cells
-            if settingsCells.count > 0 {
-                settingsCells.element(boundBy: 0).tap()
+        // Also use snapshot for Fastlane compatibility
+        snapshot(name, waitForLoadingIndicator: false)
+        
+        // Attach to test results
+        let attachment = XCTAttachment(screenshot: screenshot)
+        attachment.name = name
+        attachment.lifetime = .keepAlways
+        add(attachment)
+    }
+    
+    private func captureSettingsScreens(directory: URL) {
+        // Navigate through various settings screens
+        let settingsOptions = [
+            "Categories": "07_Categories",
+            "Locations": "08_Locations",
+            "Data & Storage": "09_DataStorage",
+            "Premium": "10_Premium"
+        ]
+        
+        for (optionName, screenshotName) in settingsOptions {
+            let cell = app.tables.cells.containing(.staticText, identifier: optionName).firstMatch
+            if cell.waitForExistence(timeout: 2) {
+                cell.tap()
                 sleep(1)
-                print("Taking screenshot: 07_SettingsDetail")
-                snapshot("07_SettingsDetail", waitForLoadingIndicator: false)
+                captureScreenshot(named: screenshotName, directory: directory)
                 
-                // Go back
-                if app.navigationBars.buttons.element(boundBy: 0).exists {
-                    app.navigationBars.buttons.element(boundBy: 0).tap()
+                // Navigate back
+                let backButton = app.navigationBars.buttons.firstMatch
+                if backButton.exists {
+                    backButton.tap()
+                    sleep(1)
                 }
             }
         }
+    }
+    
+    private func capturePremiumScreens(directory: URL) {
+        // Try to access premium features showcase
+        navigateToTab("Settings")
         
-        // Navigate back to Items and show detail if possible
-        if app.tabBars.buttons["Items"].exists {
-            app.tabBars.buttons["Items"].tap()
+        let premiumCell = app.tables.cells.containing(.staticText, identifier: "Premium").firstMatch
+        if premiumCell.waitForExistence(timeout: 2) {
+            premiumCell.tap()
             sleep(1)
+            captureScreenshot(named: "11_PremiumFeatures", directory: directory)
             
-            // If there are items in the list, tap the first one
-            let itemCells = app.tables.cells
-            if itemCells.count > 0 {
-                itemCells.element(boundBy: 0).tap()
-                sleep(1)
-                print("Taking screenshot: 08_ItemDetail")
-                snapshot("08_ItemDetail", waitForLoadingIndicator: false)
+            // Back to settings
+            let backButton = app.navigationBars.buttons.firstMatch
+            if backButton.exists {
+                backButton.tap()
             }
         }
-        
-        print("Finished screenshot test")
     }
     
     func testAccessibilityScreenshots() throws {

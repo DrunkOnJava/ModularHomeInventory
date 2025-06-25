@@ -4,7 +4,7 @@
 -include .makerc.local
 -include .makerc
 
-.PHONY: help build run clean xcode test all build-commit build-ipad run-ipad all-ipad prebuild-modules
+.PHONY: help build run clean xcode test all build-commit build-ipad run-ipad all-ipad prebuild-modules screenshots screenshots-components screenshots-ui screenshots-all
 
 # Default simulator
 SIMULATOR_ID ?= DD192264-DFAA-4582-B2FE-D6FC444C9DDF
@@ -204,3 +204,51 @@ build-commit: ## Build and auto-commit on success
 	@$(MAKE) build AUTO_COMMIT=true
 
 bc: build-commit ## Shortcut for build-commit
+
+# Screenshot generation
+screenshots: screenshots-all ## Generate all screenshots (alias for screenshots-all)
+
+screenshots-all: ## Generate all screenshots (components + UI flow + App Store)
+	@echo "📸 Generating all screenshots..."
+	@./scripts/generate_all_screenshots.sh
+
+screenshots-components: ## Generate component screenshots using ImageRenderer
+	@echo "🎨 Generating component screenshots..."
+	@xcodebuild test \
+		-project HomeInventoryModular.xcodeproj \
+		-scheme HomeInventoryModular \
+		-destination "platform=iOS Simulator,id=$(SIMULATOR_ID)" \
+		-only-testing:HomeInventoryModularTests/ViewScreenshotTests \
+		-derivedDataPath build \
+		SWIFT_STRICT_CONCURRENCY=minimal \
+		SWIFT_SUPPRESS_WARNINGS=YES \
+		| xcbeautify
+	@echo "✅ Component screenshots complete!"
+
+screenshots-ui: build ## Generate UI flow screenshots using XCUITest
+	@echo "📱 Generating UI flow screenshots..."
+	@xcodebuild test-without-building \
+		-project HomeInventoryModular.xcodeproj \
+		-scheme HomeInventoryModular \
+		-destination "platform=iOS Simulator,id=$(SIMULATOR_ID)" \
+		-derivedDataPath build \
+		-only-testing:HomeInventoryModularUITests/HomeInventoryModularUITests/testTakeScreenshots \
+		SWIFT_STRICT_CONCURRENCY=minimal \
+		SWIFT_SUPPRESS_WARNINGS=YES \
+		| xcbeautify
+	@echo "✅ UI flow screenshots complete!"
+
+screenshots-clean: ## Clean screenshot output directories
+	@echo "🧹 Cleaning screenshot directories..."
+	@rm -rf Screenshots/
+	@rm -rf ~/Documents/ComponentScreenshots/
+	@rm -rf ~/Documents/UITestScreenshots/
+	@rm -rf fastlane/screenshots/
+	@echo "✅ Screenshot directories cleaned!"
+
+# Screenshot shortcuts
+ss: screenshots ## Shortcut for screenshots
+ssc: screenshots-components ## Shortcut for component screenshots
+ssu: screenshots-ui ## Shortcut for UI screenshots
+ssa: screenshots-all ## Shortcut for all screenshots
+ssx: screenshots-clean ## Shortcut for cleaning screenshots

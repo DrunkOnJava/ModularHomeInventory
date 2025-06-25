@@ -153,28 +153,35 @@ platform :ios do
     UI.success("✅ Dependencies resolved!")
   end
 
-  desc "Generate screenshots"
+  desc "Generate App Store screenshots using snapshot"
   lane :screenshots do
-    # First resolve dependencies
-    resolve_dependencies
+    # Use the new screenshot generation system
+    UI.message("📸 Running comprehensive screenshot generation...")
     
-    # Clean derived data to ensure fresh build
-    clear_derived_data
+    # Clean previous screenshots
+    clear_screenshots
     
-    # Build for testing using xcodebuild directly
-    sh("xcodebuild build-for-testing -workspace ../HomeInventoryModular.xcworkspace -scheme HomeInventoryModular -destination 'platform=iOS Simulator,name=iPhone 16 Pro Max' -derivedDataPath ../DerivedData")
-    
-    # Now capture screenshots
+    # Capture using snapshot with our custom UI tests
     capture_screenshots(
       workspace: "HomeInventoryModular.xcworkspace",
-      devices: ["iPhone 16 Pro Max"],
-      languages: ["en-US"],
       scheme: "HomeInventoryModular",
       output_directory: "./fastlane/screenshots",
       clear_previous_screenshots: true,
       override_status_bar: true,
-      derived_data_path: "./DerivedData"
+      test_without_building: false,
+      configuration: "Debug"
     )
+    
+    UI.success("✅ Screenshots generated successfully!")
+  end
+  
+  desc "Clear all screenshot directories"
+  lane :clear_screenshots do
+    sh("rm -rf ../Screenshots/")
+    sh("rm -rf ./screenshots/")
+    sh("rm -rf ~/Documents/ComponentScreenshots/")
+    sh("rm -rf ~/Documents/UITestScreenshots/")
+    UI.success("✅ Screenshot directories cleaned!")
   end
 
   desc "Validate the app before submission"

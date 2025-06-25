@@ -136,7 +136,7 @@ private final class MockWarrantyRepository: WarrantyRepository {
 @MainActor
 private final class MockServiceRecordRepositoryForItemsModule: ServiceRecordRepository {
     private var serviceRecords: [ServiceRecord] = []
-    private let serviceRecordsSubject = CurrentValueSubject<[ServiceRecord], Never>([])
+    private var serviceRecordsSubject = CurrentValueSubject<[ServiceRecord], Never>([])
     
     var serviceRecordsPublisher: AnyPublisher<[ServiceRecord], Never> {
         serviceRecordsSubject.eraseToAnyPublisher()

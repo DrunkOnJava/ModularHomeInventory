@@ -3,10 +3,10 @@
 # A list of devices you want to take the screenshots from
 devices([
   "iPhone 16 Pro Max",              # 6.9" Display (Required)
-  "iPhone 15 Pro",                  # 6.1" Display 
-  "iPhone SE (3rd generation)",     # 4.7" Display (Smallest)
-  "iPad Pro (12.9-inch) (6th generation)",  # iPad 12.9"
-  "iPad Pro (11-inch) (4th generation)"     # iPad 11"
+  "iPhone 16 Pro",                  # 6.1" Display
+  "iPhone 16",                      # Standard size
+  "iPad Pro 13-inch (M4)",          # iPad 13"
+  "iPad Pro 11-inch (M4)"           # iPad 11"
 ])
 
 # Languages to capture
@@ -45,7 +45,7 @@ clear_previous_screenshots(true)
 override_status_bar(true)
 
 # Arguments to pass to the app on launch.
-launch_arguments(["-FASTLANE_SNAPSHOT", "YES"])
+launch_arguments(["-FASTLANE_SNAPSHOT"])
 
 # For more information about all available options run
 # fastlane action snapshot

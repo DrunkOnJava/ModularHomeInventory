@@ -24,7 +24,8 @@
       "WebFetch(domain:docs.fastlane.tools)",
       "Bash(xcparse:*)",
       "Bash(swift build:*)",
-      "Bash(chmod:*)"
+      "Bash(chmod:*)",
+      "Bash(bundle exec fastlane:*)"
     ],
     "deny": []
   }

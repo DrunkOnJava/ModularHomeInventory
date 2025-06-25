@@ -393,7 +393,7 @@ open class Snapshot: NSObject {
 
 private extension XCUIApplication {
     func currentUnusedActivityIndicator() -> XCUIElement {
-        let activityQueryNonAnimating = self.descendants(matching: .activityIndicator).matching(NSPredicate(format: "animating == false"))
+        let activityQueryNonAnimating = self.descendants(matching: .activityIndicator).matching(NSPredicate(format: "value == 0"))
 
         #if os(iOS) || os(tvOS)
             let unusedActivityIndicator = activityQueryNonAnimating.firstMatch
