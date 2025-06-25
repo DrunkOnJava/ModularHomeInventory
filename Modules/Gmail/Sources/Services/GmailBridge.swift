@@ -1,5 +1,6 @@
 import Foundation
 import SwiftUI
+import UIKit
 import GoogleSignIn
 import Combine
 
@@ -10,8 +11,8 @@ public class GmailBridge: ObservableObject {
     @Published public var error: Error?
     @Published public var isAuthenticated = false
     
-    private let authService: GmailAuthService
-    private let gmailAPI: SimpleGmailAPI
+    public let authService: GmailAuthService
+    public let gmailAPI: SimpleGmailAPI
     
     public init() {
         let authService = GmailAuthService()
@@ -30,6 +31,27 @@ public class GmailBridge: ObservableObject {
     
     public func checkAuthenticationStatus() {
         isAuthenticated = authService.isAuthenticated
+    }
+    
+    public func configure() {
+        // Configure Google Sign-In if needed
+        guard let path = Bundle.main.path(forResource: "GoogleServices", ofType: "plist"),
+              let plist = NSDictionary(contentsOfFile: path),
+              let clientId = plist["CLIENT_ID"] as? String else {
+            print("[GmailBridge] Failed to configure: GoogleServices.plist not found")
+            return
+        }
+        
+        GIDSignIn.sharedInstance.configuration = GIDConfiguration(clientID: clientId)
+        print("[GmailBridge] Configured with client ID: \(clientId)")
+    }
+    
+    public func signIn(presentingViewController: UIViewController) {
+        authService.signIn(presentingViewController: presentingViewController)
+    }
+    
+    public func fetchReceipts() {
+        gmailAPI.fetchReceipts()
     }
     
     public func fetchReceiptEmails() async throws -> [EmailMessage] {

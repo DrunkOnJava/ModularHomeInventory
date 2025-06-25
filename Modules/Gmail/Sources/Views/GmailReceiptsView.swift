@@ -3,7 +3,7 @@ import GoogleSignIn
 
 /// Main view for Gmail receipts using the old implementation
 public struct GmailReceiptsView: View {
-    @StateObject private var bridge = GmailBridge()
+    @EnvironmentObject var bridge: GmailBridge
     @State private var selectedEmail: EmailMessage?
     @State private var searchText = ""
     

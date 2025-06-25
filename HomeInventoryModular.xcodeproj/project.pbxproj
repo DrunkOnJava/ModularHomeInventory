@@ -52,6 +52,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0210BA25CD1C0E58E360B34B /* Gmail */ = {isa = PBXFileReference; includeInIndex = 1; name = Gmail; path = Modules/Gmail; sourceTree = "<group>"; };
 		0356A52527E14766531C3817 /* Premium */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Premium; path = Modules/Premium; sourceTree = SOURCE_ROOT; };
 		05127C77BA29A74CDD30F8E6 /* ScreenshotDebug.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenshotDebug.swift; sourceTree = "<group>"; };
 		1EF2F55CB9E0C0D2E0A2AC96 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -110,6 +111,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		017F57669CD774C854EE9126 /* Modules */ = {
+			isa = PBXGroup;
+			children = (
+				0210BA25CD1C0E58E360B34B /* Gmail */,
+			);
+			name = Modules;
+			sourceTree = "<group>";
+		};
 		37618AEB9D78A51A98D78E99 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -146,6 +155,7 @@
 				37618AEB9D78A51A98D78E99 /* Frameworks */,
 				5294E1899ECCCE8174D8126F /* HomeInventoryModularTests */,
 				6A9A50054AAA3CE04BC1E04A /* Gmail */,
+				017F57669CD774C854EE9126 /* Modules */,
 			);
 			sourceTree = "<group>";
 		};

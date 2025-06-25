@@ -32,7 +32,8 @@
       "Bash(chmod:*)",
       "Bash(ruby:*)",
       "Bash(cp:*)",
-      "Bash(unzip:*)"
+      "Bash(unzip:*)",
+      "Bash(swift build:*)"
     ],
     "deny": []
   }
