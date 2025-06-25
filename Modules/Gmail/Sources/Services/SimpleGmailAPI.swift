@@ -1,7 +1,7 @@
 import Foundation
 import GoogleSignIn
 
-class SimpleGmailAPI: ObservableObject {
+public class SimpleGmailAPI: ObservableObject {
     @Published var emails: [EmailMessage] = []
     @Published var isLoading = false
     @Published var error: Error?
@@ -9,7 +9,7 @@ class SimpleGmailAPI: ObservableObject {
     private let baseURL = "https://gmail.googleapis.com/gmail/v1"
     var authService: GmailAuthService
     
-    init(authService: GmailAuthService) {
+    public init(authService: GmailAuthService) {
         self.authService = authService
     }
     

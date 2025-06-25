@@ -2,14 +2,14 @@ import Foundation
 import GoogleSignIn
 import UIKit
 
-class GmailAuthService: ObservableObject {
+public class GmailAuthService: ObservableObject {
     @Published var isAuthenticated = false
     @Published var user: GIDGoogleUser?
     @Published var error: Error?
     
     private let gmailScope = "https://www.googleapis.com/auth/gmail.readonly"
     
-    init() {
+    public init() {
         print("[GmailAuthService] Initializing")
         // Check if already signed in
         GIDSignIn.sharedInstance.restorePreviousSignIn { [weak self] user, error in

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>CLIENT_ID</key>
+    <string>316432172622-6huvbn752v0ep68jkfdftrh8fgpesikg.apps.googleusercontent.com</string>
+    <key>REVERSED_CLIENT_ID</key>
+    <string>com.googleusercontent.apps.316432172622-6huvbn752v0ep68jkfdftrh8fgpesikg</string>
+    <key>PROJECT_ID</key>
+    <string>homeinventory-463501</string>
+    <key>GMAIL_SCOPE</key>
+    <string>https://www.googleapis.com/auth/gmail.readonly</string>
+</dict>
+</plist>

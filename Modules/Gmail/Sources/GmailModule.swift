@@ -13,7 +13,7 @@ public final class GmailModule: ObservableObject, GmailModuleAPI {
     
     private let authService: GmailAuthService
     private let gmailAPI: SimpleGmailAPI
-    private let bridge: GmailBridge
+    let bridge: GmailBridge
     
     public init() {
         self.bridge = GmailBridge()
@@ -73,9 +73,13 @@ public final class GmailModule: ObservableObject, GmailModuleAPI {
         guard isAuthenticated else {
             throw GmailError.notAuthenticated
         }
+private func fetchReceiptEmails() async throws -> [EmailMessage] {
+    return try await bridge.fetchReceiptEmails()
+}
+
         
         // Fetch emails
-        let emails = try await bridge.fetchReceiptEmails()
+        let emails = try await fetchReceiptEmails()
         
         // Convert to Core.Receipt model
         return emails.compactMap { email in

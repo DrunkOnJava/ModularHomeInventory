@@ -145,6 +145,7 @@
 				E61D147BB59AF782EA912E0C /* Products */,
 				37618AEB9D78A51A98D78E99 /* Frameworks */,
 				5294E1899ECCCE8174D8126F /* HomeInventoryModularTests */,
+				6A9A50054AAA3CE04BC1E04A /* Gmail */,
 			);
 			sourceTree = "<group>";
 		};
@@ -171,6 +172,14 @@
 				91D08070EA57AC1909DB4D64 /* Sync */,
 			);
 			name = Packages;
+			sourceTree = "<group>";
+		};
+		6A9A50054AAA3CE04BC1E04A /* Gmail */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Gmail;
+			path = Modules/Gmail;
 			sourceTree = "<group>";
 		};
 		B9D33E0982FFC2A3A08ADEBC /* HomeInventoryModularUITests */ = {
@@ -537,9 +546,11 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 2VXBQV4XC9;
 				GENERATE_INFOPLIST_FILE = YES;
+				GOOGLE_CLIENT_ID = "316432172622-6huvbn752v0ep68jkfdftrh8fgpesikg.apps.googleusercontent.com";
+				GOOGLE_REVERSED_CLIENT_ID = "com.googleusercontent.apps.316432172622-6huvbn752v0ep68jkfdftrh8fgpesikg";
 				INFOPLIST_KEY_CFBundleDisplayName = "Home Inventory";
 				INFOPLIST_KEY_CFBundleURLSchemes = "com.googleusercontent.apps.316432172622-6huvbn752v0ep68jkfdftrh8fgpesikg";
-				INFOPLIST_KEY_CFBundleURLTypes = "{\"CFBundleURLSchemes\"=>[\"com.googleusercontent.apps.316432172622-6huvbn752v0ep68jkfdftrh8fgpesikg\"], \"CFBundleURLName\"=>\"Gmail OAuth\"}";
+				INFOPLIST_KEY_CFBundleURLTypes = "$(inherited) <array><dict><key>CFBundleURLSchemes</key><array><string>com.googleusercontent.apps.316432172622-6huvbn752v0ep68jkfdftrh8fgpesikg</string></array></dict></array>";
 				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = YES;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.lifestyle";
 				INFOPLIST_KEY_NSCameraUsageDescription = "Camera access is needed to scan barcodes and take photos of your items";
@@ -634,9 +645,11 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 2VXBQV4XC9;
 				GENERATE_INFOPLIST_FILE = YES;
+				GOOGLE_CLIENT_ID = "316432172622-6huvbn752v0ep68jkfdftrh8fgpesikg.apps.googleusercontent.com";
+				GOOGLE_REVERSED_CLIENT_ID = "com.googleusercontent.apps.316432172622-6huvbn752v0ep68jkfdftrh8fgpesikg";
 				INFOPLIST_KEY_CFBundleDisplayName = "Home Inventory";
 				INFOPLIST_KEY_CFBundleURLSchemes = "com.googleusercontent.apps.316432172622-6huvbn752v0ep68jkfdftrh8fgpesikg";
-				INFOPLIST_KEY_CFBundleURLTypes = "{\"CFBundleURLSchemes\"=>[\"com.googleusercontent.apps.316432172622-6huvbn752v0ep68jkfdftrh8fgpesikg\"], \"CFBundleURLName\"=>\"Gmail OAuth\"}";
+				INFOPLIST_KEY_CFBundleURLTypes = "$(inherited) <array><dict><key>CFBundleURLSchemes</key><array><string>com.googleusercontent.apps.316432172622-6huvbn752v0ep68jkfdftrh8fgpesikg</string></array></dict></array>";
 				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = YES;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.lifestyle";
 				INFOPLIST_KEY_NSCameraUsageDescription = "Camera access is needed to scan barcodes and take photos of your items";
