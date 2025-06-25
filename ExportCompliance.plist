@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <!-- Encryption Export Compliance -->
+    <key>ITSAppUsesNonExemptEncryption</key>
+    <true/>
+    
+    <!-- Exempt from CCATS requirement -->
+    <key>ITSEncryptionExportComplianceCode</key>
+    <string>ecf076d3-130b-4b7d-92e0-6a69e07b5b6d</string>
+    
+    <!-- France Encryption Declaration -->
+    <key>ITSAppUsesNonExemptEncryptionType</key>
+    <dict>
+        <key>ITSEncryptionExemptionType</key>
+        <string>https</string>
+        <key>ITSEncryptionExemptionDescription</key>
+        <string>This app uses encryption exclusively for HTTPS communications, authentication via iOS standard APIs, and data protection using iOS Data Protection APIs. No custom encryption is implemented.</string>
+    </dict>
+    
+    <!-- Additional App Store Connect Requirements -->
+    <key>ITSEncryptionExportComplianceFranceDeclaration</key>
+    <dict>
+        <key>ITSEncryptionDeclarationNumber</key>
+        <string>Exempt - Standard iOS Encryption Only</string>
+        <key>ITSEncryptionDeclarationDate</key>
+        <string>2024-12-24</string>
+    </dict>
+</dict>
+</plist>

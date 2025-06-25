@@ -206,15 +206,24 @@ build-commit: ## Build and auto-commit on success
 bc: build-commit ## Shortcut for build-commit
 
 # Screenshot generation
-screenshots: screenshots-all ## Generate all screenshots (alias for screenshots-all)
+screenshots: screenshots-guided ## Generate useful app screenshots (alias for guided)
 
-screenshots-all: ## Generate all screenshots (components + UI flow + App Store)
-	@echo "📸 Generating all screenshots..."
-	@# First clean old screenshots
-	@rm -rf Screenshots/
-	@mkdir -p Screenshots/Components Screenshots/AppFlow Screenshots/AppStore
+screenshots-guided: ## Guided screenshot capture of actual app screens
+	@echo "🎯 Starting guided screenshot capture..."
+	@./scripts/setup_proper_screenshots.sh
+
+screenshots-all: ## Generate all screenshots (components + UI flow + App Store + Real App)
+	@echo "📸 Generating comprehensive screenshot collection..."
+	@mkdir -p Screenshots/Components Screenshots/AppFlow Screenshots/AppStore Screenshots/RealApp
 	@# Generate placeholder images
 	@swift scripts/generate_real_screenshots_simple.swift
+	@# Capture real app screenshots if possible
+	@if pgrep -f "iPhone.*Simulator" > /dev/null; then \
+		echo "📱 Capturing real app screenshots..."; \
+		./scripts/capture_simple_screenshots.sh || echo "⚠️  Could not capture app screenshots"; \
+	else \
+		echo "⚠️  Simulator not running - only generating placeholders"; \
+	fi
 	@echo "✅ Screenshot generation complete!"
 
 screenshots-components: ## Generate component screenshots using ImageRenderer
@@ -243,6 +252,26 @@ screenshots-ui: build ## Generate UI flow screenshots using XCUITest
 		| xcbeautify
 	@echo "✅ UI flow screenshots complete!"
 
+screenshots-interactive: ## Interactive screenshot capture
+	@echo "🎯 Starting interactive screenshot capture..."
+	@./scripts/interactive_screenshots.sh
+
+screenshots-auto: ## Automated screenshot navigation
+	@echo "🤖 Starting automated screenshot capture..."
+	@./scripts/auto_navigate_screenshots.sh
+
+screenshots-ruby: ## Ruby-powered intelligent screenshot capture
+	@echo "💎 Starting Ruby-powered screenshot automation..."
+	@ruby scripts/automated_screenshots.rb
+
+screenshots-smart: ## Smart screenshot capture with duplicate detection
+	@echo "🧠 Starting smart screenshot capture..."
+	@ruby scripts/smart_screenshots.rb
+
+screenshots-fastlane-ruby: ## Fastlane-powered Ruby screenshot automation
+	@echo "🚀 Starting Fastlane Ruby automation..."
+	@ruby scripts/fastlane_screenshots.rb
+
 screenshots-clean: ## Clean screenshot output directories
 	@echo "🧹 Cleaning screenshot directories..."
 	@rm -rf Screenshots/
@@ -256,4 +285,5 @@ ss: screenshots ## Shortcut for screenshots
 ssc: screenshots-components ## Shortcut for component screenshots
 ssu: screenshots-ui ## Shortcut for UI screenshots
 ssa: screenshots-all ## Shortcut for all screenshots
+ssi: screenshots-interactive ## Shortcut for interactive screenshots
 ssx: screenshots-clean ## Shortcut for cleaning screenshots

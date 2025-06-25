@@ -104,4 +104,5 @@ class AppDelegate: NSObject, UIApplicationDelegate {
         // Clear crash flag when terminating normally
         UserDefaults.standard.set(false, forKey: "app_crashed_last_time")
     }
+    
 }
