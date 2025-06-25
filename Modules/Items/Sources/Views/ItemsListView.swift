@@ -1,9 +1,11 @@
 import SwiftUI
 import Core
 import SharedUI
+import Gmail
 
 struct ItemsListView: View {
     @StateObject private var viewModel: ItemsListViewModel
+    @StateObject private var gmailModule = GmailModule()
     @State private var showingAddItem = false
     @State private var selectedItem: Item?
     @State private var showingItemDetail = false
@@ -12,6 +14,7 @@ struct ItemsListView: View {
     @State private var showingExport = false
     @State private var itemToShare: Item?
     @State private var showingShareView = false
+    @State private var showingGmailSetup = false
     
     private let onSearchTapped: (() -> Void)?
     private let onBarcodeSearchTapped: (() -> Void)?
@@ -51,9 +54,60 @@ struct ItemsListView: View {
                         }
                     }
                 } else {
-                    // Receipts view
-                    if let receiptsView = viewModel.makeReceiptsListView() {
-                        NavigationView {
+                    // Receipts view with Gmail banner
+                    VStack(spacing: 0) {
+                        // Gmail Integration Banner at the top
+                        if !gmailModule.isAuthenticated {
+                            Button(action: { showingGmailSetup = true }) {
+                                HStack(spacing: 16) {
+                                    // Icon
+                                    Image(systemName: "envelope.badge.fill")
+                                        .font(.system(size: 28))
+                                        .foregroundColor(.white)
+                                        .frame(width: 50, height: 50)
+                                        .background(
+                                            LinearGradient(
+                                                gradient: Gradient(colors: [Color.blue, Color.blue.opacity(0.8)]),
+                                                startPoint: .topLeading,
+                                                endPoint: .bottomTrailing
+                                            )
+                                        )
+                                        .cornerRadius(12)
+                                    
+                                    // Text content
+                                    VStack(alignment: .leading, spacing: 4) {
+                                        Text("Connect Gmail for Easy Receipt Import")
+                                            .font(.system(size: 16, weight: .semibold))
+                                            .foregroundColor(.primary)
+                                        
+                                        Text("Automatically import receipts from your email")
+                                            .font(.system(size: 14))
+                                            .foregroundColor(.secondary)
+                                            .lineLimit(2)
+                                    }
+                                    
+                                    Spacer()
+                                    
+                                    // Arrow
+                                    Image(systemName: "chevron.right")
+                                        .font(.system(size: 14, weight: .medium))
+                                        .foregroundColor(.secondary)
+                                }
+                                .padding(16)
+                                .background(Color(.systemGray6))
+                                .cornerRadius(16)
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 16)
+                                        .stroke(Color.blue.opacity(0.3), lineWidth: 1)
+                                )
+                            }
+                            .buttonStyle(PlainButtonStyle())
+                            .padding(.horizontal)
+                            .padding(.vertical, 8)
+                        }
+                        
+                        // Receipts List
+                        if let receiptsView = viewModel.makeReceiptsListView() {
                             receiptsView
                                 .background(AppColors.background)
                         }
@@ -128,6 +182,9 @@ struct ItemsListView: View {
                         )
                     )
                 }
+            }
+            .sheet(isPresented: $showingGmailSetup) {
+                gmailModule.makeReceiptImportView()
             }
         }
     
