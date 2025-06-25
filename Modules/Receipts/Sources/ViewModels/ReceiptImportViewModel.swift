@@ -8,12 +8,12 @@ final class ReceiptImportViewModel: ObservableObject {
     @Published var isLoading = false
     @Published var errorMessage: String?
     
-    private let emailService: EmailServiceProtocol
+    private let emailService: EmailServiceProtocol?
     private let ocrService: OCRServiceProtocol
     private let completion: (Receipt) -> Void
     
     init(
-        emailService: EmailServiceProtocol,
+        emailService: EmailServiceProtocol? = nil,
         ocrService: OCRServiceProtocol,
         completion: @escaping (Receipt) -> Void
     ) {

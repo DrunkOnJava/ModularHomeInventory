@@ -62,9 +62,8 @@ final class ReceiptsListViewModel: ObservableObject {
     }
     
     func makeAddReceiptView() -> AnyView? {
-        let viewModel = AddReceiptViewModel(
-            receiptRepository: receiptRepository,
-            itemRepository: itemRepository,
+        let viewModel = ReceiptImportViewModel(
+            emailService: nil, // We'll handle email service through Gmail module
             ocrService: ocrService,
             completion: { [weak self] receipt in
                 Task { @MainActor in
@@ -72,7 +71,7 @@ final class ReceiptsListViewModel: ObservableObject {
                 }
             }
         )
-        return AnyView(AddReceiptView(viewModel: viewModel))
+        return AnyView(ReceiptImportView(viewModel: viewModel))
     }
     
     func makeReceiptDetailView(for receipt: Receipt) -> AnyView? {

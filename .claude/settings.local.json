@@ -33,7 +33,8 @@
       "Bash(ruby:*)",
       "Bash(cp:*)",
       "Bash(unzip:*)",
-      "Bash(swift build:*)"
+      "Bash(swift build:*)",
+      "Bash(bundle install)"
     ],
     "deny": []
   }
