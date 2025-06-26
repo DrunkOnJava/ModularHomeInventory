@@ -63,14 +63,6 @@ Fix common build issues
 
 Resolve SPM dependencies
 
-### ios screenshots
-
-```sh
-[bundle exec] fastlane ios screenshots
-```
-
-Generate screenshots
-
 ### ios validate
 
 ```sh
