@@ -381,7 +381,7 @@ final class StorageUnitDetailViewModel: ObservableObject {
         
         Task {
             await loadLocation()
-        }
+        }8en
     }
     
     func loadLocation() async {

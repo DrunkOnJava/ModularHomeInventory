@@ -1,3 +1,4 @@
+// swift-tools-version: 5.9
 //
 //  Package.swift
 //  Premium Module
@@ -50,7 +51,6 @@
 //  Copyright © 2025 Home Inventory. All rights reserved.
 //
 
-// swift-tools-version: 5.9
 // ⚠️ IMPORTANT: This project MUST use Swift 5.9 - DO NOT upgrade to Swift 6
 import PackageDescription
 
@@ -77,6 +77,6 @@ let package = Package(
             name: "PremiumTests",
             dependencies: ["Premium"],
             path: "Tests"
-        ),
+        )
     ]
 )

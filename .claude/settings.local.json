@@ -55,7 +55,21 @@
       "Bash(swift package:*)",
       "Bash(xcodegen generate:*)",
       "Bash(xcrun altool:*)",
-      "Bash(/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swift --version)"
+      "Bash(/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swift --version)",
+      "Bash(open:*)",
+      "Bash(claude mcp)",
+      "Bash(claude mcp add:*)",
+      "Bash(npm search:*)",
+      "Bash(claude mcp:*)",
+      "Bash(npx @modelcontextprotocol/server-time:*)",
+      "Bash(./verify_mcp_servers.sh:*)",
+      "Bash(xcrun swift:*)",
+      "Bash(osascript:*)",
+      "Bash(python3:*)",
+      "Bash(./run_in_iterm.sh)",
+      "Bash(xcrun:*)",
+      "Bash(/Library/Developer/Toolchains/swift-5.9-RELEASE.xctoolchain/usr/bin/swift --version)",
+      "Bash(DEVELOPER_DIR=/Library/Developer/Toolchains/swift-5.9-RELEASE.xctoolchain /Library/Developer/Toolchains/swift-5.9-RELEASE.xctoolchain/usr/bin/swift --version)"
     ],
     "deny": []
   }

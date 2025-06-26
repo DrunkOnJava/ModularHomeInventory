@@ -1,0 +1,227 @@
+{
+  "mcpServers": {
+    "filesystem": {
+      "command": "npx",
+      "args": [
+        "@modelcontextprotocol/server-filesystem",
+        "/Users/griffin/Projects/ModularHomeInventory"
+      ],
+      "env": {}
+    },
+    "github": {
+      "command": "npx",
+      "args": [
+        "@modelcontextprotocol/server-github"
+      ],
+      "env": {
+        "GITHUB_PERSONAL_ACCESS_TOKEN": ""
+      }
+    },
+    "memory": {
+      "command": "npx",
+      "args": [
+        "@modelcontextprotocol/server-memory"
+      ],
+      "env": {}
+    },
+    "brave-search": {
+      "command": "npx",
+      "args": [
+        "@modelcontextprotocol/server-brave-search"
+      ],
+      "env": {
+        "BRAVE_API_KEY": ""
+      }
+    },
+    "puppeteer": {
+      "command": "npx",
+      "args": [
+        "@modelcontextprotocol/server-puppeteer"
+      ],
+      "env": {}
+    },
+    "postgres": {
+      "command": "npx",
+      "args": [
+        "@modelcontextprotocol/server-postgres"
+      ],
+      "env": {
+        "POSTGRES_CONNECTION_STRING": ""
+      }
+    },
+    "google-maps": {
+      "command": "npx",
+      "args": [
+        "@modelcontextprotocol/server-google-maps"
+      ],
+      "env": {
+        "GOOGLE_MAPS_API_KEY": ""
+      }
+    },
+    "sequential-thinking": {
+      "command": "npx",
+      "args": [
+        "@modelcontextprotocol/server-sequential-thinking"
+      ],
+      "env": {}
+    },
+    "redis": {
+      "command": "npx",
+      "args": [
+        "@modelcontextprotocol/server-redis"
+      ],
+      "env": {
+        "REDIS_URL": "redis://localhost:6379"
+      }
+    },
+    "everything": {
+      "command": "npx",
+      "args": [
+        "@modelcontextprotocol/server-everything"
+      ],
+      "env": {}
+    },
+    "slack": {
+      "command": "npx",
+      "args": [
+        "@modelcontextprotocol/server-slack"
+      ],
+      "env": {
+        "SLACK_BOT_TOKEN": "",
+        "SLACK_TEAM_ID": ""
+      }
+    },
+    "everart": {
+      "command": "npx",
+      "args": [
+        "@modelcontextprotocol/server-everart"
+      ],
+      "env": {
+        "EVERART_API_KEY": ""
+      }
+    },
+    "kubernetes": {
+      "command": "npx",
+      "args": [
+        "mcp-server-kubernetes"
+      ],
+      "env": {}
+    },
+    "mysql": {
+      "command": "npx",
+      "args": [
+        "@benborla29/mcp-server-mysql"
+      ],
+      "env": {
+        "MYSQL_HOST": "localhost",
+        "MYSQL_USER": "",
+        "MYSQL_PASSWORD": "",
+        "MYSQL_DATABASE": ""
+      }
+    },
+    "cloudflare": {
+      "command": "npx",
+      "args": [
+        "@cloudflare/mcp-server-cloudflare"
+      ],
+      "env": {
+        "CLOUDFLARE_API_TOKEN": "",
+        "CLOUDFLARE_ACCOUNT_ID": ""
+      }
+    },
+    "elasticsearch": {
+      "command": "npx",
+      "args": [
+        "@elastic/mcp-server-elasticsearch"
+      ],
+      "env": {
+        "ELASTICSEARCH_URL": "http://localhost:9200",
+        "ELASTICSEARCH_API_KEY": ""
+      }
+    },
+    "heroku": {
+      "command": "npx",
+      "args": [
+        "@heroku/mcp-server"
+      ],
+      "env": {
+        "HEROKU_API_KEY": ""
+      }
+    },
+    "hubspot": {
+      "command": "npx",
+      "args": [
+        "@hubspot/mcp-server"
+      ],
+      "env": {
+        "HUBSPOT_API_KEY": ""
+      }
+    },
+    "excel": {
+      "command": "npx",
+      "args": [
+        "@negokaz/excel-mcp-server"
+      ],
+      "env": {}
+    },
+    "notion": {
+      "command": "npx",
+      "args": [
+        "@notionhq/notion-mcp-server"
+      ],
+      "env": {
+        "NOTION_API_KEY": ""
+      }
+    },
+    "sentry": {
+      "command": "npx",
+      "args": [
+        "@sentry/mcp-server"
+      ],
+      "env": {
+        "SENTRY_AUTH_TOKEN": "",
+        "SENTRY_ORG": "",
+        "SENTRY_PROJECT": ""
+      }
+    },
+    "ms365": {
+      "command": "npx",
+      "args": [
+        "@softeria/ms-365-mcp-server"
+      ],
+      "env": {
+        "MS365_CLIENT_ID": "",
+        "MS365_CLIENT_SECRET": "",
+        "MS365_TENANT_ID": ""
+      }
+    },
+    "supabase": {
+      "command": "npx",
+      "args": [
+        "@supabase/mcp-server-supabase"
+      ],
+      "env": {
+        "SUPABASE_URL": "",
+        "SUPABASE_ANON_KEY": ""
+      }
+    },
+    "amap": {
+      "command": "npx",
+      "args": [
+        "@amap/amap-maps-mcp-server"
+      ],
+      "env": {
+        "AMAP_API_KEY": ""
+      }
+    },
+    "graphlit": {
+      "command": "npx",
+      "args": [
+        "graphlit-mcp-server"
+      ],
+      "env": {
+        "GRAPHLIT_API_KEY": ""
+      }
+    }
+  }
+}

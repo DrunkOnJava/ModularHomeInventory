@@ -125,4 +125,12 @@ Icon
 .AppleDesktop
 Network Trash Folder
 Temporary Items
-.apdisk.env
+.apdisk
+
+# Environment and credentials
+.env
+.env.local
+.env.secret
+
+# MCP configuration (may contain API keys)
+.mcp.json

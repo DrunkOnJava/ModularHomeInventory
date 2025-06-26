@@ -7,8 +7,15 @@ gem "fastlane", "~> 2.228.0"
 gem "simctl"
 gem "xcodeproj"
 
+# Build tools
+gem "xcpretty"
+gem "xcode-install"
+gem "cocoapods"
+
 # Note: Core fastlane tools (snapshot, deliver, gym) are included with fastlane 2.x
 
 # Utilities
 gem "json"
 gem "plist"
+gem "commander"
+gem "colored2"

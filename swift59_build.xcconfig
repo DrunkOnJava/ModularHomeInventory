@@ -1,0 +1,8 @@
+SWIFT_VERSION = 5.0
+TOOLCHAINS = swift-5.9-RELEASE
+SWIFT_EXEC = /Library/Developer/Toolchains/swift-5.9-RELEASE.xctoolchain/usr/bin/swift
+DEVELOPER_DIR = /Applications/Xcode.app/Contents/Developer
+SDKROOT = iphoneos
+CODE_SIGN_IDENTITY = Apple Development
+DEVELOPMENT_TEAM = 2VXBQV4XC9
+PRODUCT_BUNDLE_IDENTIFIER = com.homeinventory.app

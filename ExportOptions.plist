@@ -4,7 +4,7 @@
 <dict>
     <!-- Export method for App Store distribution -->
     <key>method</key>
-    <string>app-store-connect</string>
+    <string>app-store</string>
     
     <!-- Automatic signing configuration -->
     <key>signingStyle</key>
