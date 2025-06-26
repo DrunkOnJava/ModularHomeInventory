@@ -2,7 +2,50 @@
 //  BackupService.swift
 //  Core
 //
-//  Service for creating and restoring complete backup archives
+//  Apple Configuration:
+//  Bundle Identifier: com.homeinventory.app
+//  Display Name: Home Inventory
+//  Version: 1.0.5
+//  Build: 5
+//  Deployment Target: iOS 17.0
+//  Supported Devices: iPhone & iPad
+//  Team ID: 2VXBQV4XC9
+//
+//  Makefile Configuration:
+//  Default Simulator: iPhone 16 Pro Max (DD192264-DFAA-4582-B2FE-D6FC444C9DDF)
+//  iPad Simulator: iPad Pro 13-inch (M4) (CE6D038C-840B-4BDB-AA63-D61FA0755C4A)
+//  App Bundle ID: com.homeinventory.app
+//  Build Path: build/Build/Products/Debug-iphonesimulator/
+//
+//  Google Sign-In Configuration:
+//  Client ID: 316432172622-6huvbn752v0ep68jkfdftrh8fgpesikg.apps.googleusercontent.com
+//  URL Scheme: com.googleusercontent.apps.316432172622-6huvbn752v0ep68jkfdftrh8fgpesikg
+//  OAuth Scope: https://www.googleapis.com/auth/gmail.readonly
+//  Config Files: GoogleSignIn-Info.plist (project root), GoogleServices.plist (Gmail module)
+//
+//  Key Commands:
+//  Build and run: make build run
+//  Fast build (skip module prebuild): make build-fast run
+//  iPad build and run: make build-ipad run-ipad
+//  Clean build: make clean build run
+//  Run tests: make test
+//
+//  Project Structure:
+//  Main Target: HomeInventoryModular
+//  Test Targets: HomeInventoryModularTests, HomeInventoryModularUITests
+//  Swift Version: 5.9 (DO NOT upgrade to Swift 6)
+//  Minimum iOS Version: 17.0
+//
+//  Architecture: Modular SPM packages with local package dependencies
+//  Repository: https://github.com/DrunkOnJava/ModularHomeInventory.git
+//  Module: Core
+//  Dependencies: Foundation, SwiftUI, UniformTypeIdentifiers
+//  Testing: CoreTests/BackupServiceTests.swift
+//
+//  Description: Service for creating and restoring complete backup archives
+//
+//  Created by Griffin Long on June 25, 2025
+//  Copyright © 2025 Home Inventory. All rights reserved.
 //
 
 import Foundation
@@ -237,7 +280,7 @@ public final class BackupService: ObservableObject {
         currentOperation = "Exporting data..."
         backupProgress = 0.1
         
-        let manifest = try await createManifest(
+        let backupData = BackupData(
             items: items,
             categories: categories,
             locations: locations,
@@ -246,7 +289,11 @@ public final class BackupService: ObservableObject {
             receipts: receipts,
             tags: tags,
             storageUnits: storageUnits,
-            budgets: budgets,
+            budgets: budgets
+        )
+        
+        let manifest = try await createManifest(
+            backupData: backupData,
             options: options
         )
         
@@ -456,19 +503,28 @@ public final class BackupService: ObservableObject {
             }
         }
     }
+}
+
+    // MARK: - Helper Types
     
-    // MARK: - Private Methods
-    
+    /// Groups all the data parameters needed for creating a backup
+    private struct BackupData {
+        let items: [Item]
+        let categories: [String]
+        let locations: [Location]
+        let collections: [Collection]
+        let warranties: [Warranty]
+        let receipts: [Receipt]
+        let tags: [Tag]
+        let storageUnits: [StorageUnit]
+        let budgets: [Budget]
+    }
+
+// MARK: - Private Helper Methods
+
+extension BackupService {
     private func createManifest(
-        items: [Item],
-        categories: [String],
-        locations: [Location],
-        collections: [Collection],
-        warranties: [Warranty],
-        receipts: [Receipt],
-        tags: [Tag],
-        storageUnits: [StorageUnit],
-        budgets: [Budget],
+        backupData: BackupData,
         options: Set<BackupOptions>
     ) async throws -> BackupManifest {
         var photoReferences: [PhotoReference] = []
@@ -476,7 +532,7 @@ public final class BackupService: ObservableObject {
         
         // Collect photo references
         if options.contains(.includePhotos) {
-            for item in items {
+            for item in backupData.items {
                 for (index, imageId) in item.imageIds.enumerated() {
                     photoReferences.append(PhotoReference(
                         id: UUID(),
@@ -490,7 +546,7 @@ public final class BackupService: ObservableObject {
         
         // Collect document references
         if options.contains(.includeReceipts) {
-            for receipt in receipts {
+            for receipt in backupData.receipts {
                 documentReferences.append(DocumentReference(
                     id: UUID(),
                     type: .receipt,
@@ -502,15 +558,15 @@ public final class BackupService: ObservableObject {
         }
         
         let contents = BackupContents(
-            items: items,
-            categories: categories,
-            locations: locations,
-            collections: collections,
-            warranties: warranties,
-            receipts: receipts,
-            tags: tags,
-            storageUnits: storageUnits,
-            budgets: budgets,
+            items: backupData.items,
+            categories: backupData.categories,
+            locations: backupData.locations,
+            collections: backupData.collections,
+            warranties: backupData.warranties,
+            receipts: backupData.receipts,
+            tags: backupData.tags,
+            storageUnits: backupData.storageUnits,
+            budgets: backupData.budgets,
             settings: BackupSettings(
                 userPreferences: [:], // Would collect actual preferences
                 notificationSettings: [:],
@@ -574,7 +630,11 @@ public final class BackupService: ObservableObject {
             }
         }
     }
-    
+}
+
+// MARK: - Archive Operations
+
+extension BackupService {
     private func createCompressedArchive(from source: URL, to destination: URL) async throws {
         // Would use Compression framework or zip utilities
         // For now, simple file copy
@@ -601,7 +661,11 @@ public final class BackupService: ObservableObject {
     private func extractArchive(from source: URL, to destination: URL) async throws {
         try fileManager.copyItem(at: source, to: destination)
     }
-    
+}
+
+// MARK: - Security Operations
+
+extension BackupService {
     private func encryptBackup(at url: URL, password: String) async throws {
         // Would implement actual encryption using CryptoKit
         // This is a placeholder
@@ -612,6 +676,15 @@ public final class BackupService: ObservableObject {
         // This is a placeholder
     }
     
+    private func calculateChecksum(for url: URL) throws -> String {
+        // Would calculate actual checksum using CryptoKit
+        return "placeholder_checksum"
+    }
+}
+
+// MARK: - Restoration Operations
+
+extension BackupService {
     private func restorePhotos(references: [PhotoReference], from backupPath: URL) async throws {
         // Would restore photos to appropriate location
     }
@@ -619,12 +692,11 @@ public final class BackupService: ObservableObject {
     private func restoreDocuments(references: [DocumentReference], from backupPath: URL) async throws {
         // Would restore documents to appropriate location
     }
-    
-    private func calculateChecksum(for url: URL) throws -> String {
-        // Would calculate actual checksum using CryptoKit
-        return "placeholder_checksum"
-    }
-    
+}
+
+// MARK: - Utility Methods
+
+extension BackupService {
     private func calculateCompressionRatio(backupPath: URL, archiveSize: Int64) -> Double {
         do {
             let originalSize = try calculateDirectorySize(backupPath)
@@ -646,9 +718,11 @@ public final class BackupService: ObservableObject {
         
         return size
     }
-    
-    // MARK: - Persistence
-    
+}
+
+// MARK: - Persistence Methods
+
+extension BackupService {
     private func loadAvailableBackups() {
         guard let data = UserDefaults.standard.data(forKey: "available_backups"),
               let backups = try? jsonDecoder.decode([BackupInfo].self, from: data) else {

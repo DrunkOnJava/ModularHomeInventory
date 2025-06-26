@@ -42,7 +42,7 @@
 //  Dependencies: SwiftUI, Core, SharedUI
 //  Testing: Modules/Receipts/Tests/ReceiptsTests/ReceiptDetailViewTests.swift
 //
-//  Description: Detailed view for receipt information display and editing
+//  Description: Detailed receipt view with image zoom and item management
 //
 //  Created by Griffin Long on June 25, 2025
 //  Copyright © 2025 Home Inventory. All rights reserved.

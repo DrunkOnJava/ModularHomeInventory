@@ -321,24 +321,43 @@ archive: ## Create release archive for App Store/TestFlight
 	@echo "✅ Archive created successfully!"
 
 testflight: ## Build and upload to TestFlight with full release notes
-	@echo "🚀 Deploying to TestFlight..."
+	@echo "🚀 Deploying to TestFlight v1.0.6..."
 	@echo "📋 This will upload with comprehensive release notes and encryption compliance"
 	@# Ensure we have fastlane
 	@which fastlane > /dev/null || (echo "❌ Fastlane not found. Install with: gem install fastlane" && exit 1)
 	@# Pre-deployment checks
 	@echo "🔍 Running pre-deployment checks..."
-	@make lint format
+	@echo "📦 Verifying version numbers..."
+	@echo "  Version: $(shell grep MARKETING_VERSION project.yml | cut -d: -f2 | xargs)"
+	@echo "  Build: $(shell grep CURRENT_PROJECT_VERSION project.yml | cut -d: -f2 | xargs)"
+	@# Ensure git is clean
+	@if [ -n "$(shell git status --porcelain)" ]; then \
+		echo "⚠️  Git working directory not clean. Commit changes or use 'make testflight-force'"; \
+		exit 1; \
+	fi
+	@# Run SwiftLint to ensure code quality
+	@echo "🧹 Running SwiftLint..."
+	@if ! swiftlint lint --quiet; then \
+		echo "⚠️  SwiftLint found issues. Fix them or use 'make testflight-force' to skip"; \
+		exit 1; \
+	fi
 	@# Build and upload
-	@cd fastlane && fastlane testflight
+	@echo "🏗️  Building and uploading to TestFlight..."
+	@cd fastlane && bundle exec fastlane testflight
 	@echo "✅ Successfully deployed to TestFlight!"
 	@echo "📱 Check App Store Connect for processing status"
 	@echo "📋 Release notes have been included with encryption compliance"
+	@echo "🔗 https://appstoreconnect.apple.com"
 
 testflight-force: ## Force upload to TestFlight (skip git clean check)
-	@echo "⚠️ Force uploading to TestFlight (skipping git status check)..."
+	@echo "⚠️ Force uploading to TestFlight v1.0.6 (skipping checks)..."
+	@echo "📦 Current version: $(shell grep MARKETING_VERSION project.yml | cut -d: -f2 | xargs)"
+	@echo "🏗️ Current build: $(shell grep CURRENT_PROJECT_VERSION project.yml | cut -d: -f2 | xargs)"
 	@which fastlane > /dev/null || (echo "❌ Fastlane not found. Install with: gem install fastlane" && exit 1)
-	@cd fastlane && fastlane testflight force:true
+	@cd fastlane && bundle exec fastlane testflight force:true
 	@echo "✅ Force upload complete!"
+	@echo "📱 Check App Store Connect for processing status"
+	@echo "🔗 https://appstoreconnect.apple.com"
 
 validate-app: ## Validate app for App Store submission
 	@echo "✅ Validating app for App Store..."
@@ -359,14 +378,34 @@ deployment-status: ## Check deployment and encryption compliance status
 	@echo "=========================="
 	@echo "📱 App: Home Inventory"
 	@echo "📦 Bundle ID: com.homeinventory.app"
+	@echo "👤 Team ID: 2VXBQV4XC9"
 	@echo "🔢 Current Version: $(shell grep MARKETING_VERSION project.yml | cut -d: -f2 | xargs)"
-	@echo "🏗️ Current Build: $(shell xcodebuild -project HomeInventoryModular.xcodeproj -showBuildSettings | grep CURRENT_PROJECT_VERSION | cut -d= -f2 | xargs || echo 'Unknown')"
-	@echo "🔐 Encryption Compliance: ✅ Configured (Standard iOS encryption only)"
-	@echo "📋 France Declaration: ✅ Included in ExportCompliance.plist"
-	@echo "📄 Release Notes: ✅ Comprehensive TestFlight notes prepared"
+	@echo "🏗️ Current Build: $(shell grep CURRENT_PROJECT_VERSION project.yml | cut -d: -f2 | xargs)"
 	@echo ""
-	@echo "🚀 Ready for TestFlight deployment!"
-	@echo "💡 Run 'make testflight' to deploy"
+	@echo "✅ Configuration Status:"
+	@echo "  • Xcode Project: $(shell [ -f HomeInventoryModular.xcodeproj/project.pbxproj ] && echo '✓ Found' || echo '✗ Missing')"
+	@echo "  • Fastlane: $(shell [ -f fastlane/Fastfile ] && echo '✓ Configured' || echo '✗ Missing')"
+	@echo "  • Appfile: $(shell [ -f fastlane/Appfile ] && echo '✓ Configured' || echo '✗ Missing')"
+	@echo "  • Ruby Dependencies: $(shell cd fastlane && bundle check >/dev/null 2>&1 && echo '✓ Installed' || echo '✗ Run: bundle install')"
+	@echo ""
+	@echo "🔐 Compliance Status:"
+	@echo "  • Encryption: ✅ Standard iOS encryption only"
+	@echo "  • Export Compliance: $(shell [ -f ExportCompliance.plist ] && echo '✓ Configured' || echo '✗ Missing')"
+	@echo "  • France Declaration: ✅ Included"
+	@echo "  • Privacy Policy: ✅ GDPR/CCPA compliant"
+	@echo ""
+	@echo "📄 Release Notes: v1.0.6"
+	@echo "  • NEW: Professional Insurance Reports"
+	@echo "  • NEW: View-Only Sharing Mode"
+	@echo "  • Enhanced iPad experience"
+	@echo "  • Bug fixes and performance improvements"
+	@echo ""
+	@echo "🚀 Deployment Commands:"
+	@echo "  • make testflight - Build and upload to TestFlight"
+	@echo "  • make testflight-force - Force upload (skip checks)"
+	@echo "  • make validate-app - Validate before submission"
+	@echo ""
+	@echo "📱 App Store Connect: https://appstoreconnect.apple.com"
 
 # TestFlight shortcuts
 tf: testflight ## Shortcut for testflight

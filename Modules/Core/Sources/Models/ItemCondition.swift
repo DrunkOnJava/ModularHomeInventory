@@ -1,6 +1,6 @@
 //
 //  ItemCondition.swift
-//  HomeInventoryModular
+//  Core
 //
 //  Apple Configuration:
 //  Bundle Identifier: com.homeinventory.app

@@ -42,7 +42,7 @@
 //  Dependencies: Foundation, Vision, Core, UIKit
 //  Testing: Modules/Receipts/Tests/ReceiptsTests/VisionOCRServiceTests.swift
 //
-//  Description: Vision-based OCR service for extracting text from receipt images
+//  Description: Vision-based OCR service with enhanced receipt parsing algorithms
 //
 //  Created by Griffin Long on June 25, 2025
 //  Copyright © 2025 Home Inventory. All rights reserved.

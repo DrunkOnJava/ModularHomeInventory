@@ -43,7 +43,14 @@
       "Bash(pkill:*)",
       "Bash(mkdir:*)",
       "Bash(periphery version:*)",
-      "Bash(mkdir:*)"
+      "Bash(mkdir:*)",
+      "Bash(swiftlint lint:*)",
+      "Bash(bundle check:*)",
+      "Bash(swiftlint analyze:*)",
+      "Bash(swiftlint:*)",
+      "Bash(# Create temp files to store results\necho \"Files with comprehensive headers:\" > /tmp/with_headers.txt\necho \"Files without comprehensive headers:\" > /tmp/without_headers.txt\n\n# Get all Swift files using glob\nfor file in ./Modules/**/*.swift ./Source/**/*.swift ./HomeInventoryModularTests/**/*.swift ./HomeInventoryModularUITests/**/*.swift ./Views/**/*.swift ./scripts/**/*.swift ./fastlane/**/*.swift; do\n    if [ -f \"$file\" ]; then\n        # Check if file has all required sections\n        if grep -q \"Apple Configuration:\" \"$file\" && grep -q \"Makefile Configuration:\" \"$file\" && grep -q \"Google Sign-In Configuration:\" \"$file\"; then\n            echo \"$file\" >> /tmp/with_headers.txt\n        else\n            echo \"$file\" >> /tmp/without_headers.txt\n        fi\n    fi\ndone\n\n# Count results\necho \"=== Summary ===\"\necho \"Files WITH comprehensive headers: $(grep -c \"^\" /tmp/with_headers.txt || echo 0)\"\necho \"Files WITHOUT comprehensive headers: $(grep -c \"^\" /tmp/without_headers.txt || echo 0)\"\necho \"\"\necho \"=== Files missing comprehensive headers ===\"\ncat /tmp/without_headers.txt | sort)",
+      "Bash(bundle install)",
+      "Bash(bundle exec fastlane:*)"
     ],
     "deny": []
   }

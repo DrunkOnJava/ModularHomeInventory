@@ -2,7 +2,50 @@
 //  InsuranceReportService.swift
 //  Core
 //
-//  Service for generating professional insurance documentation reports
+//  Apple Configuration:
+//  Bundle Identifier: com.homeinventory.app
+//  Display Name: Home Inventory
+//  Version: 1.0.5
+//  Build: 5
+//  Deployment Target: iOS 17.0
+//  Supported Devices: iPhone & iPad
+//  Team ID: 2VXBQV4XC9
+//
+//  Makefile Configuration:
+//  Default Simulator: iPhone 16 Pro Max (DD192264-DFAA-4582-B2FE-D6FC444C9DDF)
+//  iPad Simulator: iPad Pro 13-inch (M4) (CE6D038C-840B-4BDB-AA63-D61FA0755C4A)
+//  App Bundle ID: com.homeinventory.app
+//  Build Path: build/Build/Products/Debug-iphonesimulator/
+//
+//  Google Sign-In Configuration:
+//  Client ID: 316432172622-6huvbn752v0ep68jkfdftrh8fgpesikg.apps.googleusercontent.com
+//  URL Scheme: com.googleusercontent.apps.316432172622-6huvbn752v0ep68jkfdftrh8fgpesikg
+//  OAuth Scope: https://www.googleapis.com/auth/gmail.readonly
+//  Config Files: GoogleSignIn-Info.plist (project root), GoogleServices.plist (Gmail module)
+//
+//  Key Commands:
+//  Build and run: make build run
+//  Fast build (skip module prebuild): make build-fast run
+//  iPad build and run: make build-ipad run-ipad
+//  Clean build: make clean build run
+//  Run tests: make test
+//
+//  Project Structure:
+//  Main Target: HomeInventoryModular
+//  Test Targets: HomeInventoryModularTests, HomeInventoryModularUITests
+//  Swift Version: 5.9 (DO NOT upgrade to Swift 6)
+//  Minimum iOS Version: 17.0
+//
+//  Architecture: Modular SPM packages with local package dependencies
+//  Repository: https://github.com/DrunkOnJava/ModularHomeInventory.git
+//  Module: Core
+//  Dependencies: Foundation, SwiftUI, PDFKit, UIKit
+//  Testing: CoreTests/InsuranceReportServiceTests.swift
+//
+//  Description: Service for generating professional insurance documentation reports
+//
+//  Created by Griffin Long on June 25, 2025
+//  Copyright © 2025 Home Inventory. All rights reserved.
 //
 
 import Foundation
@@ -197,6 +240,264 @@ public class InsuranceReportService: ObservableObject {
     
     // MARK: - Private Methods
     
+    private func createItemDetailPage(
+        item: Item,
+        warranty: Core.Warranty?,
+        receipt: Core.Receipt?,
+        options: InsuranceReportOptions
+    ) -> PDFPage {
+        let page = PDFPage()
+        let pageSize = CGSize(width: 612, height: 792)
+        
+        let renderer = UIGraphicsImageRenderer(size: pageSize)
+        let image = renderer.image { context in
+            UIColor.systemBackground.setFill()
+            context.fill(CGRect(origin: .zero, size: pageSize))
+            
+            var yPosition: CGFloat = 50
+            
+            // Item name
+            item.name.draw(at: CGPoint(x: 50, y: yPosition), withAttributes: [
+                .font: UIFont.systemFont(ofSize: 20, weight: .bold),
+                .foregroundColor: UIColor.label
+            ])
+            yPosition += 40
+            
+            // Draw item details in two columns
+            yPosition = drawItemDetails(
+                item: item,
+                options: options,
+                context: context,
+                startY: yPosition,
+                pageSize: pageSize
+            )
+            
+            // Draw warranty information
+            if let warranty = warranty {
+                yPosition = drawWarrantyInfo(
+                    warranty: warranty,
+                    context: context,
+                    startY: yPosition,
+                    pageSize: pageSize
+                )
+            }
+            
+            // Draw notes
+            yPosition = drawItemNotes(
+                item: item,
+                context: context,
+                startY: yPosition,
+                pageSize: pageSize
+            )
+            
+            // Receipt reference
+            if options.includeReceipts && receipt != nil {
+                "Receipt documentation included in appendix".draw(
+                    at: CGPoint(x: 50, y: yPosition),
+                    withAttributes: [
+                        .font: UIFont.systemFont(ofSize: 10),
+                        .foregroundColor: UIColor.secondaryLabel
+                    ]
+                )
+            }
+        }
+        
+        if let pdfPage = PDFPage(image: image) {
+            return pdfPage
+        }
+        
+        return page
+    }
+    
+    private func drawItemDetails(
+        item: Item,
+        options: InsuranceReportOptions,
+        context: UIGraphicsImageRendererContext,
+        startY: CGFloat,
+        pageSize: CGSize
+    ) -> CGFloat {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .currency
+        formatter.currencyCode = "USD"
+        
+        // Two-column layout for item details
+        let leftColumn: CGFloat = 50
+        let rightColumn: CGFloat = 320
+        let lineHeight: CGFloat = 25
+        
+        // Left column details
+        var leftY = startY
+        
+        if let brand = item.brand {
+            "Brand: \(brand)".draw(at: CGPoint(x: leftColumn, y: leftY), withAttributes: [
+                .font: UIFont.systemFont(ofSize: 12),
+                .foregroundColor: UIColor.label
+            ])
+            leftY += lineHeight
+        }
+        
+        if let model = item.model {
+            "Model: \(model)".draw(at: CGPoint(x: leftColumn, y: leftY), withAttributes: [
+                .font: UIFont.systemFont(ofSize: 12),
+                .foregroundColor: UIColor.label
+            ])
+            leftY += lineHeight
+        }
+        
+        if options.includeSerialNumbers, let serial = item.serialNumber {
+            "Serial Number: \(serial)".draw(at: CGPoint(x: leftColumn, y: leftY), withAttributes: [
+                .font: UIFont.systemFont(ofSize: 12),
+                .foregroundColor: UIColor.label
+            ])
+            leftY += lineHeight
+        }
+        
+        "Condition: \(item.condition.rawValue)".draw(at: CGPoint(x: leftColumn, y: leftY), withAttributes: [
+            .font: UIFont.systemFont(ofSize: 12),
+            .foregroundColor: UIColor.label
+        ])
+        leftY += lineHeight
+        
+        "Quantity: \(item.quantity)".draw(at: CGPoint(x: leftColumn, y: leftY), withAttributes: [
+            .font: UIFont.systemFont(ofSize: 12),
+            .foregroundColor: UIColor.label
+        ])
+        
+        // Right column details
+        var rightY = startY
+        
+        if let value = item.value {
+            "Current Value: \(formatter.string(from: value as NSNumber) ?? "$0")".draw(
+                at: CGPoint(x: rightColumn, y: rightY),
+                withAttributes: [
+                    .font: UIFont.systemFont(ofSize: 12, weight: .semibold),
+                    .foregroundColor: UIColor.label
+                ]
+            )
+            rightY += lineHeight
+        }
+        
+        if options.includePurchaseInfo {
+            if let purchasePrice = item.purchasePrice {
+                "Purchase Price: \(formatter.string(from: purchasePrice as NSNumber) ?? "$0")".draw(
+                    at: CGPoint(x: rightColumn, y: rightY),
+                    withAttributes: [
+                        .font: UIFont.systemFont(ofSize: 12),
+                        .foregroundColor: UIColor.label
+                    ]
+                )
+                rightY += lineHeight
+            }
+            
+            if let purchaseDate = item.purchaseDate {
+                let dateFormatter = DateFormatter()
+                dateFormatter.dateStyle = .medium
+                "Purchase Date: \(dateFormatter.string(from: purchaseDate))".draw(
+                    at: CGPoint(x: rightColumn, y: rightY),
+                    withAttributes: [
+                        .font: UIFont.systemFont(ofSize: 12),
+                        .foregroundColor: UIColor.label
+                    ]
+                )
+                rightY += lineHeight
+            }
+            
+            if let store = item.storeName {
+                "Purchased From: \(store)".draw(
+                    at: CGPoint(x: rightColumn, y: rightY),
+                    withAttributes: [
+                        .font: UIFont.systemFont(ofSize: 12),
+                        .foregroundColor: UIColor.label
+                    ]
+                )
+                rightY += lineHeight
+            }
+        }
+        
+        return max(leftY, rightY) + 30
+    }
+    
+    private func drawWarrantyInfo(
+        warranty: Core.Warranty,
+        context: UIGraphicsImageRendererContext,
+        startY: CGFloat,
+        pageSize: CGSize
+    ) -> CGFloat {
+        let leftColumn: CGFloat = 50
+        let lineHeight: CGFloat = 25
+        var yPosition = startY
+        
+        "Warranty Information:".draw(at: CGPoint(x: leftColumn, y: yPosition), withAttributes: [
+            .font: UIFont.systemFont(ofSize: 14, weight: .semibold),
+            .foregroundColor: UIColor.label
+        ])
+        yPosition += lineHeight
+        
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateStyle = .medium
+        
+        "Provider: \(warranty.provider)".draw(at: CGPoint(x: leftColumn + 20, y: yPosition), withAttributes: [
+            .font: UIFont.systemFont(ofSize: 12),
+            .foregroundColor: UIColor.label
+        ])
+        yPosition += lineHeight
+        
+        "Expires: \(dateFormatter.string(from: warranty.endDate))".draw(
+            at: CGPoint(x: leftColumn + 20, y: yPosition),
+            withAttributes: [
+                .font: UIFont.systemFont(ofSize: 12),
+                .foregroundColor: UIColor.label
+            ]
+        )
+        yPosition += lineHeight * 2
+        
+        return yPosition
+    }
+    
+    private func drawItemNotes(
+        item: Item,
+        context: UIGraphicsImageRendererContext,
+        startY: CGFloat,
+        pageSize: CGSize
+    ) -> CGFloat {
+        let leftColumn: CGFloat = 50
+        let lineHeight: CGFloat = 25
+        var yPosition = startY
+        
+        if let notes = item.notes, !notes.isEmpty {
+            "Notes:".draw(at: CGPoint(x: leftColumn, y: yPosition), withAttributes: [
+                .font: UIFont.systemFont(ofSize: 14, weight: .semibold),
+                .foregroundColor: UIColor.label
+            ])
+            yPosition += lineHeight
+            
+            let notesRect = CGRect(x: leftColumn + 20, y: yPosition, width: pageSize.width - 120, height: 100)
+            notes.draw(in: notesRect, withAttributes: [
+                .font: UIFont.systemFont(ofSize: 12),
+                .foregroundColor: UIColor.label
+            ])
+            yPosition += min(100, notes.boundingRect(
+                with: CGSize(width: pageSize.width - 120, height: .greatestFiniteMagnitude),
+                options: .usesLineFragmentOrigin,
+                attributes: [.font: UIFont.systemFont(ofSize: 12)],
+                context: nil
+            ).height) + 20
+        }
+        
+        return yPosition
+    }
+    
+    // MARK: - Singleton
+    
+    public static let shared = InsuranceReportService()
+    
+    private init() {}
+}
+
+// MARK: - PDF Cover Page Extension
+
+extension InsuranceReportService {
+    
     private func createInsuranceCoverPage(type: InsuranceReportType, options: InsuranceReportOptions, itemCount: Int) -> PDFPage {
         let page = PDFPage()
         let pageSize = CGSize(width: 612, height: 792) // Letter size
@@ -291,6 +592,11 @@ public class InsuranceReportService: ObservableObject {
         
         return page
     }
+}
+
+// MARK: - PDF Summary and Category Pages Extension
+
+extension InsuranceReportService {
     
     private func createSummaryPage(items: [Item], options: InsuranceReportOptions) -> PDFPage {
         let page = PDFPage()
@@ -465,196 +771,11 @@ public class InsuranceReportService: ObservableObject {
         
         return page
     }
-    
-    private func createItemDetailPage(
-        item: Item,
-        warranty: Core.Warranty?,
-        receipt: Core.Receipt?,
-        options: InsuranceReportOptions
-    ) -> PDFPage {
-        let page = PDFPage()
-        let pageSize = CGSize(width: 612, height: 792)
-        
-        let renderer = UIGraphicsImageRenderer(size: pageSize)
-        let image = renderer.image { context in
-            UIColor.systemBackground.setFill()
-            context.fill(CGRect(origin: .zero, size: pageSize))
-            
-            var yPosition: CGFloat = 50
-            
-            // Item name
-            item.name.draw(at: CGPoint(x: 50, y: yPosition), withAttributes: [
-                .font: UIFont.systemFont(ofSize: 20, weight: .bold),
-                .foregroundColor: UIColor.label
-            ])
-            yPosition += 40
-            
-            let formatter = NumberFormatter()
-            formatter.numberStyle = .currency
-            formatter.currencyCode = "USD"
-            
-            // Two-column layout for item details
-            let leftColumn: CGFloat = 50
-            let rightColumn: CGFloat = 320
-            let lineHeight: CGFloat = 25
-            
-            // Left column details
-            var leftY = yPosition
-            
-            if let brand = item.brand {
-                "Brand: \(brand)".draw(at: CGPoint(x: leftColumn, y: leftY), withAttributes: [
-                    .font: UIFont.systemFont(ofSize: 12),
-                    .foregroundColor: UIColor.label
-                ])
-                leftY += lineHeight
-            }
-            
-            if let model = item.model {
-                "Model: \(model)".draw(at: CGPoint(x: leftColumn, y: leftY), withAttributes: [
-                    .font: UIFont.systemFont(ofSize: 12),
-                    .foregroundColor: UIColor.label
-                ])
-                leftY += lineHeight
-            }
-            
-            if options.includeSerialNumbers, let serial = item.serialNumber {
-                "Serial Number: \(serial)".draw(at: CGPoint(x: leftColumn, y: leftY), withAttributes: [
-                    .font: UIFont.systemFont(ofSize: 12),
-                    .foregroundColor: UIColor.label
-                ])
-                leftY += lineHeight
-            }
-            
-            "Condition: \(item.condition.rawValue)".draw(at: CGPoint(x: leftColumn, y: leftY), withAttributes: [
-                .font: UIFont.systemFont(ofSize: 12),
-                .foregroundColor: UIColor.label
-            ])
-            leftY += lineHeight
-            
-            "Quantity: \(item.quantity)".draw(at: CGPoint(x: leftColumn, y: leftY), withAttributes: [
-                .font: UIFont.systemFont(ofSize: 12),
-                .foregroundColor: UIColor.label
-            ])
-            
-            // Right column details
-            var rightY = yPosition
-            
-            if let value = item.value {
-                "Current Value: \(formatter.string(from: value as NSNumber) ?? "$0")".draw(
-                    at: CGPoint(x: rightColumn, y: rightY),
-                    withAttributes: [
-                        .font: UIFont.systemFont(ofSize: 12, weight: .semibold),
-                        .foregroundColor: UIColor.label
-                    ]
-                )
-                rightY += lineHeight
-            }
-            
-            if options.includePurchaseInfo {
-                if let purchasePrice = item.purchasePrice {
-                    "Purchase Price: \(formatter.string(from: purchasePrice as NSNumber) ?? "$0")".draw(
-                        at: CGPoint(x: rightColumn, y: rightY),
-                        withAttributes: [
-                            .font: UIFont.systemFont(ofSize: 12),
-                            .foregroundColor: UIColor.label
-                        ]
-                    )
-                    rightY += lineHeight
-                }
-                
-                if let purchaseDate = item.purchaseDate {
-                    let dateFormatter = DateFormatter()
-                    dateFormatter.dateStyle = .medium
-                    "Purchase Date: \(dateFormatter.string(from: purchaseDate))".draw(
-                        at: CGPoint(x: rightColumn, y: rightY),
-                        withAttributes: [
-                            .font: UIFont.systemFont(ofSize: 12),
-                            .foregroundColor: UIColor.label
-                        ]
-                    )
-                    rightY += lineHeight
-                }
-                
-                if let store = item.storeName {
-                    "Purchased From: \(store)".draw(
-                        at: CGPoint(x: rightColumn, y: rightY),
-                        withAttributes: [
-                            .font: UIFont.systemFont(ofSize: 12),
-                            .foregroundColor: UIColor.label
-                        ]
-                    )
-                    rightY += lineHeight
-                }
-            }
-            
-            yPosition = max(leftY, rightY) + 30
-            
-            // Warranty information
-            if let warranty = warranty {
-                "Warranty Information:".draw(at: CGPoint(x: leftColumn, y: yPosition), withAttributes: [
-                    .font: UIFont.systemFont(ofSize: 14, weight: .semibold),
-                    .foregroundColor: UIColor.label
-                ])
-                yPosition += lineHeight
-                
-                let dateFormatter = DateFormatter()
-                dateFormatter.dateStyle = .medium
-                
-                "Provider: \(warranty.provider)".draw(at: CGPoint(x: leftColumn + 20, y: yPosition), withAttributes: [
-                    .font: UIFont.systemFont(ofSize: 12),
-                    .foregroundColor: UIColor.label
-                ])
-                yPosition += lineHeight
-                
-                "Expires: \(dateFormatter.string(from: warranty.endDate))".draw(
-                    at: CGPoint(x: leftColumn + 20, y: yPosition),
-                    withAttributes: [
-                        .font: UIFont.systemFont(ofSize: 12),
-                        .foregroundColor: UIColor.label
-                    ]
-                )
-                yPosition += lineHeight * 2
-            }
-            
-            // Notes
-            if let notes = item.notes, !notes.isEmpty {
-                "Notes:".draw(at: CGPoint(x: leftColumn, y: yPosition), withAttributes: [
-                    .font: UIFont.systemFont(ofSize: 14, weight: .semibold),
-                    .foregroundColor: UIColor.label
-                ])
-                yPosition += lineHeight
-                
-                let notesRect = CGRect(x: leftColumn + 20, y: yPosition, width: pageSize.width - 120, height: 100)
-                notes.draw(in: notesRect, withAttributes: [
-                    .font: UIFont.systemFont(ofSize: 12),
-                    .foregroundColor: UIColor.label
-                ])
-                yPosition += min(100, notes.boundingRect(
-                    with: CGSize(width: pageSize.width - 120, height: .greatestFiniteMagnitude),
-                    options: .usesLineFragmentOrigin,
-                    attributes: [.font: UIFont.systemFont(ofSize: 12)],
-                    context: nil
-                ).height) + 20
-            }
-            
-            // Receipt reference
-            if options.includeReceipts && receipt != nil {
-                "Receipt documentation included in appendix".draw(
-                    at: CGPoint(x: leftColumn, y: yPosition),
-                    withAttributes: [
-                        .font: UIFont.systemFont(ofSize: 10),
-                        .foregroundColor: UIColor.secondaryLabel
-                    ]
-                )
-            }
-        }
-        
-        if let pdfPage = PDFPage(image: image) {
-            return pdfPage
-        }
-        
-        return page
-    }
+}
+
+// MARK: - PDF Page Creation Extension
+
+extension InsuranceReportService {
     
     private func createReceiptsAppendix(receipts: [Core.Receipt]) -> PDFPage {
         let page = PDFPage()
@@ -749,7 +870,9 @@ public class InsuranceReportService: ObservableObject {
             • Some items may appreciate in value (collectibles, antiques)
             
             Disclaimer:
-            This valuation is provided for insurance documentation purposes only and should not be considered a professional appraisal. Please consult with qualified appraisers and your insurance provider for official valuations.
+            This valuation is provided for insurance documentation purposes only and should not be considered
+            a professional appraisal. Please consult with qualified appraisers and your insurance provider
+            for official valuations.
             """
             
             let methodologyRect = CGRect(x: 50, y: yPosition, width: pageSize.width - 100, height: pageSize.height - yPosition - 100)
@@ -832,10 +955,4 @@ public class InsuranceReportService: ObservableObject {
         
         return url
     }
-    
-    // MARK: - Singleton
-    
-    public static let shared = InsuranceReportService()
-    
-    private init() {}
 }

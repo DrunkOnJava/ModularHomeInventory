@@ -74,7 +74,7 @@ opt_in_rules:
 # Disabled rules
 disabled_rules:
   - todo
-  - fixme
+  # - fixme # Removed - not a valid rule
   - trailing_whitespace
   - vertical_whitespace
   - unused_optional_binding
@@ -113,7 +113,6 @@ identifier_name:
   min_length: 2
   max_length: 50
   allowed_symbols: ["_"]
-  excludes_keywords: true
 
 # SwiftUI specific
 multiline_arguments:

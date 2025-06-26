@@ -1,6 +1,6 @@
 //
 //  AddItemViewSnapshotTests.swift
-//  HomeInventoryModular
+//  HomeInventoryModularTests
 //
 //  Apple Configuration:
 //  Bundle Identifier: com.homeinventory.app

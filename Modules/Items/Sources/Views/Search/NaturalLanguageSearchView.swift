@@ -1,3 +1,53 @@
+//
+//  NaturalLanguageSearchView.swift
+//  Items Module
+//
+//  Apple Configuration:
+//  Bundle Identifier: com.homeinventory.app
+//  Display Name: Home Inventory
+//  Version: 1.0.5
+//  Build: 5
+//  Deployment Target: iOS 17.0
+//  Supported Devices: iPhone & iPad
+//  Team ID: 2VXBQV4XC9
+//
+//  Makefile Configuration:
+//  Default Simulator: iPhone 16 Pro Max (DD192264-DFAA-4582-B2FE-D6FC444C9DDF)
+//  iPad Simulator: iPad Pro 13-inch (M4) (CE6D038C-840B-4BDB-AA63-D61FA0755C4A)
+//  App Bundle ID: com.homeinventory.app
+//  Build Path: build/Build/Products/Debug-iphonesimulator/
+//
+//  Google Sign-In Configuration:
+//  Client ID: 316432172622-6huvbn752v0ep68jkfdftrh8fgpesikg.apps.googleusercontent.com
+//  URL Scheme: com.googleusercontent.apps.316432172622-6huvbn752v0ep68jkfdftrh8fgpesikg
+//  OAuth Scope: https://www.googleapis.com/auth/gmail.readonly
+//  Config Files: GoogleSignIn-Info.plist (project root), GoogleServices.plist (Gmail module)
+//
+//  Key Commands:
+//  Build and run: make build run
+//  Fast build (skip module prebuild): make build-fast run
+//  iPad build and run: make build-ipad run-ipad
+//  Clean build: make clean build run
+//  Run tests: make test
+//
+//  Project Structure:
+//  Main Target: HomeInventoryModular
+//  Test Targets: HomeInventoryModularTests, HomeInventoryModularUITests
+//  Swift Version: 5.9 (DO NOT upgrade to Swift 6)
+//  Minimum iOS Version: 17.0
+//
+//  Architecture: Modular SPM packages with local package dependencies
+//  Repository: https://github.com/DrunkOnJava/ModularHomeInventory.git
+//  Module: Items
+//  Dependencies: SwiftUI, Core, SharedUI
+//  Testing: ItemsTests/NaturalLanguageSearchViewTests.swift
+//
+//  Description: Natural language search interface
+//
+//  Created by Griffin Long on June 25, 2025
+//  Copyright © 2025 Home Inventory. All rights reserved.
+//
+
 import SwiftUI
 import Core
 import SharedUI
@@ -274,477 +324,186 @@ struct NaturalLanguageSearchView: View {
                 isSearchFocused = true
             }
             .sheet(isPresented: $showingVoiceSearch) {
-            VoiceSearchSheet(
-                searchText: $searchQuery,
-                isPresented: $showingVoiceSearch,
-                onCommit: {
-                    Task {
-                        await viewModel.performNaturalLanguageSearch(
-                            searchQuery,
-                            useFuzzySearch: useFuzzySearch,
-                            fuzzyThreshold: fuzzyThreshold
-                        )
+                VoiceSearchSheet(
+                    searchText: $searchQuery,
+                    isPresented: $showingVoiceSearch,
+                    onCommit: {
+                        Task {
+                            await viewModel.performNaturalLanguageSearch(
+                                searchQuery,
+                                useFuzzySearch: useFuzzySearch,
+                                fuzzyThreshold: fuzzyThreshold
+                            )
+                        }
                     }
-                }
-            )
-        }
-    }
-}
-
-// MARK: - Query Interpretation View
-struct QueryInterpretationView: View {
-    let interpretation: QueryInterpretation
-    
-    var body: some View {
-        VStack(alignment: .leading, spacing: 4) {
-            Text("Searching for:")
-                .font(.caption)
-                .foregroundStyle(.secondary)
-            
-            ScrollView(.horizontal, showsIndicators: false) {
-                HStack(spacing: 8) {
-                    ForEach(interpretation.components, id: \.self) { component in
-                        InterpretationChip(component: component)
-                    }
-                }
-            }
-        }
-        .padding(.horizontal, 4)
-    }
-}
-
-struct InterpretationChip: View {
-    let component: QueryComponent
-    
-    var body: some View {
-        HStack(spacing: 4) {
-            Image(systemName: component.icon)
-                .font(.caption)
-            Text(component.value)
-                .font(.caption)
-        }
-        .padding(.horizontal, 12)
-        .padding(.vertical, 6)
-        .background(Color(hex: component.color).opacity(0.2))
-        .foregroundStyle(Color(hex: component.color))
-        .cornerRadius(15)
-    }
-}
-
-// MARK: - Example Queries
-struct ExampleQueriesView: View {
-    let onSelectQuery: (String) -> Void
-    
-    let examples = [
-        ("paintpalette", "Color Search", "red items in bedroom"),
-        ("calendar", "Time-based", "items bought last month"),
-        ("dollarsign.circle", "Price Range", "electronics under $100"),
-        ("location", "Location", "tools in garage"),
-        ("tag", "Brand", "Apple products"),
-        ("checkmark.shield", "Warranty", "items under warranty"),
-        ("sparkles", "Recent", "recently added items"),
-        ("storefront", "Store", "items from Amazon"),
-        ("shippingbox", "Category", "electronics in office"),
-        ("magnifyingglass", "Combined", "black Nike shoes under $200")
-    ]
-    
-    var body: some View {
-        ScrollView {
-            VStack(alignment: .leading, spacing: 16) {
-                Text("Try these example searches:")
-                    .font(.headline)
-                    .padding(.horizontal)
-                
-                LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 12) {
-                    ForEach(examples, id: \.2) { example in
-                        ExampleQueryCard(
-                            iconName: example.0,
-                            title: example.1,
-                            query: example.2,
-                            onTap: {
-                                onSelectQuery(example.2)
-                            }
-                        )
-                    }
-                }
-                .padding(.horizontal)
-            }
-            .padding(.vertical)
-        }
-    }
-}
-
-struct ExampleQueryCard: View {
-    let iconName: String
-    let title: String
-    let query: String
-    let onTap: () -> Void
-    
-    var body: some View {
-        Button(action: onTap) {
-            VStack(alignment: .leading, spacing: 8) {
-                HStack {
-                    Image(systemName: iconName)
-                        .font(.title2)
-                        .foregroundStyle(.blue)
-                    Text(title)
-                        .font(.caption)
-                        .fontWeight(.semibold)
-                        .foregroundStyle(.primary)
-                    Spacer()
-                }
-                Text(query)
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
-                    .multilineTextAlignment(.leading)
-                    .lineLimit(2)
-            }
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .padding()
-            .background(Color(.systemGray6))
-            .cornerRadius(12)
-        }
-        .buttonStyle(.plain)
-    }
-}
-
-// MARK: - No Results View
-struct NLSearchNoResultsView: View {
-    let query: String
-    
-    var body: some View {
-        VStack(spacing: 16) {
-            Image(systemName: "magnifyingglass.circle")
-                .font(.system(size: 64))
-                .foregroundStyle(.secondary)
-            
-            Text("No items found")
-                .font(.headline)
-            
-            Text("Try different keywords or check the spelling")
-                .font(.subheadline)
-                .foregroundStyle(.secondary)
-                .multilineTextAlignment(.center)
-            
-            // Suggestions
-            VStack(alignment: .leading, spacing: 8) {
-                Text("Search tips:")
-                    .font(.caption)
-                    .fontWeight(.semibold)
-                
-                BulletPoint("Use simple, descriptive words")
-                BulletPoint("Try color, brand, or location")
-                BulletPoint("Use time references like 'last month'")
-                BulletPoint("Combine multiple attributes")
-            }
-            .padding()
-            .background(Color(.systemGray6))
-            .cornerRadius(12)
-            .padding(.horizontal, 40)
-        }
-        .padding()
-    }
-}
-
-struct BulletPoint: View {
-    let text: String
-    
-    init(_ text: String) {
-        self.text = text
-    }
-    
-    var body: some View {
-        HStack(alignment: .top, spacing: 8) {
-            Text("•")
-                .font(.caption)
-                .foregroundStyle(.secondary)
-            Text(text)
-                .font(.caption)
-                .foregroundStyle(.secondary)
-        }
-    }
-}
-
-// MARK: - Search Results List
-struct NLSearchResultsList: View {
-    let items: [Item]
-    let onSelectItem: (Item) -> Void
-    
-    var body: some View {
-        List {
-            Section {
-                ForEach(items) { item in
-                    Button(action: { onSelectItem(item) }) {
-                        ItemSearchResultRow(item: item)
-                    }
-                    .buttonStyle(.plain)
-                }
-            } header: {
-                HStack {
-                    Text("\(items.count) items found")
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
-                    Spacer()
-                }
-            }
-        }
-    }
-}
-
-// MARK: - View Model
-@MainActor
-final class NaturalLanguageSearchViewModel: ObservableObject {
-    @Published var searchResults: [Item] = []
-    @Published var isSearching = false
-    @Published var queryInterpretation: QueryInterpretation?
-    @Published var searchHistory: [String] = []
-    
-    let itemRepository: any ItemRepository
-    let nlSearchService = NaturalLanguageSearchService()
-    let searchHistoryRepository: any SearchHistoryRepository
-    let savedSearchRepository: any SavedSearchRepository
-    
-    init(itemRepository: any ItemRepository, searchHistoryRepository: any SearchHistoryRepository, savedSearchRepository: any SavedSearchRepository) {
-        self.itemRepository = itemRepository
-        self.searchHistoryRepository = searchHistoryRepository
-        self.savedSearchRepository = savedSearchRepository
-        loadSearchHistory()
-    }
-    
-    func performNaturalLanguageSearch(
-        _ query: String,
-        useFuzzySearch: Bool = false,
-        fuzzyThreshold: Double = 0.7
-    ) async {
-        guard !query.isEmpty else { return }
-        
-        isSearching = true
-        defer { isSearching = false }
-        
-        // Parse the natural language query
-        let nlQuery = nlSearchService.parseQuery(query)
-        
-        // Update interpretation
-        queryInterpretation = buildInterpretation(from: nlQuery)
-        
-        // Convert to search criteria
-        let criteria = nlSearchService.convertToSearchCriteria(nlQuery)
-        
-        do {
-            // Perform the search
-            if useFuzzySearch && criteria.searchText != nil {
-                // Use fuzzy search for the text portion
-                let fuzzyResults = try await itemRepository.fuzzySearch(
-                    query: criteria.searchText ?? "",
-                    threshold: fuzzyThreshold
                 )
-                
-                // Then apply other filters
-                searchResults = fuzzyResults.filter { item in
-                    // Apply category filter
-                    if !criteria.categories.isEmpty && !criteria.categories.contains(item.category) {
-                        return false
-                    }
+            }
+        }
+    }
+}
+
+// MARK: - Fuzzy Search Toggle
+
+extension NaturalLanguageSearchView {
+    struct FuzzySearchToggle: View {
+        @Binding var isEnabled: Bool
+        @Binding var threshold: Double
+        @State private var showingInfo = false
+        
+        var body: some View {
+            VStack(alignment: .leading, spacing: 8) {
+                HStack {
+                    Toggle("Fuzzy Search", isOn: $isEnabled)
+                        .font(.caption)
                     
-                    // Apply date range filter
-                    if let startDate = criteria.purchaseDateStart,
-                       let purchaseDate = item.purchaseDate,
-                       purchaseDate < startDate {
-                        return false
+                    Button(action: { showingInfo.toggle() }) {
+                        Image(systemName: "info.circle")
+                            .font(.caption)
+                            .foregroundStyle(.blue)
                     }
-                    
-                    if let endDate = criteria.purchaseDateEnd,
-                       let purchaseDate = item.purchaseDate,
-                       purchaseDate > endDate {
-                        return false
-                    }
-                    
-                    // Apply price range filter
-                    if let minPrice = criteria.minPrice,
-                       let purchasePrice = item.purchasePrice,
-                       purchasePrice < Decimal(minPrice) {
-                        return false
-                    }
-                    
-                    if let maxPrice = criteria.maxPrice,
-                       let purchasePrice = item.purchasePrice,
-                       purchasePrice > Decimal(maxPrice) {
-                        return false
-                    }
-                    
-                    return true
                 }
-            } else {
-                searchResults = try await itemRepository.searchWithCriteria(criteria)
+                
+                if isEnabled {
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text("Similarity: \(Int(threshold * 100))%")
+                            .font(.caption2)
+                            .foregroundStyle(.secondary)
+                        
+                        Slider(value: $threshold, in: 0.5...1.0, step: 0.05)
+                            .tint(.blue)
+                    }
+                    .transition(.opacity.combined(with: .move(edge: .top)))
+                }
             }
-            
-            // Add to search history
-            addToSearchHistory(query)
-            
-            // Save to persistent search history
-            let historyEntry = SearchHistoryEntry(
-                query: query,
-                searchType: .natural,
-                resultCount: searchResults.count
-            )
-            try? await searchHistoryRepository.save(historyEntry)
-        } catch {
-            print("Search error: \(error)")
-            searchResults = []
-        }
-    }
-    
-    func clearSearch() {
-        searchResults = []
-        queryInterpretation = nil
-    }
-    
-    func performSavedSearch(_ savedSearch: SavedSearch, useFuzzySearch: Bool = false, fuzzyThreshold: Double = 0.7) async {
-        // Record usage
-        try? await savedSearchRepository.recordUsage(of: savedSearch)
-        
-        // Perform the search
-        await performNaturalLanguageSearch(savedSearch.query, useFuzzySearch: useFuzzySearch, fuzzyThreshold: fuzzyThreshold)
-    }
-    
-    private func buildInterpretation(from nlQuery: NaturalLanguageQuery) -> QueryInterpretation {
-        var components: [QueryComponent] = []
-        
-        // Add color components
-        for color in nlQuery.colors {
-            components.append(QueryComponent(
-                type: .color,
-                value: color,
-                icon: "paintpalette",
-                color: "#FF6B6B"
-            ))
-        }
-        
-        // Add item components
-        for item in nlQuery.items {
-            components.append(QueryComponent(
-                type: .item,
-                value: item,
-                icon: "cube.box",
-                color: "#4ECDC4"
-            ))
-        }
-        
-        // Add location components
-        for location in nlQuery.locations {
-            components.append(QueryComponent(
-                type: .location,
-                value: location,
-                icon: "location",
-                color: "#FFE66D"
-            ))
-        }
-        
-        // Add time components
-        for timeRef in nlQuery.timeReferences {
-            components.append(QueryComponent(
-                type: .time,
-                value: timeRef,
-                icon: "calendar",
-                color: "#95E1D3"
-            ))
-        }
-        
-        // Add price components
-        for priceRange in nlQuery.priceRanges {
-            let value: String
-            if let min = priceRange.min, let max = priceRange.max {
-                value = "$\(Int(min))-$\(Int(max))"
-            } else if let min = priceRange.min {
-                value = "over $\(Int(min))"
-            } else if let max = priceRange.max {
-                value = "under $\(Int(max))"
-            } else {
-                continue
+            .padding(12)
+            .background(Color(.systemGray6))
+            .cornerRadius(8)
+            .alert("Fuzzy Search", isPresented: $showingInfo) {
+                Button("OK", role: .cancel) { }
+            } message: {
+                Text("Fuzzy search finds items even when there are typos or similar spellings. Lower similarity values find more matches but may be less accurate.")
             }
-            
-            components.append(QueryComponent(
-                type: .price,
-                value: value,
-                icon: "dollarsign.circle",
-                color: "#A8E6CF"
-            ))
-        }
-        
-        // Add brand components
-        for brand in nlQuery.brands {
-            components.append(QueryComponent(
-                type: .brand,
-                value: brand,
-                icon: "tag",
-                color: "#C7CEEA"
-            ))
-        }
-        
-        // Add category components
-        for category in nlQuery.categories {
-            components.append(QueryComponent(
-                type: .category,
-                value: category,
-                icon: "folder",
-                color: "#FFDAB9"
-            ))
-        }
-        
-        // Add action components
-        for action in nlQuery.actions {
-            if action.lowercased().contains("warranty") {
-                components.append(QueryComponent(
-                    type: .action,
-                    value: "under warranty",
-                    icon: "shield",
-                    color: "#B19CD9"
-                ))
-            }
-        }
-        
-        return QueryInterpretation(components: components)
-    }
-    
-    private func loadSearchHistory() {
-        if let data = UserDefaults.standard.data(forKey: "searchHistory"),
-           let history = try? JSONDecoder().decode([String].self, from: data) {
-            searchHistory = history
-        }
-    }
-    
-    private func addToSearchHistory(_ query: String) {
-        // Remove if already exists
-        searchHistory.removeAll { $0 == query }
-        
-        // Add to beginning
-        searchHistory.insert(query, at: 0)
-        
-        // Keep only last 20
-        if searchHistory.count > 20 {
-            searchHistory = Array(searchHistory.prefix(20))
-        }
-        
-        // Save to UserDefaults
-        if let data = try? JSONEncoder().encode(searchHistory) {
-            UserDefaults.standard.set(data, forKey: "searchHistory")
         }
     }
 }
 
-// MARK: - Data Models
-struct QueryInterpretation {
-    let components: [QueryComponent]
+// MARK: - Voice Search Sheet
+
+extension NaturalLanguageSearchView {
+    struct VoiceSearchSheet: View {
+        @Binding var searchText: String
+        @Binding var isPresented: Bool
+        let onCommit: () -> Void
+        @StateObject private var voiceSearch = VoiceSearchService()
+        @State private var isListening = false
+        
+        var body: some View {
+            NavigationView {
+                VStack(spacing: 24) {
+                    Spacer()
+                    
+                    // Microphone animation
+                    ZStack {
+                        if isListening {
+                            ForEach(0..<3) { index in
+                                Circle()
+                                    .stroke(lineWidth: 2)
+                                    .foregroundStyle(.blue.opacity(0.3))
+                                    .scaleEffect(isListening ? 2 : 1)
+                                    .opacity(isListening ? 0 : 1)
+                                    .animation(
+                                        Animation.easeOut(duration: 1.5)
+                                            .repeatForever(autoreverses: false)
+                                            .delay(Double(index) * 0.5),
+                                        value: isListening
+                                    )
+                            }
+                        }
+                        
+                        Image(systemName: isListening ? "mic.fill" : "mic")
+                            .font(.system(size: 60))
+                            .foregroundStyle(isListening ? .red : .blue)
+                            .symbolEffect(.bounce, value: isListening)
+                    }
+                    .frame(width: 120, height: 120)
+                    
+                    Text(isListening ? "Listening..." : "Tap to speak")
+                        .font(.headline)
+                        .foregroundStyle(.primary)
+                    
+                    if !voiceSearch.transcribedText.isEmpty {
+                        Text(voiceSearch.transcribedText)
+                            .font(.body)
+                            .foregroundStyle(.secondary)
+                            .padding()
+                            .background(Color(.systemGray6))
+                            .cornerRadius(12)
+                            .padding(.horizontal)
+                    }
+                    
+                    Spacer()
+                    
+                    // Control buttons
+                    HStack(spacing: 20) {
+                        Button(action: {
+                            if isListening {
+                                voiceSearch.stopRecording()
+                                isListening = false
+                            } else {
+                                do {
+                                    try voiceSearch.startRecording()
+                                    isListening = true
+                                } catch {
+                                    print("Failed to start recording: \(error)")
+                                }
+                            }
+                        }) {
+                            Image(systemName: isListening ? "stop.circle.fill" : "mic.circle.fill")
+                                .font(.system(size: 64))
+                                .foregroundStyle(isListening ? .red : .blue)
+                        }
+                        .disabled(!voiceSearch.isAuthorized)
+                        
+                        if !voiceSearch.transcribedText.isEmpty {
+                            Button(action: {
+                                searchText = voiceSearch.transcribedText
+                                isPresented = false
+                                onCommit()
+                            }) {
+                                Image(systemName: "checkmark.circle.fill")
+                                    .font(.system(size: 64))
+                                    .foregroundStyle(.green)
+                            }
+                        }
+                    }
+                    .padding(.bottom, 40)
+                }
+                .navigationTitle("Voice Search")
+                .navigationBarTitleDisplayMode(.inline)
+                .toolbar {
+                    ToolbarItem(placement: .navigationBarLeading) {
+                        Button("Cancel") {
+                            voiceSearch.stopRecording()
+                            isPresented = false
+                        }
+                    }
+                }
+                .onAppear {
+                    if !voiceSearch.isAuthorized {
+                        voiceSearch.requestAuthorization()
+                    }
+                }
+                .onDisappear {
+                    voiceSearch.stopRecording()
+                }
+                .onChange(of: voiceSearch.isRecording) { isRecording in
+                    isListening = isRecording
+                }
+            }
+        }
+    }
 }
 
-struct QueryComponent: Hashable {
-    enum ComponentType {
-        case color, item, location, time, price, brand, category, action
-    }
-    
-    let type: ComponentType
-    let value: String
-    let icon: String
-    let color: String
-}
-}
+
+
+

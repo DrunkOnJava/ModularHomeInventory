@@ -98,7 +98,8 @@ platform :ios do
       ensure_git_status_clean
     end
     
-    ensure_build_number
+    # Auto-increment build number for TestFlight
+    increment_build_number(xcodeproj: "HomeInventoryModular.xcodeproj")
     
     # Build the app - let Xcode handle provisioning
     build_app(

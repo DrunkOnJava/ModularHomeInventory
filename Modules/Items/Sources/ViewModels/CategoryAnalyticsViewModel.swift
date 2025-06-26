@@ -1,6 +1,6 @@
 //
 //  CategoryAnalyticsViewModel.swift
-//  HomeInventoryModular
+//  Items Module
 //
 //  Apple Configuration:
 //  Bundle Identifier: com.homeinventory.app
