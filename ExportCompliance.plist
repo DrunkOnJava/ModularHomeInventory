@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>ITSAppUsesNonExemptEncryption</key>
+    <true/>
+    <key>ITSEncryptionExportComplianceCode</key>
+    <string>ecf076d3-130b-4b7d-92e0-6a69e07b5b6d</string>
+    <key>ITSAppEncryptionExemptionReasons</key>
+    <array>
+        <string>Uses only standard iOS encryption</string>
+        <string>HTTPS/TLS for network communications</string>
+        <string>iOS Data Protection APIs</string>
+        <string>Keychain Services</string>
+        <string>CloudKit encryption</string>
+    </array>
+    <key>ITSAppEncryptionDeclaration</key>
+    <dict>
+        <key>FranceDeclaration</key>
+        <string>This app uses only standard iOS cryptographic libraries for HTTPS communications, data protection, keychain storage, and CloudKit synchronization. No custom encryption implementations are included.</string>
+        <key>EncryptionType</key>
+        <string>StandardiOSEncryption</string>
+        <key>PrimaryFunction</key>
+        <string>Personal inventory management</string>
+    </dict>
+</dict>
+</plist>
