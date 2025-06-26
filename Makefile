@@ -139,6 +139,40 @@ xcode: ## Open project in Xcode
 	@echo "📱 Opening in Xcode..."
 	@open HomeInventoryModular.xcodeproj
 
+# TestFlight Commands
+testflight-validate: ## Validate build before TestFlight submission
+	@echo "🔍 Validating build..."
+	@./scripts/validate_build.sh
+
+testflight-build: ## Build and archive for TestFlight
+	@echo "🚀 Building for TestFlight..."
+	@TOOLCHAINS=swift-5.9-RELEASE xcodebuild archive \
+		-project HomeInventoryModular.xcodeproj \
+		-scheme HomeInventoryModular \
+		-configuration Release \
+		-archivePath ~/Desktop/HomeInventory.xcarchive \
+		-destination "generic/platform=iOS" \
+		-allowProvisioningUpdates
+
+testflight-export: ## Export IPA from archive
+	@echo "📱 Exporting IPA..."
+	@xcodebuild -exportArchive \
+		-archivePath ~/Desktop/HomeInventory.xcarchive \
+		-exportPath ~/Desktop/HomeInventoryExport \
+		-exportOptionsPlist ExportOptions.plist
+
+testflight-submit: ## Submit to TestFlight (requires API keys)
+	@echo "☁️ Submitting to TestFlight..."
+	@./scripts/submit_to_testflight.sh
+
+testflight: testflight-validate testflight-submit ## Complete TestFlight submission process
+
+# Aliases for TestFlight
+tf: testflight ## Alias for testflight
+tfv: testflight-validate ## Alias for testflight-validate
+tfb: testflight-build ## Alias for testflight-build
+tfs: testflight-submit ## Alias for testflight-submit
+
 test: prebuild-modules ## Run tests
 	@echo "🧪 Running tests..."
 	@xcodebuild test \

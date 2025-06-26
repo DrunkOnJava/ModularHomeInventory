@@ -282,7 +282,8 @@ public final class CurrencyExchangeService: ObservableObject {
     private let session = URLSession.shared
     
     // Mock API key - in production, this would be stored securely
-    private let apiKey = "demo_api_key"
+    // API key should be loaded from environment or secure storage
+    private let apiKey = ProcessInfo.processInfo.environment["CURRENCY_API_KEY"] ?? ""
     private let baseURL = "https://api.exchangerate-api.com/v4/latest/"
     
     // MARK: - Initialization
