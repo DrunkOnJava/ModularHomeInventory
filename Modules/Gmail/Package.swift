@@ -1,3 +1,4 @@
+// swift-tools-version: 5.9
 //
 //  Package.swift
 //  Gmail Module
@@ -47,8 +48,6 @@
 //  Created by Griffin Long on June 25, 2025
 //  Copyright © 2025 Home Inventory. All rights reserved.
 //
-
-// swift-tools-version: 5.9
 // ⚠️ IMPORTANT: This project MUST use Swift 5.9 - DO NOT upgrade to Swift 6
 import PackageDescription
 
