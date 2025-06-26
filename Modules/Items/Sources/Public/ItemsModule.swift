@@ -146,7 +146,6 @@ public final class ItemsModule: ItemsModuleAPI {
                 searchHistoryRepository: dependencies.searchHistoryRepository,
                 savedSearchRepository: dependencies.savedSearchRepository,
                 locationRepository: dependencies.locationRepository
-                // categoryRepository: dependencies.categoryRepository
             )
         )
     }

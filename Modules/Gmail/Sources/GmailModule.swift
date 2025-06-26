@@ -16,6 +16,18 @@ public final class GmailModule: ObservableObject, GmailModuleAPI {
     let bridge: GmailBridge
     
     public init() {
+        // Configure Google Sign-In if not already configured
+        if GIDSignIn.sharedInstance.configuration == nil {
+            if let path = Bundle.module.path(forResource: "GoogleServices", ofType: "plist"),
+               let plist = NSDictionary(contentsOfFile: path),
+               let clientId = plist["CLIENT_ID"] as? String {
+                GIDSignIn.sharedInstance.configuration = GIDConfiguration(clientID: clientId)
+                print("[GmailModule] Google Sign-In configured with client ID: \(clientId)")
+            } else {
+                print("[GmailModule] Warning: GoogleServices.plist not found in module bundle")
+            }
+        }
+        
         self.bridge = GmailBridge()
         self.authService = bridge.authService
         self.gmailAPI = bridge.gmailAPI

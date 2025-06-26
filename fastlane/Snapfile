@@ -1,51 +1,38 @@
-# Snapfile configuration for screenshot automation
+# Uncomment the lines below you want to change by removing the # in the beginning
 
 # A list of devices you want to take the screenshots from
-devices([
-  "iPhone 16 Pro Max",              # 6.9" Display (Required)
-  "iPhone 16 Pro",                  # 6.1" Display
-  "iPhone 16",                      # Standard size
-  "iPad Pro 13-inch (M4)",          # iPad 13"
-  "iPad Pro 11-inch (M4)"           # iPad 11"
-])
+# devices([
+#   "iPhone 8",
+#   "iPhone 8 Plus",
+#   "iPhone SE",
+#   "iPhone X",
+#   "iPad Pro (12.9-inch)",
+#   "iPad Pro (9.7-inch)",
+#   "Apple TV 1080p",
+#   "Apple Watch Series 6 - 44mm"
+# ])
 
-# Languages to capture
-languages([
-  "en-US"
-  # Add more languages as needed:
-  # "es-ES",    # Spanish
-  # "fr-FR",    # French
-  # "de-DE",    # German
-  # "zh-Hans",  # Chinese Simplified
-  # "ja"        # Japanese
-])
+# languages([
+#   "en-US",
+#   "de-DE",
+#   "it-IT",
+#   ["pt", "pt_BR"] # Portuguese with Brazilian locale
+# ])
 
 # The name of the scheme which contains the UI Tests
-scheme("HomeInventoryModular")
-
-# Use workspace instead of project to resolve SPM dependencies
-workspace("./HomeInventoryModular.xcworkspace")
-
-# The test bundle to run
-test_target_name("HomeInventoryModularUITests")
-
-# The app identifier of the app to be tested
-app_identifier("com.homeinventory.app")
-
-# Specify the test case to run
-only_testing("HomeInventoryModularUITests/HomeInventoryModularUITests/testTakeScreenshots")
+# scheme("SchemeName")
 
 # Where should the resulting screenshots be stored?
-output_directory("./fastlane/screenshots")
+# output_directory("./screenshots")
 
-# Clear all previously generated screenshots before creating new ones
-clear_previous_screenshots(true)
+# remove the '#' to clear all previously generated screenshots before creating new ones
+# clear_previous_screenshots(true)
 
-# Remove the '#' to set the status bar to 9:41 AM, full battery, and full cellular bars
-override_status_bar(true)
+# Remove the '#' to set the status bar to 9:41 AM, and show full battery and reception. See also override_status_bar_arguments for custom options.
+# override_status_bar(true)
 
-# Arguments to pass to the app on launch.
-launch_arguments(["-FASTLANE_SNAPSHOT"])
+# Arguments to pass to the app on launch. See https://docs.fastlane.tools/actions/snapshot/#launch-arguments
+# launch_arguments(["-favColor red"])
 
 # For more information about all available options run
 # fastlane action snapshot

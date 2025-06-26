@@ -34,7 +34,7 @@ public struct WarrantyExpirationWidgetView: View {
                     .font(.title2)
                     .foregroundStyle(.orange)
                 Spacer()
-                if entry.expiringWarranties.count > 0 {
+                if !entry.expiringWarranties.isEmpty {
                     Text("\(entry.expiringWarranties.count)")
                         .font(.caption)
                         .fontWeight(.semibold)
@@ -107,7 +107,7 @@ public struct WarrantyExpirationWidgetView: View {
                         label: "Active",
                         color: .green
                     )
-                    if entry.expiringWarranties.count > 0 {
+                    if !entry.expiringWarranties.isEmpty {
                         StatBadge(
                             value: entry.expiringWarranties.count,
                             label: "Expiring",

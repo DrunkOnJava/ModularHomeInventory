@@ -14,7 +14,8 @@ let package = Package(
     dependencies: [
         .package(path: "../Core"),
         .package(path: "../SharedUI"),
-        .package(path: "../Sync")
+        .package(path: "../Sync"),
+        .package(url: "https://github.com/pointfreeco/swift-snapshot-testing", from: "1.15.0")
     ],
     targets: [
         .target(
@@ -24,7 +25,10 @@ let package = Package(
         ),
         .testTarget(
             name: "AppSettingsTests",
-            dependencies: ["AppSettings"],
+            dependencies: [
+                "AppSettings",
+                .product(name: "SnapshotTesting", package: "swift-snapshot-testing")
+            ],
             path: "Tests"
         ),
     ]

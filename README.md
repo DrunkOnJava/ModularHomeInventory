@@ -1,88 +1,61 @@
-# Modular Home Inventory
+# Home Inventory Modular
 
-A modern iOS app for managing your home inventory with a modular architecture.
+A comprehensive home inventory management app built with SwiftUI and modular architecture.
 
-## 🔒 Privacy First
+## Project Structure
 
-Your privacy is our priority. **All data stays on your device** or in your personal iCloud account.
-
-- ✅ **No data collection** - We don't have servers
-- ✅ **No tracking** - No analytics or advertising
-- ✅ **You own your data** - Export or delete anytime
-- 📄 [Privacy Policy](PRIVACY_POLICY.md) | [Simple Summary](PRIVACY_POLICY_SUMMARY.md)
-
-## Features
-
-- 📦 **Item Management**: Track all your belongings with photos, receipts, and warranties
-- 📊 **Analytics**: Spending insights, retailer analytics, and portfolio tracking  
-- 🔍 **Smart Search**: Natural language search, barcode scanning, and fuzzy matching
-- 📄 **Document Support**: Attach PDFs, receipts, manuals, and warranties
-- 🏪 **Store Analytics**: Track spending by retailer with performance metrics
-- 🔄 **Offline Support**: Queue scans and sync when connected
-- 🎯 **Modular Architecture**: Clean separation of concerns with Swift Package Manager
+```
+.
+├── Source/                 # Application source code
+│   ├── App/               # App entry points (AppDelegate, etc.)
+│   ├── Views/             # Main application views
+│   └── iPad/              # iPad-specific features
+├── Modules/               # Modular components
+│   ├── Core/              # Core models and services
+│   ├── Items/             # Item management
+│   ├── BarcodeScanner/    # Barcode scanning
+│   ├── AppSettings/       # Settings management
+│   ├── Receipts/          # Receipt management
+│   ├── SharedUI/          # Shared UI components
+│   ├── Sync/              # Sync functionality
+│   ├── Premium/           # Premium features
+│   ├── Onboarding/        # Onboarding flow
+│   └── Widgets/           # Home screen widgets
+├── Supporting Files/      # Assets and resources
+├── Config/                # Configuration files
+├── scripts/               # Build and utility scripts
+├── fastlane/              # Fastlane automation
+├── docs/                  # Documentation
+├── Build Archives/        # IPA and dSYM files
+└── Test Results/          # Test result bundles
+```
 
 ## Quick Start
 
 ```bash
-# Install dependencies
-make install-deps
-
 # Build and run
-make br
+make build run
 
-# Build only
-make build  # Note: Auto-commits on success by default!
+# Run tests
+make test
+
+# Lint code
+make lint
 ```
 
-## Auto-Commit Feature
+## Documentation
 
-**Builds automatically commit and push to GitHub by default!**
+See the `docs/` directory for detailed documentation:
+- [Modular Architecture Guide](docs/MODULAR_REBUILD_GUIDE.md)
+- [Build Workflow](docs/MANDATORY_BUILD_WORKFLOW.md)
+- [TODO List](docs/TODO.md)
 
-To build without auto-commit:
-```bash
-make build AUTO_COMMIT=false
-```
+## Requirements
 
-See [docs/AUTO_COMMIT.md](docs/AUTO_COMMIT.md) for details.
-
-## Development
-
-### Requirements
-- Xcode 15+
-- iOS 17+
-- Swift 5.9 (Important: Do not upgrade to Swift 6)
-
-### Architecture
-The app uses a modular architecture with separate packages:
-- **Core**: Shared models, protocols, and services
-- **Items**: Item management and analytics
-- **Scanner**: Barcode scanning and OCR
-- **Settings**: App configuration
-- **Receipts**: Receipt scanning and management
-- **SharedUI**: Reusable UI components
-- **Premium**: In-app purchases
-- **Sync**: Cloud synchronization
-- **Onboarding**: First-time user experience
-
-### Commands
-
-```bash
-make help         # Show all commands
-make build        # Build the app (auto-commits by default)
-make run          # Run in simulator
-make test         # Run tests
-make clean        # Clean build artifacts
-make xcode        # Open in Xcode
-```
-
-## Contributing
-
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Run `make build` to test (will auto-commit)
-5. Create a pull request
+- Xcode 15.0+
+- iOS 17.0+
+- Swift 5.9 (DO NOT upgrade to Swift 6)
 
 ## License
 
-This project is proprietary software. All rights reserved.
+Copyright © 2024. All rights reserved.

@@ -6,12 +6,14 @@ import SharedUI
 /// Swift 5.9 - No Swift 6 features
 struct NaturalLanguageSearchView: View {
     @StateObject private var viewModel: NaturalLanguageSearchViewModel
+    @StateObject private var voiceSearch = VoiceSearchService()
     @State private var searchQuery = ""
     @State private var showingSuggestions = false
     @State private var selectedItem: Item?
     @State private var showingSearchHistory = false
     @State private var showingSavedSearches = false
     @State private var showingSaveSearch = false
+    @State private var showingVoiceSearch = false
     @State private var useFuzzySearch = false
     @State private var fuzzyThreshold = 0.7
     @FocusState private var isSearchFocused: Bool
@@ -52,17 +54,21 @@ struct NaturalLanguageSearchView: View {
     }
     
     var body: some View {
-        VStack(spacing: 0) {
+        NavigationStack {
+            VStack(spacing: 0) {
                 // Search bar with natural language hints
                 VStack(alignment: .leading, spacing: 8) {
                     // TODO: Re-enable search field with suggestions
                     // Fallback to regular search field
                     HStack {
-                        Image(systemName: "mic.fill")
-                            .foregroundStyle(.secondary)
-                            .onTapGesture {
-                                // TODO: Voice input
-                            }
+                        Button(action: {
+                            showingVoiceSearch = true
+                        }) {
+                            Image(systemName: voiceSearch.isRecording ? "mic.fill" : "mic")
+                                .foregroundStyle(voiceSearch.isRecording ? .red : .blue)
+                                .symbolEffect(.bounce, value: voiceSearch.isRecording)
+                        }
+                        .disabled(!voiceSearch.isAuthorized)
                         
                         TextField("Try 'red shoes bought last month' or 'electronics under warranty'", text: $searchQuery)
                             .textFieldStyle(.plain)
@@ -123,6 +129,25 @@ struct NaturalLanguageSearchView: View {
                 }
                 .padding()
                 .animation(.easeInOut(duration: 0.2), value: viewModel.queryInterpretation != nil)
+                .onAppear {
+                    if !voiceSearch.isAuthorized {
+                        voiceSearch.requestAuthorization()
+                    }
+                }
+                .onChange(of: voiceSearch.transcribedText) { newText in
+                    if !newText.isEmpty {
+                        searchQuery = newText
+                        if !voiceSearch.isRecording {
+                            Task {
+                                await viewModel.performNaturalLanguageSearch(
+                                    searchQuery,
+                                    useFuzzySearch: useFuzzySearch,
+                                    fuzzyThreshold: fuzzyThreshold
+                                )
+                            }
+                        }
+                    }
+                }
                 
                 // Example queries
                 if viewModel.searchResults.isEmpty && searchQuery.isEmpty {
@@ -138,10 +163,10 @@ struct NaturalLanguageSearchView: View {
                     }
                 } else if viewModel.searchResults.isEmpty && !searchQuery.isEmpty && !viewModel.isSearching {
                     // No results
-                    NoResultsView(query: searchQuery)
+                    NLSearchNoResultsView(query: searchQuery)
                 } else {
                     // Search results
-                    SearchResultsList(
+                    NLSearchResultsList(
                         items: viewModel.searchResults,
                         onSelectItem: { item in
                             selectedItem = item
@@ -248,7 +273,22 @@ struct NaturalLanguageSearchView: View {
             .onAppear {
                 isSearchFocused = true
             }
+            .sheet(isPresented: $showingVoiceSearch) {
+            VoiceSearchSheet(
+                searchText: $searchQuery,
+                isPresented: $showingVoiceSearch,
+                onCommit: {
+                    Task {
+                        await viewModel.performNaturalLanguageSearch(
+                            searchQuery,
+                            useFuzzySearch: useFuzzySearch,
+                            fuzzyThreshold: fuzzyThreshold
+                        )
+                    }
+                }
+            )
         }
+    }
 }
 
 // MARK: - Query Interpretation View
@@ -296,16 +336,16 @@ struct ExampleQueriesView: View {
     let onSelectQuery: (String) -> Void
     
     let examples = [
-        ("🔴 Color Search", "red items in bedroom"),
-        ("📅 Time-based", "items bought last month"),
-        ("💰 Price Range", "electronics under $100"),
-        ("📍 Location", "tools in garage"),
-        ("🏷️ Brand", "Apple products"),
-        ("✅ Warranty", "items under warranty"),
-        ("🆕 Recent", "recently added items"),
-        ("🏪 Store", "items from Amazon"),
-        ("📦 Category", "electronics in office"),
-        ("🔍 Combined", "black Nike shoes under $200")
+        ("paintpalette", "Color Search", "red items in bedroom"),
+        ("calendar", "Time-based", "items bought last month"),
+        ("dollarsign.circle", "Price Range", "electronics under $100"),
+        ("location", "Location", "tools in garage"),
+        ("tag", "Brand", "Apple products"),
+        ("checkmark.shield", "Warranty", "items under warranty"),
+        ("sparkles", "Recent", "recently added items"),
+        ("storefront", "Store", "items from Amazon"),
+        ("shippingbox", "Category", "electronics in office"),
+        ("magnifyingglass", "Combined", "black Nike shoes under $200")
     ]
     
     var body: some View {
@@ -316,12 +356,13 @@ struct ExampleQueriesView: View {
                     .padding(.horizontal)
                 
                 LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 12) {
-                    ForEach(examples, id: \.1) { example in
+                    ForEach(examples, id: \.2) { example in
                         ExampleQueryCard(
-                            icon: example.0,
-                            query: example.1,
+                            iconName: example.0,
+                            title: example.1,
+                            query: example.2,
                             onTap: {
-                                onSelectQuery(example.1)
+                                onSelectQuery(example.2)
                             }
                         )
                     }
@@ -334,18 +375,27 @@ struct ExampleQueriesView: View {
 }
 
 struct ExampleQueryCard: View {
-    let icon: String
+    let iconName: String
+    let title: String
     let query: String
     let onTap: () -> Void
     
     var body: some View {
         Button(action: onTap) {
             VStack(alignment: .leading, spacing: 8) {
-                Text(icon)
-                    .font(.title2)
+                HStack {
+                    Image(systemName: iconName)
+                        .font(.title2)
+                        .foregroundStyle(.blue)
+                    Text(title)
+                        .font(.caption)
+                        .fontWeight(.semibold)
+                        .foregroundStyle(.primary)
+                    Spacer()
+                }
                 Text(query)
                     .font(.caption)
-                    .foregroundStyle(.primary)
+                    .foregroundStyle(.secondary)
                     .multilineTextAlignment(.leading)
                     .lineLimit(2)
             }
@@ -359,7 +409,7 @@ struct ExampleQueryCard: View {
 }
 
 // MARK: - No Results View
-struct NoResultsView: View {
+struct NLSearchNoResultsView: View {
     let query: String
     
     var body: some View {
@@ -416,7 +466,7 @@ struct BulletPoint: View {
 }
 
 // MARK: - Search Results List
-struct SearchResultsList: View {
+struct NLSearchResultsList: View {
     let items: [Item]
     let onSelectItem: (Item) -> Void
     
@@ -696,4 +746,5 @@ struct QueryComponent: Hashable {
     let value: String
     let icon: String
     let color: String
+}
 }

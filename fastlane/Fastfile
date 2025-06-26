@@ -83,8 +83,8 @@ platform :ios do
       skip_waiting_for_build_processing: true,
       skip_submission: false,
       distribute_external: false,
-      changelog: "Version 1.0.0 Build 2\n\n• Complete rebuild with modular architecture\n• Enhanced UI with SwiftUI\n• Better organization features\n• Improved barcode scanning\n• iCloud sync support",
-      beta_app_description: "MyHome Inventory Pro helps you catalog and manage all your belongings with powerful organization features.",
+      changelog: "🎉 Home Inventory v1.0.5 - Major Update!\n\n📱 ENHANCED iPAD EXPERIENCE\n• New sidebar navigation with split view support\n• Apple Pencil annotation support\n• Comprehensive keyboard shortcuts\n• Drag & drop functionality\n\n🔐 ADVANCED SECURITY\n• Two-factor authentication (2FA)\n• Private mode with biometric lock\n• Auto-lock with configurable timeout\n• AES-256 encrypted backups\n\n📊 POWERFUL ANALYTICS & REPORTS\n• PDF report generation for insurance\n• Category spending analysis\n• Depreciation tracking\n• Budget dashboard with limits\n\n💰 FINANCIAL FEATURES\n• Multi-currency support with real-time conversion\n• Insurance integration dashboard\n• Warranty management and reminders\n• Maintenance scheduling\n\n📧 GMAIL INTEGRATION\n• Automatic receipt import from Gmail\n• AI-powered receipt categorization\n• Bulk import capabilities\n• Smart email filtering\n\n🏠 FAMILY & COLLABORATION\n• Family sharing with permission controls\n• Collaborative inventory lists\n• Activity tracking and history\n• Multi-user support\n\n🔍 ADVANCED SEARCH\n• Natural language search\n• Voice search commands\n• Image similarity search\n• Smart filtering options\n\n☁️ SYNC & BACKUP\n• Multi-platform synchronization\n• Automatic cloud backups\n• Offline mode support\n• Smart conflict resolution\n\n⚡ PERFORMANCE IMPROVEMENTS\n• 40% faster app launch\n• 25% reduced memory usage\n• Enhanced battery efficiency\n• Improved network performance\n\n🎨 UI/UX ENHANCEMENTS\n• Full dark mode support\n• Enhanced accessibility\n• Smooth animations\n• Dynamic type support\n\n🐛 BUG FIXES & STABILITY\n• Fixed receipt import crashes\n• Resolved sync conflicts\n• Improved barcode scanner reliability\n• Better error handling\n\n🔒 PRIVACY & SECURITY\n• GDPR/CCPA compliant\n• Local biometric authentication\n• No third-party data sharing\n• Full encryption compliance\n\nTesting Instructions:\n• Test item management and barcode scanning\n• Try Gmail receipt import\n• Verify sync across devices\n• Test iPad-specific features\n• Check accessibility with VoiceOver\n\nFeedback: griffinradcliffe@gmail.com",
+      beta_app_description: "Home Inventory - The most comprehensive personal inventory management app. Track belongings, manage warranties, generate insurance reports, and collaborate with family. Features advanced security, multi-currency support, Gmail integration, and powerful analytics. Perfect for insurance documentation, moving, and organization.",
       beta_app_feedback_email: "griffinradcliffe@gmail.com"
     )
     
@@ -115,8 +115,8 @@ platform :ios do
       skip_waiting_for_build_processing: true,
       skip_submission: false,
       distribute_external: false,
-      changelog: "Version 1.0.0 Build 2\n\n• Complete rebuild with modular architecture\n• Enhanced UI with SwiftUI\n• Better organization features\n• Improved barcode scanning\n• iCloud sync support",
-      beta_app_description: "MyHome Inventory Pro helps you catalog and manage all your belongings with powerful organization features.",
+      changelog: "🎉 Home Inventory v1.0.5 - Major Update!\n\n📱 ENHANCED iPAD EXPERIENCE\n• New sidebar navigation with split view support\n• Apple Pencil annotation support\n• Comprehensive keyboard shortcuts\n• Drag & drop functionality\n\n🔐 ADVANCED SECURITY\n• Two-factor authentication (2FA)\n• Private mode with biometric lock\n• Auto-lock with configurable timeout\n• AES-256 encrypted backups\n\n📊 POWERFUL ANALYTICS & REPORTS\n• PDF report generation for insurance\n• Category spending analysis\n• Depreciation tracking\n• Budget dashboard with limits\n\n💰 FINANCIAL FEATURES\n• Multi-currency support with real-time conversion\n• Insurance integration dashboard\n• Warranty management and reminders\n• Maintenance scheduling\n\n📧 GMAIL INTEGRATION\n• Automatic receipt import from Gmail\n• AI-powered receipt categorization\n• Bulk import capabilities\n• Smart email filtering\n\n🏠 FAMILY & COLLABORATION\n• Family sharing with permission controls\n• Collaborative inventory lists\n• Activity tracking and history\n• Multi-user support\n\n🔍 ADVANCED SEARCH\n• Natural language search\n• Voice search commands\n• Image similarity search\n• Smart filtering options\n\n☁️ SYNC & BACKUP\n• Multi-platform synchronization\n• Automatic cloud backups\n• Offline mode support\n• Smart conflict resolution\n\n⚡ PERFORMANCE IMPROVEMENTS\n• 40% faster app launch\n• 25% reduced memory usage\n• Enhanced battery efficiency\n• Improved network performance\n\n🎨 UI/UX ENHANCEMENTS\n• Full dark mode support\n• Enhanced accessibility\n• Smooth animations\n• Dynamic type support\n\n🐛 BUG FIXES & STABILITY\n• Fixed receipt import crashes\n• Resolved sync conflicts\n• Improved barcode scanner reliability\n• Better error handling\n\n🔒 PRIVACY & SECURITY\n• GDPR/CCPA compliant\n• Local biometric authentication\n• No third-party data sharing\n• Full encryption compliance\n\nTesting Instructions:\n• Test item management and barcode scanning\n• Try Gmail receipt import\n• Verify sync across devices\n• Test iPad-specific features\n• Check accessibility with VoiceOver\n\nFeedback: griffinradcliffe@gmail.com",
+      beta_app_description: "Home Inventory - The most comprehensive personal inventory management app. Track belongings, manage warranties, generate insurance reports, and collaborate with family. Features advanced security, multi-currency support, Gmail integration, and powerful analytics. Perfect for insurance documentation, moving, and organization.",
       beta_app_feedback_email: "griffinradcliffe@gmail.com"
     )
     
@@ -153,36 +153,6 @@ platform :ios do
     UI.success("✅ Dependencies resolved!")
   end
 
-  desc "Generate App Store screenshots using snapshot"
-  lane :screenshots do
-    # Use the new screenshot generation system
-    UI.message("📸 Running comprehensive screenshot generation...")
-    
-    # Clean previous screenshots
-    clear_screenshots
-    
-    # Capture using snapshot with our custom UI tests
-    capture_screenshots(
-      workspace: "HomeInventoryModular.xcworkspace",
-      scheme: "HomeInventoryModular",
-      output_directory: "./fastlane/screenshots",
-      clear_previous_screenshots: true,
-      override_status_bar: true,
-      test_without_building: false,
-      configuration: "Debug"
-    )
-    
-    UI.success("✅ Screenshots generated successfully!")
-  end
-  
-  desc "Clear all screenshot directories"
-  lane :clear_screenshots do
-    sh("rm -rf ../Screenshots/")
-    sh("rm -rf ./screenshots/")
-    sh("rm -rf ~/Documents/ComponentScreenshots/")
-    sh("rm -rf ~/Documents/UITestScreenshots/")
-    UI.success("✅ Screenshot directories cleaned!")
-  end
 
   desc "Validate the app before submission"
   lane :validate do

@@ -32,6 +32,49 @@ public class GmailAuthService: ObservableObject {
         print("[GmailAuthService] Starting sign-in flow")
         print("[GmailAuthService] Requesting scope: \(gmailScope)")
         
+        // Ensure Google Sign-In is configured
+        if GIDSignIn.sharedInstance.configuration == nil {
+            print("[GmailAuthService] Google Sign-In not configured! Attempting to configure...")
+            
+            // Try to find configuration in various places
+            var configured = false
+            
+            // Try module bundle first
+            if let path = Bundle.module.path(forResource: "GoogleServices", ofType: "plist"),
+               let plist = NSDictionary(contentsOfFile: path),
+               let clientId = plist["CLIENT_ID"] as? String {
+                GIDSignIn.sharedInstance.configuration = GIDConfiguration(clientID: clientId)
+                print("[GmailAuthService] Configured with client ID from module bundle: \(clientId)")
+                configured = true
+            }
+            
+            // Try main bundle GoogleServices.plist
+            if !configured,
+               let path = Bundle.main.path(forResource: "GoogleServices", ofType: "plist"),
+               let plist = NSDictionary(contentsOfFile: path),
+               let clientId = plist["CLIENT_ID"] as? String {
+                GIDSignIn.sharedInstance.configuration = GIDConfiguration(clientID: clientId)
+                print("[GmailAuthService] Configured with client ID from main bundle GoogleServices: \(clientId)")
+                configured = true
+            }
+            
+            // Try main bundle GoogleSignIn-Info.plist
+            if !configured,
+               let path = Bundle.main.path(forResource: "GoogleSignIn-Info", ofType: "plist"),
+               let plist = NSDictionary(contentsOfFile: path),
+               let clientId = plist["GIDClientID"] as? String {
+                GIDSignIn.sharedInstance.configuration = GIDConfiguration(clientID: clientId)
+                print("[GmailAuthService] Configured with client ID from GoogleSignIn-Info: \(clientId)")
+                configured = true
+            }
+            
+            if !configured {
+                print("[GmailAuthService] ERROR: Failed to configure Google Sign-In. Cannot proceed with sign-in.")
+                self.error = NSError(domain: "GmailAuthService", code: -1, userInfo: [NSLocalizedDescriptionKey: "Google Sign-In is not configured"])
+                return
+            }
+        }
+        
         GIDSignIn.sharedInstance.signIn(
             withPresenting: presentingViewController,
             hint: nil,

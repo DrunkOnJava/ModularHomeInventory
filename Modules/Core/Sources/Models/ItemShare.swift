@@ -14,7 +14,7 @@ public struct ItemShare {
     
     /// Generate shareable text representation
     public func asText() -> String {
-        var text = "📦 \(item.name)\n"
+        var text = "\(item.name)\n"
         
         if let brand = item.brand {
             text += "Brand: \(brand)\n"

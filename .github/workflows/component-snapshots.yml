@@ -1,0 +1,109 @@
+name: Component Snapshots
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  schedule:
+    # Run nightly at 2 AM UTC
+    - cron: '0 2 * * *'
+  workflow_dispatch:
+
+jobs:
+  generate-snapshots:
+    runs-on: macos-14
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Xcode
+      uses: maxim-lobanov/setup-xcode@v1
+      with:
+        xcode-version: '15.2'
+    
+    - name: Cache Swift packages
+      uses: actions/cache@v3
+      with:
+        path: |
+          ~/Library/Developer/Xcode/DerivedData
+          .build
+        key: ${{ runner.os }}-spm-${{ hashFiles('**/Package.resolved') }}
+        restore-keys: |
+          ${{ runner.os }}-spm-
+    
+    - name: Install dependencies
+      run: |
+        brew install swift-format || true
+        
+    - name: Generate component snapshots
+      run: |
+        ./scripts/generate_snapshots.sh
+      env:
+        SNAPSHOT_TESTING: 1
+    
+    - name: Upload snapshot artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: component-snapshots
+        path: fastlane/component_screenshots/
+        retention-days: 30
+    
+    - name: Upload snapshot gallery
+      uses: actions/upload-artifact@v3
+      with:
+        name: snapshot-gallery
+        path: fastlane/component_screenshots/index.html
+        retention-days: 30
+    
+    # Optional: Compare with baseline snapshots
+    - name: Compare snapshots
+      if: github.event_name == 'pull_request'
+      run: |
+        # Download baseline snapshots from main branch
+        # This is a placeholder - implement based on your needs
+        echo "Snapshot comparison would happen here"
+    
+    # Optional: Comment on PR with snapshot changes
+    - name: Comment PR
+      if: github.event_name == 'pull_request' && failure()
+      uses: actions/github-script@v6
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        script: |
+          github.rest.issues.createComment({
+            issue_number: context.issue.number,
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            body: '⚠️ **Visual Regression Detected**\n\nSome component snapshots have changed. Please review the snapshot artifacts to ensure the changes are intentional.'
+          })
+    
+    # Generate snapshot report
+    - name: Generate snapshot report
+      if: always()
+      run: |
+        cat > snapshot-report.md << 'EOF'
+        # Component Snapshot Report
+        
+        Generated: $(date)
+        Branch: ${{ github.ref }}
+        Commit: ${{ github.sha }}
+        
+        ## Summary
+        - Total snapshots: $(find fastlane/component_screenshots -name "*.png" | wc -l)
+        - Modules tested: $(find Modules -name "*SnapshotTests.swift" | wc -l)
+        
+        ## View Gallery
+        [View the snapshot gallery](artifact:snapshot-gallery)
+        
+        ## Changed Files
+        $(git diff --name-only HEAD^ HEAD | grep -E "(View|Component)\.swift$" || echo "No view changes")
+        EOF
+    
+    - name: Upload report
+      if: always()
+      uses: actions/upload-artifact@v3
+      with:
+        name: snapshot-report
+        path: snapshot-report.md

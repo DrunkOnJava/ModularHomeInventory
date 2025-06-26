@@ -3,6 +3,7 @@ import SharedUI
 import Core
 import Sync
 
+
 /// Simplified enhanced settings view with sophisticated UI/UX
 public struct EnhancedSettingsView: View {
     @StateObject private var viewModel: SettingsViewModel
@@ -100,6 +101,10 @@ public struct EnhancedSettingsView: View {
             sheetContent = .categories
         case "biometric":
             sheetContent = .biometric
+        case "autoLock":
+            sheetContent = .autoLock
+        case "privateMode":
+            sheetContent = .privateMode
         case "privacy":
             sheetContent = .privacy
         case "terms":
@@ -122,6 +127,10 @@ public struct EnhancedSettingsView: View {
             sheetContent = .share
         case "support":
             handleSupport()
+        case "backup":
+            sheetContent = .backup
+        case "currencyExchange":
+            sheetContent = .currencyExchange
         default:
             break
         }
@@ -154,31 +163,19 @@ public struct EnhancedSettingsView: View {
             NavigationView {
                 NotificationSettingsView()
                     .navigationBarTitleDisplayMode(.inline)
-                    .toolbar {
-                        ToolbarItem(placement: .navigationBarTrailing) {
-                            Button("Done") { sheetContent = nil }
-                        }
-                    }
+                    .navigationBarItems(trailing: Button("Done") { sheetContent = nil })
             }
         case .spotlight:
             NavigationView {
                 SpotlightSettingsView()
                     .navigationBarTitleDisplayMode(.inline)
-                    .toolbar {
-                        ToolbarItem(placement: .navigationBarTrailing) {
-                            Button("Done") { sheetContent = nil }
-                        }
-                    }
+                    .navigationBarItems(trailing: Button("Done") { sheetContent = nil })
             }
         case .accessibility:
             NavigationView {
                 AccessibilitySettingsView(settingsStorage: viewModel.settingsStorage)
                     .navigationBarTitleDisplayMode(.inline)
-                    .toolbar {
-                        ToolbarItem(placement: .navigationBarTrailing) {
-                            Button("Done") { sheetContent = nil }
-                        }
-                    }
+                    .navigationBarItems(trailing: Button("Done") { sheetContent = nil })
             }
         case .scanner:
             ScannerSettingsView(settings: $viewModel.settings, viewModel: viewModel)
@@ -188,11 +185,7 @@ public struct EnhancedSettingsView: View {
             NavigationView {
                 BiometricSettingsView()
                     .navigationBarTitleDisplayMode(.inline)
-                    .toolbar {
-                        ToolbarItem(placement: .navigationBarTrailing) {
-                            Button("Done") { sheetContent = nil }
-                        }
-                    }
+                    .navigationBarItems(trailing: Button("Done") { sheetContent = nil })
             }
         case .privacy:
             PrivacyPolicyView()
@@ -206,26 +199,18 @@ public struct EnhancedSettingsView: View {
             NavigationView {
                 CrashReportingSettingsView(settingsStorage: viewModel.settingsStorage)
                     .navigationBarTitleDisplayMode(.inline)
-                    .toolbar {
-                        ToolbarItem(placement: .navigationBarTrailing) {
-                            Button("Done") { sheetContent = nil }
-                        }
-                    }
+                    .navigationBarItems(trailing: Button("Done") { sheetContent = nil })
             }
         case .syncStatus:
             NavigationView {
                 VStack(spacing: AppSpacing.lg) {
-                    SyncStatusView()
+                    SyncStatusView(syncService: MultiPlatformSyncService())
                     Spacer()
                 }
                 .padding(AppSpacing.lg)
                 .navigationTitle("Sync Status")
                 .navigationBarTitleDisplayMode(.inline)
-                .toolbar {
-                    ToolbarItem(placement: .navigationBarTrailing) {
-                        Button("Done") { sheetContent = nil }
-                    }
-                }
+                .navigationBarItems(trailing: Button("Done") { sheetContent = nil })
             }
         case .conflicts:
             if let itemRepo = viewModel.itemRepository,
@@ -247,16 +232,42 @@ public struct EnhancedSettingsView: View {
                 OfflineDataView()
                     .navigationTitle("Offline Data")
                     .navigationBarTitleDisplayMode(.inline)
-                    .toolbar {
-                        ToolbarItem(placement: .navigationBarTrailing) {
-                            Button("Done") { sheetContent = nil }
-                        }
-                    }
+                    .navigationBarItems(trailing: Button("Done") { sheetContent = nil })
             }
         case .rate:
             RateAppView()
         case .share:
             ShareAppView()
+        case .backup:
+            BackupManagerView()
+        case .autoLock:
+            NavigationView {
+                AutoLockSettingsView()
+                    .navigationBarTitleDisplayMode(.inline)
+                    .navigationBarItems(trailing: Button("Done") { sheetContent = nil })
+            }
+        case .privateMode:
+            NavigationView {
+                PrivateModeSettingsView()
+                    .navigationBarTitleDisplayMode(.inline)
+                    .navigationBarItems(trailing: Button("Done") { sheetContent = nil })
+            }
+        case .currencyExchange:
+            NavigationView {
+                VStack(spacing: 0) {
+                    CurrencyConverterView()
+                    
+                    Divider()
+                    
+                    NavigationLink(destination: CurrencySettingsView()) {
+                        Label("Currency Settings", systemImage: "gear")
+                            .padding()
+                    }
+                }
+                .navigationTitle("Currency Exchange")
+                .navigationBarTitleDisplayMode(.inline)
+                .navigationBarItems(trailing: Button("Done") { sheetContent = nil })
+            }
         }
     }
 }
@@ -323,7 +334,7 @@ enum SheetContent: Identifiable {
     case notifications, spotlight, accessibility, scanner, categories
     case biometric, privacy, terms, export, clearCache
     case crashReporting, syncStatus, conflicts, offlineData
-    case rate, share
+    case rate, share, backup, currencyExchange, autoLock, privateMode
     
     var id: String {
         String(describing: self)
@@ -347,7 +358,8 @@ struct SettingsSection: Identifiable {
                 SettingsItem(id: "spotlight", title: "Spotlight Search", icon: "magnifyingglass", type: .navigation),
                 SettingsItem(id: "accessibility", title: "Accessibility", icon: "accessibility", type: .navigation),
                 SettingsItem(id: "dark-mode", title: "Dark Mode", icon: "moon", type: .toggle(key: "darkMode")),
-                SettingsItem(id: "currency", title: "Currency", icon: "dollarsign.circle", type: .picker(key: "currency", options: ["USD", "EUR", "GBP", "JPY"])),
+                SettingsItem(id: "currency", title: "Currency", icon: "dollarsign.circle", type: .picker(key: "currency", options: ["USD", "EUR", "GBP", "JPY", "CAD", "AUD", "CHF", "CNY", "INR", "KRW"])),
+                SettingsItem(id: "currencyExchange", title: "Currency Exchange", icon: "arrow.left.arrow.right.circle", type: .navigation),
                 SettingsItem(id: "scanner", title: "Scanner Settings", icon: "barcode.viewfinder", type: .navigation),
                 SettingsItem(id: "categories", title: "Manage Categories", icon: "folder", type: .navigation)
             ]
@@ -358,6 +370,8 @@ struct SettingsSection: Identifiable {
             color: .blue,
             items: [
                 SettingsItem(id: "biometric", title: "Face ID / Touch ID", icon: "faceid", type: .navigation),
+                SettingsItem(id: "autoLock", title: "Auto-Lock", icon: "lock.shield", type: .navigation),
+                SettingsItem(id: "privateMode", title: "Private Mode", icon: "eye.slash", type: .navigation),
                 SettingsItem(id: "privacy", title: "Privacy Policy", icon: "hand.raised", type: .navigation),
                 SettingsItem(id: "terms", title: "Terms of Service", icon: "doc.text", type: .navigation)
             ]
@@ -382,7 +396,8 @@ struct SettingsSection: Identifiable {
                 SettingsItem(id: "sync-status", title: "Sync Status", icon: "arrow.triangle.2.circlepath", type: .navigation, badge: "Synced"),
                 SettingsItem(id: "conflicts", title: "Resolve Conflicts", icon: "exclamationmark.icloud", type: .navigation),
                 SettingsItem(id: "offline-data", title: "Manage Offline Data", icon: "internaldrive", type: .navigation),
-                SettingsItem(id: "auto-sync-wifi", title: "Auto-sync on Wi-Fi", icon: "wifi", type: .toggle(key: "autoSyncWiFi"))
+                SettingsItem(id: "auto-sync-wifi", title: "Auto-sync on Wi-Fi", icon: "wifi", type: .toggle(key: "autoSyncWiFi")),
+                SettingsItem(id: "backup", title: "Backups", icon: "externaldrive.badge.timemachine", type: .navigation)
             ]
         ),
         SettingsSection(

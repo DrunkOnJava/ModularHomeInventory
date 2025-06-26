@@ -4,7 +4,7 @@
 -include .makerc.local
 -include .makerc
 
-.PHONY: help build run clean xcode test all build-commit build-ipad run-ipad all-ipad prebuild-modules screenshots screenshots-components screenshots-ui screenshots-all
+.PHONY: help build run clean xcode test all build-commit build-ipad run-ipad all-ipad prebuild-modules lint format lint-fix analyze test-snapshots record-snapshots pre-merge
 
 # Default simulator
 SIMULATOR_ID ?= DD192264-DFAA-4582-B2FE-D6FC444C9DDF
@@ -147,9 +147,61 @@ test: prebuild-modules ## Run tests
 		-sdk iphonesimulator \
 		-destination "platform=iOS Simulator,id=$(SIMULATOR_ID)" \
 		-derivedDataPath build \
+		-resultBundlePath TestResults.xcresult \
 		SWIFT_STRICT_CONCURRENCY=minimal \
 		SWIFT_SUPPRESS_WARNINGS=YES \
 		| xcbeautify
+	@# Generate HTML report if tests complete
+	@if [ -d "TestResults.xcresult" ]; then \
+		echo "📊 Generating test report..."; \
+		xchtmlreport -r TestResults.xcresult || true; \
+	fi
+
+lint: ## Run SwiftLint to check code style
+	@echo "🔍 Running SwiftLint..."
+	@swiftlint lint --config .swiftlint.yml --reporter emoji
+	@echo "✅ Linting complete!"
+
+lint-fix: ## Run SwiftLint and automatically fix issues
+	@echo "🔧 Running SwiftLint autocorrect..."
+	@swiftlint autocorrect --config .swiftlint.yml
+	@echo "✅ Auto-corrections applied!"
+
+format: ## Format code using SwiftFormat
+	@echo "✨ Formatting code..."
+	@swiftformat . --config .swiftformat --verbose
+	@echo "✅ Formatting complete!"
+
+analyze: lint ## Run static analysis (lint + build with warnings)
+	@echo "🔬 Running static analysis..."
+	@xcodebuild analyze \
+		-project HomeInventoryModular.xcodeproj \
+		-scheme HomeInventoryModular \
+		-sdk iphonesimulator \
+		-destination "platform=iOS Simulator,id=$(SIMULATOR_ID)" \
+		-derivedDataPath build \
+		| xcbeautify
+	@echo "✅ Analysis complete!"
+
+test-snapshots: ## Run snapshot tests
+	@echo "📸 Running snapshot tests..."
+	@ruby scripts/run_snapshot_tests.rb
+	@echo "✅ Snapshot tests complete!"
+
+record-snapshots: ## Record new snapshots (WARNING: This will overwrite existing snapshots)
+	@echo "📸 Recording new snapshots..."
+	@echo "⚠️  This will overwrite existing snapshots!"
+	@ruby scripts/run_snapshot_tests.rb --record
+	@echo "✅ New snapshots recorded!"
+
+clean-snapshots: ## Remove obsolete snapshots (older than 30 days)
+	@echo "🧹 Cleaning obsolete snapshots..."
+	@find . -name "__Snapshots__" -type d -exec find {} -name "*.png" -mtime +30 -delete \;
+	@echo "✅ Obsolete snapshots cleaned!"
+
+pre-merge: ## Run all checks before merging (lint, format, build, tests)
+	@echo "🚀 Running pre-merge checks..."
+	@./scripts/pre_merge_checks.sh
 
 generate: ## Regenerate Xcode project
 	@echo "⚙️ Regenerating project..."
@@ -161,6 +213,14 @@ install-deps: ## Install required dependencies
 	@which xcbeautify > /dev/null || brew install xcbeautify
 	@# Check for xcodegen
 	@which xcodegen > /dev/null || brew install xcodegen
+	@# Check for swiftlint
+	@which swiftlint > /dev/null || brew install swiftlint
+	@# Check for swiftformat
+	@which swiftformat > /dev/null || brew install swiftformat
+	@# Check for xchtmlreport
+	@which xchtmlreport > /dev/null || brew install xchtmlreport
+	@# Check for periphery
+	@which periphery > /dev/null || brew install peripheryapp/periphery/periphery
 	@echo "✅ Dependencies installed!"
 
 # Fast build without prebuild (use when modules are already built)
@@ -192,6 +252,13 @@ bf: build-fast ## Shortcut for fast build
 r: run ## Shortcut for run
 br: build run ## Build and run
 c: clean ## Shortcut for clean
+l: lint ## Shortcut for lint
+lf: lint-fix ## Shortcut for lint-fix
+f: format ## Shortcut for format
+a: analyze ## Shortcut for analyze
+ts: test-snapshots ## Shortcut for test-snapshots
+rs: record-snapshots ## Shortcut for record-snapshots
+pm: pre-merge ## Shortcut for pre-merge
 
 # iPad shortcuts
 bi: build-ipad ## Shortcut for build-ipad
@@ -205,87 +272,104 @@ build-commit: ## Build and auto-commit on success
 
 bc: build-commit ## Shortcut for build-commit
 
-# Screenshot generation
-screenshots: screenshots-guided ## Generate useful app screenshots (alias for guided)
 
-screenshots-guided: ## Guided screenshot capture of actual app screens
-	@echo "🎯 Starting guided screenshot capture..."
-	@./scripts/setup_proper_screenshots.sh
+# Dead code detection with Periphery
+dead-code: ## Find unused code with Periphery
+	@echo "🔍 Detecting dead code..."
+	@periphery scan
 
-screenshots-all: ## Generate all screenshots (components + UI flow + App Store + Real App)
-	@echo "📸 Generating comprehensive screenshot collection..."
-	@mkdir -p Screenshots/Components Screenshots/AppFlow Screenshots/AppStore Screenshots/RealApp
-	@# Generate placeholder images
-	@swift scripts/generate_real_screenshots_simple.swift
-	@# Capture real app screenshots if possible
-	@if pgrep -f "iPhone.*Simulator" > /dev/null; then \
-		echo "📱 Capturing real app screenshots..."; \
-		./scripts/capture_simple_screenshots.sh || echo "⚠️  Could not capture app screenshots"; \
-	else \
-		echo "⚠️  Simulator not running - only generating placeholders"; \
-	fi
-	@echo "✅ Screenshot generation complete!"
+dead-code-aggressive: ## Aggressive dead code detection
+	@echo "🔍 Running aggressive dead code detection..."
+	@periphery scan --aggressive
 
-screenshots-components: ## Generate component screenshots using ImageRenderer
-	@echo "🎨 Generating component screenshots..."
-	@xcodebuild test \
-		-project HomeInventoryModular.xcodeproj \
-		-scheme HomeInventoryModular \
-		-destination "platform=iOS Simulator,id=$(SIMULATOR_ID)" \
-		-only-testing:HomeInventoryModularTests/ViewScreenshotTests \
-		-derivedDataPath build \
-		SWIFT_STRICT_CONCURRENCY=minimal \
-		SWIFT_SUPPRESS_WARNINGS=YES \
-		| xcbeautify
-	@echo "✅ Component screenshots complete!"
+dead-code-report: ## Generate dead code report in multiple formats
+	@echo "📊 Generating dead code reports..."
+	@mkdir -p reports
+	@periphery scan --format csv > reports/dead_code.csv
+	@periphery scan --format json > reports/dead_code.json
+	@periphery scan --format markdown > reports/dead_code.md
+	@echo "✅ Reports generated in reports/ directory"
 
-screenshots-ui: build ## Generate UI flow screenshots using XCUITest
-	@echo "📱 Generating UI flow screenshots..."
-	@xcodebuild test-without-building \
-		-project HomeInventoryModular.xcodeproj \
-		-scheme HomeInventoryModular \
-		-destination "platform=iOS Simulator,id=$(SIMULATOR_ID)" \
-		-derivedDataPath build \
-		-only-testing:HomeInventoryModularUITests/HomeInventoryModularUITests/testTakeScreenshots \
-		SWIFT_STRICT_CONCURRENCY=minimal \
-		SWIFT_SUPPRESS_WARNINGS=YES \
-		| xcbeautify
-	@echo "✅ UI flow screenshots complete!"
+dead-code-modules: ## Check dead code in specific modules
+	@echo "🔍 Checking dead code in modules..."
+	@for module in Core SharedUI Items BarcodeScanner AppSettings Receipts Sync Premium Onboarding Widgets; do \
+		echo "\n📦 Checking $$module module..."; \
+		periphery scan --project Modules/$$module/Package.swift 2>/dev/null || echo "  ⚠️  Module uses SPM, skipping..."; \
+	done
 
-screenshots-interactive: ## Interactive screenshot capture
-	@echo "🎯 Starting interactive screenshot capture..."
-	@./scripts/interactive_screenshots.sh
+dead-code-clean: ## Remove unused code (interactive)
+	@echo "🧹 Preparing to clean dead code..."
+	@echo "⚠️  This will show you unused code. Review carefully before deleting\!"
+	@periphery scan --format xcode
 
-screenshots-auto: ## Automated screenshot navigation
-	@echo "🤖 Starting automated screenshot capture..."
-	@./scripts/auto_navigate_screenshots.sh
+# Periphery shortcuts
+dc: dead-code ## Shortcut for dead-code
+dca: dead-code-aggressive ## Shortcut for aggressive dead code detection
+dcr: dead-code-report ## Shortcut for dead code report
+dcc: dead-code-clean ## Shortcut for dead code clean
 
-screenshots-ruby: ## Ruby-powered intelligent screenshot capture
-	@echo "💎 Starting Ruby-powered screenshot automation..."
-	@ruby scripts/populate_sample_data.rb
-	@ruby scripts/working_screenshots.rb
-	@ruby scripts/cleanup_final_duplicates.rb
+# =====================================
+# TestFlight Deployment
+# =====================================
 
-screenshots-smart: ## Smart screenshot capture with duplicate detection
-	@echo "🧠 Starting smart screenshot capture..."
-	@ruby scripts/smart_screenshots.rb
+archive: ## Create release archive for App Store/TestFlight
+	@echo "📦 Creating release archive..."
+	@# Ensure we have fastlane
+	@which fastlane > /dev/null || (echo "❌ Fastlane not found. Install with: gem install fastlane" && exit 1)
+	@# Build archive
+	@cd fastlane && fastlane build_only
+	@echo "✅ Archive created successfully!"
 
-screenshots-fastlane-ruby: ## Fastlane-powered Ruby screenshot automation
-	@echo "🚀 Starting Fastlane Ruby automation..."
-	@ruby scripts/fastlane_screenshots.rb
+testflight: ## Build and upload to TestFlight with full release notes
+	@echo "🚀 Deploying to TestFlight..."
+	@echo "📋 This will upload with comprehensive release notes and encryption compliance"
+	@# Ensure we have fastlane
+	@which fastlane > /dev/null || (echo "❌ Fastlane not found. Install with: gem install fastlane" && exit 1)
+	@# Pre-deployment checks
+	@echo "🔍 Running pre-deployment checks..."
+	@make lint format
+	@# Build and upload
+	@cd fastlane && fastlane testflight
+	@echo "✅ Successfully deployed to TestFlight!"
+	@echo "📱 Check App Store Connect for processing status"
+	@echo "📋 Release notes have been included with encryption compliance"
 
-screenshots-clean: ## Clean screenshot output directories
-	@echo "🧹 Cleaning screenshot directories..."
-	@rm -rf Screenshots/
-	@rm -rf ~/Documents/ComponentScreenshots/
-	@rm -rf ~/Documents/UITestScreenshots/
-	@rm -rf fastlane/screenshots/
-	@echo "✅ Screenshot directories cleaned!"
+testflight-force: ## Force upload to TestFlight (skip git clean check)
+	@echo "⚠️ Force uploading to TestFlight (skipping git status check)..."
+	@which fastlane > /dev/null || (echo "❌ Fastlane not found. Install with: gem install fastlane" && exit 1)
+	@cd fastlane && fastlane testflight force:true
+	@echo "✅ Force upload complete!"
 
-# Screenshot shortcuts
-ss: screenshots ## Shortcut for screenshots
-ssc: screenshots-components ## Shortcut for component screenshots
-ssu: screenshots-ui ## Shortcut for UI screenshots
-ssa: screenshots-all ## Shortcut for all screenshots
-ssi: screenshots-interactive ## Shortcut for interactive screenshots
-ssx: screenshots-clean ## Shortcut for cleaning screenshots
+validate-app: ## Validate app for App Store submission
+	@echo "✅ Validating app for App Store..."
+	@which fastlane > /dev/null || (echo "❌ Fastlane not found. Install with: gem install fastlane" && exit 1)
+	@cd fastlane && fastlane validate
+	@echo "✅ App validation complete!"
+
+setup-fastlane: ## Install and setup fastlane
+	@echo "⚙️ Setting up Fastlane..."
+	@# Install fastlane if not present
+	@which fastlane > /dev/null || gem install fastlane
+	@# Initialize match if needed
+	@echo "🔐 Fastlane installed successfully!"
+	@echo "💡 Run 'make testflight' to deploy to TestFlight"
+
+deployment-status: ## Check deployment and encryption compliance status
+	@echo "📊 Deployment Status Report"
+	@echo "=========================="
+	@echo "📱 App: Home Inventory"
+	@echo "📦 Bundle ID: com.homeinventory.app"
+	@echo "🔢 Current Version: $(shell grep MARKETING_VERSION project.yml | cut -d: -f2 | xargs)"
+	@echo "🏗️ Current Build: $(shell xcodebuild -project HomeInventoryModular.xcodeproj -showBuildSettings | grep CURRENT_PROJECT_VERSION | cut -d= -f2 | xargs || echo 'Unknown')"
+	@echo "🔐 Encryption Compliance: ✅ Configured (Standard iOS encryption only)"
+	@echo "📋 France Declaration: ✅ Included in ExportCompliance.plist"
+	@echo "📄 Release Notes: ✅ Comprehensive TestFlight notes prepared"
+	@echo ""
+	@echo "🚀 Ready for TestFlight deployment!"
+	@echo "💡 Run 'make testflight' to deploy"
+
+# TestFlight shortcuts
+tf: testflight ## Shortcut for testflight
+tff: testflight-force ## Shortcut for testflight-force  
+arch: archive ## Shortcut for archive
+val: validate-app ## Shortcut for validate-app

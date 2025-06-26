@@ -35,15 +35,24 @@ public class GmailBridge: ObservableObject {
     
     public func configure() {
         // Configure Google Sign-In if needed
-        guard let path = Bundle.main.path(forResource: "GoogleServices", ofType: "plist"),
-              let plist = NSDictionary(contentsOfFile: path),
-              let clientId = plist["CLIENT_ID"] as? String else {
-            print("[GmailBridge] Failed to configure: GoogleServices.plist not found")
-            return
+        if GIDSignIn.sharedInstance.configuration == nil {
+            // Try module bundle first
+            if let path = Bundle.module.path(forResource: "GoogleServices", ofType: "plist"),
+               let plist = NSDictionary(contentsOfFile: path),
+               let clientId = plist["CLIENT_ID"] as? String {
+                GIDSignIn.sharedInstance.configuration = GIDConfiguration(clientID: clientId)
+                print("[GmailBridge] Configured with client ID from module bundle: \(clientId)")
+            } else if let path = Bundle.main.path(forResource: "GoogleServices", ofType: "plist"),
+                      let plist = NSDictionary(contentsOfFile: path),
+                      let clientId = plist["CLIENT_ID"] as? String {
+                GIDSignIn.sharedInstance.configuration = GIDConfiguration(clientID: clientId)
+                print("[GmailBridge] Configured with client ID from main bundle: \(clientId)")
+            } else {
+                print("[GmailBridge] Failed to configure: GoogleServices.plist not found in module or main bundle")
+            }
+        } else {
+            print("[GmailBridge] Google Sign-In already configured")
         }
-        
-        GIDSignIn.sharedInstance.configuration = GIDConfiguration(clientID: clientId)
-        print("[GmailBridge] Configured with client ID: \(clientId)")
     }
     
     public func signIn(presentingViewController: UIViewController) {

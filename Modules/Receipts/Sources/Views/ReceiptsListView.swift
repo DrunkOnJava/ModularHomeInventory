@@ -71,13 +71,6 @@ struct ReceiptsListView: View {
         .refreshable {
             await viewModel.loadReceipts()
         }
-        .toolbar {
-            ToolbarItem(placement: .navigationBarTrailing) {
-                Button(action: { showingImport = true }) {
-                    Image(systemName: "plus")
-                }
-            }
-        }
     }
     
     @ViewBuilder

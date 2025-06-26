@@ -6,6 +6,8 @@ public struct GmailReceiptsView: View {
     @EnvironmentObject var bridge: GmailBridge
     @State private var selectedEmail: EmailMessage?
     @State private var searchText = ""
+    @State private var showingSuccessMessage = false
+    @State private var hasShownInitialFetch = false
     
     public init() {}
     
@@ -31,7 +33,56 @@ public struct GmailReceiptsView: View {
             .onAppear {
                 bridge.configure()
             }
+            .onChange(of: bridge.authService.isAuthenticated) { oldValue, newValue in
+                if !oldValue && newValue {
+                    // User just authenticated
+                    showingSuccessMessage = true
+                    
+                    // Fetch emails after a short delay
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                        bridge.fetchReceipts()
+                    }
+                    
+                    // Hide success message after 3 seconds
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+                        showingSuccessMessage = false
+                    }
+                }
+            }
         }
+        .overlay(alignment: .top) {
+            if showingSuccessMessage {
+                successBanner
+                    .transition(.move(edge: .top).combined(with: .opacity))
+                    .animation(.spring(response: 0.5, dampingFraction: 0.8), value: showingSuccessMessage)
+            }
+        }
+    }
+    
+    private var successBanner: some View {
+        HStack {
+            Image(systemName: "checkmark.circle.fill")
+                .foregroundColor(.white)
+                .font(.title2)
+            
+            VStack(alignment: .leading, spacing: 2) {
+                Text("Successfully connected to Gmail!")
+                    .fontWeight(.semibold)
+                    .foregroundColor(.white)
+                
+                Text("Fetching your receipts...")
+                    .font(.caption)
+                    .foregroundColor(.white.opacity(0.9))
+            }
+            
+            Spacer()
+        }
+        .padding()
+        .background(Color.green)
+        .cornerRadius(12)
+        .shadow(radius: 4)
+        .padding(.horizontal)
+        .padding(.top, 50) // Account for status bar
     }
     
     private var signInView: some View {

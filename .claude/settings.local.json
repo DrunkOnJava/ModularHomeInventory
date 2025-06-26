@@ -34,7 +34,16 @@
       "Bash(cp:*)",
       "Bash(unzip:*)",
       "Bash(swift build:*)",
-      "Bash(bundle install)"
+      "Bash(bundle install)",
+      "Bash(brew install:*)",
+      "Bash(xcrun simctl spawn:*)",
+      "Bash(plutil:*)",
+      "Bash(xcrun simctl io:*)",
+      "Bash(log show:*)",
+      "Bash(pkill:*)",
+      "Bash(mkdir:*)",
+      "Bash(periphery version:*)",
+      "Bash(mkdir:*)"
     ],
     "deny": []
   }

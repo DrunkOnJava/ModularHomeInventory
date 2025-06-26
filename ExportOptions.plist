@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <!-- Export method for App Store distribution -->
+    <key>method</key>
+    <string>app-store-connect</string>
+    
+    <!-- Automatic signing configuration -->
+    <key>signingStyle</key>
+    <string>automatic</string>
+    
+    <!-- Team ID for code signing -->
+    <key>teamID</key>
+    <string>2VXBQV4XC9</string>
+    
+    <!-- Upload symbols for crash reporting -->
+    <key>uploadBitcode</key>
+    <false/>
+    
+    <!-- Upload debug symbols -->
+    <key>uploadSymbols</key>
+    <true/>
+    
+    <!-- Compile bitcode (deprecated but included for compatibility) -->
+    <key>compileBitcode</key>
+    <false/>
+    
+    <!-- Provisioning profile for distribution -->
+    <key>provisioningProfiles</key>
+    <dict>
+        <key>com.homeinventory.app</key>
+        <string>Home Inventory Distribution</string>
+    </dict>
+    
+    <!-- Destination for export -->
+    <key>destination</key>
+    <string>upload</string>
+    
+    <!-- App Store Connect configuration -->
+    <key>distributionBundleIdentifier</key>
+    <string>com.homeinventory.app</string>
+    
+    <!-- Bundle signing configuration -->
+    <key>signingCertificate</key>
+    <string>Apple Distribution</string>
+    
+    <!-- Encryption export compliance -->
+    <key>iCloudContainerEnvironment</key>
+    <string>Production</string>
+    
+    <!-- Ensure we include all necessary entitlements -->
+    <key>generateAppStoreInformation</key>
+    <true/>
+    
+    <!-- Manage app version and build number -->
+    <key>manageAppVersionAndBuildNumber</key>
+    <false/>
+</dict>
+</plist>

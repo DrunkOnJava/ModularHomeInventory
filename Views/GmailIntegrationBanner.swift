@@ -69,7 +69,7 @@ struct GmailIntegrationBanner: View {
                         .stroke(Color.blue.opacity(0.3), lineWidth: 1)
                 )
             }
-            .buttonStyle(ScaleButtonStyle())
+            .buttonStyle(GmailScaleButtonStyle())
             .sheet(isPresented: $showingGmailSetup) {
                 gmailModule.makeReceiptImportView()
                     .onDisappear {
@@ -83,7 +83,7 @@ struct GmailIntegrationBanner: View {
 }
 
 /// Button style for subtle scale animation
-struct ScaleButtonStyle: ButtonStyle {
+private struct GmailScaleButtonStyle: ButtonStyle {
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
             .scaleEffect(configuration.isPressed ? 0.98 : 1.0)

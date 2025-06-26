@@ -1,0 +1,80 @@
+name: Tests
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+
+env:
+  XCODE_VERSION: '15.0'
+  IOS_SIMULATOR: 'iPhone 15 Pro Max'
+  
+jobs:
+  test:
+    runs-on: macos-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Select Xcode
+      run: sudo xcode-select -s /Applications/Xcode_${{ env.XCODE_VERSION }}.app
+      
+    - name: Show Xcode version
+      run: xcodebuild -version
+      
+    - name: Install dependencies
+      run: |
+        brew install swiftlint swiftformat xchtmlreport xcbeautify
+        
+    - name: Generate Xcode project
+      run: make generate
+      
+    - name: Run SwiftLint
+      run: make lint
+      
+    - name: Build modules
+      run: make prebuild-modules
+      
+    - name: Run unit tests
+      run: |
+        xcodebuild test \
+          -project HomeInventoryModular.xcodeproj \
+          -scheme HomeInventoryModularTests \
+          -destination "platform=iOS Simulator,name=${{ env.IOS_SIMULATOR }}" \
+          -resultBundlePath TestResults.xcresult \
+          | xcbeautify
+          
+    - name: Generate test report
+      if: always()
+      run: |
+        if [ -d "TestResults.xcresult" ]; then
+          xchtmlreport -r TestResults.xcresult
+        fi
+        
+    - name: Upload test results
+      if: always()
+      uses: actions/upload-artifact@v3
+      with:
+        name: test-results
+        path: |
+          TestResults.xcresult
+          index.html
+          
+    - name: Upload failed snapshots
+      if: failure()
+      uses: actions/upload-artifact@v3
+      with:
+        name: failed-snapshots
+        path: |
+          **/__Snapshots__/
+          **/__Snapshots__/**/*_failure_diff_*.png
+          
+    - name: Check code coverage
+      run: |
+        xcrun xccov view --report --json TestResults.xcresult > coverage.json
+        COVERAGE=$(cat coverage.json | jq '.lineCoverage * 100' | cut -d. -f1)
+        echo "Code coverage: $COVERAGE%"
+        if [ $COVERAGE -lt 70 ]; then
+          echo "::warning::Code coverage is below 70%"
+        fi

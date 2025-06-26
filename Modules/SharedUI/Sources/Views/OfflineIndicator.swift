@@ -79,7 +79,7 @@ public extension View {
 }
 
 /// Sync status view - simplified version
-public struct SyncStatusView: View {
+public struct SimpleSyncStatusView: View {
     @ObservedObject private var networkMonitor = NetworkMonitor.shared
     @State private var lastSyncDate: Date?
     

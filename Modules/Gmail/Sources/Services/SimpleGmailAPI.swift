@@ -45,9 +45,9 @@ public class SimpleGmailAPI: ObservableObject {
     }
     
     private func performSearch(accessToken: String) {
-        // Enhanced query specifically for recurring subscriptions
-        let query = "(subscription OR recurring OR renewal OR membership OR \"monthly fee\" OR \"annual fee\" OR \"auto-renewal\" OR \"automatic renewal\" OR \"billing cycle\" OR \"next payment\" OR \"payment due\" OR \"subscription fee\" OR \"membership fee\" OR \"monthly plan\" OR \"annual plan\" OR \"premium plan\" OR \"pro plan\" OR \"plus plan\") AND (from:netflix OR from:spotify OR from:apple OR from:adobe OR from:microsoft OR from:google OR from:amazon OR from:hulu OR from:disney OR from:hbo OR from:paramount OR from:peacock OR from:youtube OR from:dropbox OR from:icloud OR from:onedrive OR from:notion OR from:slack OR from:zoom OR from:linkedin OR from:github OR from:figma OR from:canva OR from:grammarly OR from:duolingo OR from:headspace OR from:calm OR from:peloton OR from:strava OR from:fitbit OR from:myfitnesspal OR from:nytimes OR from:wsj OR from:medium OR from:substack OR from:patreon OR from:twitch OR from:discord OR from:xbox OR from:playstation OR from:nintendo OR from:steam OR from:epic OR from:blizzard OR from:nordvpn OR from:expressvpn OR from:surfshark OR from:dashlane OR from:1password OR from:lastpass OR from:todoist OR from:evernote OR from:asana OR from:monday OR from:salesforce OR from:hubspot OR from:mailchimp OR from:squarespace OR from:wix OR from:shopify OR from:godaddy OR from:namecheap OR from:cloudflare)"
-        let urlString = "\(baseURL)/users/me/messages?q=\(query.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? "")&maxResults=100"
+        // Query for receipt emails
+        let query = "(receipt OR invoice OR order OR purchase OR payment OR \"order confirmation\" OR \"purchase confirmation\" OR \"payment receipt\" OR \"tax invoice\" OR \"billing statement\" OR \"transaction\" OR \"your order\" OR \"order details\" OR \"order summary\") AND (from:amazon OR from:apple OR from:bestbuy OR from:walmart OR from:target OR from:ebay OR from:etsy OR from:homedepot OR from:lowes OR from:costco OR from:sephora OR from:nike OR from:adidas OR from:nordstrom OR from:macys OR from:wayfair OR from:ikea OR from:williams-sonoma OR from:westelm OR from:potterybarn OR from:crateandbarrel OR from:anthropologie OR from:zara OR from:hm OR from:uniqlo OR from:gap OR from:oldnavy OR from:bananarepublic OR from:jcrew OR from:rei OR from:patagonia OR from:northface OR from:columbia OR from:dickssportinggoods OR from:footlocker OR from:finishline OR from:gamestop OR from:steam OR from:playstation OR from:xbox OR from:nintendo OR from:uber OR from:lyft OR from:doordash OR from:grubhub OR from:postmates OR from:instacart OR from:seamless)"
+        let urlString = "\(baseURL)/users/me/messages?q=\(query.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? "")&maxResults=50"
         print("[SimpleGmailAPI] Search URL: \(urlString)")
         
         guard let url = URL(string: urlString) else { return }
@@ -240,119 +240,140 @@ public class SimpleGmailAPI: ObservableObject {
     private func createTestEmails() -> [EmailMessage] {
         let parser = ReceiptParser()
         
-        // Netflix subscription
-        let netflixSubject = "Your Netflix monthly subscription"
-        let netflixFrom = "Netflix <info@account.netflix.com>"
-        let netflixBody = """
-        Thank you for your payment
+        // Amazon order
+        let amazonSubject = "Your Amazon.com order of \"Sony a7 IV Mirrorless Camera\" has shipped!"
+        let amazonFrom = "Amazon.com <ship-confirm@amazon.com>"
+        let amazonBody = """
+        Order #112-3456789-1234567
         
-        Account ID: NFLX123456789
+        Hello,
+        Your order has been shipped and is on its way!
         
-        Netflix Premium Plan
-        Monthly charge: $19.99
+        Order Details:
+        Sony a7 IV Mirrorless Camera Body
+        Quantity: 1
+        Price: $2,498.00
         
-        Next billing date: January 25, 2024
+        Shipping & Handling: $0.00
+        Tax: $224.82
+        Order Total: $2,722.82
+        
+        Delivery Date: Tuesday, December 27
         """
         
-        let netflixReceipt = parser.parseEmail(subject: netflixSubject, from: netflixFrom, body: netflixBody)
+        let amazonReceipt = parser.parseEmail(subject: amazonSubject, from: amazonFrom, body: amazonBody)
         
         let email1 = EmailMessage(
             id: "test1",
-            subject: netflixSubject,
-            from: netflixFrom,
+            subject: amazonSubject,
+            from: amazonFrom,
             date: Date().addingTimeInterval(-86400), // Yesterday
-            snippet: "Thank you for your payment. Netflix Premium Plan Monthly charge: $19.99...",
-            body: netflixBody,
-            receiptInfo: netflixReceipt
+            snippet: "Your order has been shipped! Sony a7 IV Mirrorless Camera Body - $2,498.00...",
+            body: amazonBody,
+            receiptInfo: amazonReceipt
         )
         
-        // Spotify subscription
-        let spotifySubject = "Your receipt for Spotify Premium"
-        let spotifyFrom = "Spotify <no-reply@spotify.com>"
-        let spotifyBody = """
-        Receipt for your subscription
-        
-        Spotify Premium Individual
-        
-        Billing period: Dec 20, 2023 - Jan 20, 2024
-        Amount: $10.99
-        
-        Payment method: •••• 1234
-        
-        Your subscription will automatically renew on Jan 20, 2024
-        """
-        
-        let spotifyReceipt = parser.parseEmail(subject: spotifySubject, from: spotifyFrom, body: spotifyBody)
-        
-        let email2 = EmailMessage(
-            id: "test2",
-            subject: spotifySubject,
-            from: spotifyFrom,
-            date: Date().addingTimeInterval(-172800), // 2 days ago
-            snippet: "Receipt for your subscription. Spotify Premium Individual. Amount: $10.99...",
-            body: spotifyBody,
-            receiptInfo: spotifyReceipt
-        )
-        
-        // Adobe Creative Cloud subscription
-        let adobeSubject = "Your Adobe Creative Cloud subscription receipt"
-        let adobeFrom = "Adobe <mail@mail.adobe.com>"
-        let adobeBody = """
-        Thank you for your subscription
-        
-        Adobe Creative Cloud All Apps
-        
-        Order number: AD2023121234567
-        Monthly subscription: $54.99
-        
-        Billing period: December 22, 2023 - January 22, 2024
-        
-        Your subscription will automatically renew unless cancelled.
-        """
-        
-        let adobeReceipt = parser.parseEmail(subject: adobeSubject, from: adobeFrom, body: adobeBody)
-        
-        let email3 = EmailMessage(
-            id: "test3",
-            subject: adobeSubject,
-            from: adobeFrom,
-            date: Date().addingTimeInterval(-259200), // 3 days ago
-            snippet: "Thank you for your subscription. Adobe Creative Cloud All Apps. Monthly: $54.99...",
-            body: adobeBody,
-            receiptInfo: adobeReceipt
-        )
-        
-        // Apple iCloud+ subscription
-        let appleSubject = "Your receipt from Apple"
-        let appleFrom = "Apple <no_reply@email.apple.com>"
+        // Apple Store receipt
+        let appleSubject = "Your receipt from Apple Store"
+        let appleFrom = "Apple Store <do_not_reply@apple.com>"
         let appleBody = """
         Receipt
+        Order Number: W123456789
         
-        SUBSCRIPTION
+        Thank you for your order.
         
-        iCloud+ 200GB
-        Monthly subscription
+        Items:
+        iPad Pro 12.9" (256GB, Space Gray)
+        Price: $1,199.00
         
-        Billed To: Your Apple ID
-        Order ID: ML123456789
+        AppleCare+ for iPad Pro
+        Price: $149.00
         
-        Amount: $2.99
+        Subtotal: $1,348.00
+        Tax: $121.32
+        Total: $1,469.32
         
-        Renewal Date: January 15, 2024
-        
-        This subscription will automatically renew unless cancelled.
+        Payment Method: •••• 1234
         """
         
         let appleReceipt = parser.parseEmail(subject: appleSubject, from: appleFrom, body: appleBody)
         
-        let email4 = EmailMessage(
-            id: "test4",
+        let email2 = EmailMessage(
+            id: "test2",
             subject: appleSubject,
             from: appleFrom,
-            date: Date().addingTimeInterval(-345600), // 4 days ago
-            snippet: "Receipt - SUBSCRIPTION. iCloud+ 200GB Monthly subscription. Amount: $2.99...",
+            date: Date().addingTimeInterval(-172800), // 2 days ago
+            snippet: "Thank you for your order. iPad Pro 12.9 - $1,199.00...",
             body: appleBody,
             receiptInfo: appleReceipt
+        )
+        
+        // Best Buy receipt
+        let bestBuySubject = "Thank you for your Best Buy order"
+        let bestBuyFrom = "Best Buy <BestBuyInfo@emailinfo.bestbuy.com>"
+        let bestBuyBody = """
+        Order Confirmation
+        Order Number: BBY01-123456789
+        
+        Your order has been received!
+        
+        Items Ordered:
+        LG OLED 65" TV
+        SKU: 6501902
+        Price: $1,799.99
+        
+        Subtotal: $1,799.99
+        Shipping: FREE
+        Tax: $161.99
+        Total: $1,961.98
+        
+        Expected Delivery: December 29, 2023
+        """
+        
+        let bestBuyReceipt = parser.parseEmail(subject: bestBuySubject, from: bestBuyFrom, body: bestBuyBody)
+        
+        let email3 = EmailMessage(
+            id: "test3",
+            subject: bestBuySubject,
+            from: bestBuyFrom,
+            date: Date().addingTimeInterval(-259200), // 3 days ago
+            snippet: "Your order has been received! LG OLED 65 TV - $1,799.99...",
+            body: bestBuyBody,
+            receiptInfo: bestBuyReceipt
+        )
+        
+        // Williams Sonoma receipt
+        let wsSubject = "Williams Sonoma Order Confirmation"
+        let wsFrom = "Williams Sonoma <customerservice@williams-sonoma.com>"
+        let wsBody = """
+        Order Confirmation
+        Order #: WS987654321
+        
+        Thank you for shopping with Williams Sonoma!
+        
+        Items:
+        KitchenAid Stand Mixer - Pistachio
+        Item #: 123456
+        Qty: 1
+        Price: $449.95
+        
+        Shipping: $19.95
+        Tax: $42.30
+        Order Total: $512.20
+        
+        Estimated Delivery: January 3, 2024
+        """
+        
+        let wsReceipt = parser.parseEmail(subject: wsSubject, from: wsFrom, body: wsBody)
+        
+        let email4 = EmailMessage(
+            id: "test4",
+            subject: wsSubject,
+            from: wsFrom,
+            date: Date().addingTimeInterval(-345600), // 4 days ago
+            snippet: "Thank you for shopping! KitchenAid Stand Mixer - $449.95...",
+            body: wsBody,
+            receiptInfo: wsReceipt
         )
         
         // Microsoft 365 subscription
@@ -558,6 +579,6 @@ public class SimpleGmailAPI: ObservableObject {
             receiptInfo: amazonPrimeReceipt
         )
         
-        return [email1, email2, email3, email4, email5, email6, email7, email8, email9, email10].sorted { $0.date > $1.date }
+        return [email1, email2, email3, email4].sorted { $0.date > $1.date }
     }
 }

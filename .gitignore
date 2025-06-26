@@ -82,6 +82,14 @@ fastlane/Preview.html
 fastlane/screenshots/**/*.png
 fastlane/test_output
 
+# Snapshot Testing
+# Uncomment the following line if you want to commit snapshots to version control
+# This is recommended for tracking UI changes over time
+# __Snapshots__/
+
+# If you're recording snapshots frequently and want to ignore them:
+**/__Snapshots__/*.png
+
 # Code Injection
 #
 # After new code Injection tools there's a generated folder /iOSInjectionProject

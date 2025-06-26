@@ -356,7 +356,7 @@ public struct CrashReport: Identifiable, Codable {
     public let reason: String
     public let callStack: [String]
     public let userInfo: [String: String]?
-    public let deviceInfo: DeviceInfo
+    public let deviceInfo: CrashDeviceInfo
     public let appInfo: AppInfo
     public let sourceLocation: SourceLocation?
     
@@ -375,7 +375,7 @@ public struct CrashReport: Identifiable, Codable {
         self.reason = reason
         self.callStack = callStack
         self.userInfo = userInfo?.compactMapValues { "\($0)" }
-        self.deviceInfo = DeviceInfo.current
+        self.deviceInfo = CrashDeviceInfo.current
         self.appInfo = AppInfo.current
         
         if let file = file, let function = function, let line = line {
@@ -393,13 +393,13 @@ public enum CrashType: String, Codable {
     case nonFatal
 }
 
-public struct DeviceInfo: Codable {
+public struct CrashDeviceInfo: Codable {
     public let model: String
     public let systemName: String
     public let systemVersion: String
     public let isSimulator: Bool
     
-    static var current: DeviceInfo {
+    static var current: CrashDeviceInfo {
         #if targetEnvironment(simulator)
         let isSimulator = true
         #else
@@ -407,14 +407,14 @@ public struct DeviceInfo: Codable {
         #endif
         
         #if canImport(UIKit)
-        return DeviceInfo(
+        return CrashDeviceInfo(
             model: UIDevice.current.model,
             systemName: UIDevice.current.systemName,
             systemVersion: UIDevice.current.systemVersion,
             isSimulator: isSimulator
         )
         #else
-        return DeviceInfo(
+        return CrashDeviceInfo(
             model: "Unknown",
             systemName: "Unknown",
             systemVersion: "Unknown",

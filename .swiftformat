@@ -1,0 +1,57 @@
+# SwiftFormat configuration for ModularHomeInventory
+
+# Swift version
+--swiftversion 5.9
+
+# File options
+--exclude Carthage,Pods,.build,DerivedData,${PWD}/Modules/*/.build
+
+# Format options
+--indent 4
+--tabwidth 4
+--maxwidth 120
+
+# Wrapping
+--wraparguments before-first
+--wrapparameters before-first
+--wrapcollections before-first
+--closingparen balanced
+--wrapreturntype preserve
+--wrapconditions preserve
+--wraptypealiases preserve
+
+# Spacing
+--nospaceoperators ..<,...
+--ranges no-space
+--trimwhitespace always
+--emptybraces no-space
+--spaceinsidebrackets false
+--spaceinsideparens false
+--spaceinsidecomments false
+
+# Organization
+--organizetypes class,struct,enum,extension,protocol
+--extensionacl on-declarations
+--modifierorder public,private,internal,static,final,override,required,convenience,lazy,weak,unowned
+
+# Redundancy
+--redundanttype inferred
+--redundantinit remove
+--redundantreturn remove
+--redundantself remove
+--redundantclosure remove
+--redundantbackticks remove
+--redundantlet remove
+
+# Misc
+--self init-only
+--importgrouping testable-bottom
+--linebreaks lf
+--semicolons never
+--commas inline
+--stripunusedargs closure-only
+--ifdef no-indent
+
+# SwiftUI specific
+--funcattributes prev-line
+--typeattributes prev-line

@@ -15,7 +15,7 @@ public final class CloudSyncService: ObservableObject {
     @Published public private(set) var isSyncing = false
     @Published public private(set) var syncProgress: Double = 0.0
     @Published public private(set) var lastSyncDate: Date?
-    @Published public private(set) var syncErrors: [SyncError] = []
+    @Published public private(set) var syncErrors: [CloudSyncError] = []
     @Published public private(set) var syncQueue: [SyncQueueItem] = []
     @Published public private(set) var conflictedDocuments: [SyncConflict] = []
     
@@ -299,7 +299,7 @@ public final class CloudSyncService: ObservableObject {
             saveLastSyncDate()
             
         } catch {
-            let syncError = SyncError(
+            let syncError = CloudSyncError(
                 id: UUID(),
                 error: error,
                 timestamp: Date(),
@@ -337,7 +337,7 @@ public final class CloudSyncService: ObservableObject {
                 removeSyncQueueItem(item.documentId)
                 
             } catch {
-                let syncError = SyncError(
+                let syncError = CloudSyncError(
                     id: UUID(),
                     error: error,
                     timestamp: Date(),
@@ -496,7 +496,7 @@ public enum ConflictResolution {
 }
 
 /// Sync error
-public struct SyncError: Identifiable {
+public struct CloudSyncError: Identifiable {
     public let id: UUID
     public let error: Error
     public let timestamp: Date

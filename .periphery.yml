@@ -1,0 +1,63 @@
+# Periphery Configuration for HomeInventoryModular
+# Dead code detection settings
+
+# Project configuration
+project: HomeInventoryModular.xcodeproj
+schemes:
+  - HomeInventoryModular
+targets:
+  - HomeInventoryModular
+  - HomeInventoryModularTests
+  - HomeInventoryModularUITests
+
+# Retention settings
+retain_public: true  # Keep public declarations (for modules)
+retain_objc_accessible: true  # Keep @objc and @objcMembers
+retain_objc_annotated: true  # Keep anything with @objc attributes
+retain_unused_protocol_func_params: true  # Protocol conformance parameters
+retain_assign_only_properties: false  # Remove write-only properties
+
+# Exclusions
+report_exclude:
+  # System entry points
+  - "AppDelegate"
+  - "SceneDelegate"
+  - "HomeInventoryModularApp"
+  
+  # SwiftUI entry points
+  - "ContentView"
+  - "App$"
+  
+  # Test files
+  - "Test$"
+  - "Tests$"
+  - "Mock"
+  - "Stub"
+  
+  # Module public interfaces
+  - "ModuleAPI$"
+  - "Module$"
+  
+  # Preview providers
+  - "PreviewProvider"
+  - "_Previews"
+  
+  # Widget extensions
+  - "Widget$"
+  - "WidgetBundle"
+  - "IntentTimelineProvider"
+  
+  # Core Data generated
+  - "NSManagedObject"
+  
+  # Snapshot testing
+  - "SnapshotHelper"
+
+# Analysis settings
+verbose: false  # Normal output
+skip_build: false  # Always build fresh
+clean_build: false  # Don't clean (faster)
+
+# Output settings
+format: xcode  # Xcode-friendly output by default
+relative_results: true  # Use relative paths

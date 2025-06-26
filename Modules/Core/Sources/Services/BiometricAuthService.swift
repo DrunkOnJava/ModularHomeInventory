@@ -115,6 +115,11 @@ public final class BiometricAuthService: ObservableObject {
         }
     }
     
+    /// Check if biometric authentication is available
+    public func canUseBiometrics() -> Bool {
+        return isAvailable
+    }
+    
     /// Authenticate using biometrics
     public func authenticate(reason: String = "Authenticate to access your inventory") async -> Bool {
         // Reset error
