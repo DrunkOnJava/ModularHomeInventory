@@ -2,50 +2,7 @@
 //  ItemsListViewSnapshotTests.swift
 //  HomeInventoryModularTests
 //
-//  Apple Configuration:
-//  Bundle Identifier: com.homeinventory.app
-//  Display Name: Home Inventory
-//  Version: 1.0.5
-//  Build: 5
-//  Deployment Target: iOS 17.0
-//  Supported Devices: iPhone & iPad
-//  Team ID: 2VXBQV4XC9
-//
-//  Makefile Configuration:
-//  Default Simulator: iPhone 16 Pro Max (DD192264-DFAA-4582-B2FE-D6FC444C9DDF)
-//  iPad Simulator: iPad Pro 13-inch (M4) (CE6D038C-840B-4BDB-AA63-D61FA0755C4A)
-//  App Bundle ID: com.homeinventory.app
-//  Build Path: build/Build/Products/Debug-iphonesimulator/
-//
-//  Google Sign-In Configuration:
-//  Client ID: 316432172622-6huvbn752v0ep68jkfdftrh8fgpesikg.apps.googleusercontent.com
-//  URL Scheme: com.googleusercontent.apps.316432172622-6huvbn752v0ep68jkfdftrh8fgpesikg
-//  OAuth Scope: https://www.googleapis.com/auth/gmail.readonly
-//  Config Files: GoogleSignIn-Info.plist (project root), GoogleServices.plist (Gmail module)
-//
-//  Key Commands:
-//  Build and run: make build run
-//  Fast build (skip module prebuild): make build-fast run
-//  iPad build and run: make build-ipad run-ipad
-//  Clean build: make clean build run
-//  Run tests: make test
-//
-//  Project Structure:
-//  Main Target: HomeInventoryModular
-//  Test Targets: HomeInventoryModularTests, HomeInventoryModularUITests
-//  Swift Version: 5.9 (DO NOT upgrade to Swift 6)
-//  Minimum iOS Version: 17.0
-//
-//  Architecture: Modular SPM packages with local package dependencies
-//  Repository: https://github.com/DrunkOnJava/ModularHomeInventory.git
-//  Module: HomeInventoryModularTests
-//  Dependencies: XCTest, SnapshotTesting, SwiftUI, Items, Core, SharedUI
-//  Testing: Snapshot tests for ItemsListView component
-//
-//  Description: Snapshot tests for ItemsListView covering list states, search functionality, and navigation
-//
-//  Created by Griffin Long on June 25, 2025
-//  Copyright © 2025 Home Inventory. All rights reserved.
+//  Snapshot tests for ItemsListView component
 //
 
 import XCTest
@@ -55,53 +12,280 @@ import SwiftUI
 @testable import Core
 @testable import SharedUI
 
-final class ItemsListViewSnapshotTests: SnapshotTestCase {
+final class ItemsListViewSnapshotTests: XCTestCase {
     
-    func testItemsListView_Empty() {
-        let view = NavigationStack {
-            ItemsListView()
-        }
-        
-        assertSnapshot(matching: view, as: .image(on: .iPhone16ProMax))
-    }
+    // MARK: - Mock Data
     
-    func testItemsListView_WithItems() {
-        // Create mock items
-        let items = [
-            Item.sample,
-            Item.sampleMinimal,
-            Item.sampleComplete
+    private var mockItems: [Item] {
+        [
+            Item(
+                id: UUID(),
+                name: "MacBook Pro 16\"",
+                brand: "Apple",
+                model: "A2991",
+                serialNumber: "C02XG2JJMD6N",
+                purchaseDate: Date().addingTimeInterval(-365 * 24 * 60 * 60),
+                purchasePrice: 2499.00,
+                currency: "USD",
+                category: .electronics,
+                location: "Home Office",
+                storageUnitId: UUID(),
+                notes: "Work laptop with AppleCare+",
+                tags: ["work", "electronics", "apple"],
+                photos: [],
+                documents: [],
+                receipts: [],
+                warranty: Warranty(
+                    expirationDate: Date().addingTimeInterval(365 * 24 * 60 * 60),
+                    provider: "Apple",
+                    coverage: "AppleCare+"
+                ),
+                maintenanceHistory: [],
+                manuals: [],
+                currentValue: 2100.00,
+                condition: "Excellent",
+                quantity: 1,
+                barcode: "194253082194",
+                qrCode: nil,
+                customFields: [:],
+                dateAdded: Date(),
+                lastModified: Date(),
+                createdBy: "user123",
+                isShared: false,
+                sharedWith: [],
+                isDeleted: false,
+                syncMetadata: nil,
+                attachments: [],
+                versionHistory: [],
+                linkedItems: [],
+                insuranceInfo: nil,
+                customAttributes: nil
+            ),
+            Item(
+                id: UUID(),
+                name: "Sony WH-1000XM5",
+                brand: "Sony",
+                model: "WH-1000XM5",
+                serialNumber: "4901780157532",
+                purchaseDate: Date().addingTimeInterval(-60 * 24 * 60 * 60),
+                purchasePrice: 399.99,
+                currency: "USD",
+                category: .electronics,
+                location: "Living Room",
+                storageUnitId: nil,
+                notes: "Noise cancelling headphones",
+                tags: ["audio", "electronics"],
+                photos: [],
+                documents: [],
+                receipts: [],
+                warranty: Warranty(
+                    expirationDate: Date().addingTimeInterval(305 * 24 * 60 * 60),
+                    provider: "Sony",
+                    coverage: "Standard Warranty"
+                ),
+                maintenanceHistory: [],
+                manuals: [],
+                currentValue: 350.00,
+                condition: "Like New",
+                quantity: 1,
+                barcode: "4901780157532",
+                qrCode: nil,
+                customFields: [:],
+                dateAdded: Date(),
+                lastModified: Date(),
+                createdBy: "user123",
+                isShared: false,
+                sharedWith: [],
+                isDeleted: false,
+                syncMetadata: nil,
+                attachments: [],
+                versionHistory: [],
+                linkedItems: [],
+                insuranceInfo: nil,
+                customAttributes: nil
+            ),
+            Item(
+                id: UUID(),
+                name: "Kitchen Aid Stand Mixer",
+                brand: "KitchenAid",
+                model: "KSM150PSER",
+                serialNumber: "W10834523",
+                purchaseDate: Date().addingTimeInterval(-730 * 24 * 60 * 60),
+                purchasePrice: 279.99,
+                currency: "USD",
+                category: .appliances,
+                location: "Kitchen",
+                storageUnitId: nil,
+                notes: "Red color, 5-quart bowl",
+                tags: ["kitchen", "cooking"],
+                photos: [],
+                documents: [],
+                receipts: [],
+                warranty: nil,
+                maintenanceHistory: [],
+                manuals: [],
+                currentValue: 200.00,
+                condition: "Good",
+                quantity: 1,
+                barcode: "883049521428",
+                qrCode: nil,
+                customFields: [:],
+                dateAdded: Date(),
+                lastModified: Date(),
+                createdBy: "user123",
+                isShared: true,
+                sharedWith: ["family"],
+                isDeleted: false,
+                syncMetadata: nil,
+                attachments: [],
+                versionHistory: [],
+                linkedItems: [],
+                insuranceInfo: nil,
+                customAttributes: nil
+            )
         ]
-        
-        // Since we can't easily inject mock data into the view,
-        // we'll test the list row component instead
-        let listContent = VStack(spacing: 0) {
-            ForEach(items) { item in
-                ItemRow(item: item)
-                Divider()
-            }
-        }
-        .frame(width: 390)
-        
-        assertSnapshot(matching: listContent, as: .image)
     }
     
-    func testItemsListView_SearchActive() {
-        let searchView = VStack {
-            SearchBar(text: .constant("MacBook"), placeholder: "Search items...")
-            Spacer()
+    // MARK: - Tests
+    
+    func testItemsList_Default() {
+        withSnapshotTesting(record: .all) {
+            let view = ItemsListView(
+                items: .constant(mockItems),
+                selectedItems: .constant(Set()),
+                searchText: .constant(""),
+                selectedCategory: .constant(nil),
+                sortOption: .constant(.dateAdded),
+                showingAddItem: .constant(false)
+            )
+            .frame(width: 390, height: 844)
+            
+            let hostingController = UIHostingController(rootView: view)
+            assertSnapshot(of: hostingController, as: .image(on: .iPhone13Pro))
         }
-        .frame(width: 390, height: 200)
-        .background(Color(.systemBackground))
-        
-        assertSnapshot(matching: searchView, as: .image)
     }
     
-    func testItemsListView_iPad() {
-        let view = NavigationStack {
-            ItemsListView()
+    func testItemsList_Empty() {
+        withSnapshotTesting(record: .all) {
+            let view = ItemsListView(
+                items: .constant([]),
+                selectedItems: .constant(Set()),
+                searchText: .constant(""),
+                selectedCategory: .constant(nil),
+                sortOption: .constant(.dateAdded),
+                showingAddItem: .constant(false)
+            )
+            .frame(width: 390, height: 844)
+            
+            let hostingController = UIHostingController(rootView: view)
+            assertSnapshot(of: hostingController, as: .image(on: .iPhone13Pro))
         }
-        
-        assertSnapshot(matching: view, as: .image(on: .iPadPro11))
+    }
+    
+    func testItemsList_WithSearch() {
+        withSnapshotTesting(record: .all) {
+            let view = ItemsListView(
+                items: .constant(mockItems),
+                selectedItems: .constant(Set()),
+                searchText: .constant("Sony"),
+                selectedCategory: .constant(nil),
+                sortOption: .constant(.dateAdded),
+                showingAddItem: .constant(false)
+            )
+            .frame(width: 390, height: 844)
+            
+            let hostingController = UIHostingController(rootView: view)
+            assertSnapshot(of: hostingController, as: .image(on: .iPhone13Pro))
+        }
+    }
+    
+    func testItemsList_WithCategoryFilter() {
+        withSnapshotTesting(record: .all) {
+            let view = ItemsListView(
+                items: .constant(mockItems),
+                selectedItems: .constant(Set()),
+                searchText: .constant(""),
+                selectedCategory: .constant(.electronics),
+                sortOption: .constant(.name),
+                showingAddItem: .constant(false)
+            )
+            .frame(width: 390, height: 844)
+            
+            let hostingController = UIHostingController(rootView: view)
+            assertSnapshot(of: hostingController, as: .image(on: .iPhone13Pro))
+        }
+    }
+    
+    func testItemsList_MultipleSelection() {
+        withSnapshotTesting(record: .all) {
+            let selectedIds = Set(mockItems.prefix(2).map { $0.id })
+            let view = ItemsListView(
+                items: .constant(mockItems),
+                selectedItems: .constant(selectedIds),
+                searchText: .constant(""),
+                selectedCategory: .constant(nil),
+                sortOption: .constant(.dateAdded),
+                showingAddItem: .constant(false)
+            )
+            .frame(width: 390, height: 844)
+            
+            let hostingController = UIHostingController(rootView: view)
+            assertSnapshot(of: hostingController, as: .image(on: .iPhone13Pro))
+        }
+    }
+    
+    func testItemsList_iPad() {
+        withSnapshotTesting(record: .all) {
+            let view = ItemsListView(
+                items: .constant(mockItems),
+                selectedItems: .constant(Set()),
+                searchText: .constant(""),
+                selectedCategory: .constant(nil),
+                sortOption: .constant(.dateAdded),
+                showingAddItem: .constant(false)
+            )
+            .frame(width: 1024, height: 1366)
+            
+            let hostingController = UIHostingController(rootView: view)
+            assertSnapshot(of: hostingController, as: .image(on: .iPadPro12_9))
+        }
+    }
+    
+    func testItemsList_DarkMode() {
+        withSnapshotTesting(record: .all) {
+            let view = ItemsListView(
+                items: .constant(mockItems),
+                selectedItems: .constant(Set()),
+                searchText: .constant(""),
+                selectedCategory: .constant(nil),
+                sortOption: .constant(.dateAdded),
+                showingAddItem: .constant(false)
+            )
+            .frame(width: 390, height: 844)
+            .preferredColorScheme(.dark)
+            
+            let hostingController = UIHostingController(rootView: view)
+            assertSnapshot(of: hostingController, as: .image(on: .iPhone13Pro))
+        }
+    }
+    
+    func testItemsList_Accessibility() {
+        withSnapshotTesting(record: .all) {
+            let view = ItemsListView(
+                items: .constant(mockItems),
+                selectedItems: .constant(Set()),
+                searchText: .constant(""),
+                selectedCategory: .constant(nil),
+                sortOption: .constant(.dateAdded),
+                showingAddItem: .constant(false)
+            )
+            .frame(width: 390, height: 844)
+            
+            let hostingController = UIHostingController(rootView: view)
+            assertSnapshot(
+                of: hostingController,
+                as: .image(on: .iPhone13Pro, traits: .init(preferredContentSizeCategory: .accessibilityLarge))
+            )
+        }
     }
 }

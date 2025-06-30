@@ -221,4 +221,194 @@ Testing Focus:
     
     UI.success('✅ Successfully uploaded to TestFlight!')
   end
+  
+  # Test automation lanes
+  
+  desc "Run all tests"
+  lane :test_all do
+    scan(
+      scheme: "HomeInventoryModular",
+      clean: true,
+      code_coverage: true,
+      output_types: "html,junit",
+      output_directory: "./test-results",
+      result_bundle: true,
+      parallel_testing: true,
+      max_concurrent_simulators: 4
+    )
+  end
+  
+  desc "Run unit tests only"
+  lane :test_unit do
+    scan(
+      scheme: "HomeInventoryModular",
+      only_testing: [
+        "CoreTests",
+        "ItemsTests",
+        "BarcodeScannerTests",
+        "ReceiptsTests",
+        "GmailTests",
+        "SyncTests",
+        "PremiumTests",
+        "AppSettingsTests"
+      ],
+      code_coverage: true,
+      parallel_testing: true
+    )
+  end
+  
+  desc "Run integration tests"
+  lane :test_integration do
+    scan(
+      scheme: "HomeInventoryModular",
+      only_testing: ["HomeInventoryModularTests/IntegrationTests"],
+      parallel_testing: false
+    )
+  end
+  
+  desc "Run performance tests"
+  lane :test_performance do
+    scan(
+      scheme: "HomeInventoryModular",
+      only_testing: ["HomeInventoryModularTests/PerformanceTests"],
+      configuration: "Release"
+    )
+  end
+  
+  desc "Run snapshot tests"
+  lane :test_snapshots do
+    scan(
+      scheme: "HomeInventoryModular",
+      only_testing: [
+        "HomeInventoryModularTests/EnhancedTests",
+        "HomeInventoryModularTests/AdditionalTests",
+        "HomeInventoryModularTests/ExpandedTests"
+      ],
+      parallel_testing: true,
+      max_concurrent_simulators: 2
+    )
+  end
+  
+  desc "Run security tests"
+  lane :test_security do
+    scan(
+      scheme: "HomeInventoryModular",
+      only_testing: ["HomeInventoryModularTests/SecurityTests"]
+    )
+  end
+  
+  desc "Run UI tests on multiple devices"
+  lane :test_ui_matrix do
+    devices = [
+      "iPhone 15 Pro",
+      "iPhone 14",
+      "iPhone SE (3rd generation)",
+      "iPad Pro (12.9-inch) (6th generation)",
+      "iPad Air (5th generation)"
+    ]
+    
+    devices.each do |device|
+      scan(
+        scheme: "HomeInventoryModular",
+        only_testing: ["HomeInventoryModularTests/UIGestureTests"],
+        device: device,
+        code_coverage: false
+      )
+    end
+  end
+  
+  # CI/CD lanes
+  
+  desc "CI - Pull Request validation"
+  lane :ci_pr do
+    # Lint
+    swiftlint(
+      mode: :lint,
+      config_file: ".swiftlint.yml",
+      strict: true,
+      raise_if_swiftlint_error: true
+    )
+    
+    # Format check
+    sh("swiftformat --lint . --config .swiftformat")
+    
+    # Run quick tests
+    test_unit
+    
+    # Generate test report
+    xcov(
+      scheme: "HomeInventoryModular",
+      output_directory: "./coverage",
+      minimum_coverage_percentage: 70.0
+    )
+  end
+  
+  desc "CI - Nightly build and test"
+  lane :ci_nightly do
+    # Full test suite
+    test_all
+    
+    # Performance benchmarks
+    test_performance
+    
+    # Security scan
+    test_security
+    
+    # Generate reports
+    trainer(
+      output_directory: "./test-results",
+      fail_build: false
+    )
+  end
+  
+  # Utility lanes
+  
+  desc "Generate test coverage report"
+  lane :coverage_report do
+    xcov(
+      scheme: "HomeInventoryModular",
+      output_directory: "./coverage",
+      html_report: true,
+      markdown_report: true,
+      json_report: true,
+      minimum_coverage_percentage: 70.0,
+      include_targets: "Core,Items,BarcodeScanner,Receipts,Gmail,Sync,Premium,AppSettings",
+      exclude_targets: "Pods,TestUtilities"
+    )
+  end
+  
+  desc "Run Danger for PR review"
+  lane :danger_check do
+    danger(
+      dangerfile: "./Dangerfile.swift",
+      github_api_token: ENV["GITHUB_TOKEN"],
+      verbose: true
+    )
+  end
+  
+  desc "Setup test environment"
+  lane :setup_tests do
+    # Resolve SPM dependencies
+    resolve_dependencies
+    
+    # Generate Xcode project if using XcodeGen
+    sh("xcodegen generate") if File.exist?("project.yml")
+    
+    # Download test fixtures
+    sh("./scripts/download_test_fixtures.sh") if File.exist?("./scripts/download_test_fixtures.sh")
+  end
+  
+  desc "Clean test artifacts"
+  lane :clean_tests do
+    clean_build_artifacts
+    
+    # Remove test results
+    sh("rm -rf ./test-results")
+    sh("rm -rf ./coverage")
+    sh("rm -rf ./fastlane/test_output")
+    
+    # Clear simulator caches
+    sh("xcrun simctl shutdown all")
+    sh("xcrun simctl erase all")
+  end
 end

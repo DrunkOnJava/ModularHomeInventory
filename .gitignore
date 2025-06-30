@@ -131,6 +131,30 @@ Temporary Items
 .env
 .env.local
 .env.secret
+.env.arkana
+.env.arkana.*
 
 # MCP configuration (may contain API keys)
 .mcp.json
+
+# Arkana generated files (regenerated from secrets)
+Generated/Arkana/
+
+# Generated files
+Generated/
+docs/
+*.generated.swift
+
+# Tool reports
+reports/
+*.html
+TestResults.xcresult
+coverage.json
+swiftlint.json
+periphery.json
+
+# Sourcery
+.sourcery/
+
+# Danger
+.danger/

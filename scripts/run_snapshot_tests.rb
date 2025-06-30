@@ -6,8 +6,8 @@ require 'fileutils'
 
 # Configuration
 PROJECT = 'HomeInventoryModular.xcodeproj'
-SCHEME = 'HomeInventoryModularTests'
-SIMULATOR = 'iPhone 16 Pro Max'
+SCHEME = 'HomeInventoryModular'
+SIMULATOR = 'iPhone 16'
 RECORD_MODE = ENV['RECORD_SNAPSHOTS'] == 'true' || ARGV.include?('--record')
 
 puts "🧪 Running Snapshot Tests"
@@ -16,15 +16,16 @@ puts ""
 
 # Build the test target first
 puts "🔨 Building test target..."
-build_cmd = [
+build_cmd_parts = [
   'xcodebuild', 'build-for-testing',
   '-project', PROJECT,
   '-scheme', SCHEME,
   '-destination', "platform=iOS Simulator,name=#{SIMULATOR}",
-  '-quiet'
-].join(' ')
+  '-derivedDataPath', 'build'
+]
+puts "Debug: Running command: #{build_cmd_parts.inspect}"
 
-stdout, stderr, status = Open3.capture3(build_cmd)
+stdout, stderr, status = Open3.capture3(*build_cmd_parts)
 unless status.success?
   puts "❌ Build failed!"
   puts stderr
@@ -41,21 +42,25 @@ puts "📦 Test bundle: #{test_bundle}"
 
 # Run the tests
 puts "🏃 Running tests..."
-test_cmd = [
+
+# Set environment variable for recording
+ENV['RECORD_SNAPSHOTS'] = 'true' if RECORD_MODE
+
+test_cmd_parts = [
   'xcodebuild', 'test-without-building',
   '-project', PROJECT,
   '-scheme', SCHEME,
   '-destination', "platform=iOS Simulator,name=#{SIMULATOR}",
-  RECORD_MODE ? '-DRECORD_SNAPSHOTS' : '',
-  '2>&1'
-].join(' ')
-
+  '-derivedDataPath', 'build',
+  '-only-testing:HomeInventoryModularTests'
+]
+test_cmd_parts << '-DRECORD_SNAPSHOTS' if RECORD_MODE
 # Parse test output
 test_output = []
 test_failures = []
 snapshot_recordings = []
 
-IO.popen(test_cmd) do |io|
+IO.popen(test_cmd_parts) do |io|
   io.each_line do |line|
     # Clean up xcodebuild noise
     next if line.include?('IDETestOperationsObserverDebug')

@@ -33,15 +33,66 @@ A comprehensive home inventory management app built with SwiftUI and modular arc
 ## Quick Start
 
 ```bash
+# Install development tools
+make install-all-tools
+
 # Build and run
 make build run
 
 # Run tests
 make test
 
-# Lint code
-make lint
+# Lint and format code
+make lint format
 ```
+
+## Development Tools
+
+This project uses a comprehensive suite of professional iOS development tools:
+
+### Code Quality
+- **SwiftLint** - Swift style and conventions enforcement
+- **SwiftFormat** - Automatic code formatting
+- **Periphery** - Dead code detection
+
+### Testing
+- **XCTestHTMLReport** - Beautiful test reports
+- **SnapshotTesting** - UI regression testing
+- **Quick/Nimble** - BDD testing framework
+
+### Build & Deployment
+- **Fastlane** - Automated builds and deployment
+- **XcodeGen** - Project generation from YAML
+- **xcbeautify** - Beautiful build output
+
+### Documentation & Automation
+- **Jazzy** - API documentation generation
+- **Sourcery** - Code generation for mocks
+- **Danger** - Automated PR reviews
+
+### Essential Commands
+
+```bash
+# Code quality
+make lint          # Check code style
+make format        # Format code
+make analyze       # Static analysis
+make dead-code     # Find unused code
+
+# Testing
+make test          # Run all tests
+make test-snapshots # Run snapshot tests
+
+# Documentation
+make docs          # Generate documentation
+make docs-open     # Open docs in browser
+
+# Build & Deploy
+make testflight    # Upload to TestFlight
+make pre-merge     # Pre-merge checks
+```
+
+See [TOOLS_GUIDE.md](TOOLS_GUIDE.md) for detailed documentation.
 
 ## Documentation
 

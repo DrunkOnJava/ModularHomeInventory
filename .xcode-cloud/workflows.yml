@@ -1,0 +1,109 @@
+# Xcode Cloud Workflow Configuration Reference
+# This file documents the recommended workflow settings
+
+workflows:
+  - name: "Build and Test - Main"
+    description: "Primary workflow for main branch commits"
+    
+    triggers:
+      - type: BRANCH_CHANGES
+        branch: main
+        autoCancel: true
+    
+    environment:
+      xcode: LATEST_RELEASE
+      platform: IOS
+      
+    actions:
+      - name: build_and_test
+        type: BUILD
+        scheme: HomeInventoryModular
+        configuration: Debug
+        destination: "generic/platform=iOS Simulator"
+        
+      - name: archive
+        type: ARCHIVE
+        scheme: HomeInventoryModular
+        configuration: Release
+        exportMethod: APP_STORE
+        
+    post_actions:
+      - name: test_report
+        type: TEST_REPORT
+        includeScreenshots: true
+        
+      - name: notify_slack
+        type: NOTIFICATION
+        destination: SLACK
+        events: [SUCCESS, FAILURE]
+
+  - name: "PR Validation"
+    description: "Validate pull requests before merge"
+    
+    triggers:
+      - type: PULL_REQUEST
+        autoCancel: true
+        
+    environment:
+      xcode: LATEST_RELEASE
+      platform: IOS
+      
+    actions:
+      - name: build_and_test
+        type: BUILD
+        scheme: HomeInventoryModular
+        configuration: Debug
+        runTests: true
+        codeCoverage: true
+        
+    post_actions:
+      - name: danger
+        type: CUSTOM_SCRIPT
+        script: "bundle exec danger"
+
+  - name: "Nightly TestFlight"
+    description: "Daily TestFlight build"
+    
+    triggers:
+      - type: SCHEDULED
+        schedule: "0 2 * * *"  # 2 AM daily
+        branch: main
+        
+    environment:
+      xcode: LATEST_RELEASE
+      platform: IOS
+      
+    actions:
+      - name: archive
+        type: ARCHIVE
+        scheme: HomeInventoryModular
+        configuration: Release
+        
+    post_actions:
+      - name: testflight
+        type: TESTFLIGHT
+        groups: ["Internal Testers"]
+        releaseNotes: "Nightly build from main branch"
+
+  - name: "App Store Release"
+    description: "Release workflow triggered by version tags"
+    
+    triggers:
+      - type: TAG
+        tagPattern: "v*"
+        
+    environment:
+      xcode: LATEST_RELEASE
+      platform: IOS
+      
+    actions:
+      - name: archive
+        type: ARCHIVE
+        scheme: HomeInventoryModular
+        configuration: Release
+        includeSymbols: true
+        
+    post_actions:
+      - name: app_store
+        type: APP_STORE
+        releaseType: MANUAL

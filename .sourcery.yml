@@ -1,0 +1,47 @@
+# Sourcery configuration for ModularHomeInventory
+# This enables automatic code generation for mocks, lenses, and other patterns
+
+sources:
+  - Source
+  - Modules/Core/Sources
+  - Modules/SharedUI/Sources
+  - Modules/Items/Sources
+  - Modules/BarcodeScanner/Sources
+  - Modules/AppSettings/Sources
+  - Modules/Receipts/Sources
+  - Modules/Sync/Sources
+  - Modules/Premium/Sources
+  - Modules/Onboarding/Sources
+
+templates:
+  - Templates/
+
+output:
+  Generated/
+
+args:
+  # Import statements that should be added to generated files
+  imports:
+    - Foundation
+    - SwiftUI
+    - Combine
+    
+  # Modules to import with @testable
+  testableImports:
+    - Core
+    - SharedUI
+    - Items
+    
+  # Custom arguments for templates
+  generateMocks: true
+  generateLenses: true
+  generateEquatable: true
+  generateCodable: true
+
+# Exclude patterns
+exclude:
+  - "**/*.generated.swift"
+  - "**/Tests/**"
+  - "**/UITests/**"
+  - "**/.build/**"
+  - "**/DerivedData/**"

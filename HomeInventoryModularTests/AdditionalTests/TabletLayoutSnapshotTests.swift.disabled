@@ -1,0 +1,741 @@
+import XCTest
+import SnapshotTesting
+import SwiftUI
+
+final class TabletLayoutSnapshotTests: XCTestCase {
+    
+    override func setUp() {
+        super.setUp()
+        // Set isRecording = true to generate new snapshots
+        // isRecording = true
+    }
+    
+    func testSplitViewView() {
+        let view = createSplitViewView()
+        let hostingController = UIHostingController(rootView: view)
+        
+        assertSnapshot(of: hostingController, as: .image(on: .iPhone13))
+        assertSnapshot(of: hostingController, as: .image(on: .iPhone13ProMax))
+        assertSnapshot(of: hostingController, as: .image(on: .iPadPro11))
+    }
+    
+    func testSplitViewViewDarkMode() {
+        let view = createSplitViewView()
+            .environment(\.colorScheme, .dark)
+        let hostingController = UIHostingController(rootView: view)
+        
+        assertSnapshot(of: hostingController, as: .image(on: .iPhone13))
+    }
+    
+    func testSplitViewViewCompact() {
+        let view = createSplitViewView()
+            .environment(\.horizontalSizeClass, .compact)
+        let hostingController = UIHostingController(rootView: view)
+        
+        assertSnapshot(of: hostingController, as: .image(on: .iPhoneSe))
+    }
+    
+    func testSplitViewViewAccessibility() {
+        let view = createSplitViewView()
+            .environment(\.sizeCategory, .accessibilityExtraExtraExtraLarge)
+        let hostingController = UIHostingController(rootView: view)
+        
+        assertSnapshot(of: hostingController, as: .image(on: .iPhone13))
+    }
+
+    func testSplitViewViewLoading() {
+        let view = createSplitViewLoadingView()
+        let hostingController = UIHostingController(rootView: view)
+        
+        assertSnapshot(of: hostingController, as: .image(on: .iPhone13))
+    }
+    
+    func testSplitViewViewRefreshing() {
+        let view = createSplitViewRefreshingView()
+        let hostingController = UIHostingController(rootView: view)
+        
+        assertSnapshot(of: hostingController, as: .image(on: .iPhone13))
+    }
+
+    func testMasterDetailView() {
+        let view = createMasterDetailView()
+        let hostingController = UIHostingController(rootView: view)
+        
+        assertSnapshot(of: hostingController, as: .image(on: .iPhone13))
+        assertSnapshot(of: hostingController, as: .image(on: .iPhone13ProMax))
+        assertSnapshot(of: hostingController, as: .image(on: .iPadPro11))
+    }
+    
+    func testMasterDetailViewDarkMode() {
+        let view = createMasterDetailView()
+            .environment(\.colorScheme, .dark)
+        let hostingController = UIHostingController(rootView: view)
+        
+        assertSnapshot(of: hostingController, as: .image(on: .iPhone13))
+    }
+    
+    func testMasterDetailViewCompact() {
+        let view = createMasterDetailView()
+            .environment(\.horizontalSizeClass, .compact)
+        let hostingController = UIHostingController(rootView: view)
+        
+        assertSnapshot(of: hostingController, as: .image(on: .iPhoneSe))
+    }
+    
+    func testMasterDetailViewAccessibility() {
+        let view = createMasterDetailView()
+            .environment(\.sizeCategory, .accessibilityExtraExtraExtraLarge)
+        let hostingController = UIHostingController(rootView: view)
+        
+        assertSnapshot(of: hostingController, as: .image(on: .iPhone13))
+    }
+
+    func testMasterDetailViewLoading() {
+        let view = createMasterDetailLoadingView()
+        let hostingController = UIHostingController(rootView: view)
+        
+        assertSnapshot(of: hostingController, as: .image(on: .iPhone13))
+    }
+    
+    func testMasterDetailViewRefreshing() {
+        let view = createMasterDetailRefreshingView()
+        let hostingController = UIHostingController(rootView: view)
+        
+        assertSnapshot(of: hostingController, as: .image(on: .iPhone13))
+    }
+
+    func testMultiColumnView() {
+        let view = createMultiColumnView()
+        let hostingController = UIHostingController(rootView: view)
+        
+        assertSnapshot(of: hostingController, as: .image(on: .iPhone13))
+        assertSnapshot(of: hostingController, as: .image(on: .iPhone13ProMax))
+        assertSnapshot(of: hostingController, as: .image(on: .iPadPro11))
+    }
+    
+    func testMultiColumnViewDarkMode() {
+        let view = createMultiColumnView()
+            .environment(\.colorScheme, .dark)
+        let hostingController = UIHostingController(rootView: view)
+        
+        assertSnapshot(of: hostingController, as: .image(on: .iPhone13))
+    }
+    
+    func testMultiColumnViewCompact() {
+        let view = createMultiColumnView()
+            .environment(\.horizontalSizeClass, .compact)
+        let hostingController = UIHostingController(rootView: view)
+        
+        assertSnapshot(of: hostingController, as: .image(on: .iPhoneSe))
+    }
+    
+    func testMultiColumnViewAccessibility() {
+        let view = createMultiColumnView()
+            .environment(\.sizeCategory, .accessibilityExtraExtraExtraLarge)
+        let hostingController = UIHostingController(rootView: view)
+        
+        assertSnapshot(of: hostingController, as: .image(on: .iPhone13))
+    }
+
+    func testMultiColumnViewLoading() {
+        let view = createMultiColumnLoadingView()
+        let hostingController = UIHostingController(rootView: view)
+        
+        assertSnapshot(of: hostingController, as: .image(on: .iPhone13))
+    }
+    
+    func testMultiColumnViewRefreshing() {
+        let view = createMultiColumnRefreshingView()
+        let hostingController = UIHostingController(rootView: view)
+        
+        assertSnapshot(of: hostingController, as: .image(on: .iPhone13))
+    }
+
+    func testCompactAdaptiveView() {
+        let view = createCompactAdaptiveView()
+        let hostingController = UIHostingController(rootView: view)
+        
+        assertSnapshot(of: hostingController, as: .image(on: .iPhone13))
+        assertSnapshot(of: hostingController, as: .image(on: .iPhone13ProMax))
+        assertSnapshot(of: hostingController, as: .image(on: .iPadPro11))
+    }
+    
+    func testCompactAdaptiveViewDarkMode() {
+        let view = createCompactAdaptiveView()
+            .environment(\.colorScheme, .dark)
+        let hostingController = UIHostingController(rootView: view)
+        
+        assertSnapshot(of: hostingController, as: .image(on: .iPhone13))
+    }
+    
+    func testCompactAdaptiveViewCompact() {
+        let view = createCompactAdaptiveView()
+            .environment(\.horizontalSizeClass, .compact)
+        let hostingController = UIHostingController(rootView: view)
+        
+        assertSnapshot(of: hostingController, as: .image(on: .iPhoneSe))
+    }
+    
+    func testCompactAdaptiveViewAccessibility() {
+        let view = createCompactAdaptiveView()
+            .environment(\.sizeCategory, .accessibilityExtraExtraExtraLarge)
+        let hostingController = UIHostingController(rootView: view)
+        
+        assertSnapshot(of: hostingController, as: .image(on: .iPhone13))
+    }
+
+    func testCompactAdaptiveViewLoading() {
+        let view = createCompactAdaptiveLoadingView()
+        let hostingController = UIHostingController(rootView: view)
+        
+        assertSnapshot(of: hostingController, as: .image(on: .iPhone13))
+    }
+    
+    func testCompactAdaptiveViewRefreshing() {
+        let view = createCompactAdaptiveRefreshingView()
+        let hostingController = UIHostingController(rootView: view)
+        
+        assertSnapshot(of: hostingController, as: .image(on: .iPhone13))
+    }
+
+    
+    // MARK: - Combined View Test
+    
+    func testAllViewsCombined() {
+        let view = createCombinedView()
+        let hostingController = UIHostingController(rootView: view)
+        
+        assertSnapshot(of: hostingController, as: .image(on: .iPhone13))
+        assertSnapshot(of: hostingController, as: .image(on: .iPadPro11))
+    }
+    
+    // MARK: - View Creation Helpers
+    
+    private func createSplitViewView() -> some View {
+                GeometryReader { geometry in
+            HStack(spacing: 0) {
+                // Master/Sidebar
+                VStack(alignment: .leading) {
+                    Text("Categories")
+                        .font(.headline)
+                        .padding()
+                    
+                    List {
+                        ForEach(["All Items", "Electronics", "Furniture", "Books", "Clothing"], id: \.self) { category in
+                            HStack {
+                                Image(systemName: category == "All Items" ? "square.grid.2x2" : "folder")
+                                    .foregroundColor(.blue)
+                                Text(category)
+                                Spacer()
+                                if category == "Electronics" {
+                                    Image(systemName: "chevron.right")
+                                        .foregroundColor(.secondary)
+                                        .font(.caption)
+                                }
+                            }
+                            .padding(.vertical, 4)
+                            .background(category == "Electronics" ? Color(.systemGray5) : Color.clear)
+                            .cornerRadius(6)
+                        }
+                    }
+                    .listStyle(PlainListStyle())
+                }
+                .frame(width: geometry.size.width * 0.35)
+                .background(Color(.systemGray6))
+                
+                Divider()
+                
+                // Detail
+                VStack {
+                    HStack {
+                        Text("Electronics")
+                            .font(.largeTitle)
+                            .fontWeight(.bold)
+                        Spacer()
+                        Button(action: {}) {
+                            Image(systemName: "plus")
+                        }
+                    }
+                    .padding()
+                    
+                    LazyVGrid(columns: [GridItem(.adaptive(minimum: 200))], spacing: 16) {
+                        ForEach(0..<6) { i in
+                            VStack {
+                                RoundedRectangle(cornerRadius: 12)
+                                    .fill(Color(.systemGray5))
+                                    .frame(height: 150)
+                                    .overlay(
+                                        Image(systemName: "tv")
+                                            .font(.largeTitle)
+                                            .foregroundColor(.gray)
+                                    )
+                                Text("Item \(i + 1)")
+                                    .font(.headline)
+                                Text("$\(100 * (i + 1))")
+                                    .font(.caption)
+                                    .foregroundColor(.secondary)
+                            }
+                        }
+                    }
+                    .padding()
+                    
+                    Spacer()
+                }
+            }
+        }
+
+    }
+    
+    private func createSplitViewLoadingView() -> some View {
+        TabletLayoutLoadingStateView(
+            message: "Loading SplitView...",
+            progress: 0.6
+        )
+    }
+    
+    private func createSplitViewRefreshingView() -> some View {
+        VStack {
+            HStack {
+                ProgressView()
+                    .padding(.trailing, 8)
+                Text("Refreshing...")
+                    .foregroundColor(.secondary)
+            }
+            .padding()
+            
+            createSplitViewView()
+                .opacity(0.6)
+        }
+    }
+    
+    private func createMasterDetailView() -> some View {
+        NavigationView {
+            // Master list
+            List {
+                ForEach(0..<10) { i in
+                    NavigationLink(destination: self.detailView(for: i)) {
+                        HStack {
+                            RoundedRectangle(cornerRadius: 8)
+                                .fill(Color(.systemGray5))
+                                .frame(width: 60, height: 60)
+                                .overlay(
+                                    Text("\(i + 1)")
+                                        .font(.headline)
+                                )
+                            VStack(alignment: .leading) {
+                                Text("Item \(i + 1)")
+                                    .font(.headline)
+                                Text("Category • $\(100 * (i + 1))")
+                                    .font(.caption)
+                                    .foregroundColor(.secondary)
+                            }
+    }
+                        .padding(.vertical, 4)
+                    }
+                }
+            }
+            .navigationTitle("Inventory")
+            
+            // Default detail view
+            VStack {
+                Image(systemName: "arrow.left")
+                    .font(.largeTitle)
+                    .foregroundColor(.gray)
+                Text("Select an item")
+                    .font(.headline)
+                    .foregroundColor(.gray)
+            }
+        }
+        .navigationSplitViewStyle(.prominentDetail)
+    }
+    
+    func detailView(for index: Int) -> some View {
+            ScrollView {
+                VStack(spacing: 20) {
+                    RoundedRectangle(cornerRadius: 12)
+                        .fill(Color(.systemGray5))
+                        .frame(height: 300)
+                        .overlay(
+                            Text("\(index + 1)")
+                                .font(.system(size: 60))
+                        )
+                    
+                    VStack(alignment: .leading, spacing: 12) {
+                        Text("Item \(index + 1)")
+                            .font(.largeTitle)
+                            .fontWeight(.bold)
+                        Text("$\(100 * (index + 1))")
+                            .font(.title)
+                            .foregroundColor(.green)
+                        Text("Added 3 days ago")
+                            .font(.caption)
+                            .foregroundColor(.secondary)
+                    }
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding()
+                    
+                    Spacer()
+                }
+                .padding()
+            }
+            .navigationTitle("Details")
+            .navigationBarTitleDisplayMode(.inline)
+        }
+    
+    private func createMasterDetailLoadingView() -> some View {
+        TabletLayoutLoadingStateView(
+            message: "Loading MasterDetail...",
+            progress: 0.6
+        )
+    }
+    
+    private func createMasterDetailRefreshingView() -> some View {
+        VStack {
+            HStack {
+                ProgressView()
+                    .padding(.trailing, 8)
+                Text("Refreshing...")
+                    .foregroundColor(.secondary)
+            }
+            .padding()
+            
+            createMasterDetailView()
+                .opacity(0.6)
+        }
+    }
+    
+    private func createMultiColumnView() -> some View {
+        GeometryReader { geometry in
+            ScrollView {
+                VStack(alignment: .leading, spacing: 20) {
+                    Text("Multi-Column Layout")
+                        .font(.largeTitle)
+                        .fontWeight(.bold)
+                        .padding(.horizontal)
+                    
+                    // Three column layout
+                    HStack(alignment: .top, spacing: 16) {
+                        ForEach(["Recent", "Categories", "Statistics"], id: \.self) { column in
+                            VStack(alignment: .leading, spacing: 12) {
+                                Text(column)
+                                    .font(.headline)
+                                    .padding(.bottom, 4)
+                                
+                                if column == "Recent" {
+                                    ForEach(0..<4) { i in
+                                        HStack {
+                                            RoundedRectangle(cornerRadius: 6)
+                                                .fill(Color(.systemGray5))
+                                                .frame(width: 40, height: 40)
+                                            VStack(alignment: .leading) {
+                                                Text("Item \(i + 1)")
+                                                    .font(.subheadline)
+                                                Text("2 hrs ago")
+                                                    .font(.caption)
+                                                    .foregroundColor(.secondary)
+                                            }
+                                            Spacer()
+                                        }
+                                        .padding(8)
+                                        .background(Color(.systemGray6))
+                                        .cornerRadius(8)
+                                    }
+                                } else if column == "Categories" {
+                                    ForEach(["Electronics", "Home", "Books", "Other"], id: \.self) { cat in
+                                        HStack {
+                                            Image(systemName: "folder.fill")
+                                                .foregroundColor(.blue)
+                                            Text(cat)
+                                            Spacer()
+                                            Text("\(Int.random(in: 5...20))")
+                                                .foregroundColor(.secondary)
+                                        }
+                                        .padding(8)
+                                        .background(Color(.systemGray6))
+                                        .cornerRadius(8)
+                                    }
+                                } else {
+                                    VStack(spacing: 16) {
+                                        StatCard(title: "Total Items", value: "156", color: .blue)
+                                        StatCard(title: "Total Value", value: "$8,435", color: .green)
+                                        StatCard(title: "Categories", value: "12", color: .purple)
+                                    }
+                                }
+                            }
+                            .frame(width: (geometry.size.width - 48) / 3)
+                        }
+                    }
+                    .padding(.horizontal)
+                }
+                .padding(.vertical)
+            }
+        }
+    }
+    
+    private func createMultiColumnLoadingView() -> some View {
+        TabletLayoutLoadingStateView(
+            message: "Loading MultiColumn...",
+            progress: 0.6
+        )
+    }
+    
+    private func createMultiColumnRefreshingView() -> some View {
+        VStack {
+            HStack {
+                ProgressView()
+                    .padding(.trailing, 8)
+                Text("Refreshing...")
+                    .foregroundColor(.secondary)
+            }
+            .padding()
+            
+            createMultiColumnView()
+                .opacity(0.6)
+        }
+    }
+    
+    private func createCompactAdaptiveView() -> some View {
+        VStack(spacing: 0) {
+            // Adaptive header
+            HStack {
+                Button(action: {}) {
+                    Image(systemName: "line.horizontal.3")
+                }
+                Spacer()
+                Text("Adaptive Layout")
+                    .font(.headline)
+                Spacer()
+                Button(action: {}) {
+                    Image(systemName: "square.grid.2x2")
+                }
+            }
+            .padding()
+            .background(Color(.systemGray6))
+            
+            GeometryReader { geometry in
+                if geometry.size.width < 400 {
+                    // Compact layout (single column)
+                    List {
+                        ForEach(0..<8) { i in
+                            CompactItemRow(index: i)
+                        }
+                    }
+                } else {
+                    // Regular layout (grid)
+                    ScrollView {
+                        LazyVGrid(columns: [GridItem(.adaptive(minimum: 180))], spacing: 16) {
+                            ForEach(0..<8) { i in
+                                ItemCard(index: i)
+                            }
+                        }
+                        .padding()
+                    }
+                }
+            }
+        }
+    }
+    
+    private func createCompactAdaptiveLoadingView() -> some View {
+        TabletLayoutLoadingStateView(
+            message: "Loading CompactAdaptive...",
+            progress: 0.6
+        )
+    }
+    
+
+    
+    private func createCompactAdaptiveRefreshingView() -> some View {
+        VStack {
+            HStack {
+                ProgressView()
+                    .padding(.trailing, 8)
+                Text("Refreshing...")
+                    .foregroundColor(.secondary)
+            }
+            .padding()
+            
+            createCompactAdaptiveView()
+                .opacity(0.6)
+        }
+    }
+    
+    private func createCombinedView() -> some View {
+        TabView {
+            createSplitViewView()
+                .tabItem {
+                    Label("SplitView", systemImage: "rectangle.split.2x1")
+                }
+                .tag(0)
+            
+            createMasterDetailView()
+                .tabItem {
+                    Label("MasterDetail", systemImage: "sidebar.left")
+                }
+                .tag(1)
+            
+            createMultiColumnView()
+                .tabItem {
+                    Label("MultiColumn", systemImage: "rectangle.split.3x1")
+                }
+                .tag(2)
+            
+            createCompactAdaptiveView()
+                .tabItem {
+                    Label("CompactAdaptive", systemImage: "rectangle.portrait.split.2x1")
+                }
+                .tag(3)
+            
+        }
+    }
+}
+
+// MARK: - Helper Views
+
+struct TabletLayoutErrorStateView: View {
+    let icon: String
+    let title: String
+    let message: String
+    let retryAction: () -> Void
+    
+    var body: some View {
+        VStack(spacing: 20) {
+            Image(systemName: icon)
+                .font(.system(size: 60))
+                .foregroundColor(.red)
+            
+            Text(title)
+                .font(.title2)
+                .fontWeight(.semibold)
+            
+            Text(message)
+                .foregroundColor(.secondary)
+                .multilineTextAlignment(.center)
+            
+            Button(action: retryAction) {
+                Label("Try Again", systemImage: "arrow.clockwise")
+                    .padding()
+                    .background(Color.blue)
+                    .foregroundColor(.white)
+                    .cornerRadius(8)
+            }
+        }
+        .padding()
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .background(Color(.systemBackground))
+    }
+}
+
+struct TabletLayoutLoadingStateView: View {
+    let message: String
+    let progress: Double?
+    
+    var body: some View {
+        VStack(spacing: 20) {
+            if let progress = progress {
+                ProgressView(value: progress)
+                    .progressViewStyle(CircularProgressViewStyle())
+                    .scaleEffect(1.5)
+            } else {
+                ProgressView()
+                    .progressViewStyle(CircularProgressViewStyle())
+                    .scaleEffect(1.5)
+            }
+            
+            Text(message)
+                .foregroundColor(.secondary)
+        }
+        .padding()
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .background(Color(.systemBackground))
+    }
+}
+
+struct TabletLayoutSkeletonView: View {
+    var body: some View {
+        RoundedRectangle(cornerRadius: 4)
+            .fill(
+                LinearGradient(
+                    gradient: Gradient(colors: [
+                        Color(.systemGray5),
+                        Color(.systemGray4),
+                        Color(.systemGray5)
+                    ]),
+                    startPoint: .leading,
+                    endPoint: .trailing
+                )
+            )
+    }
+
+// MARK: - Helper Structs for createMultiColumnView
+
+struct StatCard: View {
+    let title: String
+    let value: String
+    let color: Color
+    
+    var body: some View {
+        VStack(alignment: .leading) {
+            Text(title)
+                .font(.caption)
+                .foregroundColor(.secondary)
+            Text(value)
+                .font(.title2)
+                .fontWeight(.bold)
+                .foregroundColor(color)
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .padding()
+        .background(Color(.systemGray6))
+        .cornerRadius(8)
+    }
+}
+
+// MARK: - Helper Structs for createCompactAdaptiveView
+
+struct CompactItemRow: View {
+    let index: Int
+    
+    var body: some View {
+        HStack {
+            RoundedRectangle(cornerRadius: 8)
+                .fill(Color(.systemGray5))
+                .frame(width: 50, height: 50)
+                .overlay(Text("\(index + 1)"))
+            VStack(alignment: .leading) {
+                Text("Item \(index + 1)")
+                    .font(.headline)
+                Text("Compact layout")
+                    .font(.caption)
+                    .foregroundColor(.secondary)
+            }
+            Spacer()
+            Text("$\(50 * (index + 1))")
+                .font(.subheadline)
+                .foregroundColor(.green)
+        }
+        .padding(.vertical, 4)
+    }
+}
+
+struct ItemCard: View {
+    let index: Int
+    
+    var body: some View {
+        VStack {
+            RoundedRectangle(cornerRadius: 8)
+                .fill(Color(.systemGray5))
+                .frame(height: 120)
+                .overlay(Text("\(index + 1)").font(.largeTitle))
+            Text("Item \(index + 1)")
+                .font(.headline)
+            Text("$\(50 * (index + 1))")
+                .font(.caption)
+                .foregroundColor(.green)
+        }
+        .padding()
+        .background(Color(.systemGray6))
+        .cornerRadius(12)
+    }
+}
+
+}

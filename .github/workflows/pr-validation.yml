@@ -1,0 +1,288 @@
+name: PR Validation
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+env:
+  XCODE_VERSION: '15.0'
+  IOS_VERSION: '17.0'
+  SIMULATOR_NAME: 'iPhone 15 Pro'
+
+jobs:
+  swift-lint:
+    name: SwiftLint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: SwiftLint
+        uses: norio-nomura/action-swiftlint@3.2.1
+        with:
+          args: --strict --reporter github-actions-logging
+      
+      - name: Comment PR on lint failure
+        if: failure()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: '❌ SwiftLint found issues. Please fix them before merging.'
+            });
+
+  swift-format:
+    name: SwiftFormat Check
+    runs-on: macos-14
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Install SwiftFormat
+        run: brew install swiftformat
+      
+      - name: Check formatting
+        run: |
+          swiftformat --lint . --config .swiftformat
+      
+      - name: Generate diff if needed
+        if: failure()
+        run: |
+          swiftformat . --config .swiftformat
+          git diff > formatting.diff
+      
+      - name: Upload formatting diff
+        if: failure()
+        uses: actions/upload-artifact@v3
+        with:
+          name: formatting-diff
+          path: formatting.diff
+
+  danger:
+    name: Danger PR Review
+    runs-on: macos-14
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.2'
+          bundler-cache: true
+      
+      - name: Run Danger
+        run: bundle exec danger
+        env:
+          DANGER_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  unit-tests-quick:
+    name: Quick Unit Tests
+    runs-on: macos-14
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Select Xcode
+        run: sudo xcode-select -s /Applications/Xcode_${{ env.XCODE_VERSION }}.app
+      
+      - name: Run Core module tests
+        run: |
+          xcodebuild test \
+            -scheme Core \
+            -destination 'platform=iOS Simulator,name=${{ env.SIMULATOR_NAME }},OS=${{ env.IOS_VERSION }}' \
+            -parallel-testing-enabled YES \
+            -quiet \
+            | xcbeautify --is-ci
+      
+      - name: Run changed modules tests
+        run: |
+          # Detect changed modules
+          CHANGED_FILES=$(git diff --name-only origin/${{ github.base_ref }}...HEAD)
+          MODULES=""
+          
+          for file in $CHANGED_FILES; do
+            if [[ $file == Modules/* ]]; then
+              MODULE=$(echo $file | cut -d'/' -f2)
+              if [[ ! " $MODULES " =~ " $MODULE " ]]; then
+                MODULES="$MODULES $MODULE"
+              fi
+            fi
+          done
+          
+          # Run tests for changed modules
+          for module in $MODULES; do
+            echo "Testing module: $module"
+            xcodebuild test \
+              -scheme $module \
+              -destination 'platform=iOS Simulator,name=${{ env.SIMULATOR_NAME }},OS=${{ env.IOS_VERSION }}' \
+              -parallel-testing-enabled YES \
+              -quiet \
+              | xcbeautify --is-ci || true
+          done
+
+  snapshot-tests-changed:
+    name: Snapshot Tests (Changed Only)
+    runs-on: macos-14
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          lfs: true
+      
+      - name: Select Xcode
+        run: sudo xcode-select -s /Applications/Xcode_${{ env.XCODE_VERSION }}.app
+      
+      - name: Detect changed snapshots
+        id: changed-snapshots
+        run: |
+          CHANGED_FILES=$(git diff --name-only origin/${{ github.base_ref }}...HEAD)
+          SNAPSHOT_TESTS=""
+          
+          for file in $CHANGED_FILES; do
+            if [[ $file == *SnapshotTests.swift ]]; then
+              TEST_NAME=$(basename $file .swift)
+              SNAPSHOT_TESTS="$SNAPSHOT_TESTS HomeInventoryModularTests/$TEST_NAME"
+            fi
+          done
+          
+          echo "tests=$SNAPSHOT_TESTS" >> $GITHUB_OUTPUT
+      
+      - name: Run changed snapshot tests
+        if: steps.changed-snapshots.outputs.tests != ''
+        run: |
+          for test in ${{ steps.changed-snapshots.outputs.tests }}; do
+            xcodebuild test \
+              -scheme HomeInventoryModular \
+              -destination 'platform=iOS Simulator,name=${{ env.SIMULATOR_NAME }},OS=${{ env.IOS_VERSION }}' \
+              -only-testing:$test \
+              | xcbeautify --is-ci
+          done
+      
+      - name: Upload failed snapshots
+        if: failure()
+        uses: actions/upload-artifact@v3
+        with:
+          name: failed-snapshots-pr
+          path: |
+            **/__Snapshots__/*_failure.png
+            **/__Snapshots__/*_difference.png
+
+  build-check:
+    name: Build Check
+    runs-on: macos-14
+    strategy:
+      matrix:
+        configuration: [Debug, Release]
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Select Xcode
+        run: sudo xcode-select -s /Applications/Xcode_${{ env.XCODE_VERSION }}.app
+      
+      - name: Build for ${{ matrix.configuration }}
+        run: |
+          xcodebuild build \
+            -scheme HomeInventoryModular \
+            -configuration ${{ matrix.configuration }} \
+            -destination 'platform=iOS Simulator,name=${{ env.SIMULATOR_NAME }},OS=${{ env.IOS_VERSION }}' \
+            -derivedDataPath DerivedData \
+            | xcbeautify --is-ci
+      
+      - name: Check binary size
+        if: matrix.configuration == 'Release'
+        run: |
+          APP_PATH="DerivedData/Build/Products/Release-iphonesimulator/HomeInventory.app"
+          SIZE=$(du -sh "$APP_PATH" | cut -f1)
+          echo "App size: $SIZE"
+          
+          # Fail if app is larger than 50MB
+          SIZE_MB=$(du -sm "$APP_PATH" | cut -f1)
+          if [ $SIZE_MB -gt 50 ]; then
+            echo "❌ App size ($SIZE_MB MB) exceeds 50MB limit"
+            exit 1
+          fi
+
+  documentation-check:
+    name: Documentation Check
+    runs-on: macos-14
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Install Jazzy
+        run: |
+          gem install jazzy
+      
+      - name: Generate documentation
+        run: |
+          jazzy \
+            --clean \
+            --author "Home Inventory Team" \
+            --github_url https://github.com/${{ github.repository }} \
+            --module-version ${{ github.sha }} \
+            --output docs
+      
+      - name: Check documentation coverage
+        run: |
+          COVERAGE=$(jazzy --no-clean | grep -E "documented" | grep -oE "[0-9]+%" | head -1 | tr -d '%')
+          echo "Documentation coverage: $COVERAGE%"
+          
+          if [ $COVERAGE -lt 80 ]; then
+            echo "❌ Documentation coverage ($COVERAGE%) is below 80%"
+            exit 1
+          fi
+
+  pr-summary:
+    name: PR Summary
+    runs-on: ubuntu-latest
+    needs: [swift-lint, swift-format, danger, unit-tests-quick, snapshot-tests-changed, build-check, documentation-check]
+    if: always()
+    steps:
+      - name: Generate PR summary
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const jobs = ${{ toJSON(needs) }};
+            const checkEmoji = (result) => result === 'success' ? '✅' : '❌';
+            
+            let summary = '## PR Validation Summary\n\n';
+            summary += '| Check | Status |\n';
+            summary += '|-------|--------|\n';
+            
+            Object.entries(jobs).forEach(([job, data]) => {
+              const emoji = checkEmoji(data.result);
+              const name = job.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+              summary += `| ${name} | ${emoji} |\n`;
+            });
+            
+            // Add test coverage if available
+            summary += '\n### Additional Information\n';
+            summary += '- 🔍 [View detailed test results](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})\n';
+            summary += '- 📊 Code coverage report will be available after merge\n';
+            
+            // Update or create comment
+            const { data: comments } = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number
+            });
+            
+            const botComment = comments.find(comment => 
+              comment.user.type === 'Bot' && comment.body.includes('PR Validation Summary')
+            );
+            
+            if (botComment) {
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: botComment.id,
+                body: summary
+              });
+            } else {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                body: summary
+              });
+            }

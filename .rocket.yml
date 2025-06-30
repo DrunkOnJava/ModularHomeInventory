@@ -1,0 +1,158 @@
+# Rocket configuration for automated releases
+# https://github.com/f-meloni/Rocket
+
+---
+# Steps executed before releasing
+before:
+  # Ensure git is clean
+  - script:
+      content: |
+        if [[ -n $(git status -s) ]]; then
+          echo "❌ Git working directory is not clean"
+          exit 1
+        fi
+      name: "Verify Clean Git"
+  
+  # Run all tests
+  - script:
+      content: make test
+      name: "Run Tests"
+  
+  # Lint code
+  - script:
+      content: make lint
+      name: "Lint Code"
+  
+  # Check for dead code
+  - script:
+      content: make dead-code
+      name: "Check Dead Code"
+
+# Steps executed during release
+steps:
+  # Generate secrets with Arkana
+  - script:
+      content: bundle exec arkana
+      name: "Generate Secrets"
+  
+  # Bump version
+  - script:
+      content: |
+        # Get current version
+        CURRENT_VERSION=$(agvtool what-marketing-version -terse1)
+        
+        # Parse major.minor.patch
+        IFS='.' read -r -a VERSION_PARTS <<< "$CURRENT_VERSION"
+        MAJOR="${VERSION_PARTS[0]}"
+        MINOR="${VERSION_PARTS[1]}"
+        PATCH="${VERSION_PARTS[2]}"
+        
+        # Determine version bump type
+        if [[ "$RELEASE_TYPE" == "major" ]]; then
+          MAJOR=$((MAJOR + 1))
+          MINOR=0
+          PATCH=0
+        elif [[ "$RELEASE_TYPE" == "minor" ]]; then
+          MINOR=$((MINOR + 1))
+          PATCH=0
+        else
+          PATCH=$((PATCH + 1))
+        fi
+        
+        NEW_VERSION="$MAJOR.$MINOR.$PATCH"
+        
+        # Update version
+        agvtool new-marketing-version "$NEW_VERSION"
+        agvtool next-version -all
+        
+        # Export for other steps
+        echo "NEW_VERSION=$NEW_VERSION" >> "$GITHUB_ENV"
+      name: "Bump Version"
+      arguments:
+        - name: RELEASE_TYPE
+          description: "Release type: patch, minor, or major"
+          default: patch
+  
+  # Update changelog
+  - script:
+      content: |
+        # Generate changelog from git commits
+        LAST_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "")
+        
+        if [[ -z "$LAST_TAG" ]]; then
+          COMMITS=$(git log --pretty=format:"- %s" --no-merges)
+        else
+          COMMITS=$(git log "$LAST_TAG"..HEAD --pretty=format:"- %s" --no-merges)
+        fi
+        
+        # Create changelog entry
+        DATE=$(date +"%Y-%m-%d")
+        CHANGELOG_ENTRY="## [$NEW_VERSION] - $DATE\n\n$COMMITS\n\n"
+        
+        # Update CHANGELOG.md
+        if [[ -f CHANGELOG.md ]]; then
+          echo -e "$CHANGELOG_ENTRY$(cat CHANGELOG.md)" > CHANGELOG.md
+        else
+          echo -e "# Changelog\n\n$CHANGELOG_ENTRY" > CHANGELOG.md
+        fi
+      name: "Update Changelog"
+  
+  # Generate documentation
+  - script:
+      content: make docs
+      name: "Generate Documentation"
+  
+  # Build and archive
+  - script:
+      content: make archive
+      name: "Build Archive"
+  
+  # Commit changes
+  - git_add:
+      paths:
+        - .
+  
+  - commit:
+      message: "Release version $NEW_VERSION"
+  
+  # Create git tag
+  - tag:
+      name: "v$NEW_VERSION"
+  
+  # Push to remote
+  - push
+
+# Steps executed after releasing
+after:
+  # Upload to TestFlight
+  - script:
+      content: make testflight
+      name: "Upload to TestFlight"
+  
+  # Create GitHub release
+  - script:
+      content: |
+        # Extract changelog for this version
+        CHANGELOG=$(sed -n "/## \[$NEW_VERSION\]/,/## \[/p" CHANGELOG.md | sed '$ d')
+        
+        # Create release
+        gh release create "v$NEW_VERSION" \
+          --title "Version $NEW_VERSION" \
+          --notes "$CHANGELOG" \
+          ./build/*.ipa
+      name: "Create GitHub Release"
+  
+  # Notify team
+  - script:
+      content: |
+        # Send Slack notification
+        if [[ -n "$SLACK_WEBHOOK_URL" ]]; then
+          curl -X POST -H 'Content-type: application/json' \
+            --data "{\"text\":\"🚀 Home Inventory v$NEW_VERSION has been released!\"}" \
+            "$SLACK_WEBHOOK_URL"
+        fi
+      name: "Send Notifications"
+
+# Default execution parameters
+defaults:
+  release_type: patch

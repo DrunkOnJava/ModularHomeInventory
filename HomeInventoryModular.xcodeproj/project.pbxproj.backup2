@@ -1,0 +1,967 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 54;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		003DD3ABCDA11A4B74E96406 /* iPadSidebarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E6E9C96FBC78B4C9841411C /* iPadSidebarView.swift */; };
+		04AA78EBCA6D4DC425DCDC77 /* iPadColumnView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FD5B7C6F0635C70B5B3F470 /* iPadColumnView.swift */; };
+		15E3F6B2F703DB38263833D9 /* ScannerViewSnapshotTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B77D4B297FFA5D9A499B9F7 /* ScannerViewSnapshotTests.swift */; };
+		1DAED7D95DB639F2687FEFF1 /* SmartCategoryDemo.swift in Sources */ = {isa = PBXBuildFile; fileRef = E16010F53E462E41DCABEFF2 /* SmartCategoryDemo.swift */; };
+		23904C1F69777763B698B7A7 /* AppSettings in Frameworks */ = {isa = PBXBuildFile; productRef = 1BFDCCE1DA30B83CCD323AFA /* AppSettings */; };
+		2510550944C84AB6FD3FA538 /* Core in Frameworks */ = {isa = PBXBuildFile; productRef = 6D324B07EA3BF79F03E20042 /* Core */; };
+		26E313DBA9C374FFA998D475 /* SearchFilterUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF0709C616596C8CD67343B5 /* SearchFilterUITests.swift */; };
+		300A0DF86743646A925A2F87 /* Receipts in Frameworks */ = {isa = PBXBuildFile; productRef = 4DAE3E8FC6151A00266EE46D /* Receipts */; };
+		3A119F063E4133B43777FF23 /* ItemsListViewSnapshotTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC8D85285E3B5B7A18820269 /* ItemsListViewSnapshotTests.swift */; };
+		3C715FDB1CC41FEAB5C2810F /* BarcodeScanner in Frameworks */ = {isa = PBXBuildFile; productRef = E20F9C66CD8A1E76D5DA4ACF /* BarcodeScanner */; };
+		42C9A469485EF68F0C662B0F /* GmailIntegrationBanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3F2D8D715F3E9161DB2E67B /* GmailIntegrationBanner.swift */; };
+		439174AC5B1F7C3EEB07CF3A /* SearchBarSnapshotTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F4952C837A56A2D7C8BC144 /* SearchBarSnapshotTests.swift */; };
+		43B21B8F03B40DC15D9B133E /* ReceiptsViewSnapshotTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D047F258E7B2CD34936BB1C /* ReceiptsViewSnapshotTests.swift */; };
+		47AE682647CB0BE1E4934567 /* ItemDetailViewSnapshotTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39BB240FB468429E5AFD138B /* ItemDetailViewSnapshotTests.swift */; };
+		4ABB561B35F425A0D5B2EE3B /* SimpleSnapshotTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC44794AC60418F61687F8BC /* SimpleSnapshotTest.swift */; };
+		4E63BE4249C407C6AF4CAF0E /* Premium in Frameworks */ = {isa = PBXBuildFile; productRef = EC690A20521570D346B1DF95 /* Premium */; };
+		4FE7FBA943577596918FC7B3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1C45E28317CC92497AB6740 /* AppDelegate.swift */; };
+		50FCC730D751BB97D760AE92 /* UITestHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CD4440F4D9773E48A2B6982 /* UITestHelpers.swift */; };
+		54A1273A04E3726F9CEC003C /* SnapshotTestingConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51C8EFE1DD146709D569A6FD /* SnapshotTestingConfiguration.swift */; };
+		54DA904D1B8B7054685D6C2D /* HomeInventoryModularApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 143FC9065172C3395E185261 /* HomeInventoryModularApp.swift */; };
+		5709D374C4121EC71FFA7FF5 /* iPadUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A5F16FC56656119CD8D7079 /* iPadUITests.swift */; };
+		60DD8A3C684FA934C1A34F87 /* ItemManagementUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A24548ACAFD564176A2460F0 /* ItemManagementUITests.swift */; };
+		69FC7331598F2E7FA98B3E26 /* Onboarding in Frameworks */ = {isa = PBXBuildFile; productRef = 1B5D7269FC9C97F1936D0193 /* Onboarding */; };
+		700890FD36B69EBE0470A892 /* SettingsUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0107C8429849A7E47BE28CA /* SettingsUITests.swift */; };
+		731704628EE220793BABFADB /* PrimaryButtonSnapshotTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1D67D7B7DC1D9384DAF4294 /* PrimaryButtonSnapshotTests.swift */; };
+		79367E072B6493566ED1769F /* SettingsViewSnapshotTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA71EEF5E62DDE6229619ABC /* SettingsViewSnapshotTests.swift */; };
+		7D106DF5EC3D4292C2F3E859 /* iPadApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E1141A9BC23D140E38EDCA0 /* iPadApp.swift */; };
+		8EA7ACA396947A30B3566FAD /* SnapshotTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B7C7E5E46FCF6F1DE5C04A /* SnapshotTestCase.swift */; };
+		9551587D0423723462A2C745 /* Sync in Frameworks */ = {isa = PBXBuildFile; productRef = FFDB5BBF0F128AC119F36F3A /* Sync */; };
+		980BBC04E0E49566BB5F3222 /* BarcodeScannerUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 068F93B8489E0F0363E2F738 /* BarcodeScannerUITests.swift */; };
+		98FEC1004BA7F90B70EC4635 /* iPadDragDrop.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D57883C6ADCB5C6B5C64524 /* iPadDragDrop.swift */; };
+		9FC23EA66CE43E6EFAC7D21B /* OnboardingUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F98B3B3A917C3D11F60B81E3 /* OnboardingUITests.swift */; };
+		A2382825DE28C7ECFEAF1F44 /* AddItemViewSnapshotTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BC83C2C1C367A719E631520 /* AddItemViewSnapshotTests.swift */; };
+		ABF8AD49C5653CF664FB4B08 /* LoadingOverlaySnapshotTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06916559E53EFDF8DEF7723A /* LoadingOverlaySnapshotTests.swift */; };
+		B3631ECF6B8BBAEB7FA12D81 /* iPadSidebarEnhanced.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D6C2E45DDDB794C38D5C92B /* iPadSidebarEnhanced.swift */; };
+		B8762194FB15D1C1A08ABBA4 /* ItemCardSnapshotTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42155CF5EE288C36BC520A24 /* ItemCardSnapshotTests.swift */; };
+		BA59C5ABC5822F24B6554F71 /* iPadEnhancedFeatures.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57936BB19BC35402E51222F3 /* iPadEnhancedFeatures.swift */; };
+		C02180AF02B439E7447742F1 /* iPadContextMenus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 327248A3A265813D88D8EDD9 /* iPadContextMenus.swift */; };
+		C4F37384ED723E64ACAAF5C5 /* HomeInventoryModularUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 851ADC8B8F9E673AC19166A0 /* HomeInventoryModularUITests.swift */; };
+		DF2D9BB96AB650F40C19DF06 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 74A8362BCB458EAED3AFE268 /* Assets.xcassets */; };
+		E77163CD9734C86BF7DFC2BF /* AccessibilityUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13809C7BB352D0EB7DE245A2 /* AccessibilityUITests.swift */; };
+		ECCDFBC6BB604E5B635C2070 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 656D4E9BC6022B387FE45086 /* ContentView.swift */; };
+		F110E061FDBC925483D96631 /* SharedUI in Frameworks */ = {isa = PBXBuildFile; productRef = 1E4ABB9448702E1172AD1D5B /* SharedUI */; };
+		F8C42B4B627804DBCA9BC6CB /* AppCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBA5540E815847D1A4974702 /* AppCoordinator.swift */; };
+		FD7DBD736E2317114148B15D /* iPadKeyboardShortcuts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 876A96A0F6CE7943490A9D4F /* iPadKeyboardShortcuts.swift */; };
+		FD938184E545CCEB3567B64E /* Items in Frameworks */ = {isa = PBXBuildFile; productRef = 11065E0B954F8B47091C5898 /* Items */; };
+		FDE16839D9D679C44ADE4133 /* AccessibilitySnapshotTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25E83A24A911A9770CEE8814 /* AccessibilitySnapshotTests.swift */; };
+		FE6611814C0E73C83FBAA19A /* SnapshotTesting in Frameworks */ = {isa = PBXBuildFile; productRef = 08E3D99BAD86B427E1CFDFC9 /* SnapshotTesting */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		2DAE58C251D14537CC7A3B22 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A46F097C607FDC1013416BFE /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = CC231B3F1FF959B2B1DA4A4E;
+			remoteInfo = HomeInventoryModular;
+		};
+		F6DE47C782906BE91B46C1E8 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A46F097C607FDC1013416BFE /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = CC231B3F1FF959B2B1DA4A4E;
+			remoteInfo = HomeInventoryModular;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		0356A52527E14766531C3817 /* Premium */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Premium; path = Modules/Premium; sourceTree = SOURCE_ROOT; };
+		068F93B8489E0F0363E2F738 /* BarcodeScannerUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarcodeScannerUITests.swift; sourceTree = "<group>"; };
+		06916559E53EFDF8DEF7723A /* LoadingOverlaySnapshotTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingOverlaySnapshotTests.swift; sourceTree = "<group>"; };
+		0B77D4B297FFA5D9A499B9F7 /* ScannerViewSnapshotTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScannerViewSnapshotTests.swift; sourceTree = "<group>"; };
+		0B78E03BE0C2B422D2F760C1 /* HomeInventoryModularTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = HomeInventoryModularTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		13809C7BB352D0EB7DE245A2 /* AccessibilityUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessibilityUITests.swift; sourceTree = "<group>"; };
+		143FC9065172C3395E185261 /* HomeInventoryModularApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeInventoryModularApp.swift; sourceTree = "<group>"; };
+		25E83A24A911A9770CEE8814 /* AccessibilitySnapshotTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessibilitySnapshotTests.swift; sourceTree = "<group>"; };
+		327248A3A265813D88D8EDD9 /* iPadContextMenus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iPadContextMenus.swift; sourceTree = "<group>"; };
+		39BB240FB468429E5AFD138B /* ItemDetailViewSnapshotTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemDetailViewSnapshotTests.swift; sourceTree = "<group>"; };
+		3A1CEB3468DA9FAF5C65DC34 /* AppSettings */ = {isa = PBXFileReference; lastKnownFileType = folder; name = AppSettings; path = Modules/AppSettings; sourceTree = SOURCE_ROOT; };
+		3AE0C7854F2B950F4BCC3A9C /* SharedUI */ = {isa = PBXFileReference; lastKnownFileType = folder; name = SharedUI; path = Modules/SharedUI; sourceTree = SOURCE_ROOT; };
+		3CD4440F4D9773E48A2B6982 /* UITestHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITestHelpers.swift; sourceTree = "<group>"; };
+		3E1141A9BC23D140E38EDCA0 /* iPadApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iPadApp.swift; sourceTree = "<group>"; };
+		3F46D3FE17D78B8D9DF66A01 /* HomeInventoryModularUITests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = HomeInventoryModularUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		3F4952C837A56A2D7C8BC144 /* SearchBarSnapshotTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBarSnapshotTests.swift; sourceTree = "<group>"; };
+		40B7C7E5E46FCF6F1DE5C04A /* SnapshotTestCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnapshotTestCase.swift; sourceTree = "<group>"; };
+		42155CF5EE288C36BC520A24 /* ItemCardSnapshotTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemCardSnapshotTests.swift; sourceTree = "<group>"; };
+		45BEF81177E158AC63FCA13F /* HomeInventoryModular.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = HomeInventoryModular.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		4E6E9C96FBC78B4C9841411C /* iPadSidebarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iPadSidebarView.swift; sourceTree = "<group>"; };
+		51C8EFE1DD146709D569A6FD /* SnapshotTestingConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnapshotTestingConfiguration.swift; sourceTree = "<group>"; };
+		57936BB19BC35402E51222F3 /* iPadEnhancedFeatures.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iPadEnhancedFeatures.swift; sourceTree = "<group>"; };
+		5A5F16FC56656119CD8D7079 /* iPadUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iPadUITests.swift; sourceTree = "<group>"; };
+		656D4E9BC6022B387FE45086 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		6D6C2E45DDDB794C38D5C92B /* iPadSidebarEnhanced.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iPadSidebarEnhanced.swift; sourceTree = "<group>"; };
+		6FD5B7C6F0635C70B5B3F470 /* iPadColumnView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iPadColumnView.swift; sourceTree = "<group>"; };
+		73E0D1EAA4C9CDEBD48AD8AF /* Core */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Core; path = Modules/Core; sourceTree = SOURCE_ROOT; };
+		74A8362BCB458EAED3AFE268 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		7E5AAB84E88E9A6638891341 /* BarcodeScanner */ = {isa = PBXFileReference; lastKnownFileType = folder; name = BarcodeScanner; path = Modules/BarcodeScanner; sourceTree = SOURCE_ROOT; };
+		851ADC8B8F9E673AC19166A0 /* HomeInventoryModularUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeInventoryModularUITests.swift; sourceTree = "<group>"; };
+		876A96A0F6CE7943490A9D4F /* iPadKeyboardShortcuts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iPadKeyboardShortcuts.swift; sourceTree = "<group>"; };
+		8BC83C2C1C367A719E631520 /* AddItemViewSnapshotTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddItemViewSnapshotTests.swift; sourceTree = "<group>"; };
+		91D08070EA57AC1909DB4D64 /* Sync */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Sync; path = Modules/Sync; sourceTree = SOURCE_ROOT; };
+		9D047F258E7B2CD34936BB1C /* ReceiptsViewSnapshotTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReceiptsViewSnapshotTests.swift; sourceTree = "<group>"; };
+		9D57883C6ADCB5C6B5C64524 /* iPadDragDrop.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iPadDragDrop.swift; sourceTree = "<group>"; };
+		A0107C8429849A7E47BE28CA /* SettingsUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsUITests.swift; sourceTree = "<group>"; };
+		A24548ACAFD564176A2460F0 /* ItemManagementUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemManagementUITests.swift; sourceTree = "<group>"; };
+		AAB147D7511714E804D15677 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		AC44794AC60418F61687F8BC /* SimpleSnapshotTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleSnapshotTest.swift; sourceTree = "<group>"; };
+		B4AB90697101976F63CC3B1B /* Onboarding */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Onboarding; path = Modules/Onboarding; sourceTree = SOURCE_ROOT; };
+		BC2DF36FD3B9183FE991865A /* Receipts */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Receipts; path = Modules/Receipts; sourceTree = SOURCE_ROOT; };
+		C1D67D7B7DC1D9384DAF4294 /* PrimaryButtonSnapshotTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrimaryButtonSnapshotTests.swift; sourceTree = "<group>"; };
+		DF0709C616596C8CD67343B5 /* SearchFilterUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchFilterUITests.swift; sourceTree = "<group>"; };
+		E16010F53E462E41DCABEFF2 /* SmartCategoryDemo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SmartCategoryDemo.swift; sourceTree = "<group>"; };
+		E1C45E28317CC92497AB6740 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		EA71EEF5E62DDE6229619ABC /* SettingsViewSnapshotTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewSnapshotTests.swift; sourceTree = "<group>"; };
+		EBA5540E815847D1A4974702 /* AppCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppCoordinator.swift; sourceTree = "<group>"; };
+		EC8D85285E3B5B7A18820269 /* ItemsListViewSnapshotTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemsListViewSnapshotTests.swift; sourceTree = "<group>"; };
+		F1AE5605C98FF2E462CC4F56 /* Items */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Items; path = Modules/Items; sourceTree = SOURCE_ROOT; };
+		F3F2D8D715F3E9161DB2E67B /* GmailIntegrationBanner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GmailIntegrationBanner.swift; sourceTree = "<group>"; };
+		F98B3B3A917C3D11F60B81E3 /* OnboardingUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingUITests.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		351BF24DE864B2FB2FA7AE39 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2510550944C84AB6FD3FA538 /* Core in Frameworks */,
+				F110E061FDBC925483D96631 /* SharedUI in Frameworks */,
+				FD938184E545CCEB3567B64E /* Items in Frameworks */,
+				3C715FDB1CC41FEAB5C2810F /* BarcodeScanner in Frameworks */,
+				23904C1F69777763B698B7A7 /* AppSettings in Frameworks */,
+				300A0DF86743646A925A2F87 /* Receipts in Frameworks */,
+				9551587D0423723462A2C745 /* Sync in Frameworks */,
+				4E63BE4249C407C6AF4CAF0E /* Premium in Frameworks */,
+				69FC7331598F2E7FA98B3E26 /* Onboarding in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9D038051D97F1A44B540BEAC /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FE6611814C0E73C83FBAA19A /* SnapshotTesting in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		1264A4B96E5A88F22BFFEC8D /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				EA71EEF5E62DDE6229619ABC /* SettingsViewSnapshotTests.swift */,
+			);
+			path = Settings;
+			sourceTree = "<group>";
+		};
+		239DB81F774A16752DCF5C5A /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				74A8362BCB458EAED3AFE268 /* Assets.xcassets */,
+			);
+			path = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		4D256B14F10E6B1FDB76EE04 = {
+			isa = PBXGroup;
+			children = (
+				94B53737C4AD0C147C830E40 /* HomeInventoryModularTests */,
+				B9D33E0982FFC2A3A08ADEBC /* HomeInventoryModularUITests */,
+				656A14CE8B6FFD57E9E48DA2 /* Packages */,
+				E6A280A9191C4773BDC81D56 /* Source */,
+				239DB81F774A16752DCF5C5A /* Supporting Files */,
+				9C6C02F23E22ADA57B7F3833 /* Views */,
+				E61D147BB59AF782EA912E0C /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		5ADC06400E4A93BB77F6C601 /* iPad */ = {
+			isa = PBXGroup;
+			children = (
+				3E1141A9BC23D140E38EDCA0 /* iPadApp.swift */,
+				6FD5B7C6F0635C70B5B3F470 /* iPadColumnView.swift */,
+				327248A3A265813D88D8EDD9 /* iPadContextMenus.swift */,
+				9D57883C6ADCB5C6B5C64524 /* iPadDragDrop.swift */,
+				57936BB19BC35402E51222F3 /* iPadEnhancedFeatures.swift */,
+				876A96A0F6CE7943490A9D4F /* iPadKeyboardShortcuts.swift */,
+				6D6C2E45DDDB794C38D5C92B /* iPadSidebarEnhanced.swift */,
+				4E6E9C96FBC78B4C9841411C /* iPadSidebarView.swift */,
+			);
+			path = iPad;
+			sourceTree = "<group>";
+		};
+		652573384466C715BE2B3A71 /* Items */ = {
+			isa = PBXGroup;
+			children = (
+				8BC83C2C1C367A719E631520 /* AddItemViewSnapshotTests.swift */,
+				EC8D85285E3B5B7A18820269 /* ItemsListViewSnapshotTests.swift */,
+			);
+			path = Items;
+			sourceTree = "<group>";
+		};
+		656A14CE8B6FFD57E9E48DA2 /* Packages */ = {
+			isa = PBXGroup;
+			children = (
+				3A1CEB3468DA9FAF5C65DC34 /* AppSettings */,
+				7E5AAB84E88E9A6638891341 /* BarcodeScanner */,
+				73E0D1EAA4C9CDEBD48AD8AF /* Core */,
+				F1AE5605C98FF2E462CC4F56 /* Items */,
+				B4AB90697101976F63CC3B1B /* Onboarding */,
+				0356A52527E14766531C3817 /* Premium */,
+				BC2DF36FD3B9183FE991865A /* Receipts */,
+				3AE0C7854F2B950F4BCC3A9C /* SharedUI */,
+				91D08070EA57AC1909DB4D64 /* Sync */,
+			);
+			name = Packages;
+			sourceTree = "<group>";
+		};
+		7BFBF38E40C403A3EC2E5D38 /* Accessibility */ = {
+			isa = PBXGroup;
+			children = (
+				25E83A24A911A9770CEE8814 /* AccessibilitySnapshotTests.swift */,
+			);
+			path = Accessibility;
+			sourceTree = "<group>";
+		};
+		848283A02B2E5AE3F6F0D179 /* Scanner */ = {
+			isa = PBXGroup;
+			children = (
+				0B77D4B297FFA5D9A499B9F7 /* ScannerViewSnapshotTests.swift */,
+			);
+			path = Scanner;
+			sourceTree = "<group>";
+		};
+		94B53737C4AD0C147C830E40 /* HomeInventoryModularTests */ = {
+			isa = PBXGroup;
+			children = (
+				AAB147D7511714E804D15677 /* Info.plist */,
+				42155CF5EE288C36BC520A24 /* ItemCardSnapshotTests.swift */,
+				39BB240FB468429E5AFD138B /* ItemDetailViewSnapshotTests.swift */,
+				AC44794AC60418F61687F8BC /* SimpleSnapshotTest.swift */,
+				40B7C7E5E46FCF6F1DE5C04A /* SnapshotTestCase.swift */,
+				51C8EFE1DD146709D569A6FD /* SnapshotTestingConfiguration.swift */,
+				7BFBF38E40C403A3EC2E5D38 /* Accessibility */,
+				652573384466C715BE2B3A71 /* Items */,
+				D46E75213BBA8D4E75F8E827 /* Receipts */,
+				848283A02B2E5AE3F6F0D179 /* Scanner */,
+				1264A4B96E5A88F22BFFEC8D /* Settings */,
+				E82D20F3F885F28A0520D41A /* SharedUI */,
+			);
+			path = HomeInventoryModularTests;
+			sourceTree = "<group>";
+		};
+		9BC991061A05067C3D018AA1 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				656D4E9BC6022B387FE45086 /* ContentView.swift */,
+				E16010F53E462E41DCABEFF2 /* SmartCategoryDemo.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		9C6C02F23E22ADA57B7F3833 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				F3F2D8D715F3E9161DB2E67B /* GmailIntegrationBanner.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		B9D33E0982FFC2A3A08ADEBC /* HomeInventoryModularUITests */ = {
+			isa = PBXGroup;
+			children = (
+				13809C7BB352D0EB7DE245A2 /* AccessibilityUITests.swift */,
+				068F93B8489E0F0363E2F738 /* BarcodeScannerUITests.swift */,
+				851ADC8B8F9E673AC19166A0 /* HomeInventoryModularUITests.swift */,
+				5A5F16FC56656119CD8D7079 /* iPadUITests.swift */,
+				A24548ACAFD564176A2460F0 /* ItemManagementUITests.swift */,
+				F98B3B3A917C3D11F60B81E3 /* OnboardingUITests.swift */,
+				DF0709C616596C8CD67343B5 /* SearchFilterUITests.swift */,
+				A0107C8429849A7E47BE28CA /* SettingsUITests.swift */,
+				3CD4440F4D9773E48A2B6982 /* UITestHelpers.swift */,
+			);
+			path = HomeInventoryModularUITests;
+			sourceTree = "<group>";
+		};
+		D2767EC16D804A9BC54EDE67 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				EBA5540E815847D1A4974702 /* AppCoordinator.swift */,
+				E1C45E28317CC92497AB6740 /* AppDelegate.swift */,
+				143FC9065172C3395E185261 /* HomeInventoryModularApp.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		D46E75213BBA8D4E75F8E827 /* Receipts */ = {
+			isa = PBXGroup;
+			children = (
+				9D047F258E7B2CD34936BB1C /* ReceiptsViewSnapshotTests.swift */,
+			);
+			path = Receipts;
+			sourceTree = "<group>";
+		};
+		E61D147BB59AF782EA912E0C /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				45BEF81177E158AC63FCA13F /* HomeInventoryModular.app */,
+				0B78E03BE0C2B422D2F760C1 /* HomeInventoryModularTests.xctest */,
+				3F46D3FE17D78B8D9DF66A01 /* HomeInventoryModularUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		E6A280A9191C4773BDC81D56 /* Source */ = {
+			isa = PBXGroup;
+			children = (
+				D2767EC16D804A9BC54EDE67 /* App */,
+				5ADC06400E4A93BB77F6C601 /* iPad */,
+				9BC991061A05067C3D018AA1 /* Views */,
+			);
+			path = Source;
+			sourceTree = "<group>";
+		};
+		E82D20F3F885F28A0520D41A /* SharedUI */ = {
+			isa = PBXGroup;
+			children = (
+				06916559E53EFDF8DEF7723A /* LoadingOverlaySnapshotTests.swift */,
+				C1D67D7B7DC1D9384DAF4294 /* PrimaryButtonSnapshotTests.swift */,
+				3F4952C837A56A2D7C8BC144 /* SearchBarSnapshotTests.swift */,
+			);
+			path = SharedUI;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		63556A48F2868A4D64924630 /* HomeInventoryModularUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 66BBAE3201874748EE60FC7C /* Build configuration list for PBXNativeTarget "HomeInventoryModularUITests" */;
+			buildPhases = (
+				B8538EE7ED3A1930AF2A83FB /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				5B62F69060DDD29B7C40A639 /* PBXTargetDependency */,
+			);
+			name = HomeInventoryModularUITests;
+			packageProductDependencies = (
+			);
+			productName = HomeInventoryModularUITests;
+			productReference = 3F46D3FE17D78B8D9DF66A01 /* HomeInventoryModularUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+		A8B2E3D96BBA513F602B3709 /* HomeInventoryModularTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 052C29D877F7C4EB2DD0A8C3 /* Build configuration list for PBXNativeTarget "HomeInventoryModularTests" */;
+			buildPhases = (
+				56B73772EC163D5922D3511E /* Sources */,
+				9D038051D97F1A44B540BEAC /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				88FEEFD184BD85C5FEE3C0FC /* PBXTargetDependency */,
+			);
+			name = HomeInventoryModularTests;
+			packageProductDependencies = (
+				08E3D99BAD86B427E1CFDFC9 /* SnapshotTesting */,
+			);
+			productName = HomeInventoryModularTests;
+			productReference = 0B78E03BE0C2B422D2F760C1 /* HomeInventoryModularTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		CC231B3F1FF959B2B1DA4A4E /* HomeInventoryModular */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 97870253751E396E80A4A63F /* Build configuration list for PBXNativeTarget "HomeInventoryModular" */;
+			buildPhases = (
+				230633B81419E653BD6922DF /* Sources */,
+				8962CEB74E1B84ADA80DD26B /* Resources */,
+				351BF24DE864B2FB2FA7AE39 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = HomeInventoryModular;
+			packageProductDependencies = (
+				6D324B07EA3BF79F03E20042 /* Core */,
+				1E4ABB9448702E1172AD1D5B /* SharedUI */,
+				11065E0B954F8B47091C5898 /* Items */,
+				E20F9C66CD8A1E76D5DA4ACF /* BarcodeScanner */,
+				1BFDCCE1DA30B83CCD323AFA /* AppSettings */,
+				4DAE3E8FC6151A00266EE46D /* Receipts */,
+				FFDB5BBF0F128AC119F36F3A /* Sync */,
+				EC690A20521570D346B1DF95 /* Premium */,
+				1B5D7269FC9C97F1936D0193 /* Onboarding */,
+			);
+			productName = HomeInventoryModular;
+			productReference = 45BEF81177E158AC63FCA13F /* HomeInventoryModular.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		A46F097C607FDC1013416BFE /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1430;
+				TargetAttributes = {
+					63556A48F2868A4D64924630 = {
+						DevelopmentTeam = 2VXBQV4XC9;
+						ProvisioningStyle = Automatic;
+						TestTargetID = CC231B3F1FF959B2B1DA4A4E;
+					};
+					A8B2E3D96BBA513F602B3709 = {
+						DevelopmentTeam = 2VXBQV4XC9;
+						ProvisioningStyle = Automatic;
+					};
+					CC231B3F1FF959B2B1DA4A4E = {
+						DevelopmentTeam = 2VXBQV4XC9;
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = F2B8CE2A00521259112AD810 /* Build configuration list for PBXProject "HomeInventoryModular" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = 4D256B14F10E6B1FDB76EE04;
+			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				E8D0CA183A82D529A3FDBF81 /* XCRemoteSwiftPackageReference "swift-snapshot-testing" */,
+				A8567266DFF953CA8A18F162 /* XCLocalSwiftPackageReference "Modules/AppSettings" */,
+				1C4DD3D3BCA1FE59B0EDC6FC /* XCLocalSwiftPackageReference "Modules/BarcodeScanner" */,
+				FBE10A76C36BB2B6F3385092 /* XCLocalSwiftPackageReference "Modules/Core" */,
+				BD0C6169C787E9B64F600DDF /* XCLocalSwiftPackageReference "Modules/Items" */,
+				576F0F487BCA364CFE1C86DC /* XCLocalSwiftPackageReference "Modules/Onboarding" */,
+				E8EB40612E5F2E5A9C3DA28D /* XCLocalSwiftPackageReference "Modules/Premium" */,
+				CF03CD87CCA89366BCF7268C /* XCLocalSwiftPackageReference "Modules/Receipts" */,
+				B99BC64D551CE8562B6B6E53 /* XCLocalSwiftPackageReference "Modules/SharedUI" */,
+				8C9B55554D3805C4DD883AE0 /* XCLocalSwiftPackageReference "Modules/Sync" */,
+			);
+			preferredProjectObjectVersion = 54;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				CC231B3F1FF959B2B1DA4A4E /* HomeInventoryModular */,
+				A8B2E3D96BBA513F602B3709 /* HomeInventoryModularTests */,
+				63556A48F2868A4D64924630 /* HomeInventoryModularUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		8962CEB74E1B84ADA80DD26B /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DF2D9BB96AB650F40C19DF06 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		230633B81419E653BD6922DF /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F8C42B4B627804DBCA9BC6CB /* AppCoordinator.swift in Sources */,
+				4FE7FBA943577596918FC7B3 /* AppDelegate.swift in Sources */,
+				ECCDFBC6BB604E5B635C2070 /* ContentView.swift in Sources */,
+				42C9A469485EF68F0C662B0F /* GmailIntegrationBanner.swift in Sources */,
+				54DA904D1B8B7054685D6C2D /* HomeInventoryModularApp.swift in Sources */,
+				1DAED7D95DB639F2687FEFF1 /* SmartCategoryDemo.swift in Sources */,
+				7D106DF5EC3D4292C2F3E859 /* iPadApp.swift in Sources */,
+				04AA78EBCA6D4DC425DCDC77 /* iPadColumnView.swift in Sources */,
+				C02180AF02B439E7447742F1 /* iPadContextMenus.swift in Sources */,
+				98FEC1004BA7F90B70EC4635 /* iPadDragDrop.swift in Sources */,
+				BA59C5ABC5822F24B6554F71 /* iPadEnhancedFeatures.swift in Sources */,
+				FD7DBD736E2317114148B15D /* iPadKeyboardShortcuts.swift in Sources */,
+				B3631ECF6B8BBAEB7FA12D81 /* iPadSidebarEnhanced.swift in Sources */,
+				003DD3ABCDA11A4B74E96406 /* iPadSidebarView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		56B73772EC163D5922D3511E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FDE16839D9D679C44ADE4133 /* AccessibilitySnapshotTests.swift in Sources */,
+				A2382825DE28C7ECFEAF1F44 /* AddItemViewSnapshotTests.swift in Sources */,
+				B8762194FB15D1C1A08ABBA4 /* ItemCardSnapshotTests.swift in Sources */,
+				47AE682647CB0BE1E4934567 /* ItemDetailViewSnapshotTests.swift in Sources */,
+				3A119F063E4133B43777FF23 /* ItemsListViewSnapshotTests.swift in Sources */,
+				ABF8AD49C5653CF664FB4B08 /* LoadingOverlaySnapshotTests.swift in Sources */,
+				731704628EE220793BABFADB /* PrimaryButtonSnapshotTests.swift in Sources */,
+				43B21B8F03B40DC15D9B133E /* ReceiptsViewSnapshotTests.swift in Sources */,
+				15E3F6B2F703DB38263833D9 /* ScannerViewSnapshotTests.swift in Sources */,
+				439174AC5B1F7C3EEB07CF3A /* SearchBarSnapshotTests.swift in Sources */,
+				79367E072B6493566ED1769F /* SettingsViewSnapshotTests.swift in Sources */,
+				4ABB561B35F425A0D5B2EE3B /* SimpleSnapshotTest.swift in Sources */,
+				8EA7ACA396947A30B3566FAD /* SnapshotTestCase.swift in Sources */,
+				54A1273A04E3726F9CEC003C /* SnapshotTestingConfiguration.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B8538EE7ED3A1930AF2A83FB /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E77163CD9734C86BF7DFC2BF /* AccessibilityUITests.swift in Sources */,
+				980BBC04E0E49566BB5F3222 /* BarcodeScannerUITests.swift in Sources */,
+				C4F37384ED723E64ACAAF5C5 /* HomeInventoryModularUITests.swift in Sources */,
+				60DD8A3C684FA934C1A34F87 /* ItemManagementUITests.swift in Sources */,
+				9FC23EA66CE43E6EFAC7D21B /* OnboardingUITests.swift in Sources */,
+				26E313DBA9C374FFA998D475 /* SearchFilterUITests.swift in Sources */,
+				700890FD36B69EBE0470A892 /* SettingsUITests.swift in Sources */,
+				50FCC730D751BB97D760AE92 /* UITestHelpers.swift in Sources */,
+				5709D374C4121EC71FFA7FF5 /* iPadUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		5B62F69060DDD29B7C40A639 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = CC231B3F1FF959B2B1DA4A4E /* HomeInventoryModular */;
+			targetProxy = F6DE47C782906BE91B46C1E8 /* PBXContainerItemProxy */;
+		};
+		88FEEFD184BD85C5FEE3C0FC /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = CC231B3F1FF959B2B1DA4A4E /* HomeInventoryModular */;
+			targetProxy = 2DAE58C251D14537CC7A3B22 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		0E5265B8E84D53F7B4A4A7A5 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 2VXBQV4XC9;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.homeinventory.modular.uitests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = HomeInventoryModular;
+			};
+			name = Release;
+		};
+		33EAB128DCBD4FC3E2B41D61 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 2VXBQV4XC9;
+				GENERATE_INFOPLIST_FILE = YES;
+				HOST_APPLICATION = HomeInventoryModular;
+				INFOPLIST_FILE = HomeInventoryModularTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.homeinventory.modular.tests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/HomeInventoryModular.app/HomeInventoryModular";
+			};
+			name = Release;
+		};
+		5A9079125C37F70869F37CE4 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 2VXBQV4XC9;
+				GENERATE_INFOPLIST_FILE = YES;
+				HOST_APPLICATION = HomeInventoryModular;
+				INFOPLIST_FILE = HomeInventoryModularTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.homeinventory.modular.tests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/HomeInventoryModular.app/HomeInventoryModular";
+			};
+			name = Debug;
+		};
+		6E8F3A15BBE43CB1EDD746F7 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 2VXBQV4XC9;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.homeinventory.modular.uitests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = HomeInventoryModular;
+			};
+			name = Debug;
+		};
+		B911CD98DFA052CF517E8A4B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 12;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = 2VXBQV4XC9;
+				ENABLE_PREVIEWS = YES;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MARKETING_VERSION = 1.0.6;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_STRICT_CONCURRENCY = minimal;
+				SWIFT_UPCOMING_FEATURE_EXISTENTIAL_ANY = NO;
+				SWIFT_VERSION = 5.9;
+			};
+			name = Debug;
+		};
+		BB14A10F16D9DACDDF849C08 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 2VXBQV4XC9;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "Home Inventory";
+				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = YES;
+				INFOPLIST_KEY_ITSEncryptionExportComplianceCode = "ecf076d3-130b-4b7d-92e0-6a69e07b5b6d";
+				INFOPLIST_KEY_NSCameraUsageDescription = "Camera access is needed to scan barcodes and take photos of your items";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.homeinventory.app;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		BD7BD16DDE04A8198B33A7F3 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 12;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = 2VXBQV4XC9;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_PREVIEWS = YES;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MARKETING_VERSION = 1.0.6;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_STRICT_CONCURRENCY = minimal;
+				SWIFT_UPCOMING_FEATURE_EXISTENTIAL_ANY = NO;
+				SWIFT_VERSION = 5.9;
+			};
+			name = Release;
+		};
+		FF839DCAFFD7D4BE29A5FBE7 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 2VXBQV4XC9;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "Home Inventory";
+				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = YES;
+				INFOPLIST_KEY_ITSEncryptionExportComplianceCode = "ecf076d3-130b-4b7d-92e0-6a69e07b5b6d";
+				INFOPLIST_KEY_NSCameraUsageDescription = "Camera access is needed to scan barcodes and take photos of your items";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.homeinventory.app;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		052C29D877F7C4EB2DD0A8C3 /* Build configuration list for PBXNativeTarget "HomeInventoryModularTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				5A9079125C37F70869F37CE4 /* Debug */,
+				33EAB128DCBD4FC3E2B41D61 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		66BBAE3201874748EE60FC7C /* Build configuration list for PBXNativeTarget "HomeInventoryModularUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6E8F3A15BBE43CB1EDD746F7 /* Debug */,
+				0E5265B8E84D53F7B4A4A7A5 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		97870253751E396E80A4A63F /* Build configuration list for PBXNativeTarget "HomeInventoryModular" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BB14A10F16D9DACDDF849C08 /* Debug */,
+				FF839DCAFFD7D4BE29A5FBE7 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		F2B8CE2A00521259112AD810 /* Build configuration list for PBXProject "HomeInventoryModular" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B911CD98DFA052CF517E8A4B /* Debug */,
+				BD7BD16DDE04A8198B33A7F3 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCLocalSwiftPackageReference section */
+		1C4DD3D3BCA1FE59B0EDC6FC /* XCLocalSwiftPackageReference "Modules/BarcodeScanner" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = Modules/BarcodeScanner;
+		};
+		576F0F487BCA364CFE1C86DC /* XCLocalSwiftPackageReference "Modules/Onboarding" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = Modules/Onboarding;
+		};
+		8C9B55554D3805C4DD883AE0 /* XCLocalSwiftPackageReference "Modules/Sync" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = Modules/Sync;
+		};
+		A8567266DFF953CA8A18F162 /* XCLocalSwiftPackageReference "Modules/AppSettings" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = Modules/AppSettings;
+		};
+		B99BC64D551CE8562B6B6E53 /* XCLocalSwiftPackageReference "Modules/SharedUI" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = Modules/SharedUI;
+		};
+		BD0C6169C787E9B64F600DDF /* XCLocalSwiftPackageReference "Modules/Items" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = Modules/Items;
+		};
+		CF03CD87CCA89366BCF7268C /* XCLocalSwiftPackageReference "Modules/Receipts" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = Modules/Receipts;
+		};
+		E8EB40612E5F2E5A9C3DA28D /* XCLocalSwiftPackageReference "Modules/Premium" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = Modules/Premium;
+		};
+		FBE10A76C36BB2B6F3385092 /* XCLocalSwiftPackageReference "Modules/Core" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = Modules/Core;
+		};
+/* End XCLocalSwiftPackageReference section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		E8D0CA183A82D529A3FDBF81 /* XCRemoteSwiftPackageReference "swift-snapshot-testing" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/pointfreeco/swift-snapshot-testing";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.15.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		08E3D99BAD86B427E1CFDFC9 /* SnapshotTesting */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E8D0CA183A82D529A3FDBF81 /* XCRemoteSwiftPackageReference "swift-snapshot-testing" */;
+			productName = SnapshotTesting;
+		};
+		11065E0B954F8B47091C5898 /* Items */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Items;
+		};
+		1B5D7269FC9C97F1936D0193 /* Onboarding */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Onboarding;
+		};
+		1BFDCCE1DA30B83CCD323AFA /* AppSettings */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = AppSettings;
+		};
+		1E4ABB9448702E1172AD1D5B /* SharedUI */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = SharedUI;
+		};
+		4DAE3E8FC6151A00266EE46D /* Receipts */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Receipts;
+		};
+		6D324B07EA3BF79F03E20042 /* Core */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Core;
+		};
+		E20F9C66CD8A1E76D5DA4ACF /* BarcodeScanner */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = BarcodeScanner;
+		};
+		EC690A20521570D346B1DF95 /* Premium */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Premium;
+		};
+		FFDB5BBF0F128AC119F36F3A /* Sync */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Sync;
+		};
+/* End XCSwiftPackageProductDependency section */
+	};
+	rootObject = A46F097C607FDC1013416BFE /* Project object */;
+}

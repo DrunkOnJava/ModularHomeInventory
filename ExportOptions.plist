@@ -30,7 +30,7 @@
     <key>provisioningProfiles</key>
     <dict>
         <key>com.homeinventory.app</key>
-        <string>Home Inventory Distribution</string>
+        <string>Automatic</string>
     </dict>
     
     <!-- Destination for export -->

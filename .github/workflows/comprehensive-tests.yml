@@ -1,0 +1,412 @@
+name: Comprehensive Test Suite
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+  schedule:
+    # Run full test suite nightly
+    - cron: '0 2 * * *'
+  workflow_dispatch:
+    inputs:
+      test_suite:
+        description: 'Test suite to run'
+        required: false
+        default: 'all'
+        type: choice
+        options:
+          - all
+          - unit
+          - integration
+          - performance
+          - security
+          - ui
+          - snapshot
+
+env:
+  XCODE_VERSION: '15.0'
+  IOS_VERSION: '17.0'
+  SIMULATOR_NAME: 'iPhone 15 Pro'
+
+jobs:
+  setup:
+    name: Setup Test Environment
+    runs-on: macos-14
+    outputs:
+      cache-key: ${{ steps.cache-key.outputs.key }}
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Select Xcode
+        run: sudo xcode-select -s /Applications/Xcode_${{ env.XCODE_VERSION }}.app
+      
+      - name: Generate cache key
+        id: cache-key
+        run: |
+          echo "key=${{ runner.os }}-spm-${{ hashFiles('**/Package.resolved') }}" >> $GITHUB_OUTPUT
+      
+      - name: Cache Swift packages
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/Library/Developer/Xcode/DerivedData
+            .build
+          key: ${{ steps.cache-key.outputs.key }}
+          restore-keys: |
+            ${{ runner.os }}-spm-
+
+  unit-tests:
+    name: Unit Tests
+    runs-on: macos-14
+    needs: setup
+    if: ${{ github.event.inputs.test_suite == 'all' || github.event.inputs.test_suite == 'unit' }}
+    strategy:
+      matrix:
+        module: [Core, Items, BarcodeScanner, Receipts, Gmail, Sync, Premium, AppSettings]
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Select Xcode
+        run: sudo xcode-select -s /Applications/Xcode_${{ env.XCODE_VERSION }}.app
+      
+      - name: Restore cache
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/Library/Developer/Xcode/DerivedData
+            .build
+          key: ${{ needs.setup.outputs.cache-key }}
+      
+      - name: Run ${{ matrix.module }} Unit Tests
+        run: |
+          xcodebuild test \
+            -scheme ${{ matrix.module }} \
+            -destination 'platform=iOS Simulator,name=${{ env.SIMULATOR_NAME }},OS=${{ env.IOS_VERSION }}' \
+            -parallel-testing-enabled YES \
+            -enableCodeCoverage YES \
+            -resultBundlePath TestResults/${{ matrix.module }}.xcresult \
+            | xcbeautify
+      
+      - name: Upload test results
+        uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: unit-test-results-${{ matrix.module }}
+          path: TestResults/${{ matrix.module }}.xcresult
+      
+      - name: Generate coverage report
+        run: |
+          xcrun xccov view --report --json TestResults/${{ matrix.module }}.xcresult > coverage-${{ matrix.module }}.json
+      
+      - name: Upload coverage
+        uses: codecov/codecov-action@v3
+        with:
+          file: ./coverage-${{ matrix.module }}.json
+          flags: unit-${{ matrix.module }}
+
+  integration-tests:
+    name: Integration Tests
+    runs-on: macos-14
+    needs: setup
+    if: ${{ github.event.inputs.test_suite == 'all' || github.event.inputs.test_suite == 'integration' }}
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Select Xcode
+        run: sudo xcode-select -s /Applications/Xcode_${{ env.XCODE_VERSION }}.app
+      
+      - name: Boot simulator
+        run: |
+          xcrun simctl boot "${{ env.SIMULATOR_NAME }}" || true
+          xcrun simctl wait "${{ env.SIMULATOR_NAME }}" --state=booted
+      
+      - name: Run Integration Tests
+        run: |
+          xcodebuild test \
+            -scheme HomeInventoryModular \
+            -destination 'platform=iOS Simulator,name=${{ env.SIMULATOR_NAME }},OS=${{ env.IOS_VERSION }}' \
+            -only-testing:HomeInventoryModularTests/IntegrationTests \
+            -parallel-testing-enabled NO \
+            -resultBundlePath TestResults/integration.xcresult \
+            | xcbeautify
+      
+      - name: Upload test results
+        uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: integration-test-results
+          path: TestResults/integration.xcresult
+
+  performance-tests:
+    name: Performance Tests
+    runs-on: macos-14
+    needs: setup
+    if: ${{ github.event.inputs.test_suite == 'all' || github.event.inputs.test_suite == 'performance' }}
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Select Xcode
+        run: sudo xcode-select -s /Applications/Xcode_${{ env.XCODE_VERSION }}.app
+      
+      - name: Configure performance testing
+        run: |
+          # Disable CPU throttling for accurate measurements
+          sudo pmset -a disablesleep 1
+          sudo pmset -a powernap 0
+      
+      - name: Run Performance Tests
+        run: |
+          xcodebuild test \
+            -scheme HomeInventoryModular \
+            -destination 'platform=iOS Simulator,name=${{ env.SIMULATOR_NAME }},OS=${{ env.IOS_VERSION }}' \
+            -only-testing:HomeInventoryModularTests/PerformanceTests \
+            -enablePerformanceTestsDiagnostics YES \
+            -resultBundlePath TestResults/performance.xcresult \
+            | xcbeautify
+      
+      - name: Extract performance metrics
+        run: |
+          xcrun xcresulttool get \
+            --path TestResults/performance.xcresult \
+            --format json \
+            > performance-results.json
+          
+          # Parse and format metrics
+          python3 scripts/parse_performance_metrics.py performance-results.json > performance-summary.md
+      
+      - name: Comment PR with performance results
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const summary = fs.readFileSync('performance-summary.md', 'utf8');
+            
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: summary
+            });
+
+  security-tests:
+    name: Security Tests
+    runs-on: macos-14
+    needs: setup
+    if: ${{ github.event.inputs.test_suite == 'all' || github.event.inputs.test_suite == 'security' }}
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Select Xcode
+        run: sudo xcode-select -s /Applications/Xcode_${{ env.XCODE_VERSION }}.app
+      
+      - name: Install security testing tools
+        run: |
+          brew install swiftlint
+          brew install periphery
+      
+      - name: Run Security Tests
+        run: |
+          xcodebuild test \
+            -scheme HomeInventoryModular \
+            -destination 'platform=iOS Simulator,name=${{ env.SIMULATOR_NAME }},OS=${{ env.IOS_VERSION }}' \
+            -only-testing:HomeInventoryModularTests/SecurityTests \
+            -resultBundlePath TestResults/security.xcresult \
+            | xcbeautify
+      
+      - name: Run static security analysis
+        run: |
+          # Check for hardcoded secrets
+          scripts/check_secrets.sh
+          
+          # Run SwiftLint security rules
+          swiftlint analyze --config .swiftlint-security.yml
+          
+          # Check for unused code that might contain vulnerabilities
+          periphery scan --config .periphery.yml
+
+  ui-tests:
+    name: UI Tests
+    runs-on: macos-14
+    needs: setup
+    if: ${{ github.event.inputs.test_suite == 'all' || github.event.inputs.test_suite == 'ui' }}
+    strategy:
+      matrix:
+        device:
+          - name: "iPhone 15 Pro"
+            os: "17.0"
+          - name: "iPhone 14"
+            os: "16.4"
+          - name: "iPad Pro (12.9-inch) (6th generation)"
+            os: "17.0"
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Select Xcode
+        run: sudo xcode-select -s /Applications/Xcode_${{ env.XCODE_VERSION }}.app
+      
+      - name: Boot simulator
+        run: |
+          xcrun simctl boot "${{ matrix.device.name }}" || true
+          xcrun simctl wait "${{ matrix.device.name }}" --state=booted
+      
+      - name: Run UI Tests
+        run: |
+          xcodebuild test \
+            -scheme HomeInventoryModular \
+            -destination 'platform=iOS Simulator,name=${{ matrix.device.name }},OS=${{ matrix.device.os }}' \
+            -only-testing:HomeInventoryModularTests/UIGestureTests \
+            -resultBundlePath TestResults/ui-${{ matrix.device.name }}.xcresult \
+            | xcbeautify
+      
+      - name: Capture screenshots on failure
+        if: failure()
+        run: |
+          xcrun simctl io "${{ matrix.device.name }}" screenshot failure-screenshot.png
+      
+      - name: Upload screenshots
+        uses: actions/upload-artifact@v3
+        if: failure()
+        with:
+          name: ui-test-failures-${{ matrix.device.name }}
+          path: |
+            failure-screenshot.png
+            TestResults/ui-${{ matrix.device.name }}.xcresult
+
+  snapshot-tests:
+    name: Snapshot Tests
+    runs-on: macos-14
+    needs: setup
+    if: ${{ github.event.inputs.test_suite == 'all' || github.event.inputs.test_suite == 'snapshot' }}
+    strategy:
+      matrix:
+        batch: [1, 2, 3, 4, 5]  # Split 439 tests into batches
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          lfs: true  # For snapshot images
+      
+      - name: Select Xcode
+        run: sudo xcode-select -s /Applications/Xcode_${{ env.XCODE_VERSION }}.app
+      
+      - name: Run Snapshot Tests Batch ${{ matrix.batch }}
+        run: |
+          ./scripts/test-runners/run-snapshot-batch.sh ${{ matrix.batch }}
+      
+      - name: Upload failed snapshots
+        if: failure()
+        uses: actions/upload-artifact@v3
+        with:
+          name: failed-snapshots-batch-${{ matrix.batch }}
+          path: |
+            **/__Snapshots__/*_failure.png
+            **/__Snapshots__/*_difference.png
+
+  edge-case-tests:
+    name: Edge Case Tests
+    runs-on: macos-14
+    needs: setup
+    if: ${{ github.event.inputs.test_suite == 'all' }}
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Select Xcode
+        run: sudo xcode-select -s /Applications/Xcode_${{ env.XCODE_VERSION }}.app
+      
+      - name: Run Edge Case Tests
+        run: |
+          xcodebuild test \
+            -scheme HomeInventoryModular \
+            -destination 'platform=iOS Simulator,name=${{ env.SIMULATOR_NAME }},OS=${{ env.IOS_VERSION }}' \
+            -only-testing:HomeInventoryModularTests/EdgeCaseTests \
+            -resultBundlePath TestResults/edge-cases.xcresult \
+            | xcbeautify
+        timeout-minutes: 30
+
+  network-tests:
+    name: Network Resilience Tests
+    runs-on: macos-14
+    needs: setup
+    if: ${{ github.event.inputs.test_suite == 'all' }}
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Select Xcode
+        run: sudo xcode-select -s /Applications/Xcode_${{ env.XCODE_VERSION }}.app
+      
+      - name: Configure network conditions
+        run: |
+          # Install network link conditioner
+          scripts/setup_network_conditions.sh
+      
+      - name: Run Network Tests
+        run: |
+          xcodebuild test \
+            -scheme HomeInventoryModular \
+            -destination 'platform=iOS Simulator,name=${{ env.SIMULATOR_NAME }},OS=${{ env.IOS_VERSION }}' \
+            -only-testing:HomeInventoryModularTests/NetworkTests \
+            -resultBundlePath TestResults/network.xcresult \
+            | xcbeautify
+
+  test-report:
+    name: Generate Test Report
+    runs-on: macos-14
+    needs: [unit-tests, integration-tests, performance-tests, security-tests, ui-tests, snapshot-tests, edge-case-tests, network-tests]
+    if: always()
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Download all test results
+        uses: actions/download-artifact@v3
+        with:
+          path: test-artifacts
+      
+      - name: Install report generator
+        run: |
+          brew install mint
+          mint install ChargePoint/xcparse
+      
+      - name: Generate HTML report
+        run: |
+          # Merge all test results
+          xcresulttool merge \
+            test-artifacts/**/*.xcresult \
+            --output-path merged-results.xcresult
+          
+          # Generate HTML report
+          xchtmlreport -r merged-results.xcresult -o test-report
+      
+      - name: Upload test report
+        uses: actions/upload-artifact@v3
+        with:
+          name: test-report
+          path: test-report
+      
+      - name: Deploy to GitHub Pages
+        if: github.ref == 'refs/heads/main'
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./test-report
+          destination_dir: test-results/${{ github.run_number }}
+
+  notify-results:
+    name: Notify Test Results
+    runs-on: ubuntu-latest
+    needs: test-report
+    if: always()
+    steps:
+      - name: Slack Notification
+        uses: 8398a7/action-slack@v3
+        with:
+          status: ${{ job.status }}
+          text: |
+            Test Suite: ${{ github.event.inputs.test_suite || 'all' }}
+            Branch: ${{ github.ref }}
+            Commit: ${{ github.sha }}
+            Author: ${{ github.actor }}
+            Results: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/test-results/${{ github.run_number }}
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
+        if: env.SLACK_WEBHOOK_URL != ''

@@ -1,0 +1,343 @@
+name: Nightly Test Suite
+
+on:
+  schedule:
+    # Run at 2 AM UTC every day
+    - cron: '0 2 * * *'
+  workflow_dispatch:
+
+env:
+  XCODE_VERSION: '15.0'
+
+jobs:
+  device-matrix-tests:
+    name: Device Matrix Tests
+    runs-on: macos-14
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          # iPhones
+          - device: "iPhone 15 Pro Max"
+            os: "17.0"
+          - device: "iPhone 15"
+            os: "17.0"
+          - device: "iPhone 14 Pro"
+            os: "16.4"
+          - device: "iPhone 13"
+            os: "15.5"
+          - device: "iPhone SE (3rd generation)"
+            os: "17.0"
+          
+          # iPads
+          - device: "iPad Pro (12.9-inch) (6th generation)"
+            os: "17.0"
+          - device: "iPad Air (5th generation)"
+            os: "17.0"
+          - device: "iPad mini (6th generation)"
+            os: "17.0"
+          - device: "iPad (10th generation)"
+            os: "17.0"
+    
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Select Xcode
+        run: sudo xcode-select -s /Applications/Xcode_${{ env.XCODE_VERSION }}.app
+      
+      - name: Boot simulator
+        run: |
+          xcrun simctl boot "${{ matrix.device }}" || true
+          xcrun simctl wait "${{ matrix.device }}" --state=booted
+      
+      - name: Run tests on ${{ matrix.device }}
+        run: |
+          xcodebuild test \
+            -scheme HomeInventoryModular \
+            -destination 'platform=iOS Simulator,name=${{ matrix.device }},OS=${{ matrix.os }}' \
+            -resultBundlePath TestResults/${{ matrix.device }}-${{ matrix.os }}.xcresult \
+            | xcbeautify --is-ci
+      
+      - name: Upload test results
+        uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: device-test-results
+          path: TestResults/*.xcresult
+
+  stress-tests:
+    name: Stress Tests
+    runs-on: macos-14
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Select Xcode
+        run: sudo xcode-select -s /Applications/Xcode_${{ env.XCODE_VERSION }}.app
+      
+      - name: Configure for stress testing
+        run: |
+          # Increase simulator memory
+          defaults write com.apple.iphonesimulator MemorySize -int 8192
+          
+          # Disable animations for faster testing
+          defaults write com.apple.iphonesimulator SlowMotionAnimation -bool false
+      
+      - name: Run stress tests
+        run: |
+          xcodebuild test \
+            -scheme HomeInventoryModular \
+            -destination 'platform=iOS Simulator,name=iPhone 15 Pro,OS=17.0' \
+            -only-testing:HomeInventoryModularTests/EdgeCaseTests/LargeDatasetTests \
+            -test-iterations 3 \
+            -maximum-concurrent-test-simulator-destinations 2 \
+            -resultBundlePath TestResults/stress.xcresult \
+            | xcbeautify --is-ci
+        timeout-minutes: 60
+
+  memory-leak-tests:
+    name: Memory Leak Detection
+    runs-on: macos-14
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Select Xcode
+        run: sudo xcode-select -s /Applications/Xcode_${{ env.XCODE_VERSION }}.app
+      
+      - name: Run tests with memory debugging
+        run: |
+          xcodebuild test \
+            -scheme HomeInventoryModular \
+            -destination 'platform=iOS Simulator,name=iPhone 15 Pro,OS=17.0' \
+            -enableAddressSanitizer YES \
+            -enableThreadSanitizer NO \
+            -enableUndefinedBehaviorSanitizer YES \
+            -resultBundlePath TestResults/memory.xcresult \
+            | xcbeautify --is-ci
+      
+      - name: Analyze memory graph
+        run: |
+          xcrun xcresulttool get \
+            --path TestResults/memory.xcresult \
+            --format json \
+            | python3 scripts/analyze_memory_leaks.py > memory-report.md
+      
+      - name: Upload memory report
+        uses: actions/upload-artifact@v3
+        with:
+          name: memory-leak-report
+          path: memory-report.md
+
+  accessibility-audit:
+    name: Accessibility Audit
+    runs-on: macos-14
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Select Xcode
+        run: sudo xcode-select -s /Applications/Xcode_${{ env.XCODE_VERSION }}.app
+      
+      - name: Run accessibility tests
+        run: |
+          xcodebuild test \
+            -scheme HomeInventoryModular \
+            -destination 'platform=iOS Simulator,name=iPhone 15 Pro,OS=17.0' \
+            -only-testing:HomeInventoryModularTests/UIGestureTests/AccessibilityGestureTests \
+            -resultBundlePath TestResults/accessibility.xcresult \
+            | xcbeautify --is-ci
+      
+      - name: Run accessibility audit
+        run: |
+          xcrun xctest \
+            -runner accessibility \
+            -app DerivedData/Build/Products/Debug-iphonesimulator/HomeInventory.app \
+            > accessibility-audit.txt
+      
+      - name: Generate accessibility report
+        run: |
+          python3 scripts/generate_accessibility_report.py \
+            accessibility-audit.txt \
+            > accessibility-report.html
+      
+      - name: Upload accessibility report
+        uses: actions/upload-artifact@v3
+        with:
+          name: accessibility-report
+          path: accessibility-report.html
+
+  localization-tests:
+    name: Localization Tests
+    runs-on: macos-14
+    strategy:
+      matrix:
+        locale: [en_US, es_ES, fr_FR, de_DE, ja_JP, zh_CN, ar_SA]
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Select Xcode
+        run: sudo xcode-select -s /Applications/Xcode_${{ env.XCODE_VERSION }}.app
+      
+      - name: Run tests in ${{ matrix.locale }}
+        run: |
+          xcodebuild test \
+            -scheme HomeInventoryModular \
+            -destination 'platform=iOS Simulator,name=iPhone 15 Pro,OS=17.0' \
+            -testLanguage $(echo ${{ matrix.locale }} | cut -d'_' -f1) \
+            -testRegion $(echo ${{ matrix.locale }} | cut -d'_' -f2) \
+            -only-testing:HomeInventoryModularTests/EdgeCaseTests/UnicodeAndLocalizationTests \
+            -resultBundlePath TestResults/locale-${{ matrix.locale }}.xcresult \
+            | xcbeautify --is-ci
+
+  security-scan:
+    name: Security Vulnerability Scan
+    runs-on: macos-14
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Install security tools
+        run: |
+          brew install --HEAD mob-sf-static-analyzer
+          pip3 install safety bandit
+      
+      - name: Run static security analysis
+        run: |
+          # Swift security analysis
+          mobsfscan --json -o security-report.json .
+          
+          # Check dependencies
+          safety check --json > dependency-security.json
+          
+          # Additional security checks
+          scripts/security_audit.sh > custom-security-report.txt
+      
+      - name: Generate security summary
+        run: |
+          python3 scripts/summarize_security_reports.py \
+            security-report.json \
+            dependency-security.json \
+            custom-security-report.txt \
+            > security-summary.md
+      
+      - name: Upload security reports
+        uses: actions/upload-artifact@v3
+        with:
+          name: security-scan-results
+          path: |
+            security-report.json
+            dependency-security.json
+            security-summary.md
+
+  performance-regression:
+    name: Performance Regression Detection
+    runs-on: macos-14
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      
+      - name: Select Xcode
+        run: sudo xcode-select -s /Applications/Xcode_${{ env.XCODE_VERSION }}.app
+      
+      - name: Checkout baseline
+        run: |
+          git checkout $(git describe --tags --abbrev=0) -- .
+          mv . ../baseline
+          git checkout -
+      
+      - name: Run baseline performance tests
+        run: |
+          cd ../baseline
+          xcodebuild test \
+            -scheme HomeInventoryModular \
+            -destination 'platform=iOS Simulator,name=iPhone 15 Pro,OS=17.0' \
+            -only-testing:HomeInventoryModularTests/PerformanceTests \
+            -resultBundlePath ../TestResults/baseline-performance.xcresult \
+            | xcbeautify --is-ci
+      
+      - name: Run current performance tests
+        run: |
+          xcodebuild test \
+            -scheme HomeInventoryModular \
+            -destination 'platform=iOS Simulator,name=iPhone 15 Pro,OS=17.0' \
+            -only-testing:HomeInventoryModularTests/PerformanceTests \
+            -resultBundlePath TestResults/current-performance.xcresult \
+            | xcbeautify --is-ci
+      
+      - name: Compare performance
+        run: |
+          python3 scripts/compare_performance.py \
+            TestResults/baseline-performance.xcresult \
+            TestResults/current-performance.xcresult \
+            --threshold 10 \
+            > performance-comparison.md
+      
+      - name: Upload performance comparison
+        uses: actions/upload-artifact@v3
+        with:
+          name: performance-regression-report
+          path: performance-comparison.md
+
+  test-coverage-report:
+    name: Generate Coverage Report
+    runs-on: macos-14
+    needs: [device-matrix-tests, stress-tests, memory-leak-tests]
+    if: always()
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Download all test results
+        uses: actions/download-artifact@v3
+        with:
+          path: test-artifacts
+      
+      - name: Merge coverage data
+        run: |
+          xcrun xcresulttool merge \
+            test-artifacts/**/*.xcresult \
+            --output-path merged-coverage.xcresult
+      
+      - name: Generate coverage report
+        run: |
+          xcrun xccov view \
+            --report \
+            --json \
+            merged-coverage.xcresult > coverage.json
+          
+          python3 scripts/generate_coverage_report.py \
+            coverage.json \
+            --format html \
+            --output coverage-report
+      
+      - name: Upload coverage report
+        uses: actions/upload-artifact@v3
+        with:
+          name: coverage-report
+          path: coverage-report
+
+  notify-failures:
+    name: Notify Test Failures
+    runs-on: ubuntu-latest
+    needs: [device-matrix-tests, stress-tests, memory-leak-tests, accessibility-audit, localization-tests, security-scan, performance-regression]
+    if: failure()
+    steps:
+      - name: Create GitHub Issue
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const date = new Date().toISOString().split('T')[0];
+            const runUrl = `https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}`;
+            
+            await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: `🚨 Nightly Test Failures - ${date}`,
+              body: `## Nightly Test Run Failed\n\n` +
+                    `**Run Date**: ${date}\n` +
+                    `**Run URL**: ${runUrl}\n\n` +
+                    `### Failed Jobs\n` +
+                    `Please check the run details for specific failures.\n\n` +
+                    `### Action Items\n` +
+                    `- [ ] Review test failures\n` +
+                    `- [ ] Fix identified issues\n` +
+                    `- [ ] Re-run failed tests\n`,
+              labels: ['test-failure', 'nightly', 'high-priority']
+            });

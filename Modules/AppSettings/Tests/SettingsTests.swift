@@ -100,7 +100,7 @@
 //
 
 import XCTest
-@testable import Settings
+@testable import AppSettings
 
 // ⚠️ IMPORTANT: This project MUST use Swift 5.9 - DO NOT use Swift 6 features
 final class SettingsTests: XCTestCase {

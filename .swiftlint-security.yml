@@ -1,0 +1,107 @@
+# SwiftLint configuration for security analysis
+
+included:
+  - Modules
+  - HomeInventoryModular
+  - HomeInventoryModularTests
+
+excluded:
+  - Pods
+  - .build
+  - DerivedData
+  - ${PWD}/.build
+  - ${PWD}/DerivedData
+
+# Security-focused rules
+opt_in_rules:
+  - hardcoded_credentials
+  - insecure_random
+  - weak_cryptography
+  - sql_injection_risk
+  - unsafe_url_construction
+  - unencrypted_storage
+  - missing_input_validation
+  - exposed_api_keys
+  - unsafe_pointer_usage
+  - force_unwrapping
+  - force_cast
+  - force_try
+  - implicitly_unwrapped_optional
+  - legacy_random
+  - nsobject_prefer_isequal
+
+custom_rules:
+  hardcoded_credentials:
+    name: "Hardcoded Credentials"
+    regex: '(password|passwd|pwd|secret|key|token|api_key)\s*=\s*"[^"]+"'
+    message: "Potential hardcoded credentials detected. Use Keychain or environment variables."
+    severity: error
+    
+  insecure_random:
+    name: "Insecure Random Number Generation"
+    regex: 'arc4random\(\)|rand\(\)|random\(\)'
+    message: "Use SecRandomCopyBytes or SystemRandomNumberGenerator for cryptographic randomness."
+    severity: warning
+    
+  weak_cryptography:
+    name: "Weak Cryptography"
+    regex: 'MD5|SHA1|DES|RC4'
+    message: "Weak cryptographic algorithm detected. Use SHA256 or stronger."
+    severity: error
+    
+  sql_injection_risk:
+    name: "SQL Injection Risk"
+    regex: 'String\(format:.*SELECT|INSERT|UPDATE|DELETE.*%@'
+    message: "Potential SQL injection. Use parameterized queries."
+    severity: error
+    
+  unsafe_url_construction:
+    name: "Unsafe URL Construction"
+    regex: 'URL\(string:\s*"\(.*)\)'
+    message: "Dynamic URL construction detected. Validate and encode user input."
+    severity: warning
+    
+  unencrypted_storage:
+    name: "Unencrypted Storage"
+    regex: 'UserDefaults.*set.*password|UserDefaults.*set.*token'
+    message: "Sensitive data in UserDefaults. Use Keychain for secure storage."
+    severity: error
+    
+  missing_input_validation:
+    name: "Missing Input Validation"
+    regex: 'textField\.text\!|textView\.text\!'
+    message: "Forced unwrapping of user input. Validate and handle nil cases."
+    severity: warning
+    
+  exposed_api_keys:
+    name: "Exposed API Keys"
+    regex: 'let\s+\w*[Kk]ey\s*=\s*"[A-Za-z0-9]{20,}"'
+    message: "Potential API key in code. Use secure configuration."
+    severity: error
+    
+  unsafe_pointer_usage:
+    name: "Unsafe Pointer Usage"
+    regex: 'unsafeBitCast|assumingMemoryBound|bindMemory'
+    message: "Unsafe pointer operation. Ensure memory safety."
+    severity: warning
+
+# Standard security settings
+force_cast: error
+force_try: error
+force_unwrapping: error
+implicitly_unwrapped_optional:
+  mode: all_except_iboutlets
+  severity: warning
+
+# Complexity thresholds for security review
+cyclomatic_complexity:
+  warning: 15
+  error: 25
+  
+function_body_length:
+  warning: 60
+  error: 100
+  
+file_length:
+  warning: 500
+  error: 1000

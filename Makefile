@@ -191,6 +191,46 @@ test: prebuild-modules ## Run tests
 		xchtmlreport -r TestResults.xcresult || true; \
 	fi
 
+# Snapshot Testing
+test-snapshots: prebuild-modules ## Run snapshot tests only
+	@echo "📸 Running snapshot tests..."
+	@xcodebuild test \
+		-project HomeInventoryModular.xcodeproj \
+		-scheme HomeInventoryModular \
+		-sdk iphonesimulator \
+		-destination "platform=iOS Simulator,id=$(SIMULATOR_ID)" \
+		-derivedDataPath build \
+		-only-testing:HomeInventoryModularTests \
+		SWIFT_STRICT_CONCURRENCY=minimal \
+		SWIFT_SUPPRESS_WARNINGS=YES \
+		| xcbeautify
+
+record-snapshots: prebuild-modules ## Record new snapshots
+	@echo "📸 Recording snapshots..."
+	@ruby scripts/run_snapshot_tests.rb record
+
+update-snapshots: prebuild-modules ## Update existing snapshots
+	@echo "📸 Updating snapshots..."
+	@ruby scripts/run_snapshot_tests.rb update
+
+verify-snapshots: prebuild-modules ## Verify snapshots match
+	@echo "📸 Verifying snapshots..."
+	@ruby scripts/run_snapshot_tests.rb verify
+
+snapshot-report: ## Generate snapshot test coverage report
+	@echo "📊 Generating snapshot coverage report..."
+	@find HomeInventoryModularTests -name "*SnapshotTests.swift" | wc -l | xargs -I {} echo "📸 Total snapshot test files: {}"
+	@find HomeInventoryModularTests -name "*.png" | wc -l | xargs -I {} echo "🖼️  Total snapshot images: {}"
+	@echo "📁 Snapshot locations:"
+	@find HomeInventoryModularTests -name "__Snapshots__" -type d | sed 's/^/   /'
+
+# Snapshot testing shortcuts
+ts: test-snapshots ## Shortcut for test-snapshots
+rs: record-snapshots ## Shortcut for record-snapshots
+us: update-snapshots ## Shortcut for update-snapshots
+vs: verify-snapshots ## Shortcut for verify-snapshots
+sr: snapshot-report ## Shortcut for snapshot-report
+
 lint: ## Run SwiftLint to check code style
 	@echo "🔍 Running SwiftLint..."
 	@swiftlint lint --config .swiftlint.yml --reporter emoji
@@ -446,3 +486,133 @@ tf: testflight ## Shortcut for testflight
 tff: testflight-force ## Shortcut for testflight-force  
 arch: archive ## Shortcut for archive
 val: validate-app ## Shortcut for validate-app
+
+# Code Generation with Sourcery
+generate-mocks: ## Generate mock classes using Sourcery
+	@echo "🎭 Generating mocks..."
+	@sourcery --config .sourcery.yml
+	@echo "✅ Mocks generated\!"
+
+# Documentation
+docs: ## Generate documentation with Jazzy
+	@echo "📚 Generating documentation..."
+	@jazzy --clean --author "Home Inventory Team" --module HomeInventoryModular --theme apple --output docs/
+	@echo "✅ Documentation generated at docs/index.html"
+
+docs-open: docs ## Generate and open documentation
+	@open docs/index.html
+
+# Danger for PR automation
+danger-dry: ## Run Danger in dry-run mode (local testing)
+	@echo "⚡ Running Danger in dry-run mode..."
+	@danger dry_run
+	@echo "✅ Danger dry run complete\!"
+
+danger-pr: ## Run Danger on PR (requires DANGER_GITHUB_API_TOKEN)
+	@echo "🤖 Running Danger..."
+	@bundle exec danger
+	@echo "✅ Danger complete\!"
+
+# Combined pre-commit check
+pre-commit: lint format test ## Run all pre-commit checks
+	@echo "✅ All pre-commit checks passed\!"
+
+# Install all development tools
+install-all-tools: install-deps ## Install all development tools including Ruby gems
+	@echo "💎 Installing Ruby gems..."
+	@bundle install
+	@echo "🛠️ Installing Sourcery..."
+	@which sourcery > /dev/null || brew install sourcery
+	@echo "✅ All tools installed\!"
+
+# Tool shortcuts
+gm: generate-mocks ## Shortcut for generate-mocks
+d: docs ## Shortcut for docs
+do: docs-open ## Shortcut for docs-open
+
+# Injection Hot Reload
+injection-help: ## Show InjectionIII setup instructions
+	@echo "💉 InjectionIII Setup:"
+	@echo "1. Install from Mac App Store: https://apps.apple.com/app/injectioniii/id1380446739"
+	@echo "2. Launch InjectionIII app"
+	@echo "3. Add project directory: $(PWD)"
+	@echo "4. Build and run: make build run"
+	@echo "5. Edit Swift files - changes reload instantly\!"
+	@echo ""
+	@echo "Note: Hot reload works in Simulator only"
+
+# Arkana Secrets Management
+secrets-generate: ## Generate encrypted secrets with Arkana
+	@echo "🔐 Generating encrypted secrets..."
+	@bundle exec arkana
+	@echo "✅ Secrets generated in Generated/Arkana/"
+
+secrets-setup: ## Initial Arkana setup
+	@echo "🔑 Setting up Arkana..."
+	@cp .env.arkana.example .env.arkana 2>/dev/null || echo "⚠️  Create .env.arkana from .env.arkana.example"
+	@echo "📝 Edit .env.arkana with your secret values"
+	@echo "🚫 Never commit .env.arkana to git\!"
+
+# Rocket Release Automation
+release-patch: ## Create a patch release (1.0.x)
+	@echo "🚀 Creating patch release..."
+	@bundle exec rocket release --release-type patch
+
+release-minor: ## Create a minor release (1.x.0)
+	@echo "🚀 Creating minor release..."
+	@bundle exec rocket release --release-type minor
+
+release-major: ## Create a major release (x.0.0)
+	@echo "🚀 Creating major release..."
+	@bundle exec rocket release --release-type major
+
+release-dry: ## Dry run of release process
+	@echo "🧪 Release dry run..."
+	@bundle exec rocket release --dry-run
+
+# SwiftPlantUML Diagram Generation
+diagrams: ## Generate UML diagrams from Swift code
+	@echo "📊 Generating UML diagrams..."
+	@swiftplantuml generate
+	@echo "✅ Diagrams generated in docs/diagrams/"
+
+diagrams-class: ## Generate only class diagrams
+	@swiftplantuml generate --type class
+
+diagrams-sequence: ## Generate only sequence diagrams
+	@swiftplantuml generate --type sequence
+
+diagrams-open: diagrams ## Generate and open diagrams
+	@open docs/diagrams/index.html
+
+# Reveal Integration
+reveal-build: ## Build with Reveal integration
+	@echo "🔍 Building with Reveal..."
+	@xcodebuild build \
+		-project HomeInventoryModular.xcodeproj \
+		-scheme HomeInventoryModular \
+		-configuration Debug \
+		-destination "platform=iOS Simulator,id=$(SIMULATOR_ID)" \
+		-derivedDataPath build \
+		OTHER_SWIFT_FLAGS="-D REVEAL_ENABLED" \
+		| xcbeautify
+
+reveal: reveal-build run ## Build and run with Reveal
+
+# Combined tool installation
+install-new-tools: ## Install newly added tools
+	@echo "🛠️ Installing new development tools..."
+	@echo "📦 Installing SwiftPlantUML..."
+	@brew install swiftplantuml || true
+	@echo "💎 Installing Ruby gems..."
+	@bundle install
+	@echo "📱 InjectionIII: Install from Mac App Store"
+	@echo "🔍 Reveal: Download from https://revealapp.com"
+	@echo "✅ Tools installed\! See docs for configuration."
+
+# Tool shortcuts
+sg: secrets-generate ## Shortcut for secrets-generate
+rp: release-patch ## Shortcut for release-patch
+rm: release-minor ## Shortcut for release-minor
+dg: diagrams ## Shortcut for diagrams
+dgo: diagrams-open ## Shortcut for diagrams-open

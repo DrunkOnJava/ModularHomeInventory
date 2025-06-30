@@ -1,0 +1,82 @@
+# SwiftPlantUML Configuration
+# Generates UML diagrams from Swift code
+
+# Input directories
+sources:
+  - Source
+  - Modules/Core/Sources
+  - Modules/SharedUI/Sources
+  - Modules/Items/Sources
+  - Modules/BarcodeScanner/Sources
+  - Modules/AppSettings/Sources
+  - Modules/Receipts/Sources
+  - Modules/Sync/Sources
+  - Modules/Premium/Sources
+  - Modules/Onboarding/Sources
+
+# Output configuration
+output:
+  directory: docs/diagrams
+  format: svg  # svg, png, or txt
+  
+# Diagram types to generate
+diagrams:
+  - class
+  - sequence
+  - component
+  - package
+
+# Filtering options
+filters:
+  # Include only public and internal declarations
+  access_levels:
+    - public
+    - internal
+  
+  # Exclude test files
+  exclude_patterns:
+    - "*Tests*"
+    - "*Test.swift"
+    - "Mock*"
+    - "*Mock.swift"
+  
+  # Include specific patterns
+  include_patterns:
+    - "*ViewModel.swift"
+    - "*Service.swift"
+    - "*Manager.swift"
+    - "*Model.swift"
+
+# Diagram customization
+style:
+  theme: default  # default, cerulean, materia, sketchy, slate
+  direction: TB   # TB (top-bottom), LR (left-right)
+  
+  # Class diagram options
+  class:
+    show_properties: true
+    show_methods: true
+    show_extensions: true
+    show_protocols: true
+    group_by_module: true
+  
+  # Sequence diagram options
+  sequence:
+    show_return_types: true
+    show_async_calls: true
+    
+# PlantUML server (optional, for remote rendering)
+# server: http://www.plantuml.com/plantuml
+
+# Relationship detection
+relationships:
+  inheritance: true
+  protocol_conformance: true
+  composition: true
+  dependency: true
+  
+# Documentation options
+documentation:
+  include_comments: true
+  include_marks: true
+  extract_description: true

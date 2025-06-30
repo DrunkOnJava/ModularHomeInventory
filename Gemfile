@@ -14,6 +14,19 @@ gem "cocoapods"
 
 # Note: Core fastlane tools (snapshot, deliver, gym) are included with fastlane 2.x
 
+# Code quality and PR automation
+gem "danger"
+gem "danger-swiftlint"
+
+# Documentation
+gem "jazzy"
+
+# Secrets management
+gem "arkana"
+
+# Release automation
+gem "rocket", git: "https://github.com/f-meloni/Rocket"
+
 # Utilities
 gem "json"
 gem "plist"

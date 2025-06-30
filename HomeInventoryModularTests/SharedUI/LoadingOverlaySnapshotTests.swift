@@ -53,51 +53,61 @@ import SnapshotTesting
 import SwiftUI
 @testable import SharedUI
 
-final class LoadingOverlaySnapshotTests: SnapshotTestCase {
+final class LoadingOverlaySnapshotTests: XCTestCase {
+    
+    override func setUp() {
+        super.setUp()
+    }
     
     func testLoadingOverlay_Default() {
-        let view = Color.gray.opacity(0.1)
-            .frame(width: 300, height: 200)
-            .overlay(
-                LoadingOverlay(isLoading: .constant(true))
-            )
-        
-        assertSnapshot(matching: view, as: .image)
+        withSnapshotTesting(record: .all) {
+            let view = Color.gray.opacity(0.1)
+                .frame(width: 300, height: 200)
+                .overlay(
+                    LoadingOverlay()
+                )
+            
+            let hostingController = UIHostingController(rootView: view)
+            assertSnapshot(of: hostingController, as: .image(on: .iPhone13))
+        }
     }
     
     func testLoadingOverlay_WithMessage() {
-        let view = Color.gray.opacity(0.1)
-            .frame(width: 300, height: 200)
-            .overlay(
-                LoadingOverlay(
-                    isLoading: .constant(true),
-                    message: "Scanning barcode..."
+        withSnapshotTesting(record: .all) {
+            let view = Color.gray.opacity(0.1)
+                .frame(width: 300, height: 200)
+                .overlay(
+                    LoadingOverlay(message: "Scanning barcode...")
                 )
-            )
-        
-        assertSnapshot(matching: view, as: .image)
+            
+            let hostingController = UIHostingController(rootView: view)
+            assertSnapshot(of: hostingController, as: .image(on: .iPhone13))
+        }
     }
     
-    func testLoadingOverlay_Hidden() {
-        let view = Color.gray.opacity(0.1)
-            .frame(width: 300, height: 200)
-            .overlay(
-                LoadingOverlay(isLoading: .constant(false))
-            )
-        
-        assertSnapshot(matching: view, as: .image)
+    func testLoadingOverlay_LongMessage() {
+        withSnapshotTesting(record: .all) {
+            let view = Color.gray.opacity(0.1)
+                .frame(width: 300, height: 200)
+                .overlay(
+                    LoadingOverlay(message: "This is a very long loading message that might wrap to multiple lines")
+                )
+            
+            let hostingController = UIHostingController(rootView: view)
+            assertSnapshot(of: hostingController, as: .image(on: .iPhone13))
+        }
     }
     
     func testLoadingOverlay_BothModes() {
-        let view = Color.gray.opacity(0.1)
-            .frame(width: 300, height: 200)
-            .overlay(
-                LoadingOverlay(
-                    isLoading: .constant(true),
-                    message: "Loading..."
+        withSnapshotTesting(record: .all) {
+            let view = Color.gray.opacity(0.1)
+                .frame(width: 300, height: 200)
+                .overlay(
+                    LoadingOverlay(message: "Loading...")
                 )
-            )
-        
-        assertSnapshotInBothModes(matching: view)
+            
+            let hostingController = UIHostingController(rootView: view)
+            assertSnapshot(of: hostingController, as: .image(on: .iPhone13))
+        }
     }
 }

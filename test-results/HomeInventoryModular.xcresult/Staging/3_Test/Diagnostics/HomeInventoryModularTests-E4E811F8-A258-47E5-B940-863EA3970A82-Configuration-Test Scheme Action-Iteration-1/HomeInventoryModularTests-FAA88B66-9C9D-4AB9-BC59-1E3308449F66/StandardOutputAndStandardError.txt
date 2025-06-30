@@ -1,0 +1,1333 @@
+HomeInventory Modular App Starting...
+2025-06-29 11:48:17.753927-0400 HomeInventoryModular[36357:9443322] [launch] Launch phase 'pre-main' started
+2025-06-29 11:48:17.754530-0400 HomeInventoryModular[36357:9443322] [launch] ✅ Launch phase 'pre-main' completed in 0ms (target: 400ms)
+2025-06-29 11:48:17.813332-0400 HomeInventoryModular[36357:9443235] You've implemented -[<UIApplicationDelegate> application:didReceiveRemoteNotification:fetchCompletionHandler:], but you still need to add "remote-notification" to the list of your supported UIBackgroundModes in your Info.plist.
+[AppDelegate] Warning: GoogleSignIn-Info.plist not found or invalid
+2025-06-29 11:48:17.813544-0400 HomeInventoryModular[36357:9443329] [launch] Launch phase 'app-delegate' started
+2025-06-29 11:48:17.846085-0400 HomeInventoryModular[36357:9443323] [launch] ✅ Launch phase 'app-delegate' completed in 32ms (target: 100ms)
+MockReceiptRepository: Generated 13 receipts
+SettingsModule: Creating EnhancedSettingsView
+SettingsModule: dependencies.settingsStorage = Core.UserDefaultsSettingsStorage
+SettingsModule: Created viewModel = AppSettings.SettingsViewModel
+EnhancedSettingsView.init called
+Stack trace: ["0   HomeInventoryModular.debug.dylib    0x000000010873ba80 $s11AppSettings08EnhancedB4ViewV9viewModelAcA0bdF0C_tcfC + 956", "1   HomeInventoryModular.debug.dylib    0x00000001086737b4 $s11AppSettings0B6ModuleC04makeB4View7SwiftUI03AnyE0VyF + 1244", "2   HomeInventoryModular.debug.dylib    0x0000000108673f5c $s11AppSettings0B6ModuleCAA0bC3APIA2aDP04makeB4View7SwiftUI03AnyF0VyFTW + 20", "3   HomeInventoryModular.debug.dylib    0x0000000106ee4120 $s20HomeInventoryModular11ContentViewV4bodyQrvg7SwiftUI05TupleE0VyAE0E0PAEE3tag_15includeOptionalQrqd___SbtSHRd__lFQOyAiEE7tabItemyQrqd__yXEAeHRd__lFQOyAE010NavigationE0VyAE03AnyE0VG_AE5LabelVyAE4TextVAE5ImageVGQo__SiQo__A4ZtGyXEfU_APyXEfU7_ + 296", "4   SwiftUI                             0x00000001d40a5cf4 $s7SwiftUI14NavigationViewV7contentACyxGxyXE_tcfC + 20", "5   HomeInventoryModular.debug.dylib    0x0000000106ee2898 $s20HomeInventoryModular11ContentViewV4bodyQrvg7SwiftUI05TupleE0VyAE0E0PAEE3tag_15includeOptionalQrqd___SbtSHRd__lFQOyAiEE7tabItemyQrqd__yXEAeHRd__lFQOyAE010NavigationE0VyAE03AnyE0VG_AE5LabelVyAE4TextVAE5ImageVGQo__SiQo__A4ZtGyXEfU_ + 1668", "6   SwiftUI                             0x00000001d362b0c8 $s7SwiftUI7TabViewV9selection7contentACyxq_GAA7BindingVyxGSg_q_yXEtcfC + 184", "7   HomeInventoryModular.debug.dylib    0x0000000106ee1b44 $s20HomeInventoryModular11ContentViewV4bodyQrvg + 1456", "8   HomeInventoryModular.debug.dylib    0x0000000106ee82e8 $s20HomeInventoryModular11ContentViewV7SwiftUI0E0AadEP4body4BodyQzvgTW + 12", "9   SwiftUICore                         0x00000001d47ef9b8 $s7SwiftUI16ViewBodyAccessorV06updateD02of7changedyx_SbtFTf4nnd_n + 968", "10  SwiftUICore                         0x00000001d48cae68 $s7SwiftUI11DynamicBody33_A4C1D658B3717A3062FEFC91A812D6EBLLV11updateValueyyFyyXEfU_ + 396", "11  SwiftUICore                         0x00000001d48caa38 $s7SwiftUI11DynamicBody33_A4C1D658B3717A3062FEFC91A812D6EBLLV11updateValueyyF + 640", "12  SwiftUICore                         0x00000001d4947d58 $s14AttributeGraph0A0VyACyxGqd__c5ValueQyd__RszAA12StatefulRuleRd__lufcADSPyqd__GXEfU_ySv_So11AGAttributeatcyXEfU_ySv_AJtcfu_TA + 28", "13  AttributeGraph                      0x00000001c00ca438 _ZN2AG5Graph11UpdateStack6updateEv + 516", "14  AttributeGraph                      0x00000001c00cac04 _ZN2AG5Graph16update_attributeENS_4data3ptrINS_4NodeEEEj + 428", "15  AttributeGraph                      0x00000001c00d24dc _ZN2AG5Graph20input_value_ref_slowENS_4data3ptrINS_4NodeEEENS_11AttributeIDEjjPK15AGSwiftMetadataRhl + 708", "16  AttributeGraph                      0x00000001c00e8054 AGGraphGetValue + 232", "17  SwiftUICore                         0x00000001d4b7a044 $s7SwiftUI15DynamicViewList031_3FB6ABB0477B815AB3C89DD5EDC9F0M0LLV11updateValueyyF + 288", "18  SwiftUICore                         0x00000001d4947d58 $s14AttributeGraph0A0VyACyxGqd__c5ValueQyd__RszAA12StatefulRuleRd__lufcADSPyqd__GXEfU_ySv_So11AGAttributeatcyXEfU_ySv_AJtcfu_TA + 28", "19  AttributeGraph                      0x00000001c00ca438 _ZN2AG5Graph11UpdateStack6updateEv + 516", "20  AttributeGraph                      0x00000001c00cac04 _ZN2AG5Graph16update_attributeENS_4data3ptrINS_4NodeEEEj + 428", "21  AttributeGraph                      0x00000001c00d24dc _ZN2AG5Graph20input_value_ref_slowENS_4data3ptrINS_4NodeEEENS_11AttributeIDEjjPK15AGSwiftMetadataRhl + 708", "22  AttributeGraph                      0x00000001c00e8054 AGGraphGetValue + 232", "23  SwiftUICore                         0x00000001d495de94 $s7SwiftUI24DynamicLayoutViewAdaptorV12updatedItemsAA0E4List_pSgyF + 64", "24  SwiftUICore                         0x00000001d460cfbc $s7SwiftUI20DynamicContainerInfoV11updateItems33_E7D4CD2D59FB8C77D6C7E9C534464C17LL18disableTransitionsSb7changed_Sb8hasDepthtSb_tFAA0C17LayoutViewAdaptorV_Tg5 + 60", "25  SwiftUICore                         0x00000001d460c258 $s7SwiftUI20DynamicContainerInfoV11updateValueyyFAA0C17LayoutViewAdaptorV_Tg5 + 484", "26  SwiftUICore                         0x00000001d462b764 $s14AttributeGraph0A0VyACyxGqd__c5ValueQyd__RszAA12StatefulRuleRd__lufcADSPyqd__GXEfU_ySv_So11AGAttributeatcyXEfU_ySv_AJtcfu_7SwiftUI16DynamicContainerV4InfoV_AK0ijK0VyAK0I17LayoutViewAdaptorVGTt1g5 + 20", "27  AttributeGraph                      0x00000001c00ca438 _ZN2AG5Graph11UpdateStack6updateEv + 516", "28  AttributeGraph                      0x00000001c00cac04 _ZN2AG5Graph16update_attributeENS_4data3ptrINS_4NodeEEEj + 428", "29  AttributeGraph                      0x00000001c00d80b4 _ZN2AG8Subgraph6updateEj + 828", "30  SwiftUICore                         0x00000001d4d6f118 $s7SwiftUI9ViewGraphC13updateOutputs33_7D9EDEF832940A362646A6E979F296C8LL5asyncySb_tF + 388", "31  SwiftUICore                         0x00000001d4d66034 $s7SwiftUI16ViewRendererHostPAAE6render8interval17updateDisplayList15targetTimestampySd_SbAA4TimeVSgtFyyXEfU_yyXEfU0_ + 216", "32  SwiftUICore                         0x00000001d4d65e14 $s7SwiftUI16ViewRendererHostPAAE6render8interval17updateDisplayList15targetTimestampySd_SbAA4TimeVSgtFyyXEfU_ + 592", "33  SwiftUICore                         0x00000001d4d639d8 $s7SwiftUI16ViewRendererHostPAAE6render8interval17updateDisplayList15targetTimestampySd_SbAA4TimeVSgtF + 472", "34  SwiftUI                             0x00000001d3b42128 $s7SwiftUI17UIHostingViewBaseC14layoutSubviewsyyF + 580", "35  SwiftUI                             0x00000001d40c6ed8 $s7SwiftUI14_UIHostingViewC14layoutSubviewsyyF + 80", "36  SwiftUI                             0x00000001d40c6f10 $s7SwiftUI14_UIHostingViewC14layoutSubviewsyyFTo + 32", "37  UIKitCore                           0x00000001861ce1f4 -[UIView(CALayerDelegate) layoutSublayersOfLayer:] + 2420", "38  QuartzCore                          0x000000018b57a9a0 _ZN2CA5Layer16layout_if_neededEPNS_11TransactionE + 424", "39  QuartzCore                          0x000000018b585a70 _ZN2CA5Layer28layout_and_display_if_neededEPNS_11TransactionE + 132", "40  QuartzCore                          0x000000018b4b3a30 _ZN2CA7Context18commit_transactionEPNS_11TransactionEdPd + 484", "41  QuartzCore                          0x000000018b4e2684 _ZN2CA11Transaction6commitEv + 636", "42  UIKitCore                           0x0000000185c725c4 __34-[UIApplication _firstCommitBlock]_block_invoke_2 + 32", "43  CoreFoundation                      0x0000000180429134 __CFRUNLOOP_IS_CALLING_OUT_TO_A_BLOCK__ + 20", "44  CoreFoundation                      0x0000000180428898 __CFRunLoopDoBlocks + 348", "45  CoreFoundation                      0x0000000180423450 __CFRunLoopRun + 808", "46  CoreFoundation                      0x0000000180422cec CFRunLoopRunSpecific + 536", "47  GraphicsServices                    0x0000000191004d00 GSEventRunModal + 164", "48  UIKitCore                           0x0000000185c597d4 -[UIApplication _run] + 796", "49  UIKitCore                           0x0000000185c5dba0 UIApplicationMain + 124", "50  SwiftUI                             0x00000001d3bac66c $s7SwiftUI17KitRendererCommon33_ACC2C5639A7D76F611E170E831FCA491LLys5NeverOyXlXpFAESpySpys4Int8VGSgGXEfU_ + 164", "51  SwiftUI                             0x00000001d3bac3a0 $s7SwiftUI6runAppys5NeverOxAA0D0RzlF + 180", "52  SwiftUI                             0x00000001d3937dc4 $s7SwiftUI3AppPAAE4mainyyFZ + 148", "53  HomeInventoryModular.debug.dylib    0x0000000106efb700 $s20HomeInventoryModular0abC3AppV5$mainyyFZ + 40", "54  HomeInventoryModular.debug.dylib    0x0000000106efb740 __debug_main_executable_dylib_entry_point + 12", "55  dyld                                0x00000001007613d4 start_sim + 20", "56  ???                                 0x00000001009deb98 0x0 + 4305316760"]
+SettingsModule: Created EnhancedSettingsView
+2025-06-29 11:48:18.110276-0400 HomeInventoryModular[36357:9443330] [launch] Launch phase 'initial-view' started
+[GmailModule] Google Sign-In configured with client ID: 316432172622-6huvbn752v0ep68jkfdftrh8fgpesikg.apps.googleusercontent.com
+[GmailAuthService] Initializing
+2025-06-29 11:48:18.462446-0400 HomeInventoryModular[36357:9443335] [launch] Preloading 2 critical data tasks
+2025-06-29 11:48:18.462471-0400 HomeInventoryModular[36357:9443338] [launch] ⚠️ Launch phase 'initial-view' took 352ms (target: 150ms)
+2025-06-29 11:48:18.462580-0400 HomeInventoryModular[36357:9443338] [launch] Launch phase 'first-frame' started
+2025-06-29 11:48:18.582625-0400 HomeInventoryModular[36357:9443330] [launch] ✅ Preloaded 'user-settings'
+2025-06-29 11:48:18.582641-0400 HomeInventoryModular[36357:9443329] [launch] ✅ Preloaded 'categories'
+[GmailAuthService] Failed to restore sign-in: Error Domain=com.google.GIDSignIn Code=-4 "(null)"
+2025-06-29 11:48:18.585342-0400 HomeInventoryModular[36357:9443334] [launch] ✅ Launch phase 'first-frame' completed in 122ms (target: 200ms)
+2025-06-29 11:48:18.585417-0400 HomeInventoryModular[36357:9443334] [launch] Launch phase 'interactive' started
+2025-06-29 11:48:18.585478-0400 HomeInventoryModular[36357:9443334] [launch] ✅ Launch phase 'interactive' completed in 0ms (target: 100ms)
+2025-06-29 11:48:18.585593-0400 HomeInventoryModular[36357:9443334] [launch] 🚀 App launch completed in 507ms
+2025-06-29 11:48:18.594659-0400 HomeInventoryModular[36357:9443330] [launch] Executing 3 deferred work items
+2025-06-29 11:48:18.596958-0400 HomeInventoryModular[36357:9443330] [CrashReporting] Crash reporting enabled
+Test Suite 'DataManagementSnapshotTests' started at 2025-06-29 11:48:19.100.
+Test Case '-[HomeInventoryModularTests.DataManagementSnapshotTests testAllViewsCombined]' started.
+/Users/griffin/Projects/ModularHomeInventory/HomeInventoryModularTests/EnhancedTests/DataManagementSnapshotTests.swift:116: error: -[HomeInventoryModularTests.DataManagementSnapshotTests testAllViewsCombined] : failed - Snapshot does not match reference.
+
+@−
+"file:///Users/griffin/Projects/ModularHomeInventory/HomeInventoryModularTests/EnhancedTests/__Snapshots__/DataManagementSnapshotTests/testAllViewsCombined.1.png"
+@+
+"file:///Users/griffin/Library/Developer/XCTestDevices/D9077CF3-C617-4A79-8FA8-F8559B9781B0/data/Containers/Data/Application/EB4CAA57-01C2-48FE-84E6-FF3078B2E2B5/tmp/DataManagementSnapshotTests/testAllViewsCombined.1.png"
+
+To configure output for a custom diff tool, use 'withSnapshotTesting'. For example:
+
+    withSnapshotTesting(diffTool: .ksdiff) {
+      // ...
+    }
+
+Newly-taken snapshot does not match reference.
+/Users/griffin/Projects/ModularHomeInventory/HomeInventoryModularTests/EnhancedTests/DataManagementSnapshotTests.swift:117: error: -[HomeInventoryModularTests.DataManagementSnapshotTests testAllViewsCombined] : failed - Snapshot does not match reference.
+
+@−
+"file:///Users/griffin/Projects/ModularHomeInventory/HomeInventoryModularTests/EnhancedTests/__Snapshots__/DataManagementSnapshotTests/testAllViewsCombined.2.png"
+@+
+"file:///Users/griffin/Library/Developer/XCTestDevices/D9077CF3-C617-4A79-8FA8-F8559B9781B0/data/Containers/Data/Application/EB4CAA57-01C2-48FE-84E6-FF3078B2E2B5/tmp/DataManagementSnapshotTests/testAllViewsCombined.2.png"
+
+To configure output for a custom diff tool, use 'withSnapshotTesting'. For example:
+
+    withSnapshotTesting(diffTool: .ksdiff) {
+      // ...
+    }
+
+Newly-taken snapshot does not match reference.
+Test Case '-[HomeInventoryModularTests.DataManagementSnapshotTests testAllViewsCombined]' failed (1.870 seconds).
+Test Case '-[HomeInventoryModularTests.DataManagementSnapshotTests testBackupManagerView]' started.
+/Users/griffin/Projects/ModularHomeInventory/HomeInventoryModularTests/EnhancedTests/DataManagementSnapshotTests.swift:65: error: -[HomeInventoryModularTests.DataManagementSnapshotTests testBackupManagerView] : failed - Snapshot does not match reference.
+
+@−
+"file:///Users/griffin/Projects/ModularHomeInventory/HomeInventoryModularTests/EnhancedTests/__Snapshots__/DataManagementSnapshotTests/testBackupManagerView.1.png"
+@+
+"file:///Users/griffin/Library/Developer/XCTestDevices/D9077CF3-C617-4A79-8FA8-F8559B9781B0/data/Containers/Data/Application/EB4CAA57-01C2-48FE-84E6-FF3078B2E2B5/tmp/DataManagementSnapshotTests/testBackupManagerView.1.png"
+
+To configure output for a custom diff tool, use 'withSnapshotTesting'. For example:
+
+    withSnapshotTesting(diffTool: .ksdiff) {
+      // ...
+    }
+
+Newly-taken snapshot does not match reference.
+/Users/griffin/Projects/ModularHomeInventory/HomeInventoryModularTests/EnhancedTests/DataManagementSnapshotTests.swift:66: error: -[HomeInventoryModularTests.DataManagementSnapshotTests testBackupManagerView] : failed - Snapshot does not match reference.
+
+@−
+"file:///Users/griffin/Projects/ModularHomeInventory/HomeInventoryModularTests/EnhancedTests/__Snapshots__/DataManagementSnapshotTests/testBackupManagerView.2.png"
+@+
+"file:///Users/griffin/Library/Developer/XCTestDevices/D9077CF3-C617-4A79-8FA8-F8559B9781B0/data/Containers/Data/Application/EB4CAA57-01C2-48FE-84E6-FF3078B2E2B5/tmp/DataManagementSnapshotTests/testBackupManagerView.2.png"
+
+To configure output for a custom diff tool, use 'withSnapshotTesting'. For example:
+
+    withSnapshotTesting(diffTool: .ksdiff) {
+      // ...
+    }
+
+Newly-taken snapshot does not match reference.
+/Users/griffin/Projects/ModularHomeInventory/HomeInventoryModularTests/EnhancedTests/DataManagementSnapshotTests.swift:67: error: -[HomeInventoryModularTests.DataManagementSnapshotTests testBackupManagerView] : failed - Snapshot does not match reference.
+
+@−
+"file:///Users/griffin/Projects/ModularHomeInventory/HomeInventoryModularTests/EnhancedTests/__Snapshots__/DataManagementSnapshotTests/testBackupManagerView.3.png"
+@+
+"file:///Users/griffin/Library/Developer/XCTestDevices/D9077CF3-C617-4A79-8FA8-F8559B9781B0/data/Containers/Data/Application/EB4CAA57-01C2-48FE-84E6-FF3078B2E2B5/tmp/DataManagementSnapshotTests/testBackupManagerView.3.png"
+
+To configure output for a custom diff tool, use 'withSnapshotTesting'. For example:
+
+    withSnapshotTesting(diffTool: .ksdiff) {
+      // ...
+    }
+
+Newly-taken snapshot does not match reference.
+Test Case '-[HomeInventoryModularTests.DataManagementSnapshotTests testBackupManagerView]' failed (1.208 seconds).
+Test Case '-[HomeInventoryModularTests.DataManagementSnapshotTests testBackupManagerViewDarkMode]' started.
+Test Case '-[HomeInventoryModularTests.DataManagementSnapshotTests testBackupManagerViewDarkMode]' passed (0.074 seconds).
+Test Case '-[HomeInventoryModularTests.DataManagementSnapshotTests testBackupManagerViewEmptyState]' started.
+/Users/griffin/Projects/ModularHomeInventory/HomeInventoryModularTests/EnhancedTests/DataManagementSnapshotTests.swift:82: error: -[HomeInventoryModularTests.DataManagementSnapshotTests testBackupManagerViewEmptyState] : failed - Snapshot does not match reference.
+
+@−
+"file:///Users/griffin/Projects/ModularHomeInventory/HomeInventoryModularTests/EnhancedTests/__Snapshots__/DataManagementSnapshotTests/testBackupManagerViewEmptyState.1.png"
+@+
+"file:///Users/griffin/Library/Developer/XCTestDevices/D9077CF3-C617-4A79-8FA8-F8559B9781B0/data/Containers/Data/Application/EB4CAA57-01C2-48FE-84E6-FF3078B2E2B5/tmp/DataManagementSnapshotTests/testBackupManagerViewEmptyState.1.png"
+
+To configure output for a custom diff tool, use 'withSnapshotTesting'. For example:
+
+    withSnapshotTesting(diffTool: .ksdiff) {
+      // ...
+    }
+
+Newly-taken snapshot does not match reference.
+Test Case '-[HomeInventoryModularTests.DataManagementSnapshotTests testBackupManagerViewEmptyState]' failed (0.231 seconds).
+Test Case '-[HomeInventoryModularTests.DataManagementSnapshotTests testCSVExportView]' started.
+/Users/griffin/Projects/ModularHomeInventory/HomeInventoryModularTests/EnhancedTests/DataManagementSnapshotTests.swift:41: error: -[HomeInventoryModularTests.DataManagementSnapshotTests testCSVExportView] : failed - Snapshot does not match reference.
+
+@−
+"file:///Users/griffin/Projects/ModularHomeInventory/HomeInventoryModularTests/EnhancedTests/__Snapshots__/DataManagementSnapshotTests/testCSVExportView.1.png"
+@+
+"file:///Users/griffin/Library/Developer/XCTestDevices/D9077CF3-C617-4A79-8FA8-F8559B9781B0/data/Containers/Data/Application/EB4CAA57-01C2-48FE-84E6-FF3078B2E2B5/tmp/DataManagementSnapshotTests/testCSVExportView.1.png"
+
+To configure output for a custom diff tool, use 'withSnapshotTesting'. For example:
+
+    withSnapshotTesting(diffTool: .ksdiff) {
+      // ...
+    }
+
+Newly-taken snapshot does not match reference.
+/Users/griffin/Projects/ModularHomeInventory/HomeInventoryModularTests/EnhancedTests/DataManagementSnapshotTests.swift:42: error: -[HomeInventoryModularTests.DataManagementSnapshotTests testCSVExportView] : failed - Snapshot does not match reference.
+
+@−
+"file:///Users/griffin/Projects/ModularHomeInventory/HomeInventoryModularTests/EnhancedTests/__Snapshots__/DataManagementSnapshotTests/testCSVExportView.2.png"
+@+
+"file:///Users/griffin/Library/Developer/XCTestDevices/D9077CF3-C617-4A79-8FA8-F8559B9781B0/data/Containers/Data/Application/EB4CAA57-01C2-48FE-84E6-FF3078B2E2B5/tmp/DataManagementSnapshotTests/testCSVExportView.2.png"
+
+To configure output for a custom diff tool, use 'withSnapshotTesting'. For example:
+
+    withSnapshotTesting(diffTool: .ksdiff) {
+      // ...
+    }
+
+Newly-taken snapshot does not match reference.
+/Users/griffin/Projects/ModularHomeInventory/HomeInventoryModularTests/EnhancedTests/DataManagementSnapshotTests.swift:43: error: -[HomeInventoryModularTests.DataManagementSnapshotTests testCSVExportView] : failed - Snapshot does not match reference.
+
+@−
+"file:///Users/griffin/Projects/ModularHomeInventory/HomeInventoryModularTests/EnhancedTests/__Snapshots__/DataManagementSnapshotTests/testCSVExportView.3.png"
+@+
+"file:///Users/griffin/Library/Developer/XCTestDevices/D9077CF3-C617-4A79-8FA8-F8559B9781B0/data/Containers/Data/Application/EB4CAA57-01C2-48FE-84E6-FF3078B2E2B5/tmp/DataManagementSnapshotTests/testCSVExportView.3.png"
+
+To configure output for a custom diff tool, use 'withSnapshotTesting'. For example:
+
+    withSnapshotTesting(diffTool: .ksdiff) {
+      // ...
+    }
+
+Newly-taken snapshot does not match reference.
+Test Case '-[HomeInventoryModularTests.DataManagementSnapshotTests testCSVExportView]' failed (1.670 seconds).
+Test Case '-[HomeInventoryModularTests.DataManagementSnapshotTests testCSVExportViewDarkMode]' started.
+Test Case '-[HomeInventoryModularTests.DataManagementSnapshotTests testCSVExportViewDarkMode]' passed (0.055 seconds).
+Test Case '-[HomeInventoryModularTests.DataManagementSnapshotTests testCSVExportViewEmptyState]' started.
+/Users/griffin/Projects/ModularHomeInventory/HomeInventoryModularTests/EnhancedTests/DataManagementSnapshotTests.swift:58: error: -[HomeInventoryModularTests.DataManagementSnapshotTests testCSVExportViewEmptyState] : failed - Snapshot does not match reference.
+
+@−
+"file:///Users/griffin/Projects/ModularHomeInventory/HomeInventoryModularTests/EnhancedTests/__Snapshots__/DataManagementSnapshotTests/testCSVExportViewEmptyState.1.png"
+@+
+"file:///Users/griffin/Library/Developer/XCTestDevices/D9077CF3-C617-4A79-8FA8-F8559B9781B0/data/Containers/Data/Application/EB4CAA57-01C2-48FE-84E6-FF3078B2E2B5/tmp/DataManagementSnapshotTests/testCSVExportViewEmptyState.1.png"
+
+To configure output for a custom diff tool, use 'withSnapshotTesting'. For example:
+
+    withSnapshotTesting(diffTool: .ksdiff) {
+      // ...
+    }
+
+Newly-taken snapshot does not match reference.
+Test Case '-[HomeInventoryModularTests.DataManagementSnapshotTests testCSVExportViewEmptyState]' failed (0.223 seconds).
+Test Case '-[HomeInventoryModularTests.DataManagementSnapshotTests testCSVImportView]' started.
+/Users/griffin/Projects/ModularHomeInventory/HomeInventoryModularTests/EnhancedTests/DataManagementSnapshotTests.swift:17: error: -[HomeInventoryModularTests.DataManagementSnapshotTests testCSVImportView] : failed - Snapshot does not match reference.
+
+@−
+"file:///Users/griffin/Projects/ModularHomeInventory/HomeInventoryModularTests/EnhancedTests/__Snapshots__/DataManagementSnapshotTests/testCSVImportView.1.png"
+@+
+"file:///Users/griffin/Library/Developer/XCTestDevices/D9077CF3-C617-4A79-8FA8-F8559B9781B0/data/Containers/Data/Application/EB4CAA57-01C2-48FE-84E6-FF3078B2E2B5/tmp/DataManagementSnapshotTests/testCSVImportView.1.png"
+
+To configure output for a custom diff tool, use 'withSnapshotTesting'. For example:
+
+    withSnapshotTesting(diffTool: .ksdiff) {
+      // ...
+    }
+
+Newly-taken snapshot does not match reference.
+/Users/griffin/Projects/ModularHomeInventory/HomeInventoryModularTests/EnhancedTests/DataManagementSnapshotTests.swift:18: error: -[HomeInventoryModularTests.DataManagementSnapshotTests testCSVImportView] : failed - Snapshot does not match reference.
+
+@−
+"file:///Users/griffin/Projects/ModularHomeInventory/HomeInventoryModularTests/EnhancedTests/__Snapshots__/DataManagementSnapshotTests/testCSVImportView.2.png"
+@+
+"file:///Users/griffin/Library/Developer/XCTestDevices/D9077CF3-C617-4A79-8FA8-F8559B9781B0/data/Containers/Data/Application/EB4CAA57-01C2-48FE-84E6-FF3078B2E2B5/tmp/DataManagementSnapshotTests/testCSVImportView.2.png"
+
+To configure output for a custom diff tool, use 'withSnapshotTesting'. For example:
+
+    withSnapshotTesting(diffTool: .ksdiff) {
+      // ...
+    }
+
+Newly-taken snapshot does not match reference.
+/Users/griffin/Projects/ModularHomeInventory/HomeInventoryModularTests/EnhancedTests/DataManagementSnapshotTests.swift:19: error: -[HomeInventoryModularTests.DataManagementSnapshotTests testCSVImportView] : failed - Snapshot does not match reference.
+
+@−
+"file:///Users/griffin/Projects/ModularHomeInventory/HomeInventoryModularTests/EnhancedTests/__Snapshots__/DataManagementSnapshotTests/testCSVImportView.3.png"
+@+
+"file:///Users/griffin/Library/Developer/XCTestDevices/D9077CF3-C617-4A79-8FA8-F8559B9781B0/data/Containers/Data/Application/EB4CAA57-01C2-48FE-84E6-FF3078B2E2B5/tmp/DataManagementSnapshotTests/testCSVImportView.3.png"
+
+To configure output for a custom diff tool, use 'withSnapshotTesting'. For example:
+
+    withSnapshotTesting(diffTool: .ksdiff) {
+      // ...
+    }
+
+Newly-taken snapshot does not match reference.
+Test Case '-[HomeInventoryModularTests.DataManagementSnapshotTests testCSVImportView]' failed (1.115 seconds).
+Test Case '-[HomeInventoryModularTests.DataManagementSnapshotTests testCSVImportViewDarkMode]' started.
+Test Case '-[HomeInventoryModularTests.DataManagementSnapshotTests testCSVImportViewDarkMode]' passed (0.055 seconds).
+Test Case '-[HomeInventoryModularTests.DataManagementSnapshotTests testCSVImportViewEmptyState]' started.
+/Users/griffin/Projects/ModularHomeInventory/HomeInventoryModularTests/EnhancedTests/DataManagementSnapshotTests.swift:34: error: -[HomeInventoryModularTests.DataManagementSnapshotTests testCSVImportViewEmptyState] : failed - Snapshot does not match reference.
+
+@−
+"file:///Users/griffin/Projects/ModularHomeInventory/HomeInventoryModularTests/EnhancedTests/__Snapshots__/DataManagementSnapshotTests/testCSVImportViewEmptyState.1.png"
+@+
+"file:///Users/griffin/Library/Developer/XCTestDevices/D9077CF3-C617-4A79-8FA8-F8559B9781B0/data/Containers/Data/Application/EB4CAA57-01C2-48FE-84E6-FF3078B2E2B5/tmp/DataManagementSnapshotTests/testCSVImportViewEmptyState.1.png"
+
+To configure output for a custom diff tool, use 'withSnapshotTesting'. For example:
+
+    withSnapshotTesting(diffTool: .ksdiff) {
+      // ...
+    }
+
+Newly-taken snapshot does not match reference.
+Test Case '-[HomeInventoryModularTests.DataManagementSnapshotTests testCSVImportViewEmptyState]' failed (0.228 seconds).
+Test Case '-[HomeInventoryModularTests.DataManagementSnapshotTests testFamilySharingView]' started.
+/Users/griffin/Projects/ModularHomeInventory/HomeInventoryModularTests/EnhancedTests/DataManagementSnapshotTests.swift:89: error: -[HomeInventoryModularTests.DataManagementSnapshotTests testFamilySharingView] : failed - Snapshot does not match reference.
+
+@−
+"file:///Users/griffin/Projects/ModularHomeInventory/HomeInventoryModularTests/EnhancedTests/__Snapshots__/DataManagementSnapshotTests/testFamilySharingView.1.png"
+@+
+"file:///Users/griffin/Library/Developer/XCTestDevices/D9077CF3-C617-4A79-8FA8-F8559B9781B0/data/Containers/Data/Application/EB4CAA57-01C2-48FE-84E6-FF3078B2E2B5/tmp/DataManagementSnapshotTests/testFamilySharingView.1.png"
+
+To configure output for a custom diff tool, use 'withSnapshotTesting'. For example:
+
+    withSnapshotTesting(diffTool: .ksdiff) {
+      // ...
+    }
+
+Newly-taken snapshot does not match reference.
+/Users/griffin/Projects/ModularHomeInventory/HomeInventoryModularTests/EnhancedTests/DataManagementSnapshotTests.swift:90: error: -[HomeInventoryModularTests.DataManagementSnapshotTests testFamilySharingView] : failed - Snapshot does not match reference.
+
+@−
+"file:///Users/griffin/Projects/ModularHomeInventory/HomeInventoryModularTests/EnhancedTests/__Snapshots__/DataManagementSnapshotTests/testFamilySharingView.2.png"
+@+
+"file:///Users/griffin/Library/Developer/XCTestDevices/D9077CF3-C617-4A79-8FA8-F8559B9781B0/data/Containers/Data/Application/EB4CAA57-01C2-48FE-84E6-FF3078B2E2B5/tmp/DataManagementSnapshotTests/testFamilySharingView.2.png"
+
+To configure output for a custom diff tool, use 'withSnapshotTesting'. For example:
+
+    withSnapshotTesting(diffTool: .ksdiff) {
+      // ...
+    }
+
+Newly-taken snapshot does not match reference.
+/Users/griffin/Projects/ModularHomeInventory/HomeInventoryModularTests/EnhancedTests/DataManagementSnapshotTests.swift:91: error: -[HomeInventoryModularTests.DataManagementSnapshotTests testFamilySharingView] : failed - Snapshot does not match reference.
+
+@−
+"file:///Users/griffin/Projects/ModularHomeInventory/HomeInventoryModularTests/EnhancedTests/__Snapshots__/DataManagementSnapshotTests/testFamilySharingView.3.png"
+@+
+"file:///Users/griffin/Library/Developer/XCTestDevices/D9077CF3-C617-4A79-8FA8-F8559B9781B0/data/Containers/Data/Application/EB4CAA57-01C2-48FE-84E6-FF3078B2E2B5/tmp/DataManagementSnapshotTests/testFamilySharingView.3.png"
+
+To configure output for a custom diff tool, use 'withSnapshotTesting'. For example:
+
+    withSnapshotTesting(diffTool: .ksdiff) {
+      // ...
+    }
+
+Newly-taken snapshot does not match reference.
+Test Case '-[HomeInventoryModularTests.DataManagementSnapshotTests testFamilySharingView]' failed (1.228 seconds).
+Test Case '-[HomeInventoryModularTests.DataManagementSnapshotTests testFamilySharingViewDarkMode]' started.
+Test Case '-[HomeInventoryModularTests.DataManagementSnapshotTests testFamilySharingViewDarkMode]' passed (0.072 seconds).
+Test Case '-[HomeInventoryModularTests.DataManagementSnapshotTests testFamilySharingViewEmptyState]' started.
+/Users/griffin/Projects/ModularHomeInventory/HomeInventoryModularTests/EnhancedTests/DataManagementSnapshotTests.swift:106: error: -[HomeInventoryModularTests.DataManagementSnapshotTests testFamilySharingViewEmptyState] : failed - Snapshot does not match reference.
+
+@−
+"file:///Users/griffin/Projects/ModularHomeInventory/HomeInventoryModularTests/EnhancedTests/__Snapshots__/DataManagementSnapshotTests/testFamilySharingViewEmptyState.1.png"
+@+
+"file:///Users/griffin/Library/Developer/XCTestDevices/D9077CF3-C617-4A79-8FA8-F8559B9781B0/data/Containers/Data/Application/EB4CAA57-01C2-48FE-84E6-FF3078B2E2B5/tmp/DataManagementSnapshotTests/testFamilySharingViewEmptyState.1.png"
+
+To configure output for a custom diff tool, use 'withSnapshotTesting'. For example:
+
+    withSnapshotTesting(diffTool: .ksdiff) {
+      // ...
+    }
+
+Newly-taken snapshot does not match reference.
+Test Case '-[HomeInventoryModularTests.DataManagementSnapshotTests testFamilySharingViewEmptyState]' failed (0.218 seconds).
+Test Suite 'DataManagementSnapshotTests' failed at 2025-06-29 11:48:27.350.
+	 Executed 13 tests, with 18 failures (0 unexpected) in 8.247 (8.250) seconds
+Test Suite 'DataVisualizationTests' started at 2025-06-29 11:48:27.523.
+Test Case '-[HomeInventoryModularTests.DataVisualizationTests testChartsView]' started.
+/Users/griffin/Projects/ModularHomeInventory/HomeInventoryModularTests/ExpandedTests/DataVisualizationTests.swift:17: error: -[HomeInventoryModularTests.DataVisualizationTests testChartsView] : failed - Snapshot does not match reference.
+
+@−
+"file:///Users/griffin/Projects/ModularHomeInventory/HomeInventoryModularTests/ExpandedTests/__Snapshots__/DataVisualizationTests/testChartsView.1.png"
+@+
+"file:///Users/griffin/Library/Developer/XCTestDevices/D9077CF3-C617-4A79-8FA8-F8559B9781B0/data/Containers/Data/Application/EB4CAA57-01C2-48FE-84E6-FF3078B2E2B5/tmp/DataVisualizationTests/testChartsView.1.png"
+
+To configure output for a custom diff tool, use 'withSnapshotTesting'. For example:
+
+    withSnapshotTesting(diffTool: .ksdiff) {
+      // ...
+    }
+
+Newly-taken snapshot does not match reference.
+/Users/griffin/Projects/ModularHomeInventory/HomeInventoryModularTests/ExpandedTests/DataVisualizationTests.swift:18: error: -[HomeInventoryModularTests.DataVisualizationTests testChartsView] : failed - Snapshot does not match reference.
+
+@−
+"file:///Users/griffin/Projects/ModularHomeInventory/HomeInventoryModularTests/ExpandedTests/__Snapshots__/DataVisualizationTests/testChartsView.2.png"
+@+
+"file:///Users/griffin/Library/Developer/XCTestDevices/D9077CF3-C617-4A79-8FA8-F8559B9781B0/data/Containers/Data/Application/EB4CAA57-01C2-48FE-84E6-FF3078B2E2B5/tmp/DataVisualizationTests/testChartsView.2.png"
+
+To configure output for a custom diff tool, use 'withSnapshotTesting'. For example:
+
+    withSnapshotTesting(diffTool: .ksdiff) {
+      // ...
+    }
+
+Newly-taken snapshot does not match reference.
+Test Case '-[HomeInventoryModularTests.DataVisualizationTests testChartsView]' failed (0.914 seconds).
+Test Case '-[HomeInventoryModularTests.DataVisualizationTests testHeatmapView]' started.
+2025-06-29 11:48:28.460529-0400 HomeInventoryModular[36357:9443235] [Invalid Configuration] ForEach<Array<String>, String, ModifiedContent<ModifiedContent<Text, _FrameLayout>, _EnvironmentKeyWritingModifier<Optional<Color>>>>: the ID T occurs multiple times within the collection, this will give undefined results!
+2025-06-29 11:48:28.461146-0400 HomeInventoryModular[36357:9443235] [Invalid Configuration] ForEach<Array<String>, String, ModifiedContent<ModifiedContent<Text, _FrameLayout>, _EnvironmentKeyWritingModifier<Optional<Color>>>>: the ID S occurs multiple times within the collection, this will give undefined results!
+/Users/griffin/Projects/ModularHomeInventory/HomeInventoryModularTests/ExpandedTests/DataVisualizationTests.swift:40: error: -[HomeInventoryModularTests.DataVisualizationTests testHeatmapView] : failed - Snapshot does not match reference.
+
+@−
+"file:///Users/griffin/Projects/ModularHomeInventory/HomeInventoryModularTests/ExpandedTests/__Snapshots__/DataVisualizationTests/testHeatmapView.1.png"
+@+
+"file:///Users/griffin/Library/Developer/XCTestDevices/D9077CF3-C617-4A79-8FA8-F8559B9781B0/data/Containers/Data/Application/EB4CAA57-01C2-48FE-84E6-FF3078B2E2B5/tmp/DataVisualizationTests/testHeatmapView.1.png"
+
+To configure output for a custom diff tool, use 'withSnapshotTesting'. For example:
+
+    withSnapshotTesting(diffTool: .ksdiff) {
+      // ...
+    }
+
+Newly-taken snapshot does not match reference.
+Test Case '-[HomeInventoryModularTests.DataVisualizationTests testHeatmapView]' failed (0.229 seconds).
+Test Case '-[HomeInventoryModularTests.DataVisualizationTests testStatisticsView]' started.
+/Users/griffin/Projects/ModularHomeInventory/HomeInventoryModularTests/ExpandedTests/DataVisualizationTests.swift:25: error: -[HomeInventoryModularTests.DataVisualizationTests testStatisticsView] : failed - Snapshot does not match reference.
+
+@−
+"file:///Users/griffin/Projects/ModularHomeInventory/HomeInventoryModularTests/ExpandedTests/__Snapshots__/DataVisualizationTests/testStatisticsView.1.png"
+@+
+"file:///Users/griffin/Library/Developer/XCTestDevices/D9077CF3-C617-4A79-8FA8-F8559B9781B0/data/Containers/Data/Application/EB4CAA57-01C2-48FE-84E6-FF3078B2E2B5/tmp/DataVisualizationTests/testStatisticsView.1.png"
+
+To configure output for a custom diff tool, use 'withSnapshotTesting'. For example:
+
+    withSnapshotTesting(diffTool: .ksdiff) {
+      // ...
+    }
+
+Newly-taken snapshot does not match reference.
+Test Case '-[HomeInventoryModularTests.DataVisualizationTests testStatisticsView]' failed (0.242 seconds).
+Test Case '-[HomeInventoryModularTests.DataVisualizationTests testTimelineView]' started.
+/Users/griffin/Projects/ModularHomeInventory/HomeInventoryModularTests/ExpandedTests/DataVisualizationTests.swift:32: error: -[HomeInventoryModularTests.DataVisualizationTests testTimelineView] : failed - Snapshot does not match reference.
+
+@−
+"file:///Users/griffin/Projects/ModularHomeInventory/HomeInventoryModularTests/ExpandedTests/__Snapshots__/DataVisualizationTests/testTimelineView.1.png"
+@+
+"file:///Users/griffin/Library/Developer/XCTestDevices/D9077CF3-C617-4A79-8FA8-F8559B9781B0/data/Containers/Data/Application/EB4CAA57-01C2-48FE-84E6-FF3078B2E2B5/tmp/DataVisualizationTests/testTimelineView.1.png"
+
+To configure output for a custom diff tool, use 'withSnapshotTesting'. For example:
+
+    withSnapshotTesting(diffTool: .ksdiff) {
+      // ...
+    }
+
+Newly-taken snapshot does not match reference.
+/Users/griffin/Projects/ModularHomeInventory/HomeInventoryModularTests/ExpandedTests/DataVisualizationTests.swift:33: error: -[HomeInventoryModularTests.DataVisualizationTests testTimelineView] : failed - Snapshot does not match reference.
+
+@−
+"file:///Users/griffin/Projects/ModularHomeInventory/HomeInventoryModularTests/ExpandedTests/__Snapshots__/DataVisualizationTests/testTimelineView.2.png"
+@+
+"file:///Users/griffin/Library/Developer/XCTestDevices/D9077CF3-C617-4A79-8FA8-F8559B9781B0/data/Containers/Data/Application/EB4CAA57-01C2-48FE-84E6-FF3078B2E2B5/tmp/DataVisualizationTests/testTimelineView.2.png"
+
+To configure output for a custom diff tool, use 'withSnapshotTesting'. For example:
+
+    withSnapshotTesting(diffTool: .ksdiff) {
+      // ...
+    }
+
+Newly-taken snapshot does not match reference.
+Test Case '-[HomeInventoryModularTests.DataVisualizationTests testTimelineView]' failed (0.799 seconds).
+Test Suite 'DataVisualizationTests' failed at 2025-06-29 11:48:29.708.
+	 Executed 4 tests, with 6 failures (0 unexpected) in 2.184 (2.185) seconds
+2025-06-29 11:48:29.798766-0400 HomeInventoryModular[36357:9443235] Unbalanced calls to begin/end appearance transitions for <UIViewController: 0x10172bc80>.
+2025-06-29 11:48:29.799189-0400 HomeInventoryModular[36357:9443235] Unbalanced calls to begin/end appearance transitions for <UIViewController: 0x11c509ab0>.
+2025-06-29 11:48:29.799419-0400 HomeInventoryModular[36357:9443235] Unbalanced calls to begin/end appearance transitions for <UIViewController: 0x10176f740>.
+2025-06-29 11:48:29.799636-0400 HomeInventoryModular[36357:9443235] Unbalanced calls to begin/end appearance transitions for <UIViewController: 0x102827de0>.
+2025-06-29 11:48:29.799821-0400 HomeInventoryModular[36357:9443235] Unbalanced calls to begin/end appearance transitions for <UIViewController: 0x10172ea90>.
+2025-06-29 11:48:29.800007-0400 HomeInventoryModular[36357:9443235] Unbalanced calls to begin/end appearance transitions for <UIViewController: 0x11c54beb0>.
+2025-06-29 11:48:29.800189-0400 HomeInventoryModular[36357:9443235] Unbalanced calls to begin/end appearance transitions for <UIViewController: 0x1028bc310>.
+2025-06-29 11:48:29.800363-0400 HomeInventoryModular[36357:9443235] Unbalanced calls to begin/end appearance transitions for <UIViewController: 0x11c527a30>.
+2025-06-29 11:48:29.800534-0400 HomeInventoryModular[36357:9443235] Unbalanced calls to begin/end appearance transitions for <UIViewController: 0x1028bd480>.
+2025-06-29 11:48:29.800701-0400 HomeInventoryModular[36357:9443235] Unbalanced calls to begin/end appearance transitions for <UIViewController: 0x1028e4bc0>.
+2025-06-29 11:48:29.800906-0400 HomeInventoryModular[36357:9443235] Unbalanced calls to begin/end appearance transitions for <UIViewController: 0x1028e2700>.
+2025-06-29 11:48:29.801085-0400 HomeInventoryModular[36357:9443235] Unbalanced calls to begin/end appearance transitions for <UIViewController: 0x101737e50>.
+2025-06-29 11:48:29.801270-0400 HomeInventoryModular[36357:9443235] Unbalanced calls to begin/end appearance transitions for <UIViewController: 0x1016b1250>.
+2025-06-29 11:48:29.801448-0400 HomeInventoryModular[36357:9443235] Unbalanced calls to begin/end appearance transitions for <UIViewController: 0x11c667a90>.
+2025-06-29 11:48:29.801612-0400 HomeInventoryModular[36357:9443235] Unbalanced calls to begin/end appearance transitions for <UIViewController: 0x1028e2ad0>.
+2025-06-29 11:48:29.801788-0400 HomeInventoryModular[36357:9443235] Unbalanced calls to begin/end appearance transitions for <UIViewController: 0x103587950>.
+2025-06-29 11:48:29.801953-0400 HomeInventoryModular[36357:9443235] Unbalanced calls to begin/end appearance transitions for <UIViewController: 0x11c56c3e0>.
+2025-06-29 11:48:29.802117-0400 HomeInventoryModular[36357:9443235] Unbalanced calls to begin/end appearance transitions for <UIViewController: 0x11c570170>.
+2025-06-29 11:48:29.802295-0400 HomeInventoryModular[36357:9443235] Unbalanced calls to begin/end appearance transitions for <UIViewController: 0x102e0ccd0>.
+2025-06-29 11:48:29.802489-0400 HomeInventoryModular[36357:9443235] Unbalanced calls to begin/end appearance transitions for <UIViewController: 0x11c64df40>.
+2025-06-29 11:48:29.802657-0400 HomeInventoryModular[36357:9443235] Unbalanced calls to begin/end appearance transitions for <UIViewController: 0x1016fb660>.
+2025-06-29 11:48:29.802840-0400 HomeInventoryModular[36357:9443235] Unbalanced calls to begin/end appearance transitions for <UIViewController: 0x1017c9e00>.
+Test Suite 'SuccessStatesTests' started at 2025-06-29 11:48:29.812.
+Test Case '-[HomeInventoryModularTests.SuccessStatesTests testBackupCompleteSuccess]' started.
+/Users/griffin/Projects/ModularHomeInventory/HomeInventoryModularTests/ExpandedTests/SuccessStatesTests.swift:37: error: -[HomeInventoryModularTests.SuccessStatesTests testBackupCompleteSuccess] : failed - Snapshot does not match reference.
+
+@−
+"file:///Users/griffin/Projects/ModularHomeInventory/HomeInventoryModularTests/ExpandedTests/__Snapshots__/SuccessStatesTests/testBackupCompleteSuccess.1.png"
+@+
+"file:///Users/griffin/Library/Developer/XCTestDevices/D9077CF3-C617-4A79-8FA8-F8559B9781B0/data/Containers/Data/Application/EB4CAA57-01C2-48FE-84E6-FF3078B2E2B5/tmp/SuccessStatesTests/testBackupCompleteSuccess.1.png"
+
+To configure output for a custom diff tool, use 'withSnapshotTesting'. For example:
+
+    withSnapshotTesting(diffTool: .ksdiff) {
+      // ...
+    }
+
+Newly-taken snapshot does not match reference.
+/Users/griffin/Projects/ModularHomeInventory/HomeInventoryModularTests/ExpandedTests/SuccessStatesTests.swift:38: error: -[HomeInventoryModularTests.SuccessStatesTests testBackupCompleteSuccess] : failed - Snapshot does not match reference.
+
+@−
+"file:///Users/griffin/Projects/ModularHomeInventory/HomeInventoryModularTests/ExpandedTests/__Snapshots__/SuccessStatesTests/testBackupCompleteSuccess.2.png"
+@+
+"file:///Users/griffin/Library/Developer/XCTestDevices/D9077CF3-C617-4A79-8FA8-F8559B9781B0/data/Containers/Data/Application/EB4CAA57-01C2-48FE-84E6-FF3078B2E2B5/tmp/SuccessStatesTests/testBackupCompleteSuccess.2.png"
+
+To configure output for a custom diff tool, use 'withSnapshotTesting'. For example:
+
+    withSnapshotTesting(diffTool: .ksdiff) {
+      // ...
+    }
+
+Newly-taken snapshot does not match reference.
+Test Case '-[HomeInventoryModularTests.SuccessStatesTests testBackupCompleteSuccess]' failed (0.492 seconds).
+Test Case '-[HomeInventoryModularTests.SuccessStatesTests testExportSuccess]' started.
+/Users/griffin/Projects/ModularHomeInventory/HomeInventoryModularTests/ExpandedTests/SuccessStatesTests.swift:51: error: -[HomeInventoryModularTests.SuccessStatesTests testExportSuccess] : failed - Snapshot does not match reference.
+
+@−
+"file:///Users/griffin/Projects/ModularHomeInventory/HomeInventoryModularTests/ExpandedTests/__Snapshots__/SuccessStatesTests/testExportSuccess.1.png"
+@+
+"file:///Users/griffin/Library/Developer/XCTestDevices/D9077CF3-C617-4A79-8FA8-F8559B9781B0/data/Containers/Data/Application/EB4CAA57-01C2-48FE-84E6-FF3078B2E2B5/tmp/SuccessStatesTests/testExportSuccess.1.png"
+
+To configure output for a custom diff tool, use 'withSnapshotTesting'. For example:
+
+    withSnapshotTesting(diffTool: .ksdiff) {
+      // ...
+    }
+
+Newly-taken snapshot does not match reference.
+Test Case '-[HomeInventoryModularTests.SuccessStatesTests testExportSuccess]' failed (0.215 seconds).
+Test Case '-[HomeInventoryModularTests.SuccessStatesTests testItemAddedSuccess]' started.
+/Users/griffin/Projects/ModularHomeInventory/HomeInventoryModularTests/ExpandedTests/SuccessStatesTests.swift:23: error: -[HomeInventoryModularTests.SuccessStatesTests testItemAddedSuccess] : failed - Snapshot does not match reference.
+
+@−
+"file:///Users/griffin/Projects/ModularHomeInventory/HomeInventoryModularTests/ExpandedTests/__Snapshots__/SuccessStatesTests/testItemAddedSuccess.1.png"
+@+
+"file:///Users/griffin/Library/Developer/XCTestDevices/D9077CF3-C617-4A79-8FA8-F8559B9781B0/data/Containers/Data/Application/EB4CAA57-01C2-48FE-84E6-FF3078B2E2B5/tmp/SuccessStatesTests/testItemAddedSuccess.1.png"
+
+To configure output for a custom diff tool, use 'withSnapshotTesting'. For example:
+
+    withSnapshotTesting(diffTool: .ksdiff) {
+      // ...
+    }
+
+Newly-taken snapshot does not match reference.
+/Users/griffin/Projects/ModularHomeInventory/HomeInventoryModularTests/ExpandedTests/SuccessStatesTests.swift:24: error: -[HomeInventoryModularTests.SuccessStatesTests testItemAddedSuccess] : failed - Snapshot does not match reference.
+
+@−
+"file:///Users/griffin/Projects/ModularHomeInventory/HomeInventoryModularTests/ExpandedTests/__Snapshots__/SuccessStatesTests/testItemAddedSuccess.2.png"
+@+
+"file:///Users/griffin/Library/Developer/XCTestDevices/D9077CF3-C617-4A79-8FA8-F8559B9781B0/data/Containers/Data/Application/EB4CAA57-01C2-48FE-84E6-FF3078B2E2B5/tmp/SuccessStatesTests/testItemAddedSuccess.2.png"
+
+To configure output for a custom diff tool, use 'withSnapshotTesting'. For example:
+
+    withSnapshotTesting(diffTool: .ksdiff) {
+      // ...
+    }
+
+Newly-taken snapshot does not match reference.
+Test Case '-[HomeInventoryModularTests.SuccessStatesTests testItemAddedSuccess]' failed (0.859 seconds).
+Test Case '-[HomeInventoryModularTests.SuccessStatesTests testPaymentSuccess]' started.
+Test Case '-[HomeInventoryModularTests.SuccessStatesTests testPaymentSuccess]' passed (0.044 seconds).
+Test Case '-[HomeInventoryModularTests.SuccessStatesTests testSyncCompleteSuccess]' started.
+/Users/griffin/Projects/ModularHomeInventory/HomeInventoryModularTests/ExpandedTests/SuccessStatesTests.swift:64: error: -[HomeInventoryModularTests.SuccessStatesTests testSyncCompleteSuccess] : failed - Snapshot does not match reference.
+
+@−
+"file:///Users/griffin/Projects/ModularHomeInventory/HomeInventoryModularTests/ExpandedTests/__Snapshots__/SuccessStatesTests/testSyncCompleteSuccess.1.png"
+@+
+"file:///Users/griffin/Library/Developer/XCTestDevices/D9077CF3-C617-4A79-8FA8-F8559B9781B0/data/Containers/Data/Application/EB4CAA57-01C2-48FE-84E6-FF3078B2E2B5/tmp/SuccessStatesTests/testSyncCompleteSuccess.1.png"
+
+To configure output for a custom diff tool, use 'withSnapshotTesting'. For example:
+
+    withSnapshotTesting(diffTool: .ksdiff) {
+      // ...
+    }
+
+Newly-taken snapshot does not match reference.
+Test Case '-[HomeInventoryModularTests.SuccessStatesTests testSyncCompleteSuccess]' failed (0.222 seconds).
+Test Suite 'SuccessStatesTests' failed at 2025-06-29 11:48:31.645.
+	 Executed 5 tests, with 6 failures (0 unexpected) in 1.832 (1.833) seconds
+2025-06-29 11:48:31.647588-0400 HomeInventoryModular[36357:9443235] Unbalanced calls to begin/end appearance transitions for <UIViewController: 0x1017e4da0>.
+2025-06-29 11:48:31.647954-0400 HomeInventoryModular[36357:9443235] Unbalanced calls to begin/end appearance transitions for <UIViewController: 0x1017f0060>.
+2025-06-29 11:48:31.648140-0400 HomeInventoryModular[36357:9443235] Unbalanced calls to begin/end appearance transitions for <UIViewController: 0x10161c080>.
+2025-06-29 11:48:31.648306-0400 HomeInventoryModular[36357:9443235] Unbalanced calls to begin/end appearance transitions for <UIViewController: 0x101381820>.
+2025-06-29 11:48:31.648513-0400 HomeInventoryModular[36357:9443235] Unbalanced calls to begin/end appearance transitions for <UIViewController: 0x11db2bf00>.
+2025-06-29 11:48:31.648720-0400 HomeInventoryModular[36357:9443235] Unbalanced calls to begin/end appearance transitions for <UIViewController: 0x104507710>.
+Test Suite 'OnboardingFlowTests' started at 2025-06-29 11:48:31.670.
+Test Case '-[HomeInventoryModularTests.OnboardingFlowTests testAccountSetupScreen]' started.
+/Users/griffin/Projects/ModularHomeInventory/HomeInventoryModularTests/ExpandedTests/OnboardingFlowTests.swift:39: error: -[HomeInventoryModularTests.OnboardingFlowTests testAccountSetupScreen] : failed - Snapshot does not match reference.
+
+@−
+"file:///Users/griffin/Projects/ModularHomeInventory/HomeInventoryModularTests/ExpandedTests/__Snapshots__/OnboardingFlowTests/testAccountSetupScreen.1.png"
+@+
+"file:///Users/griffin/Library/Developer/XCTestDevices/D9077CF3-C617-4A79-8FA8-F8559B9781B0/data/Containers/Data/Application/EB4CAA57-01C2-48FE-84E6-FF3078B2E2B5/tmp/OnboardingFlowTests/testAccountSetupScreen.1.png"
+
+To configure output for a custom diff tool, use 'withSnapshotTesting'. For example:
+
+    withSnapshotTesting(diffTool: .ksdiff) {
+      // ...
+    }
+
+Newly-taken snapshot does not match reference.
+Test Case '-[HomeInventoryModularTests.OnboardingFlowTests testAccountSetupScreen]' failed (0.278 seconds).
+Test Case '-[HomeInventoryModularTests.OnboardingFlowTests testCompletionScreen]' started.
+/Users/griffin/Projects/ModularHomeInventory/HomeInventoryModularTests/ExpandedTests/OnboardingFlowTests.swift:46: error: -[HomeInventoryModularTests.OnboardingFlowTests testCompletionScreen] : failed - Snapshot does not match reference.
+
+@−
+"file:///Users/griffin/Projects/ModularHomeInventory/HomeInventoryModularTests/ExpandedTests/__Snapshots__/OnboardingFlowTests/testCompletionScreen.1.png"
+@+
+"file:///Users/griffin/Library/Developer/XCTestDevices/D9077CF3-C617-4A79-8FA8-F8559B9781B0/data/Containers/Data/Application/EB4CAA57-01C2-48FE-84E6-FF3078B2E2B5/tmp/OnboardingFlowTests/testCompletionScreen.1.png"
+
+To configure output for a custom diff tool, use 'withSnapshotTesting'. For example:
+
+    withSnapshotTesting(diffTool: .ksdiff) {
+      // ...
+    }
+
+Newly-taken snapshot does not match reference.
+Test Case '-[HomeInventoryModularTests.OnboardingFlowTests testCompletionScreen]' failed (0.222 seconds).
+Test Case '-[HomeInventoryModularTests.OnboardingFlowTests testFeaturesScreen]' started.
+/Users/griffin/Projects/ModularHomeInventory/HomeInventoryModularTests/ExpandedTests/OnboardingFlowTests.swift:25: error: -[HomeInventoryModularTests.OnboardingFlowTests testFeaturesScreen] : failed - Snapshot does not match reference.
+
+@−
+"file:///Users/griffin/Projects/ModularHomeInventory/HomeInventoryModularTests/ExpandedTests/__Snapshots__/OnboardingFlowTests/testFeaturesScreen.1.png"
+@+
+"file:///Users/griffin/Library/Developer/XCTestDevices/D9077CF3-C617-4A79-8FA8-F8559B9781B0/data/Containers/Data/Application/EB4CAA57-01C2-48FE-84E6-FF3078B2E2B5/tmp/OnboardingFlowTests/testFeaturesScreen.1.png"
+
+To configure output for a custom diff tool, use 'withSnapshotTesting'. For example:
+
+    withSnapshotTesting(diffTool: .ksdiff) {
+      // ...
+    }
+
+Newly-taken snapshot does not match reference.
+Test Case '-[HomeInventoryModularTests.OnboardingFlowTests testFeaturesScreen]' failed (0.230 seconds).
+Test Case '-[HomeInventoryModularTests.OnboardingFlowTests testPermissionsScreen]' started.
+/Users/griffin/Projects/ModularHomeInventory/HomeInventoryModularTests/ExpandedTests/OnboardingFlowTests.swift:32: error: -[HomeInventoryModularTests.OnboardingFlowTests testPermissionsScreen] : failed - Snapshot does not match reference.
+
+@−
+"file:///Users/griffin/Projects/ModularHomeInventory/HomeInventoryModularTests/ExpandedTests/__Snapshots__/OnboardingFlowTests/testPermissionsScreen.1.png"
+@+
+"file:///Users/griffin/Library/Developer/XCTestDevices/D9077CF3-C617-4A79-8FA8-F8559B9781B0/data/Containers/Data/Application/EB4CAA57-01C2-48FE-84E6-FF3078B2E2B5/tmp/OnboardingFlowTests/testPermissionsScreen.1.png"
+
+To configure output for a custom diff tool, use 'withSnapshotTesting'. For example:
+
+    withSnapshotTesting(diffTool: .ksdiff) {
+      // ...
+    }
+
+Newly-taken snapshot does not match reference.
+Test Case '-[HomeInventoryModularTests.OnboardingFlowTests testPermissionsScreen]' failed (0.245 seconds).
+Test Case '-[HomeInventoryModularTests.OnboardingFlowTests testWelcomeScreen]' started.
+/Users/griffin/Projects/ModularHomeInventory/HomeInventoryModularTests/ExpandedTests/OnboardingFlowTests.swift:17: error: -[HomeInventoryModularTests.OnboardingFlowTests testWelcomeScreen] : failed - Snapshot does not match reference.
+
+@−
+"file:///Users/griffin/Projects/ModularHomeInventory/HomeInventoryModularTests/ExpandedTests/__Snapshots__/OnboardingFlowTests/testWelcomeScreen.1.png"
+@+
+"file:///Users/griffin/Library/Developer/XCTestDevices/D9077CF3-C617-4A79-8FA8-F8559B9781B0/data/Containers/Data/Application/EB4CAA57-01C2-48FE-84E6-FF3078B2E2B5/tmp/OnboardingFlowTests/testWelcomeScreen.1.png"
+
+To configure output for a custom diff tool, use 'withSnapshotTesting'. For example:
+
+    withSnapshotTesting(diffTool: .ksdiff) {
+      // ...
+    }
+
+Newly-taken snapshot does not match reference.
+/Users/griffin/Projects/ModularHomeInventory/HomeInventoryModularTests/ExpandedTests/OnboardingFlowTests.swift:18: error: -[HomeInventoryModularTests.OnboardingFlowTests testWelcomeScreen] : failed - Snapshot does not match reference.
+
+@−
+"file:///Users/griffin/Projects/ModularHomeInventory/HomeInventoryModularTests/ExpandedTests/__Snapshots__/OnboardingFlowTests/testWelcomeScreen.2.png"
+@+
+"file:///Users/griffin/Library/Developer/XCTestDevices/D9077CF3-C617-4A79-8FA8-F8559B9781B0/data/Containers/Data/Application/EB4CAA57-01C2-48FE-84E6-FF3078B2E2B5/tmp/OnboardingFlowTests/testWelcomeScreen.2.png"
+
+To configure output for a custom diff tool, use 'withSnapshotTesting'. For example:
+
+    withSnapshotTesting(diffTool: .ksdiff) {
+      // ...
+    }
+
+Newly-taken snapshot does not match reference.
+Test Case '-[HomeInventoryModularTests.OnboardingFlowTests testWelcomeScreen]' failed (0.842 seconds).
+Test Suite 'OnboardingFlowTests' failed at 2025-06-29 11:48:33.488.
+	 Executed 5 tests, with 6 failures (0 unexpected) in 1.817 (1.818) seconds
+2025-06-29 11:48:33.489502-0400 HomeInventoryModular[36357:9443235] Unbalanced calls to begin/end appearance transitions for <UIViewController: 0x1017b0910>.
+2025-06-29 11:48:33.490048-0400 HomeInventoryModular[36357:9443235] Unbalanced calls to begin/end appearance transitions for <UIViewController: 0x1016f5e00>.
+2025-06-29 11:48:33.490340-0400 HomeInventoryModular[36357:9443235] Unbalanced calls to begin/end appearance transitions for <UIViewController: 0x11db252d0>.
+2025-06-29 11:48:33.490584-0400 HomeInventoryModular[36357:9443235] Unbalanced calls to begin/end appearance transitions for <UIViewController: 0x1017df830>.
+2025-06-29 11:48:33.490905-0400 HomeInventoryModular[36357:9443235] Unbalanced calls to begin/end appearance transitions for <UIViewController: 0x1016fa0e0>.
+2025-06-29 11:48:33.491141-0400 HomeInventoryModular[36357:9443235] Unbalanced calls to begin/end appearance transitions for <UIViewController: 0x102e1cab0>.
+2025-06-29 11:48:33.491408-0400 HomeInventoryModular[36357:9443235] Unbalanced calls to begin/end appearance transitions for <UIViewController: 0x1028d8940>.
+Test Suite 'ItemsSnapshotTests' started at 2025-06-29 11:48:33.498.
+Test Case '-[HomeInventoryModularTests.ItemsSnapshotTests testItemsComponents]' started.
+/Users/griffin/Projects/ModularHomeInventory/HomeInventoryModularTests/IndividualTests/ItemsSnapshotTests.swift:34: error: -[HomeInventoryModularTests.ItemsSnapshotTests testItemsComponents] : failed - Snapshot "ItemsList" does not match reference.
+
+@−
+"file:///Users/griffin/Projects/ModularHomeInventory/HomeInventoryModularTests/IndividualTests/__Snapshots__/ItemsSnapshotTests/testItemsComponents.ItemsList.png"
+@+
+"file:///Users/griffin/Library/Developer/XCTestDevices/D9077CF3-C617-4A79-8FA8-F8559B9781B0/data/Containers/Data/Application/EB4CAA57-01C2-48FE-84E6-FF3078B2E2B5/tmp/ItemsSnapshotTests/testItemsComponents.ItemsList.png"
+
+To configure output for a custom diff tool, use 'withSnapshotTesting'. For example:
+
+    withSnapshotTesting(diffTool: .ksdiff) {
+      // ...
+    }
+
+Newly-taken snapshot does not match reference.
+/Users/griffin/Projects/ModularHomeInventory/HomeInventoryModularTests/IndividualTests/ItemsSnapshotTests.swift:41: error: -[HomeInventoryModularTests.ItemsSnapshotTests testItemsComponents] : failed - Snapshot "ItemDetail" does not match reference.
+
+@−
+"file:///Users/griffin/Projects/ModularHomeInventory/HomeInventoryModularTests/IndividualTests/__Snapshots__/ItemsSnapshotTests/testItemsComponents.ItemDetail.png"
+@+
+"file:///Users/griffin/Library/Developer/XCTestDevices/D9077CF3-C617-4A79-8FA8-F8559B9781B0/data/Containers/Data/Application/EB4CAA57-01C2-48FE-84E6-FF3078B2E2B5/tmp/ItemsSnapshotTests/testItemsComponents.ItemDetail.png"
+
+To configure output for a custom diff tool, use 'withSnapshotTesting'. For example:
+
+    withSnapshotTesting(diffTool: .ksdiff) {
+      // ...
+    }
+
+Newly-taken snapshot does not match reference.
+/Users/griffin/Projects/ModularHomeInventory/HomeInventoryModularTests/IndividualTests/ItemsSnapshotTests.swift:48: error: -[HomeInventoryModularTests.ItemsSnapshotTests testItemsComponents] : failed - Snapshot "AddItem" does not match reference.
+
+@−
+"file:///Users/griffin/Projects/ModularHomeInventory/HomeInventoryModularTests/IndividualTests/__Snapshots__/ItemsSnapshotTests/testItemsComponents.AddItem.png"
+@+
+"file:///Users/griffin/Library/Developer/XCTestDevices/D9077CF3-C617-4A79-8FA8-F8559B9781B0/data/Containers/Data/Application/EB4CAA57-01C2-48FE-84E6-FF3078B2E2B5/tmp/ItemsSnapshotTests/testItemsComponents.AddItem.png"
+
+To configure output for a custom diff tool, use 'withSnapshotTesting'. For example:
+
+    withSnapshotTesting(diffTool: .ksdiff) {
+      // ...
+    }
+
+Newly-taken snapshot does not match reference.
+Test Case '-[HomeInventoryModularTests.ItemsSnapshotTests testItemsComponents]' failed (0.611 seconds).
+Test Case '-[HomeInventoryModularTests.ItemsSnapshotTests testItemsDarkMode]' started.
+Test Case '-[HomeInventoryModularTests.ItemsSnapshotTests testItemsDarkMode]' passed (0.048 seconds).
+Test Case '-[HomeInventoryModularTests.ItemsSnapshotTests testItemsMainView]' started.
+/Users/griffin/Projects/ModularHomeInventory/HomeInventoryModularTests/IndividualTests/ItemsSnapshotTests.swift:18: error: -[HomeInventoryModularTests.ItemsSnapshotTests testItemsMainView] : failed - Snapshot does not match reference.
+
+@−
+"file:///Users/griffin/Projects/ModularHomeInventory/HomeInventoryModularTests/IndividualTests/__Snapshots__/ItemsSnapshotTests/testItemsMainView.1.png"
+@+
+"file:///Users/griffin/Library/Developer/XCTestDevices/D9077CF3-C617-4A79-8FA8-F8559B9781B0/data/Containers/Data/Application/EB4CAA57-01C2-48FE-84E6-FF3078B2E2B5/tmp/ItemsSnapshotTests/testItemsMainView.1.png"
+
+To configure output for a custom diff tool, use 'withSnapshotTesting'. For example:
+
+    withSnapshotTesting(diffTool: .ksdiff) {
+      // ...
+    }
+
+Newly-taken snapshot does not match reference.
+/Users/griffin/Projects/ModularHomeInventory/HomeInventoryModularTests/IndividualTests/ItemsSnapshotTests.swift:19: error: -[HomeInventoryModularTests.ItemsSnapshotTests testItemsMainView] : failed - Snapshot does not match reference.
+
+@−
+"file:///Users/griffin/Projects/ModularHomeInventory/HomeInventoryModularTests/IndividualTests/__Snapshots__/ItemsSnapshotTests/testItemsMainView.2.png"
+@+
+"file:///Users/griffin/Library/Developer/XCTestDevices/D9077CF3-C617-4A79-8FA8-F8559B9781B0/data/Containers/Data/Application/EB4CAA57-01C2-48FE-84E6-FF3078B2E2B5/tmp/ItemsSnapshotTests/testItemsMainView.2.png"
+
+To configure output for a custom diff tool, use 'withSnapshotTesting'. For example:
+
+    withSnapshotTesting(diffTool: .ksdiff) {
+      // ...
+    }
+
+Newly-taken snapshot does not match reference.
+/Users/griffin/Projects/ModularHomeInventory/HomeInventoryModularTests/IndividualTests/ItemsSnapshotTests.swift:20: error: -[HomeInventoryModularTests.ItemsSnapshotTests testItemsMainView] : failed - Snapshot does not match reference.
+
+@−
+"file:///Users/griffin/Projects/ModularHomeInventory/HomeInventoryModularTests/IndividualTests/__Snapshots__/ItemsSnapshotTests/testItemsMainView.3.png"
+@+
+"file:///Users/griffin/Library/Developer/XCTestDevices/D9077CF3-C617-4A79-8FA8-F8559B9781B0/data/Containers/Data/Application/EB4CAA57-01C2-48FE-84E6-FF3078B2E2B5/tmp/ItemsSnapshotTests/testItemsMainView.3.png"
+
+To configure output for a custom diff tool, use 'withSnapshotTesting'. For example:
+
+    withSnapshotTesting(diffTool: .ksdiff) {
+      // ...
+    }
+
+Newly-taken snapshot does not match reference.
+Test Case '-[HomeInventoryModularTests.ItemsSnapshotTests testItemsMainView]' failed (1.117 seconds).
+Test Suite 'ItemsSnapshotTests' failed at 2025-06-29 11:48:35.275.
+	 Executed 3 tests, with 6 failures (0 unexpected) in 1.776 (1.777) seconds
+2025-06-29 11:48:35.276116-0400 HomeInventoryModular[36357:9443235] Unbalanced calls to begin/end appearance transitions for <UIViewController: 0x10169c500>.
+2025-06-29 11:48:35.276543-0400 HomeInventoryModular[36357:9443235] Unbalanced calls to begin/end appearance transitions for <UIViewController: 0x1017f1390>.
+2025-06-29 11:48:35.276738-0400 HomeInventoryModular[36357:9443235] Unbalanced calls to begin/end appearance transitions for <UIViewController: 0x101699990>.
+2025-06-29 11:48:35.276965-0400 HomeInventoryModular[36357:9443235] Unbalanced calls to begin/end appearance transitions for <UIViewController: 0x1028d5980>.
+2025-06-29 11:48:35.277188-0400 HomeInventoryModular[36357:9443235] Unbalanced calls to begin/end appearance transitions for <UIViewController: 0x10139ac30>.
+2025-06-29 11:48:35.277397-0400 HomeInventoryModular[36357:9443235] Unbalanced calls to begin/end appearance transitions for <UIViewController: 0x1028d5d50>.
+Test Suite 'AccessibilitySnapshotTests' started at 2025-06-29 11:48:35.282.
+Test Case '-[HomeInventoryModularTests.AccessibilitySnapshotTests testAllViewsCombined]' started.
+/Users/griffin/Projects/ModularHomeInventory/HomeInventoryModularTests/AdditionalTests/AccessibilitySnapshotTests.swift:152: error: -[HomeInventoryModularTests.AccessibilitySnapshotTests testAllViewsCombined] : failed - Snapshot does not match reference.
+
+@−
+"file:///Users/griffin/Projects/ModularHomeInventory/HomeInventoryModularTests/AdditionalTests/__Snapshots__/AccessibilitySnapshotTests/testAllViewsCombined.1.png"
+@+
+"file:///Users/griffin/Library/Developer/XCTestDevices/D9077CF3-C617-4A79-8FA8-F8559B9781B0/data/Containers/Data/Application/EB4CAA57-01C2-48FE-84E6-FF3078B2E2B5/tmp/AccessibilitySnapshotTests/testAllViewsCombined.1.png"
+
+To configure output for a custom diff tool, use 'withSnapshotTesting'. For example:
+
+    withSnapshotTesting(diffTool: .ksdiff) {
+      // ...
+    }
+
+Newly-taken snapshot does not match reference.
+/Users/griffin/Projects/ModularHomeInventory/HomeInventoryModularTests/AdditionalTests/AccessibilitySnapshotTests.swift:153: error: -[HomeInventoryModularTests.AccessibilitySnapshotTests testAllViewsCombined] : failed - Snapshot does not match reference.
+
+@−
+"file:///Users/griffin/Projects/ModularHomeInventory/HomeInventoryModularTests/AdditionalTests/__Snapshots__/AccessibilitySnapshotTests/testAllViewsCombined.2.png"
+@+
+"file:///Users/griffin/Library/Developer/XCTestDevices/D9077CF3-C617-4A79-8FA8-F8559B9781B0/data/Containers/Data/Application/EB4CAA57-01C2-48FE-84E6-FF3078B2E2B5/tmp/AccessibilitySnapshotTests/testAllViewsCombined.2.png"
+
+To configure output for a custom diff tool, use 'withSnapshotTesting'. For example:
+
+    withSnapshotTesting(diffTool: .ksdiff) {
+      // ...
+    }
+
+Newly-taken snapshot does not match reference.
+Test Case '-[HomeInventoryModularTests.AccessibilitySnapshotTests testAllViewsCombined]' failed (1.029 seconds).
+Test Case '-[HomeInventoryModularTests.AccessibilitySnapshotTests testHighContrastModeView]' started.
+/Users/griffin/Projects/ModularHomeInventory/HomeInventoryModularTests/AdditionalTests/AccessibilitySnapshotTests.swift:83: error: -[HomeInventoryModularTests.AccessibilitySnapshotTests testHighContrastModeView] : failed - Snapshot does not match reference.
+
+@−
+"file:///Users/griffin/Projects/ModularHomeInventory/HomeInventoryModularTests/AdditionalTests/__Snapshots__/AccessibilitySnapshotTests/testHighContrastModeView.1.png"
+@+
+"file:///Users/griffin/Library/Developer/XCTestDevices/D9077CF3-C617-4A79-8FA8-F8559B9781B0/data/Containers/Data/Application/EB4CAA57-01C2-48FE-84E6-FF3078B2E2B5/tmp/AccessibilitySnapshotTests/testHighContrastModeView.1.png"
+
+To configure output for a custom diff tool, use 'withSnapshotTesting'. For example:
+
+    withSnapshotTesting(diffTool: .ksdiff) {
+      // ...
+    }
+
+Newly-taken snapshot does not match reference.
+/Users/griffin/Projects/ModularHomeInventory/HomeInventoryModularTests/AdditionalTests/AccessibilitySnapshotTests.swift:84: error: -[HomeInventoryModularTests.AccessibilitySnapshotTests testHighContrastModeView] : failed - Snapshot does not match reference.
+
+@−
+"file:///Users/griffin/Projects/ModularHomeInventory/HomeInventoryModularTests/AdditionalTests/__Snapshots__/AccessibilitySnapshotTests/testHighContrastModeView.2.png"
+@+
+"file:///Users/griffin/Library/Developer/XCTestDevices/D9077CF3-C617-4A79-8FA8-F8559B9781B0/data/Containers/Data/Application/EB4CAA57-01C2-48FE-84E6-FF3078B2E2B5/tmp/AccessibilitySnapshotTests/testHighContrastModeView.2.png"
+
+To configure output for a custom diff tool, use 'withSnapshotTesting'. For example:
+
+    withSnapshotTesting(diffTool: .ksdiff) {
+      // ...
+    }
+
+Newly-taken snapshot does not match reference.
+/Users/griffin/Projects/ModularHomeInventory/HomeInventoryModularTests/AdditionalTests/AccessibilitySnapshotTests.swift:85: error: -[HomeInventoryModularTests.AccessibilitySnapshotTests testHighContrastModeView] : failed - Snapshot does not match reference.
+
+@−
+"file:///Users/griffin/Projects/ModularHomeInventory/HomeInventoryModularTests/AdditionalTests/__Snapshots__/AccessibilitySnapshotTests/testHighContrastModeView.3.png"
+@+
+"file:///Users/griffin/Library/Developer/XCTestDevices/D9077CF3-C617-4A79-8FA8-F8559B9781B0/data/Containers/Data/Application/EB4CAA57-01C2-48FE-84E6-FF3078B2E2B5/tmp/AccessibilitySnapshotTests/testHighContrastModeView.3.png"
+
+To configure output for a custom diff tool, use 'withSnapshotTesting'. For example:
+
+    withSnapshotTesting(diffTool: .ksdiff) {
+      // ...
+    }
+
+Newly-taken snapshot does not match reference.
+Test Case '-[HomeInventoryModularTests.AccessibilitySnapshotTests testHighContrastModeView]' failed (1.120 seconds).
+Test Case '-[HomeInventoryModularTests.AccessibilitySnapshotTests testHighContrastModeViewAccessibility]' started.
+/Users/griffin/Projects/ModularHomeInventory/HomeInventoryModularTests/AdditionalTests/AccessibilitySnapshotTests.swift:109: error: -[HomeInventoryModularTests.AccessibilitySnapshotTests testHighContrastModeViewAccessibility] : failed - Snapshot does not match reference.
+
+@−
+"file:///Users/griffin/Projects/ModularHomeInventory/HomeInventoryModularTests/AdditionalTests/__Snapshots__/AccessibilitySnapshotTests/testHighContrastModeViewAccessibility.1.png"
+@+
+"file:///Users/griffin/Library/Developer/XCTestDevices/D9077CF3-C617-4A79-8FA8-F8559B9781B0/data/Containers/Data/Application/EB4CAA57-01C2-48FE-84E6-FF3078B2E2B5/tmp/AccessibilitySnapshotTests/testHighContrastModeViewAccessibility.1.png"
+
+To configure output for a custom diff tool, use 'withSnapshotTesting'. For example:
+
+    withSnapshotTesting(diffTool: .ksdiff) {
+      // ...
+    }
+
+Newly-taken snapshot does not match reference.
+Test Case '-[HomeInventoryModularTests.AccessibilitySnapshotTests testHighContrastModeViewAccessibility]' failed (0.226 seconds).
+Test Case '-[HomeInventoryModularTests.AccessibilitySnapshotTests testHighContrastModeViewCompact]' started.
+/Users/griffin/Projects/ModularHomeInventory/HomeInventoryModularTests/AdditionalTests/AccessibilitySnapshotTests.swift:101: error: -[HomeInventoryModularTests.AccessibilitySnapshotTests testHighContrastModeViewCompact] : failed - Snapshot does not match reference.
+
+@−
+"file:///Users/griffin/Projects/ModularHomeInventory/HomeInventoryModularTests/AdditionalTests/__Snapshots__/AccessibilitySnapshotTests/testHighContrastModeViewCompact.1.png"
+@+
+"file:///Users/griffin/Library/Developer/XCTestDevices/D9077CF3-C617-4A79-8FA8-F8559B9781B0/data/Containers/Data/Application/EB4CAA57-01C2-48FE-84E6-FF3078B2E2B5/tmp/AccessibilitySnapshotTests/testHighContrastModeViewCompact.1.png"
+
+To configure output for a custom diff tool, use 'withSnapshotTesting'. For example:
+
+    withSnapshotTesting(diffTool: .ksdiff) {
+      // ...
+    }
+
+Newly-taken snapshot does not match reference.
+Test Case '-[HomeInventoryModularTests.AccessibilitySnapshotTests testHighContrastModeViewCompact]' failed (0.132 seconds).
+Test Case '-[HomeInventoryModularTests.AccessibilitySnapshotTests testHighContrastModeViewDarkMode]' started.
+Test Case '-[HomeInventoryModularTests.AccessibilitySnapshotTests testHighContrastModeViewDarkMode]' passed (0.048 seconds).
+Test Case '-[HomeInventoryModularTests.AccessibilitySnapshotTests testLargeTextSupportView]' started.
+/Users/griffin/Projects/ModularHomeInventory/HomeInventoryModularTests/AdditionalTests/AccessibilitySnapshotTests.swift:50: error: -[HomeInventoryModularTests.AccessibilitySnapshotTests testLargeTextSupportView] : failed - Snapshot does not match reference.
+
+@−
+"file:///Users/griffin/Projects/ModularHomeInventory/HomeInventoryModularTests/AdditionalTests/__Snapshots__/AccessibilitySnapshotTests/testLargeTextSupportView.1.png"
+@+
+"file:///Users/griffin/Library/Developer/XCTestDevices/D9077CF3-C617-4A79-8FA8-F8559B9781B0/data/Containers/Data/Application/EB4CAA57-01C2-48FE-84E6-FF3078B2E2B5/tmp/AccessibilitySnapshotTests/testLargeTextSupportView.1.png"
+
+To configure output for a custom diff tool, use 'withSnapshotTesting'. For example:
+
+    withSnapshotTesting(diffTool: .ksdiff) {
+      // ...
+    }
+
+Newly-taken snapshot does not match reference.
+/Users/griffin/Projects/ModularHomeInventory/HomeInventoryModularTests/AdditionalTests/AccessibilitySnapshotTests.swift:51: error: -[HomeInventoryModularTests.AccessibilitySnapshotTests testLargeTextSupportView] : failed - Snapshot does not match reference.
+
+@−
+"file:///Users/griffin/Projects/ModularHomeInventory/HomeInventoryModularTests/AdditionalTests/__Snapshots__/AccessibilitySnapshotTests/testLargeTextSupportView.2.png"
+@+
+"file:///Users/griffin/Library/Developer/XCTestDevices/D9077CF3-C617-4A79-8FA8-F8559B9781B0/data/Containers/Data/Application/EB4CAA57-01C2-48FE-84E6-FF3078B2E2B5/tmp/AccessibilitySnapshotTests/testLargeTextSupportView.2.png"
+
+To configure output for a custom diff tool, use 'withSnapshotTesting'. For example:
+
+    withSnapshotTesting(diffTool: .ksdiff) {
+      // ...
+    }
+
+Newly-taken snapshot does not match reference.
+/Users/griffin/Projects/ModularHomeInventory/HomeInventoryModularTests/AdditionalTests/AccessibilitySnapshotTests.swift:52: error: -[HomeInventoryModularTests.AccessibilitySnapshotTests testLargeTextSupportView] : failed - Snapshot does not match reference.
+
+@−
+"file:///Users/griffin/Projects/ModularHomeInventory/HomeInventoryModularTests/AdditionalTests/__Snapshots__/AccessibilitySnapshotTests/testLargeTextSupportView.3.png"
+@+
+"file:///Users/griffin/Library/Developer/XCTestDevices/D9077CF3-C617-4A79-8FA8-F8559B9781B0/data/Containers/Data/Application/EB4CAA57-01C2-48FE-84E6-FF3078B2E2B5/tmp/AccessibilitySnapshotTests/testLargeTextSupportView.3.png"
+
+To configure output for a custom diff tool, use 'withSnapshotTesting'. For example:
+
+    withSnapshotTesting(diffTool: .ksdiff) {
+      // ...
+    }
+
+Newly-taken snapshot does not match reference.
+Test Case '-[HomeInventoryModularTests.AccessibilitySnapshotTests testLargeTextSupportView]' failed (1.218 seconds).
+Test Case '-[HomeInventoryModularTests.AccessibilitySnapshotTests testLargeTextSupportViewAccessibility]' started.
+/Users/griffin/Projects/ModularHomeInventory/HomeInventoryModularTests/AdditionalTests/AccessibilitySnapshotTests.swift:76: error: -[HomeInventoryModularTests.AccessibilitySnapshotTests testLargeTextSupportViewAccessibility] : failed - Snapshot does not match reference.
+
+@−
+"file:///Users/griffin/Projects/ModularHomeInventory/HomeInventoryModularTests/AdditionalTests/__Snapshots__/AccessibilitySnapshotTests/testLargeTextSupportViewAccessibility.1.png"
+@+
+"file:///Users/griffin/Library/Developer/XCTestDevices/D9077CF3-C617-4A79-8FA8-F8559B9781B0/data/Containers/Data/Application/EB4CAA57-01C2-48FE-84E6-FF3078B2E2B5/tmp/AccessibilitySnapshotTests/testLargeTextSupportViewAccessibility.1.png"
+
+To configure output for a custom diff tool, use 'withSnapshotTesting'. For example:
+
+    withSnapshotTesting(diffTool: .ksdiff) {
+      // ...
+    }
+
+Newly-taken snapshot does not match reference.
+Test Case '-[HomeInventoryModularTests.AccessibilitySnapshotTests testLargeTextSupportViewAccessibility]' failed (0.254 seconds).
+Test Case '-[HomeInventoryModularTests.AccessibilitySnapshotTests testLargeTextSupportViewCompact]' started.
+/Users/griffin/Projects/ModularHomeInventory/HomeInventoryModularTests/AdditionalTests/AccessibilitySnapshotTests.swift:68: error: -[HomeInventoryModularTests.AccessibilitySnapshotTests testLargeTextSupportViewCompact] : failed - Snapshot does not match reference.
+
+@−
+"file:///Users/griffin/Projects/ModularHomeInventory/HomeInventoryModularTests/AdditionalTests/__Snapshots__/AccessibilitySnapshotTests/testLargeTextSupportViewCompact.1.png"
+@+
+"file:///Users/griffin/Library/Developer/XCTestDevices/D9077CF3-C617-4A79-8FA8-F8559B9781B0/data/Containers/Data/Application/EB4CAA57-01C2-48FE-84E6-FF3078B2E2B5/tmp/AccessibilitySnapshotTests/testLargeTextSupportViewCompact.1.png"
+
+To configure output for a custom diff tool, use 'withSnapshotTesting'. For example:
+
+    withSnapshotTesting(diffTool: .ksdiff) {
+      // ...
+    }
+
+Newly-taken snapshot does not match reference.
+Test Case '-[HomeInventoryModularTests.AccessibilitySnapshotTests testLargeTextSupportViewCompact]' failed (0.142 seconds).
+Test Case '-[HomeInventoryModularTests.AccessibilitySnapshotTests testLargeTextSupportViewDarkMode]' started.
+/Users/griffin/Projects/ModularHomeInventory/HomeInventoryModularTests/AdditionalTests/AccessibilitySnapshotTests.swift:60: error: -[HomeInventoryModularTests.AccessibilitySnapshotTests testLargeTextSupportViewDarkMode] : failed - Snapshot does not match reference.
+
+@−
+"file:///Users/griffin/Projects/ModularHomeInventory/HomeInventoryModularTests/AdditionalTests/__Snapshots__/AccessibilitySnapshotTests/testLargeTextSupportViewDarkMode.1.png"
+@+
+"file:///Users/griffin/Library/Developer/XCTestDevices/D9077CF3-C617-4A79-8FA8-F8559B9781B0/data/Containers/Data/Application/EB4CAA57-01C2-48FE-84E6-FF3078B2E2B5/tmp/AccessibilitySnapshotTests/testLargeTextSupportViewDarkMode.1.png"
+
+To configure output for a custom diff tool, use 'withSnapshotTesting'. For example:
+
+    withSnapshotTesting(diffTool: .ksdiff) {
+      // ...
+    }
+
+Newly-taken snapshot does not match reference.
+Test Case '-[HomeInventoryModularTests.AccessibilitySnapshotTests testLargeTextSupportViewDarkMode]' failed (0.257 seconds).
+Test Case '-[HomeInventoryModularTests.AccessibilitySnapshotTests testReducedMotionView]' started.
+/Users/griffin/Projects/ModularHomeInventory/HomeInventoryModularTests/AdditionalTests/AccessibilitySnapshotTests.swift:116: error: -[HomeInventoryModularTests.AccessibilitySnapshotTests testReducedMotionView] : failed - Snapshot does not match reference.
+
+@−
+"file:///Users/griffin/Projects/ModularHomeInventory/HomeInventoryModularTests/AdditionalTests/__Snapshots__/AccessibilitySnapshotTests/testReducedMotionView.1.png"
+@+
+"file:///Users/griffin/Library/Developer/XCTestDevices/D9077CF3-C617-4A79-8FA8-F8559B9781B0/data/Containers/Data/Application/EB4CAA57-01C2-48FE-84E6-FF3078B2E2B5/tmp/AccessibilitySnapshotTests/testReducedMotionView.1.png"
+
+To configure output for a custom diff tool, use 'withSnapshotTesting'. For example:
+
+    withSnapshotTesting(diffTool: .ksdiff) {
+      // ...
+    }
+
+Newly-taken snapshot does not match reference.
+/Users/griffin/Projects/ModularHomeInventory/HomeInventoryModularTests/AdditionalTests/AccessibilitySnapshotTests.swift:117: error: -[HomeInventoryModularTests.AccessibilitySnapshotTests testReducedMotionView] : failed - Snapshot does not match reference.
+
+@−
+"file:///Users/griffin/Projects/ModularHomeInventory/HomeInventoryModularTests/AdditionalTests/__Snapshots__/AccessibilitySnapshotTests/testReducedMotionView.2.png"
+@+
+"file:///Users/griffin/Library/Developer/XCTestDevices/D9077CF3-C617-4A79-8FA8-F8559B9781B0/data/Containers/Data/Application/EB4CAA57-01C2-48FE-84E6-FF3078B2E2B5/tmp/AccessibilitySnapshotTests/testReducedMotionView.2.png"
+
+To configure output for a custom diff tool, use 'withSnapshotTesting'. For example:
+
+    withSnapshotTesting(diffTool: .ksdiff) {
+      // ...
+    }
+
+Newly-taken snapshot does not match reference.
+/Users/griffin/Projects/ModularHomeInventory/HomeInventoryModularTests/AdditionalTests/AccessibilitySnapshotTests.swift:118: error: -[HomeInventoryModularTests.AccessibilitySnapshotTests testReducedMotionView] : failed - Snapshot does not match reference.
+
+@−
+"file:///Users/griffin/Projects/ModularHomeInventory/HomeInventoryModularTests/AdditionalTests/__Snapshots__/AccessibilitySnapshotTests/testReducedMotionView.3.png"
+@+
+"file:///Users/griffin/Library/Developer/XCTestDevices/D9077CF3-C617-4A79-8FA8-F8559B9781B0/data/Containers/Data/Application/EB4CAA57-01C2-48FE-84E6-FF3078B2E2B5/tmp/AccessibilitySnapshotTests/testReducedMotionView.3.png"
+
+To configure output for a custom diff tool, use 'withSnapshotTesting'. For example:
+
+    withSnapshotTesting(diffTool: .ksdiff) {
+      // ...
+    }
+
+Newly-taken snapshot does not match reference.
+Test Case '-[HomeInventoryModularTests.AccessibilitySnapshotTests testReducedMotionView]' failed (1.162 seconds).
+Test Case '-[HomeInventoryModularTests.AccessibilitySnapshotTests testReducedMotionViewAccessibility]' started.
+/Users/griffin/Projects/ModularHomeInventory/HomeInventoryModularTests/AdditionalTests/AccessibilitySnapshotTests.swift:142: error: -[HomeInventoryModularTests.AccessibilitySnapshotTests testReducedMotionViewAccessibility] : failed - Snapshot does not match reference.
+
+@−
+"file:///Users/griffin/Projects/ModularHomeInventory/HomeInventoryModularTests/AdditionalTests/__Snapshots__/AccessibilitySnapshotTests/testReducedMotionViewAccessibility.1.png"
+@+
+"file:///Users/griffin/Library/Developer/XCTestDevices/D9077CF3-C617-4A79-8FA8-F8559B9781B0/data/Containers/Data/Application/EB4CAA57-01C2-48FE-84E6-FF3078B2E2B5/tmp/AccessibilitySnapshotTests/testReducedMotionViewAccessibility.1.png"
+
+To configure output for a custom diff tool, use 'withSnapshotTesting'. For example:
+
+    withSnapshotTesting(diffTool: .ksdiff) {
+      // ...
+    }
+
+Newly-taken snapshot does not match reference.
+Test Case '-[HomeInventoryModularTests.AccessibilitySnapshotTests testReducedMotionViewAccessibility]' failed (0.230 seconds).
+Test Case '-[HomeInventoryModularTests.AccessibilitySnapshotTests testReducedMotionViewCompact]' started.
+/Users/griffin/Projects/ModularHomeInventory/HomeInventoryModularTests/AdditionalTests/AccessibilitySnapshotTests.swift:134: error: -[HomeInventoryModularTests.AccessibilitySnapshotTests testReducedMotionViewCompact] : failed - Snapshot does not match reference.
+
+@−
+"file:///Users/griffin/Projects/ModularHomeInventory/HomeInventoryModularTests/AdditionalTests/__Snapshots__/AccessibilitySnapshotTests/testReducedMotionViewCompact.1.png"
+@+
+"file:///Users/griffin/Library/Developer/XCTestDevices/D9077CF3-C617-4A79-8FA8-F8559B9781B0/data/Containers/Data/Application/EB4CAA57-01C2-48FE-84E6-FF3078B2E2B5/tmp/AccessibilitySnapshotTests/testReducedMotionViewCompact.1.png"
+
+To configure output for a custom diff tool, use 'withSnapshotTesting'. For example:
+
+    withSnapshotTesting(diffTool: .ksdiff) {
+      // ...
+    }
+
+Newly-taken snapshot does not match reference.
+Test Case '-[HomeInventoryModularTests.AccessibilitySnapshotTests testReducedMotionViewCompact]' failed (0.209 seconds).
+Test Case '-[HomeInventoryModularTests.AccessibilitySnapshotTests testReducedMotionViewDarkMode]' started.
+Test Case '-[HomeInventoryModularTests.AccessibilitySnapshotTests testReducedMotionViewDarkMode]' passed (0.055 seconds).
+Test Case '-[HomeInventoryModularTests.AccessibilitySnapshotTests testVoiceOverOptimizedView]' started.
+/Users/griffin/Projects/ModularHomeInventory/HomeInventoryModularTests/AdditionalTests/AccessibilitySnapshotTests.swift:17: error: -[HomeInventoryModularTests.AccessibilitySnapshotTests testVoiceOverOptimizedView] : failed - Snapshot does not match reference.
+
+@−
+"file:///Users/griffin/Projects/ModularHomeInventory/HomeInventoryModularTests/AdditionalTests/__Snapshots__/AccessibilitySnapshotTests/testVoiceOverOptimizedView.1.png"
+@+
+"file:///Users/griffin/Library/Developer/XCTestDevices/D9077CF3-C617-4A79-8FA8-F8559B9781B0/data/Containers/Data/Application/EB4CAA57-01C2-48FE-84E6-FF3078B2E2B5/tmp/AccessibilitySnapshotTests/testVoiceOverOptimizedView.1.png"
+
+To configure output for a custom diff tool, use 'withSnapshotTesting'. For example:
+
+    withSnapshotTesting(diffTool: .ksdiff) {
+      // ...
+    }
+
+Newly-taken snapshot does not match reference.
+/Users/griffin/Projects/ModularHomeInventory/HomeInventoryModularTests/AdditionalTests/AccessibilitySnapshotTests.swift:18: error: -[HomeInventoryModularTests.AccessibilitySnapshotTests testVoiceOverOptimizedView] : failed - Snapshot does not match reference.
+
+@−
+"file:///Users/griffin/Projects/ModularHomeInventory/HomeInventoryModularTests/AdditionalTests/__Snapshots__/AccessibilitySnapshotTests/testVoiceOverOptimizedView.2.png"
+@+
+"file:///Users/griffin/Library/Developer/XCTestDevices/D9077CF3-C617-4A79-8FA8-F8559B9781B0/data/Containers/Data/Application/EB4CAA57-01C2-48FE-84E6-FF3078B2E2B5/tmp/AccessibilitySnapshotTests/testVoiceOverOptimizedView.2.png"
+
+To configure output for a custom diff tool, use 'withSnapshotTesting'. For example:
+
+    withSnapshotTesting(diffTool: .ksdiff) {
+      // ...
+    }
+
+Newly-taken snapshot does not match reference.
+/Users/griffin/Projects/ModularHomeInventory/HomeInventoryModularTests/AdditionalTests/AccessibilitySnapshotTests.swift:19: error: -[HomeInventoryModularTests.AccessibilitySnapshotTests testVoiceOverOptimizedView] : failed - Snapshot does not match reference.
+
+@−
+"file:///Users/griffin/Projects/ModularHomeInventory/HomeInventoryModularTests/AdditionalTests/__Snapshots__/AccessibilitySnapshotTests/testVoiceOverOptimizedView.3.png"
+@+
+"file:///Users/griffin/Library/Developer/XCTestDevices/D9077CF3-C617-4A79-8FA8-F8559B9781B0/data/Containers/Data/Application/EB4CAA57-01C2-48FE-84E6-FF3078B2E2B5/tmp/AccessibilitySnapshotTests/testVoiceOverOptimizedView.3.png"
+
+To configure output for a custom diff tool, use 'withSnapshotTesting'. For example:
+
+    withSnapshotTesting(diffTool: .ksdiff) {
+      // ...
+    }
+
+Newly-taken snapshot does not match reference.
+Test Case '-[HomeInventoryModularTests.AccessibilitySnapshotTests testVoiceOverOptimizedView]' failed (1.131 seconds).
+Test Case '-[HomeInventoryModularTests.AccessibilitySnapshotTests testVoiceOverOptimizedViewAccessibility]' started.
+/Users/griffin/Projects/ModularHomeInventory/HomeInventoryModularTests/AdditionalTests/AccessibilitySnapshotTests.swift:43: error: -[HomeInventoryModularTests.AccessibilitySnapshotTests testVoiceOverOptimizedViewAccessibility] : failed - Snapshot does not match reference.
+
+@−
+"file:///Users/griffin/Projects/ModularHomeInventory/HomeInventoryModularTests/AdditionalTests/__Snapshots__/AccessibilitySnapshotTests/testVoiceOverOptimizedViewAccessibility.1.png"
+@+
+"file:///Users/griffin/Library/Developer/XCTestDevices/D9077CF3-C617-4A79-8FA8-F8559B9781B0/data/Containers/Data/Application/EB4CAA57-01C2-48FE-84E6-FF3078B2E2B5/tmp/AccessibilitySnapshotTests/testVoiceOverOptimizedViewAccessibility.1.png"
+
+To configure output for a custom diff tool, use 'withSnapshotTesting'. For example:
+
+    withSnapshotTesting(diffTool: .ksdiff) {
+      // ...
+    }
+
+Newly-taken snapshot does not match reference.
+Test Case '-[HomeInventoryModularTests.AccessibilitySnapshotTests testVoiceOverOptimizedViewAccessibility]' failed (0.247 seconds).
+Test Case '-[HomeInventoryModularTests.AccessibilitySnapshotTests testVoiceOverOptimizedViewCompact]' started.
+/Users/griffin/Projects/ModularHomeInventory/HomeInventoryModularTests/AdditionalTests/AccessibilitySnapshotTests.swift:35: error: -[HomeInventoryModularTests.AccessibilitySnapshotTests testVoiceOverOptimizedViewCompact] : failed - Snapshot does not match reference.
+
+@−
+"file:///Users/griffin/Projects/ModularHomeInventory/HomeInventoryModularTests/AdditionalTests/__Snapshots__/AccessibilitySnapshotTests/testVoiceOverOptimizedViewCompact.1.png"
+@+
+"file:///Users/griffin/Library/Developer/XCTestDevices/D9077CF3-C617-4A79-8FA8-F8559B9781B0/data/Containers/Data/Application/EB4CAA57-01C2-48FE-84E6-FF3078B2E2B5/tmp/AccessibilitySnapshotTests/testVoiceOverOptimizedViewCompact.1.png"
+
+To configure output for a custom diff tool, use 'withSnapshotTesting'. For example:
+
+    withSnapshotTesting(diffTool: .ksdiff) {
+      // ...
+    }
+
+Newly-taken snapshot does not match reference.
+Test Case '-[HomeInventoryModularTests.AccessibilitySnapshotTests testVoiceOverOptimizedViewCompact]' failed (0.157 seconds).
+Test Case '-[HomeInventoryModularTests.AccessibilitySnapshotTests testVoiceOverOptimizedViewDarkMode]' started.
+Test Case '-[HomeInventoryModularTests.AccessibilitySnapshotTests testVoiceOverOptimizedViewDarkMode]' passed (0.057 seconds).
+Test Suite 'AccessibilitySnapshotTests' failed at 2025-06-29 11:48:42.960.
+	 Executed 17 tests, with 23 failures (0 unexpected) in 7.674 (7.677) seconds
+2025-06-29 11:48:42.973173-0400 HomeInventoryModular[36357:9443235] Unbalanced calls to begin/end appearance transitions for <UIViewController: 0x1028ae3e0>.
+2025-06-29 11:48:42.973574-0400 HomeInventoryModular[36357:9443235] Unbalanced calls to begin/end appearance transitions for <UIViewController: 0x1028d7ce0>.
+2025-06-29 11:48:42.973811-0400 HomeInventoryModular[36357:9443235] Unbalanced calls to begin/end appearance transitions for <UIViewController: 0x1016f5e00>.
+2025-06-29 11:48:42.974009-0400 HomeInventoryModular[36357:9443235] Unbalanced calls to begin/end appearance transitions for <UIViewController: 0x1028f1370>.
+2025-06-29 11:48:42.974228-0400 HomeInventoryModular[36357:9443235] Unbalanced calls to begin/end appearance transitions for <UIViewController: 0x11c579530>.
+2025-06-29 11:48:42.974440-0400 HomeInventoryModular[36357:9443235] Unbalanced calls to begin/end appearance transitions for <UIViewController: 0x11c5b5030>.
+2025-06-29 11:48:42.974619-0400 HomeInventoryModular[36357:9443235] Unbalanced calls to begin/end appearance transitions for <UIViewController: 0x1028d9220>.
+Test Suite 'SharingExportSnapshotTests' started at 2025-06-29 11:48:43.006.
+Test Case '-[HomeInventoryModularTests.SharingExportSnapshotTests testAllViewsCombined]' started.
+/Users/griffin/Projects/ModularHomeInventory/HomeInventoryModularTests/AdditionalTests/SharingExportSnapshotTests.swift:292: error: -[HomeInventoryModularTests.SharingExportSnapshotTests testAllViewsCombined] : failed - Snapshot does not match reference.
+
+@−
+"file:///Users/griffin/Projects/ModularHomeInventory/HomeInventoryModularTests/AdditionalTests/__Snapshots__/SharingExportSnapshotTests/testAllViewsCombined.1.png"
+@+
+"file:///Users/griffin/Library/Developer/XCTestDevices/D9077CF3-C617-4A79-8FA8-F8559B9781B0/data/Containers/Data/Application/EB4CAA57-01C2-48FE-84E6-FF3078B2E2B5/tmp/SharingExportSnapshotTests/testAllViewsCombined.1.png"
+
+To configure output for a custom diff tool, use 'withSnapshotTesting'. For example:
+
+    withSnapshotTesting(diffTool: .ksdiff) {
+      // ...
+    }
+
+Newly-taken snapshot does not match reference.
+/Users/griffin/Projects/ModularHomeInventory/HomeInventoryModularTests/AdditionalTests/SharingExportSnapshotTests.swift:293: error: -[HomeInventoryModularTests.SharingExportSnapshotTests testAllViewsCombined] : failed - Snapshot does not match reference.
+
+@−
+"file:///Users/griffin/Projects/ModularHomeInventory/HomeInventoryModularTests/AdditionalTests/__Snapshots__/SharingExportSnapshotTests/testAllViewsCombined.2.png"
+@+
+"file:///Users/griffin/Library/Developer/XCTestDevices/D9077CF3-C617-4A79-8FA8-F8559B9781B0/data/Containers/Data/Application/EB4CAA57-01C2-48FE-84E6-FF3078B2E2B5/tmp/SharingExportSnapshotTests/testAllViewsCombined.2.png"
+
+To configure output for a custom diff tool, use 'withSnapshotTesting'. For example:
+
+    withSnapshotTesting(diffTool: .ksdiff) {
+      // ...
+    }
+
+Newly-taken snapshot does not match reference.
+Test Case '-[HomeInventoryModularTests.SharingExportSnapshotTests testAllViewsCombined]' failed (1.192 seconds).
+Test Case '-[HomeInventoryModularTests.SharingExportSnapshotTests testCloudBackupView]' started.
+/Users/griffin/Projects/ModularHomeInventory/HomeInventoryModularTests/AdditionalTests/SharingExportSnapshotTests.swift:221: error: -[HomeInventoryModularTests.SharingExportSnapshotTests testCloudBackupView] : failed - Snapshot does not match reference.
+
+@−
+"file:///Users/griffin/Projects/ModularHomeInventory/HomeInventoryModularTests/AdditionalTests/__Snapshots__/SharingExportSnapshotTests/testCloudBackupView.1.png"
+@+
+"file:///Users/griffin/Library/Developer/XCTestDevices/D9077CF3-C617-4A79-8FA8-F8559B9781B0/data/Containers/Data/Application/EB4CAA57-01C2-48FE-84E6-FF3078B2E2B5/tmp/SharingExportSnapshotTests/testCloudBackupView.1.png"
+
+To configure output for a custom diff tool, use 'withSnapshotTesting'. For example:
+
+    withSnapshotTesting(diffTool: .ksdiff) {
+      // ...
+    }
+
+Newly-taken snapshot does not match reference.
+/Users/griffin/Projects/ModularHomeInventory/HomeInventoryModularTests/AdditionalTests/SharingExportSnapshotTests.swift:222: error: -[HomeInventoryModularTests.SharingExportSnapshotTests testCloudBackupView] : failed - Snapshot does not match reference.
+
+@−
+"file:///Users/griffin/Projects/ModularHomeInventory/HomeInventoryModularTests/AdditionalTests/__Snapshots__/SharingExportSnapshotTests/testCloudBackupView.2.png"
+@+
+"file:///Users/griffin/Library/Developer/XCTestDevices/D9077CF3-C617-4A79-8FA8-F8559B9781B0/data/Containers/Data/Application/EB4CAA57-01C2-48FE-84E6-FF3078B2E2B5/tmp/SharingExportSnapshotTests/testCloudBackupView.2.png"
+
+To configure output for a custom diff tool, use 'withSnapshotTesting'. For example:
+
+    withSnapshotTesting(diffTool: .ksdiff) {
+      // ...
+    }
+
+Newly-taken snapshot does not match reference.
+/Users/griffin/Projects/ModularHomeInventory/HomeInventoryModularTests/AdditionalTests/SharingExportSnapshotTests.swift:223: error: -[HomeInventoryModularTests.SharingExportSnapshotTests testCloudBackupView] : failed - Snapshot does not match reference.
+
+@−
+"file:///Users/griffin/Projects/ModularHomeInventory/HomeInventoryModularTests/AdditionalTests/__Snapshots__/SharingExportSnapshotTests/testCloudBackupView.3.png"
+@+
+"file:///Users/griffin/Library/Developer/XCTestDevices/D9077CF3-C617-4A79-8FA8-F8559B9781B0/data/Containers/Data/Application/EB4CAA57-01C2-48FE-84E6-FF3078B2E2B5/tmp/SharingExportSnapshotTests/testCloudBackupView.3.png"
+
+To configure output for a custom diff tool, use 'withSnapshotTesting'. For example:
+
+    withSnapshotTesting(diffTool: .ksdiff) {
+      // ...
+    }
+
+Newly-taken snapshot does not match reference.
+Test Case '-[HomeInventoryModularTests.SharingExportSnapshotTests testCloudBackupView]' failed (1.219 seconds).
+Test Case '-[HomeInventoryModularTests.SharingExportSnapshotTests testCloudBackupViewAccessibility]' started.
+/Users/griffin/Projects/ModularHomeInventory/HomeInventoryModularTests/AdditionalTests/SharingExportSnapshotTests.swift:247: error: -[HomeInventoryModularTests.SharingExportSnapshotTests testCloudBackupViewAccessibility] : failed - Snapshot does not match reference.
+
+@−
+"file:///Users/griffin/Projects/ModularHomeInventory/HomeInventoryModularTests/AdditionalTests/__Snapshots__/SharingExportSnapshotTests/testCloudBackupViewAccessibility.1.png"
+@+
+"file:///Users/griffin/Library/Developer/XCTestDevices/D9077CF3-C617-4A79-8FA8-F8559B9781B0/data/Containers/Data/Application/EB4CAA57-01C2-48FE-84E6-FF3078B2E2B5/tmp/SharingExportSnapshotTests/testCloudBackupViewAccessibility.1.png"
+
+To configure output for a custom diff tool, use 'withSnapshotTesting'. For example:
+
+    withSnapshotTesting(diffTool: .ksdiff) {
+      // ...
+    }
+
+Newly-taken snapshot does not match reference.
+Test Case '-[HomeInventoryModularTests.SharingExportSnapshotTests testCloudBackupViewAccessibility]' failed (0.280 seconds).
+Test Case '-[HomeInventoryModularTests.SharingExportSnapshotTests testCloudBackupViewCompact]' started.
+/Users/griffin/Projects/ModularHomeInventory/HomeInventoryModularTests/AdditionalTests/SharingExportSnapshotTests.swift:239: error: -[HomeInventoryModularTests.SharingExportSnapshotTests testCloudBackupViewCompact] : failed - Snapshot does not match reference.
+
+@−
+"file:///Users/griffin/Projects/ModularHomeInventory/HomeInventoryModularTests/AdditionalTests/__Snapshots__/SharingExportSnapshotTests/testCloudBackupViewCompact.1.png"
+@+
+"file:///Users/griffin/Library/Developer/XCTestDevices/D9077CF3-C617-4A79-8FA8-F8559B9781B0/data/Containers/Data/Application/EB4CAA57-01C2-48FE-84E6-FF3078B2E2B5/tmp/SharingExportSnapshotTests/testCloudBackupViewCompact.1.png"
+
+To configure output for a custom diff tool, use 'withSnapshotTesting'. For example:
+
+    withSnapshotTesting(diffTool: .ksdiff) {
+      // ...
+    }
+
+Newly-taken snapshot does not match reference.
+Test Case '-[HomeInventoryModularTests.SharingExportSnapshotTests testCloudBackupViewCompact]' failed (0.166 seconds).
+Test Case '-[HomeInventoryModularTests.SharingExportSnapshotTests testCloudBackupViewDarkMode]' started.
+/Users/griffin/Projects/ModularHomeInventory/HomeInventoryModularTests/AdditionalTests/SharingExportSnapshotTests.swift:231: error: -[HomeInventoryModularTests.SharingExportSnapshotTests testCloudBackupViewDarkMode] : failed - Snapshot does not match reference.
+
+@−
+"file:///Users/griffin/Projects/ModularHomeInventory/HomeInventoryModularTests/AdditionalTests/__Snapshots__/SharingExportSnapshotTests/testCloudBackupViewDarkMode.1.png"
+@+
+"file:///Users/griffin/Library/Developer/XCTestDevices/D9077CF3-C617-4A79-8FA8-F8559B9781B0/data/Containers/Data/Application/EB4CAA57-01C2-48FE-84E6-FF3078B2E2B5/tmp/SharingExportSnapshotTests/testCloudBackupViewDarkMode.1.png"
+
+To configure output for a custom diff tool, use 'withSnapshotTesting'. For example:
+
+    withSnapshotTesting(diffTool: .ksdiff) {
+      // ...
+    }
+
+Newly-taken snapshot does not match reference.
+Test Case '-[HomeInventoryModularTests.SharingExportSnapshotTests testCloudBackupViewDarkMode]' failed (0.275 seconds).
+Test Case '-[HomeInventoryModularTests.SharingExportSnapshotTests testCloudBackupViewErrorState]' started.
+/Users/griffin/Projects/ModularHomeInventory/HomeInventoryModularTests/AdditionalTests/SharingExportSnapshotTests.swift:254: error: -[HomeInventoryModularTests.SharingExportSnapshotTests testCloudBackupViewErrorState] : failed - Snapshot does not match reference.
+
+@−
+"file:///Users/griffin/Projects/ModularHomeInventory/HomeInventoryModularTests/AdditionalTests/__Snapshots__/SharingExportSnapshotTests/testCloudBackupViewErrorState.1.png"
+@+
+"file:///Users/griffin/Library/Developer/XCTestDevices/D9077CF3-C617-4A79-8FA8-F8559B9781B0/data/Containers/Data/Application/EB4CAA57-01C2-48FE-84E6-FF3078B2E2B5/tmp/SharingExportSnapshotTests/testCloudBackupViewErrorState.1.png"
+
+To configure output for a custom diff tool, use 'withSnapshotTesting'. For example:
+
+    withSnapshotTesting(diffTool: .ksdiff) {
+      // ...
+    }
+
+Newly-taken snapshot does not match reference.
+Test Case '-[HomeInventoryModularTests.SharingExportSnapshotTests testCloudBackupViewErrorState]' failed (0.242 seconds).
+Test Case '-[HomeInventoryModularTests.SharingExportSnapshotTests testCloudBackupViewLoading]' started.
+/Users/griffin/Projects/ModularHomeInventory/HomeInventoryModularTests/AdditionalTests/SharingExportSnapshotTests.swift:275: error: -[HomeInventoryModularTests.SharingExportSnapshotTests testCloudBackupViewLoading] : failed - Snapshot does not match reference.
+
+@−
+"file:///Users/griffin/Projects/ModularHomeInventory/HomeInventoryModularTests/AdditionalTests/__Snapshots__/SharingExportSnapshotTests/testCloudBackupViewLoading.1.png"
+@+
+"file:///Users/griffin/Library/Developer/XCTestDevices/D9077CF3-C617-4A79-8FA8-F8559B9781B0/data/Containers/Data/Application/EB4CAA57-01C2-48FE-84E6-FF3078B2E2B5/tmp/SharingExportSnapshotTests/testCloudBackupViewLoading.1.png"
+
+To configure output for a custom diff tool, use 'withSnapshotTesting'. For example:
+
+    withSnapshotTesting(diffTool: .ksdiff) {
+      // ...
+    }
+
+Newly-taken snapshot does not match reference.
+Test Case '-[HomeInventoryModularTests.SharingExportSnapshotTests testCloudBackupViewLoading]' failed (0.229 seconds).
+Test Case '-[HomeInventoryModularTests.SharingExportSnapshotTests testCloudBackupViewNetworkError]' started.
+/Users/griffin/Projects/ModularHomeInventory/HomeInventoryModularTests/AdditionalTests/SharingExportSnapshotTests.swift:261: error: -[HomeInventoryModularTests.SharingExportSnapshotTests testCloudBackupViewNetworkError] : failed - Snapshot does not match reference.
+
+@−
+"file:///Users/griffin/Projects/ModularHomeInventory/HomeInventoryModularTests/AdditionalTests/__Snapshots__/SharingExportSnapshotTests/testCloudBackupViewNetworkError.1.png"
+@+
+"file:///Users/griffin/Library/Developer/XCTestDevices/D9077CF3-C617-4A79-8FA8-F8559B9781B0/data/Containers/Data/Application/EB4CAA57-01C2-48FE-84E6-FF3078B2E2B5/tmp/SharingExportSnapshotTests/testCloudBackupViewNetworkError.1.png"
+
+To configure output for a custom diff tool, use 'withSnapshotTesting'. For example:
+
+    withSnapshotTesting(diffTool: .ksdiff) {
+      // ...
+    }
+
+Newly-taken snapshot does not match reference.
+Test Case '-[HomeInventoryModularTests.SharingExportSnapshotTests testCloudBackupViewNetworkError]' failed (0.236 seconds).
+Test Case '-[HomeInventoryModularTests.SharingExportSnapshotTests testCloudBackupViewPermissionDenied]' started.
+/Users/griffin/Projects/ModularHomeInventory/HomeInventoryModularTests/AdditionalTests/SharingExportSnapshotTests.swift:268: error: -[HomeInventoryModularTests.SharingExportSnapshotTests testCloudBackupViewPermissionDenied] : failed - Snapshot does not match reference.
+
+@−
+"file:///Users/griffin/Projects/ModularHomeInventory/HomeInventoryModularTests/AdditionalTests/__Snapshots__/SharingExportSnapshotTests/testCloudBackupViewPermissionDenied.1.png"
+@+
+"file:///Users/griffin/Library/Developer/XCTestDevices/D9077CF3-C617-4A79-8FA8-F8559B9781B0/data/Containers/Data/Application/EB4CAA57-01C2-48FE-84E6-FF3078B2E2B5/tmp/SharingExportSnapshotTests/testCloudBackupViewPermissionDenied.1.png"
+
+To configure output for a custom diff tool, use 'withSnapshotTesting'. For example:
+
+    withSnapshotTesting(diffTool: .ksdiff) {
+      // ...
+    }
+
+Newly-taken snapshot does not match reference.
+Test Case '-[HomeInventoryModularTests.SharingExportSnapshotTests testCloudBackupViewPermissionDenied]' failed (0.224 seconds).
+Test Case '-[HomeInventoryModularTests.SharingExportSnapshotTests testCloudBackupViewRefreshing]' started.
+/Users/griffin/Projects/ModularHomeInventory/HomeInventoryModularTests/AdditionalTests/SharingExportSnapshotTests.swift:282: error: -[HomeInventoryModularTests.SharingExportSnapshotTests testCloudBackupViewRefreshing] : failed - Snapshot does not match reference.
+
+@−
+"file:///Users/griffin/Projects/ModularHomeInventory/HomeInventoryModularTests/AdditionalTests/__Snapshots__/SharingExportSnapshotTests/testCloudBackupViewRefreshing.1.png"
+@+
+"file:///Users/griffin/Library/Developer/XCTestDevices/D9077CF3-C617-4A79-8FA8-F8559B9781B0/data/Containers/Data/Application/EB4CAA57-01C2-48FE-84E6-FF3078B2E2B5/tmp/SharingExportSnapshotTests/testCloudBackupViewRefreshing.1.png"
+
+To configure output for a custom diff tool, use 'withSnapshotTesting'. For example:
+
+    withSnapshotTesting(diffTool: .ksdiff) {
+      // ...
+    }
+
+Newly-taken snapshot does not match reference.
+Test Case '-[HomeInventoryModularTests.SharingExportSnapshotTests testCloudBackupViewRefreshing]' failed (0.292 seconds).
+Test Case '-[HomeInventoryModularTests.SharingExportSnapshotTests testExportOptionsView]' started.
+/Users/griffin/Projects/ModularHomeInventory/HomeInventoryModularTests/AdditionalTests/SharingExportSnapshotTests.swift:85: error: -[HomeInventoryModularTests.SharingExportSnapshotTests testExportOptionsView] : failed - Snapshot does not match reference.
+
+@−
+"file:///Users/griffin/Projects/ModularHomeInventory/HomeInventoryModularTests/AdditionalTests/__Snapshots__/SharingExportSnapshotTests/testExportOptionsView.1.png"
+@+
+"file:///Users/griffin/Library/Developer/XCTestDevices/D9077CF3-C617-4A79-8FA8-F8559B9781B0/data/Containers/Data/Application/EB4CAA57-01C2-48FE-84E6-FF3078B2E2B5/tmp/SharingExportSnapshotTests/testExportOptionsView.1.png"
+
+To configure output for a custom diff tool, use 'withSnapshotTesting'. For example:
+
+    withSnapshotTesting(diffTool: .ksdiff) {
+      // ...
+    }
+
+Newly-taken snapshot does not match reference.
+/Users/griffin/Projects/ModularHomeInventory/HomeInventoryModularTests/AdditionalTests/SharingExportSnapshotTests.swift:86: error: -[HomeInventoryModularTests.SharingExportSnapshotTests testExportOptionsView] : failed - Snapshot does not match reference.
+
+@−
+"file:///Users/griffin/Projects/ModularHomeInventory/HomeInventoryModularTests/AdditionalTests/__Snapshots__/SharingExportSnapshotTests/testExportOptionsView.2.png"
+@+
+"file:///Users/griffin/Library/Developer/XCTestDevices/D9077CF3-C617-4A79-8FA8-F8559B9781B0/data/Containers/Data/Application/EB4CAA57-01C2-48FE-84E6-FF3078B2E2B5/tmp/SharingExportSnapshotTests/testExportOptionsView.2.png"
+
+To configure output for a custom diff tool, use 'withSnapshotTesting'. For example:
+
+    withSnapshotTesting(diffTool: .ksdiff) {
+      // ...
+    }
+
+Newly-taken snapshot does not match reference.

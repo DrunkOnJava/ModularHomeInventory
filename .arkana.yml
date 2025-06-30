@@ -1,0 +1,67 @@
+# Arkana configuration for secure secrets management
+# This file configures how Arkana generates Swift code for accessing encrypted secrets
+
+import_name: "ArkanaKeys"
+namespace: "HomeInventorySecrets"
+pod_name: "ArkanaKeys"
+
+# Swift package configuration
+swift_declaration_strategy: "let"
+should_generate_unit_tests: true
+package_manager: "spm"
+
+# Code generation settings
+result_type: "struct"
+protocols_to_implement:
+  - "Sendable"
+
+# Environment configurations
+environments:
+  - Debug
+  - Release
+
+# Global secrets (available in all environments)
+global_secrets:
+  # API Keys
+  - FirebaseAPIKey
+  - GoogleClientID
+  - SentryDSN
+  - RevenueCatAPIKey
+  - MixpanelToken
+  
+  # Encryption Keys
+  - BackupEncryptionKey
+  - DatabaseEncryptionSalt
+  
+  # Service URLs
+  - APIBaseURL
+  - WebSocketURL
+
+# Environment-specific secrets
+environment_secrets:
+  # Debug environment
+  Debug:
+    - TestFlightWebhookURL
+    - DebugLoggingEndpoint
+    - MockServerURL
+  
+  # Release environment
+  Release:
+    - ProductionAPIKey
+    - AppStoreConnectKey
+    - CrashReportingKey
+
+# Files to ignore when generating
+ignore:
+  - ".env.local"
+  - ".env.secret"
+  - "*.backup"
+
+# Template customization
+template_name: "swift"
+
+# Code generation output
+output_directory: "./Generated/Arkana"
+
+# Security settings
+salt_size: 256

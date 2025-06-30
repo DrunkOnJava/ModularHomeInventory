@@ -1,0 +1,77 @@
+// sourcery:inline:auto:AutoMockable
+// swiftlint:disable all
+
+import Foundation
+{% for import in argument.imports %}
+import {{ import }}
+{% endfor %}
+{% for import in argument.testableImports %}
+@testable import {{ import }}
+{% endfor %}
+
+{% for type in types.protocols where type.based.AutoMockable or type.annotations.AutoMockable %}
+// MARK: - {{ type.name }}Mock
+
+class {{ type.name }}Mock: {{ type.name }} {
+    {% for variable in type.allVariables|!definedInExtension %}
+    var {{ variable.name }}: {{ variable.typeName }}
+    {% if not variable.isOptional and not variable.isImplicitlyUnwrappedOptional %}
+    {
+        get { return underlying{{ variable.name|upperFirstLetter }} }
+        set { underlying{{ variable.name|upperFirstLetter }} = newValue }
+    }
+    private var underlying{{ variable.name|upperFirstLetter }}: {{ variable.typeName }}!
+    {% endif %}
+    {% endfor %}
+    
+    {% for method in type.allMethods|!definedInExtension %}
+    // MARK: - {{ method.shortName }}
+    
+    var {{ method.callName }}CallsCount = 0
+    var {{ method.callName }}Called: Bool {
+        return {{ method.callName }}CallsCount > 0
+    }
+    {% if method.parameters.count > 0 %}
+    var {{ method.callName }}ReceivedArguments: ({% for param in method.parameters %}{{ param.name }}: {{ param.typeName }}{% if not forloop.last %}, {% endif %}{% endfor %})?
+    var {{ method.callName }}ReceivedInvocations: [({% for param in method.parameters %}{{ param.name }}: {{ param.typeName }}{% if not forloop.last %}, {% endif %}{% endfor %})] = []
+    {% endif %}
+    {% if not method.returnTypeName.isVoid and not method.isAsync %}
+    var {{ method.callName }}ReturnValue: {{ method.returnTypeName }}!
+    {% endif %}
+    {% if method.throws %}
+    var {{ method.callName }}ThrowableError: Error?
+    {% endif %}
+    {% if not method.returnTypeName.isVoid or method.throws %}
+    var {{ method.callName }}Closure: (({% for param in method.parameters %}{{ param.typeName }}{% if not forloop.last %}, {% endif %}{% endfor %}) {% if method.throws %}throws {% endif %}{% if method.isAsync %}async {% endif %}-> {{ method.returnTypeName }})?
+    {% endif %}
+    
+    {% if method.isAsync %}
+    func {{ method.name }} async {% if method.throws %}throws {% endif %}-> {{ method.returnTypeName }} {
+    {% else %}
+    func {{ method.name }}{% if method.throws %} throws{% endif %}{% if not method.returnTypeName.isVoid %} -> {{ method.returnTypeName }}{% endif %} {
+    {% endif %}
+        {{ method.callName }}CallsCount += 1
+        {% if method.parameters.count > 0 %}
+        {{ method.callName }}ReceivedArguments = ({% for param in method.parameters %}{{ param.name }}: {{ param.name }}{% if not forloop.last %}, {% endif %}{% endfor %})
+        {{ method.callName }}ReceivedInvocations.append(({% for param in method.parameters %}{{ param.name }}: {{ param.name }}{% if not forloop.last %}, {% endif %}{% endfor %}))
+        {% endif %}
+        {% if method.throws %}
+        if let error = {{ method.callName }}ThrowableError {
+            throw error
+        }
+        {% endif %}
+        {% if not method.returnTypeName.isVoid or method.throws %}
+        if let {{ method.callName }}Closure = {{ method.callName }}Closure {
+            return {% if method.throws %}try {% endif %}{% if method.isAsync %}await {% endif %}{{ method.callName }}Closure({% for param in method.parameters %}{{ param.name }}{% if not forloop.last %}, {% endif %}{% endfor %})
+        } else {
+            {% if not method.returnTypeName.isVoid %}
+            return {{ method.callName }}ReturnValue
+            {% endif %}
+        }
+        {% endif %}
+    }
+    {% endfor %}
+}
+{% endfor %}
+// swiftlint:enable all
+// sourcery:end

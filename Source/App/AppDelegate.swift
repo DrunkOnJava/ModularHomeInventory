@@ -62,6 +62,11 @@ class AppDelegate: NSObject, UIApplicationDelegate {
         // Start launch optimization tracking
         launchOptimizer.startPhase(.appDelegate)
         
+        #if DEBUG
+        // Configure hot reload with InjectionIII
+        // InjectionConfiguration.setup()
+        #endif
+        
         // Configure launch optimization (temporarily disabled due to import issue)
         // launchOptimizer.configure(LaunchConfiguration(
         //     deferNonCriticalWork: true,
